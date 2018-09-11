@@ -2,7 +2,7 @@
 layout: article
 title: Layout - Article Header Overlay Background Image (Immersive + Translucent Header)
 key: layout-article-header-overlay-background-image-ITH
-cover: /assets/images/axure/layout-article-header-overlay-background-image-immersive-translucent-header.png
+cover: /docs/assets/images/axure/layout-article-header-overlay-background-image-immersive-translucent-header.png
 mode: immersive
 header:
   type: translucent
@@ -13,7 +13,7 @@ article_header:
   background_color: '#203028'
   background_image:
     gradient: 'linear-gradient(135deg, rgba(34, 139, 87 , .4), rgba(139, 34, 139, .4))'
-    src: /assets/images/cover3.jpg
+    src: /docs/assets/images/cover3.jpg
 ---
 
 A post has an article header overlay with a image in immersive mode with a translucent header.
@@ -41,5 +41,5 @@ A post has an article header overlay with a image in immersive mode with a trans
       background_color: '#203028'
       background_image:
         gradient: 'linear-gradient(135deg, rgba(34, 139, 87 , .4), rgba(139, 34, 139, .4))'
-        src: /assets/images/cover3.jpg
+        src: /docs/assets/images/cover3.jpg
     ---
