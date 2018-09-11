@@ -1,8 +1,0 @@
-@mixin overflow($overflow: auto) {
-  @if $overflow == auto {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-  } @else {
-    overflow: $overflow;
-  }
-}
