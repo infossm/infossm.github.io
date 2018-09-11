@@ -1,0 +1,34 @@
+.author-links {
+  & > ul {
+    margin: 0;
+    & > li > {
+      .mail-button {
+        @include clickable($text-color-1, $mail-color);
+      }
+      .weibo-button {
+        @include clickable($text-color-1, $weibo-color);
+      }
+      .facebook-button {
+        @include clickable($text-color-1, $facebook-color);
+      }
+      .twitter-button {
+        @include clickable($text-color-1, $twitter-color);
+      }
+      .googlepluse-button {
+        @include clickable($text-color-1, $google-plus-color);
+      }
+      .github-button {
+        @include clickable($text-color-1, $github-color);
+      }
+      .linkedin-button {
+        @include clickable($text-color-1, $linkedin-color);
+      }
+      .douban-button {
+        @include clickable($text-color-1, $douban-color);
+      }
+      .npm-button {
+        @include clickable($text-color-1, $npm-color);
+      }
+    }
+  }
+}

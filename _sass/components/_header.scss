@@ -1,0 +1,114 @@
+.header {
+  background: $header-background;
+  a {
+    font-weight: map-get($base, font-weight);
+    text-decoration: none !important;
+    @include link-colors($header-text-color, $main-color-1);
+  }
+  .main {
+    @include flexbox();
+    @include media-breakpoint-down(md) {
+      @include flex-direction(column);
+    }
+  }
+}
+
+.header--dark {
+  a {
+    @include link-colors($text-color-theme-dark, $main-color-1);
+  }
+  color: $text-color-theme-dark;
+  background: rgba(#000, .15);
+}
+
+.header--light {
+  a {
+    @include link-colors($text-color-theme-light, $main-color-1);
+  }
+  color: $text-color-theme-light;
+  background: rgba(#fff, .15);
+}
+
+.header__title {
+  @include menu(3, 0);
+  @include align-items(center);
+  @include flex-wrap(nowrap);
+  @include flex(1);
+  height: map-get($layout, header-height);
+  margin-right: map-get($spacers, 3);
+  white-space: nowrap;
+  @include media-breakpoint-down(md) {
+    height: map-get($layout, header-height-sm);
+    margin-right: 0;
+  }
+  & > .header__brand {
+    @include flex(1);
+  }
+  & > .search-button {
+    display: none;
+    margin-left: map-get($spacers, 2);
+    @include media-breakpoint-down(md) {
+      @include flexbox();
+    }
+  }
+}
+
+.header__brand {
+  & > svg {
+    width: map-get($base, font-size-h4) * 1.6;
+    height: map-get($base, font-size-h4) * 1.6;
+    margin-right: .8rem;
+    vertical-align: middle;
+    @include media-breakpoint-down(md) {
+      width: map-get($base, font-size-h4) * 1.2;
+      height: map-get($base, font-size-h4) * 1.2;
+    }
+  }
+  & > a {
+    display: inline-block;
+    font-size: map-get($base, font-size-h4);
+    @include media-breakpoint-down(md) {
+      font-size: map-get($base, font-size-h4-small);
+    }
+  }
+}
+
+.navigation {
+  @include overflow(auto);
+  & > ul {
+    height: map-get($layout, header-height);
+    padding-bottom: 0;
+    margin: 0;
+    @include media-breakpoint-down(md) {
+      padding-bottom: 4px;
+      margin: -4px 0 0 0;
+    }
+    @include menu(3, 2, nowrap);
+    @include align-items(center);
+    @include media-breakpoint-down(md) {
+      height: auto;
+    }
+    .search-button {
+      @include media-breakpoint-down(md) {
+        display: none;
+      }
+    }
+  }
+}
+
+.navigation__link {
+  &::after {
+    display: block;
+    margin-bottom: -4px;
+    content: "";
+    @include split-line(bottom, 4px, transparent);
+  }
+}
+.navigation__link--active {
+  a {
+    @include link-colors($main-color-1, $main-color-1);
+  }
+  &::after {
+    @include split-line(bottom, 4px, $main-color-1);
+  }
+}

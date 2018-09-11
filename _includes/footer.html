@@ -1,0 +1,40 @@
+
+<div class="footer js-page-footer">
+  <div class="main">
+
+    {%- assign _site_author = site.author -%}
+    {%- if _site_author.type == 'organization' -%}
+      {%- assign _site_author_itemtype = 'http://schema.org/Organization' -%}
+    {%- else -%}
+      {%- assign _site_author_itemtype = 'http://schema.org/Person' -%}
+    {%- endif -%}
+
+    <aside  itemscope itemtype="{{ _site_author_itemtype }}">
+      <meta itemprop="name" content="{{ _site_author.name }}">
+      {%- assign _site_author_url = _site_author.url | default: '/'-%}
+      {%- include snippets/get-nav-url.html path=_site_author_url -%}
+      {%- assign _site_author_url = __return -%}
+      <meta itemprop="url" content="{{ _site_author_url }}">
+      {%- if _site_author.bio -%}
+        <meta itemprop="description" content="{{ _site_author.bio }}">
+      {%- endif -%}
+      <div class="footer__author-links">
+        {%- include author-links.html author=_site_author -%}
+      </div>
+    </aside>
+    <footer class="site-info">
+      {%- assign _paths_rss = site.paths.rss | default: site.data.variables.default.paths.rss -%}
+      {%- include snippets/get-nav-url.html path=_paths_rss -%}
+      {%- assign _paths_rss = __return -%}
+      {%- include snippets/locale-to-string.html locale=site.data.locale.NAV.RSS -%}
+      {%- assign _locale_nav_rss = __return -%}
+      <p class="menu menu--center">
+        <span>© {{ site.title }} {{ site.data.locale.COPYRIGHT_DATES }}</span>
+        <a type="application/rss+xml" href="{{ _paths_rss }}">{{ _locale_nav_rss }}</a>
+      </p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </p>
+    </footer>
+  </div>
+</div>

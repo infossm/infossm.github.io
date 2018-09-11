@@ -1,0 +1,18 @@
+language: ruby
+rvm:
+  - 2.4.1
+branches:
+  only:
+  - master
+script: JEKYLL_ENV=production bundle exec jekyll build --config ./docs/_config.yml
+deploy:
+  edge:
+    branch: v1.8.47
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: _site
+  keep-history: true
+  on:
+    branch: master
+    target_branch: gh-pages
