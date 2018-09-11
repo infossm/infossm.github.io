@@ -164,7 +164,7 @@ exclude:
   - jekyll-text-theme.gemspec
   - package-lock.json
   - package.json
-  - /assets
+  - /docs
   - /node_modules
   - /screenshots
   - /test
