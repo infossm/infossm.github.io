@@ -1,2 +1,0 @@
-# infossm.github.io
-##

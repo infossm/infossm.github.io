@@ -1,0 +1,61 @@
+@charset "utf-8";
+
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+@import url(https://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+/* initialize */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {margin: 0; padding: 0; border: 0; outline: 0; background: transparent; -webkit-text-size-adjust:none;}
+body {font:13px/normal 'Nanum Gothic','Malgun Gothic', '맑은 고딕', 'Dotum', '돋움', sans-serif; color:#2b2b2b;}
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary {display: block;}
+nav, menu, ul, ol, dl, li {list-style: none;}
+blockquote, q {quotes: none;}
+blockquote:before, blockquote:after,
+q:before, q:after {content: ''; content: none;}
+a:link {color:#2b2b2b; text-decoration:none;}
+a:visited {color:#2b2b2b; text-decoration:none;}
+a:active, a:hover {color:#2b2b2b; text-decoration:none;}
+small {font-size:0.8em;}
+ins {background-color: #ff9; color: #000; text-decoration: none;}
+mark {background-color: #ff9; color: #000; font-weight: bold;}
+del {text-decoration: line-through;}
+abbr[title], dfn[title] {border-bottom: 1px dotted #000; cursor: help;}
+table {width:100%; border:0 none; table-layout:fixed;}
+table td, table th {padding:0; border:0 none;}
+img {vertical-align:middle; border:0 none; max-width:100%; height:auto;}
+hr, legend {visibility:hidden; height:1px; width:1px; position:absolute; line-height:0;}
+h1, h2, h3, h4, h5, h6 {font-size:1em;}
+
+/* input type */
+input, select, textarea, button {font:13px/normal 'Nanum Gothic', 'Malgun Gothic', '맑은 고딕', 'Dotum', '돋움', sans-serif; color:#666; vertical-align:middle; padding:0; margin:0; resize:none;}
+input[type=text],input[type=password],input[type=email],input[type=number],input[type=search] {height:15px; padding:8px 10px; border:1px solid #d5dde0; -webkit-appearance:none; -moz-appearance:none; -ms-appearance:none; -o-appearance:none; appearance:none; line-height:1.2;}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+textarea {width:100%; padding:15px 0 15px; border:0 none; background:transparent; line-height:1.4; -webkit-appearance:none; -moz-appearance:none; -ms-appearance:none; -o-appearance:none; appearance:none;}
+input[type=text]:focus,input[type=password]:focus,input[type=email]:focus,input[type=number]:focus,textarea:focus {outline: 0 none;}
+input[type=checkbox], input[type=radio] {width:20px; height:20px;}
+input[type=submit], input[type=image], input[type=reset], button {cursor:pointer; border:0 none; background:none; border-radius:0; -webkit-border-radius:0; -webkit-appearance:none; -moz-appearance:none; -ms-appearance:none; -o-appearance:none; appearance:none;}
+
+::-webkit-input-placeholder {color:#a9a9a9;}
+:-moz-placeholder {color:#a9a9a9;}
+::-moz-placeholder {color:#a9a9a9;}
+:-ms-input-placeholder {color:#a9a9a9;}
+
+select {height:35px; border-color:#d5dde0;}
+
+.input_text {display:block; padding:0 10px; background:#fff; border:1px solid #d5dde0;}
+.input_text input {width:100%; padding-right:0; padding-left:0; background:transparent; border:0 none;}

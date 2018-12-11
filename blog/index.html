@@ -1,0 +1,12 @@
+---
+layout: page
+image : /assets/images/main_home_bg_wide.png
+title : S/W 멤버십 기술 블로그
+description : |
+---
+<ul id="post-list">
+    {% for post in paginator.posts %}
+        {% include item.html %}
+    {% endfor %}
+</ul>
+{% include pagination.html %}

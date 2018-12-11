@@ -1,0 +1,9 @@
+{% if include.cover %}
+<cite>
+  커버 이미지 출처: <a href="{{ include.cover.link }}" target="_blank">{{ include.cover.title }}</a>
+  {% if include.cover.author %}
+  &copy; <a href="{{ include.cover.author.link }}" target="_blank">{{ include.cover.author.name }}</a>
+  {% endif %}
+</cite>
+{% endif %}
+

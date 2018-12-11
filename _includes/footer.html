@@ -1,0 +1,40 @@
+<div id="footer" class="container-fluid">
+    <ul id="links">
+        {% if site.github_url %}
+        <li>
+            <a id="link-github" href="https://github.com/{{ site.github_url.username }}" target="_blank">
+                <span class="sr-only">github</span>
+            </a>
+        </li>
+        {% endif %}
+        {% if site.facebook %}
+        <li>
+            <a id="link-facebook" href="https://facebook.com/{{ site.facebook.username }}" target="_blank">
+                <span class="sr-only">facebook</span>
+            </a>
+        </li>
+        {% endif %}
+        {% if site.instagram %}
+        <li>
+            <a id="link-instagram" href="https://www.instagram.com/{{ site.instagram.username }}" target="_blank">
+                <span class="sr-only">instagram</span>
+            </a>
+        </li>
+        {% endif %}
+        {% if site.youtube %}
+        <li>
+            <a id="link-youtube" href="https://www.youtube.com/user/{{ site.youtube.username }}" target="_blank">
+                <span class="sr-only">youtube</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+    <ul id="footer-menu">
+        <li><a href="//www.secmem.org">S/W Membership</a></li>
+        <li><a href="//apply.samsung.co.kr/sswweb/">Apply</a></li>
+    </ul>
+    <p id="copyright">
+        <a href="//www.secmem.org">Copyright &copy; SAMSUNG SOFTWARE MEMBERSHIP.</a>
+        All rights reserved.
+    </p>
+</div><!--#footer-->

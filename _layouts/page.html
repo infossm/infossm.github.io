@@ -1,0 +1,16 @@
+---
+layout: default
+---
+<div id="cover" class="container-fluid"
+     {% if page.image %}style="background-image: url({{ page.image }});"{% endif %}>
+    <div>
+        <h1>{{ page.title }}</h1>
+        <p>{{ page.description | newline_to_br }}</p>
+    </div>
+</div>
+
+<div id="content" class="container">
+    <div id="post-content" class="post page" role="main">
+        {{ content }}
+    </div>
+</div>

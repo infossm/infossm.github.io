@@ -1,45 +1,8 @@
 ---
-layout: article
-title: Layout - Article Header Overlay Background Image (Immersive + Translucent Header)
-key: layout-article-header-overlay-background-image-ITH
-cover: /docs/assets/images/axure/layout-article-header-overlay-background-image-immersive-translucent-header.png
-mode: immersive
-header:
-  type: translucent
-  theme: dark
-article_header:
-  type: overlay
-  theme: dark
-  background_color: '#203028'
-  background_image:
-    gradient: 'linear-gradient(135deg, rgba(34, 139, 87 , .4), rgba(139, 34, 139, .4))'
-    src: /docs/assets/images/cover3.jpg
+
+layout: about
+image : /assets/images/sr_campus.png
+title : 삼성소프트웨어멤버십
+description : |
+  소프트웨어 개발자, 그 꿈이 이루어지는 곳
 ---
-
-A post has an article header overlay with a image in immersive mode with a translucent header.
-
-<!--more-->
-
-<style>
-  .page__header .logo path {
-    fill: rgba(255, 255, 255, .95);
-  }
-</style>
-
-**front matter:**
-
-    ---
-    layout: article
-    title: Layout - Article Header Overlay Background Image (Immersive + Translucent Header)
-    mode: immersive
-    header:
-      type: translucent
-      theme: dark
-    article_header:
-      type: overlay
-      theme: dark
-      background_color: '#203028'
-      background_image:
-        gradient: 'linear-gradient(135deg, rgba(34, 139, 87 , .4), rgba(139, 34, 139, .4))'
-        src: /docs/assets/images/cover3.jpg
-    ---
