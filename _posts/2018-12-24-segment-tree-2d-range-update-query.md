@@ -312,7 +312,7 @@ data class Value(val v: Long = 0) {
 }
 ```
 
-max 연산도 비슷하게 작성할 수 있습니다.
+min 연산도 비슷하게 작성할 수 있습니다.
 
 ``` kotlin
 data class Value(val v: Long = Long.MAX_VALUE) {
