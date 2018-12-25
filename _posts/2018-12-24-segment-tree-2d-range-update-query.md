@@ -140,7 +140,7 @@ fun update(x1: Int, x2: Int, y1: Int, y2: Int, c: Value) {
     }
 
     fun updateY(ynd: yNode, ny1: Int, ny2: Int, uy1: Int, uy2: Int) {
-      // y축 세그먼트 트리에서 lazy propagation을 하는 함수
+      // y축 세그먼트 트리에서 lazy propagation으로 구간 업데이트하는 함수
       //  현재 노드가 ynd이며, 이 노드는 [nx1, nx2) x [ny1, ny2) 구간을 담당함.
       //  업데이트할 범위는 [ux1, ux2) x [uy1, uy2)이며, 이는 노드가 담당하는 범위에 완전히 포함됨.
 
@@ -190,9 +190,145 @@ fun update(x1: Int, x2: Int, y1: Int, y2: Int, c: Value) {
 Update에서 사용한 예시를 가져오겠습니다. 
 똑같은 방식으로 $$x$$축 세그먼트 트리의 각 노드를 노란색과 푸른색으로 색칠할 수 있습니다.
 노란색 노드와 푸른색 노드에서 서로 다른 방식으로 답을 구해야 합니다.
+답을 저장하는 변수를 `ret`이라 하겠습니다.
 
 ![](/assets/images/segment-tree-2d-range-update-query/x-segtree-updated-26.png)
 
 ## 노란색 노드
 
+![](/assets/images/segment-tree-2d-range-update-query/yellow-node-query.png)
+
+노란색 노드가 나왔으므로, $$x$$축 세그먼트 트리를 탐색하는 과정에서 더 아래로 내려가지는 않을 것입니다.
+그리고, 이 노란색 노드의 `totalSum`들에는 노란색 노드가 담당하는 $$x$$축 구간 내에서 일어난
+모든 업데이트 결과가 반영되어 있습니다.
+
+이 사실을 기억해 둔 채로 
+$$y$$축 세그먼트 트리의 $$[y_1, y_2)$$ 구간에서 `total` 부분의 합을 구해서 `ret`에 더해 놓습니다.
+이것 역시 전형적인 Lazy Propagation 방식을 그대로 이용하면 됩니다.
+
 ## 푸른색 노드
+
+노란색 노드의 `total` 값들을 다 합쳤다고 합시다. 
+이제 처리해야 할 부분은, 현재의 푸른색 노드가 Update 과정에서 노란색이었을 때 한 `global` 업데이트가
+주어진 범위 $$[x_1, x_2) \times [y_1, y_2)]$$에 미친 영향을 구하는 것입니다.
+
+![](/assets/images/segment-tree-2d-range-update-query/blue-node-query.png)
+
+그런데, `global` 업데이트는 모든 행의 똑같은 열에 똑같은 값을 더하므로,
+각 행마다 추가적으로 더해줘야 하는 합 또한 서로 같을 것입니다.
+따라서, $$y$$축 세그먼트 트리의 $$[y_1, y_2)$$ 구간에서 `global` 부분의 합을 구한 뒤,
+겹치는 행 개수인 $$|[x_1, x_2) \cap [nx_1, nx_2)|$$를 곱해서 `ret`에 더해 주면 됩니다.
+
+## 코드
+
+``` kotlin
+fun query(x1: Int, x2: Int, y1: Int, y2: Int): Value {
+  // [x1, x2) x [y1, y2) 범위의 합을 구하는 함수
+
+  var ret = Value()
+
+  fun queryX(xnd: xNode, nx1: Int, nx2: Int, qx1: Int, qx2: Int) {
+    // x축 세그먼트 트리를 순회하며, 각 노드의 y축 세그먼트 트리에 저장된 값들을 적절히 가져오도록 하는 함수
+    //  현재 노드가 xnd이며, 이 노드는 [nx1, nx2) 구간을 담당함.
+    //  query의 x축 범위는 [ux1, ux2)이며, 이 범위는 노드가 담당하는 범위에 완전히 포함됨.
+
+    if(nx1 != qx1 || nx2 != qx2) {
+      val nxm = (nx1 + nx2) / 2
+      if(qx1 < nxm && xnd.left != null) {
+        queryX(xnd.left!!, nx1, nxm, qx1, minOf(qx2, nxm))
+      }
+      if(nxm < qx2 && xnd.right != null) {
+        queryX(xnd.right!!, nxm, nx2, maxOf(nxm, qx1), qx2)
+      }
+    }
+    
+    fun queryY(ynd: yNode?, ny1: Int, ny2: Int, qy1: Int, qy2: Int, tag: Value) {
+      // y축 세그먼트 트리에서 lazy propagation으로 구간의 합을 구하는 함수.
+      //  현재 노드가 ynd이며, 이 노드는 [nx1, nx2) x [ny1, ny2) 구간을 담당함.
+      //  query 범위는 [ux1, ux2) x [uy1, uy2)이며, 이는 노드가 담당하는 범위에 완전히 포함됨.
+
+      //  주의: 이 함수만 ynd가 Nullable인데, 
+      //       세그먼트 트리가 동적으로 생성되기 때문에 lazy tag를 자식 노드로 push할 수 없어서
+      //       조상에서부터 구한 lazy들의 합을 `tag`에 저장했기 때문임.
+      //       ynd가 null이라면 아직 생성되지 않은 가상의 노드에서 합을 구하고 있다고 생각하면 됨.
+
+      if(ny1 == qy1 && ny2 == qy2) {
+        if(nx1 == qx1 && nx2 == qx2) { // ndx가 노란색 -> total
+          if(ynd != null) ret += ynd.totalSum
+          ret += tag * (ny2 - ny1)
+        }else { // ndx가 푸른색 -> global 값
+          if(ynd != null) ret += ynd.globalRowSum * (qx2 - qx1)
+          ret += tag * (qx2 - qx1) * (ny2 - ny1)
+        }
+      }else {
+        val next_tag = when {
+          ynd == null -> tag
+          nx1 == qx1 && nx2 == qx2 -> tag + ynd.totalLazy // ndx가 노란색
+          else -> tag + ynd.globalRowLazy // ndx가 푸른색
+        }
+
+        val nym = (ny1 + ny2) / 2
+        if(qy1 < nym) {
+          queryY(ynd?.left, ny1, nym, qy1, minOf(qy2, nym), next_tag)
+        }
+        if(nym < qy2) {
+          queryY(ynd?.right, nym, ny2, maxOf(qy1, nym), qy2, next_tag)
+        }
+      }
+    }
+    queryY(xnd.yRoot, 0, cols, y1, y2, Value())
+  }
+  queryX(root, 0, rows, x1, x2)
+  return ret
+}
+```
+
+# 사용 예시
+
+덧셈 연산을 적용하고 싶다면 아래와 같이 `Value` 클래스를 만들면 됩니다.
+`times` 함수는 연산의 기본 값(보통 항등원)에 `plus` 연산을 `other`번 적용했을 때의 결과를 반환하도록 해야 합니다.
+
+``` kotlin
+data class Value(val v: Long = 0) {
+  override fun toString() = "$v"
+  constructor(v: Int): this(v.toLong())
+  operator fun plus(other: Value) = Value(v + other.v)
+  operator fun times(other: Int) = Value(v * other)
+  operator fun times(other: Long) = Value(v * other)
+}
+```
+
+예를 들어, xor 연산을 적용하고 싶다고 합시다. 
+xor의 항등원 0에 `v`를 `other`번 적용한 결과는, `other`가 짝수라면 0이고 홀수라면 `v`입니다.
+따라서 `Value` 클래스를 아래와 같이 작성할 수 있습니다.
+
+``` kotlin
+data class Value(val v: Long = 0) {
+  override fun toString() = "$v"
+  constructor(v: Int): this(v.toLong())
+  operator fun plus(other: Value) = Value(v xor other.v)
+  operator fun times(other: Int) = Value(v * (other % 2))
+  operator fun times(other: Long) = Value(v * (other % 2))
+}
+```
+
+max 연산도 비슷하게 작성할 수 있습니다.
+
+``` kotlin
+data class Value(val v: Long = Long.MAX_VALUE) {
+  override fun toString() = "$v"
+  constructor(v: Int): this(v.toLong())
+  operator fun plus(other: Value) = Value(minOf(v, other.v))
+  operator fun times(other: Int) = Value(v)
+  operator fun times(other: Long) = Value(v)
+}
+```
+
+# 시간복잡도 및 공간복잡도 분석
+
+$$x$$축 세그먼트 트리에서 $$O(\log n)$$개의 노드를 방문하고,
+각 $$x$$축 노드마다 $$y$$축 세그먼트 트리에서 $$O(\log m)$$개의 노드를 방문하므로
+시간복잡도는 총 $$O(\log n \log m)$$입니다.
+단, 이는 Value의 덧셈과 곱셈을 하는 데에 드는 시간이 $$O(1)$$이라고 가정하고 측정한 것입니다.
+
+공간복잡도는, 한 번의 업데이트가 있을 때마다 최대 $$O(\log n \log m)$$개의 노드가 생성되므로 $$O(Q \log n \log m)$$입니다. 또한, 업데이트가 많다면 정적으로 $$2n \times 2m$$ 크기의 배열을 잡아놓는 것이 시간상 유리할 수 있습니다.
