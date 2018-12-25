@@ -14,7 +14,7 @@ tags: [segment-tree]
 # 목표
 
 이 글의 목표는 2차원 세그먼트 트리를 이용해
-$$H \times W$$ 크기의 2차원 배열 $$A$$에 다음과 같은 연산을 $$O(\log n \log m)$$ 시간에 수행하는 것입니다.
+$$n \times m$$ 크기의 2차원 배열 $$A$$에 다음과 같은 연산을 $$O(\log n \log m)$$ 시간에 수행하는 것입니다.
 
 - Update: 모든 $$(x, y) \in [x_1, x_2) \times [y_1, y_2)$$와 주어진 값 $$c$$에 대해 $$A[x][y] \leftarrow A[x][y] + c$$
 - Query: $$\sum_{(x, y) \in [x_1, x_2) \times [y_1, y_2)} A[x][y]$$ 구하기
@@ -43,7 +43,7 @@ data class xNode(
 
 다음으로, $$y$$축을 기준으로 하는 1차원 세그먼트 트리의 구조를 잡습니다.
 이 트리의 각 노드에는 질의를 처리하는 데에 필요한 정보를 담은 
-`globalRowSum`, `globalRowLazy`, `localTotalSum`, `localTotalLazy`와,
+`globalRowSum`, `globalRowLazy`, `totalSum`, `totalLazy`와,
 자신의 자식 노드 `left`, `right`를 저장하며,
 이 노드가 담당하는 구간은 `xNode`와 같은 이유로 저장하지 않습니다.
 각 변수의 의미는 다음 섹션에서 다룹니다.
