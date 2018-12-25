@@ -2,6 +2,11 @@
 <html>
 <head>
     {% include head.html %}
+    {% if page.css %}
+        {% for stylesheet in page.css %}
+<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/{{ stylesheet }}.css">
+        {% endfor %}
+    {% endif %}
 </head>
 <body class="{{ page.layout | append: '-template' }}">
 
