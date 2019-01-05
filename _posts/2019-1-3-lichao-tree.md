@@ -39,7 +39,7 @@ LiChao Tree는 Dynamic Segment Tree에 기반한 자료구조입니다. Dynamic 
 
 이러한 Dynamic Segment Tree의 시간복잡도는 일반적인 Segment Tree와 마찬가지로 연산당 $$ O(lgX) $$입니다. 한번의 연산을 수행할 때 확인해야 할 노드(생성되는 것 포함)들의 개수가 최대 $$ O(lgX) $$ 개라는 점에서 쉽게 확인할 수 있습니다.
 
-시간복잡도가 같은데 일반적인 Segment Tree 보다 무슨 장점이 있는 걸까요? 바로 구간의 길이인 $$ X $$ 의 범위에 제한이 없다는 것입니다. 일반적인 Segment Tree에서는 처음에 $$ O(XlgX) $$ 개의 노드를 미리 만들어 놓고 시작합니다. 그러나 $$ X $$ 가 너무 큰 경우 좌표압축 등의 테크닉이 추가로 필요하거나, Segment Tree 활용 자체가 아예 불가능할 수도 있습니다. 그러나 Dynamic Segment Tree의 경우 쿼리 한번당 최대 $$ O(lgX) $$ 개의 노드가 추가로 생성됩니다. 따라서 최종적으로 만들어지는 노드의 총 개수가 $$ O(QlgX) $$ 개이므로 $$ X $$가 매우 큰 수여도 활용이 가능합니다.
+시간복잡도가 같은데 일반적인 Segment Tree 보다 무슨 장점이 있는 걸까요? 바로 구간의 길이인 $$ X $$ 의 범위에 제한이 없다는 것입니다. 일반적인 Segment Tree에서는 처음에 $$ O(X) $$ 개의 노드를 미리 만들어 놓고 시작합니다. 그러나 $$ X $$ 가 너무 큰 경우 좌표압축 등의 테크닉이 추가로 필요하거나, Segment Tree 활용 자체가 아예 불가능할 수도 있습니다. 그러나 Dynamic Segment Tree의 경우 쿼리 한번당 최대 $$ O(lgX) $$ 개의 노드가 추가로 생성됩니다. 따라서 최종적으로 만들어지는 노드의 총 개수가 $$ O(QlgX) $$ 개이므로 $$ X $$가 매우 큰 수여도 활용이 가능합니다.
 
 이후 LiChao Tree코드를 작성할 때 자연스럽게 Dynamic Segment Tree 구현이 등장하므로 따로 코드는 작성하지 않고 진행하겠습니다.
 
@@ -51,7 +51,7 @@ LiChao Tree는 Dynamic Segment Tree에 기반한 자료구조입니다. Dynamic 
 
 (2) 집합에 존재하는 직선들 중, 주어진 $$ x=x_i $$ 위치에서의 최댓값을 출력
 
-![Convex Hull Trict 문제 형태](/assets/images/lichao-tree/convex-hull-trick-problem.png)
+![Convex Hull Trick 문제 형태](/assets/images/lichao-tree/convex-hull-trick-problem.png)
 
 이 형태가 (삭제 연산이 없는) 일반적인 Convex hull trick 문제입니다. 대부분의 Convex hull trick 문제는 결국 위 두 연산을 빠르게 수행할 수 있다면 풀 수 있는 문제로 변환됩니다. 
 
