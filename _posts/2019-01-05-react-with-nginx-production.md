@@ -7,7 +7,7 @@ tags: [web, production, nginx, docker, travis]
 ---
 
 리액트의 개발을 마치고 서버를 통해 배포를 할 때의 과정을 간단하게 정리해보았습니다. 리액트라고 적어 놓긴 했지만 SPA(Single Page Application) 라면 굳이 리액트가 아니어도 같은 방법으로 배포가 가능합니다.  
-보통 aws, firbase 같은 CDN 서비스를 이용하여 배포, 관리를 많이 하기도 하지만 이 글에서는 서버에서 직접 nginx, docker을 이용하여 배포하는 과정을 다루며 추가로 github과 연동이 되는 travis를 이용하여 자동화를 합니다.  
+보통 aws, firebase 같은 CDN 서비스를 이용하여 배포, 관리를 많이 하기도 하지만 이 글에서는 서버에서 직접 nginx, docker을 이용하여 배포하는 과정을 다루며 추가로 github과 연동이 되는 travis를 이용하여 자동화를 합니다.  
   
 이 글에서 사용되는 소스 코드는 [이 링크](https://github.com/zych1751/react-production-test)에서 확인할 수 있습니다. 해당 소스 코드는 [create-react-app](https://github.com/facebook/create-react-app)을 이용하여 만들어지는 기본 소스 코드에서 자동화, 배포할 때 필요한 소스 코드들만 추가하였습니다.  
 
