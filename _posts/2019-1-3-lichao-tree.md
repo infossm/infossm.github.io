@@ -224,4 +224,4 @@ int main() {
 }
 ```
 
-전체 합쳐진 코드는 [링크](https://www.acmicpc.net/source/share/24f0ef4c5176427b85fb95eaa1a75897) 에서 확인할 수 있습니다.
+전체 합쳐진 코드는 [링크](http://boj.kr/0392cdf69f9c4233a964854436a32888) 에서 확인할 수 있습니다.
