@@ -122,7 +122,7 @@ Client A는 상태가 **my unique Hello world** 인 시점에서, Server로 부�
 
 이런 상황들의 일반화된 다이어그램은 다음과 같이 구성된다.
 
-![](/asㅇsets/images/operational-transform/diamond4.gif)
+![](/assets/images/operational-transform/diamond4.gif)
 
 위에서 살펴본 것과 같이 각 Client는 Server와의 상태 동기화를 위해 항상 이전에 보낸 *operation*이 Server로 부터 *acknowledge*를 받았을 경우에만 다음 *operation*을 전송할 수 있다. 이럴 경우 많은 양의 *operation*이 계속 쌓일 경우, 클라이언트와 서버 모두 네트워크 상 무리를 줄 수 있다.
 
