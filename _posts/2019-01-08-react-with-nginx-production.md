@@ -2,7 +2,7 @@
 layout: post
 title:  "리액트 배포 및 자동화"
 date: 2019-01-08 22:00
-author: 서남규
+author: zych1751
 tags: [front-end, production]
 ---
 
