@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Operational Transform"
+title:  "실시간 문서 협업의 동작"
 date:   2019-01-09 15:00:00
 author: orange4glace
 tags: [operational-transform]
