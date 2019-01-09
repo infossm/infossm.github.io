@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "LiChao Tree (with Dynamic Segment Tree)"
-author: 김진표
+author: kjp4155
 date: 2019-01-03 15:00
 tags: [data-structure]
 ---
