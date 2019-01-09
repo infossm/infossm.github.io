@@ -1,4 +1,4 @@
 ---
-name: 임동재
+name: Doju
 image: /assets/images/authors/doju.png
 ---
