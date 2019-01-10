@@ -240,7 +240,7 @@ duplicated_kill: time limit exceeded, time: 24.155s
 ```
 이 데이터를 첫 번째 for 루프까지 그림으로 표현하면 다음과 같습니다.
 
-![duplicated_kill](/assets/images/wrong-dijkstra/1.png)
+![duplicated_kill](/assets/images/wrong-dijkstra/1.PNG)
 
 중복 방문하는 코드를 실행하면 우선 2~99998번 노드가 모두 우선순위 큐에 들어가고, 거리가 가장 작은 99998번부터 순서대로 우선순위 큐에서 나와 99999번 노드를 우선순위 큐에 넣게 됩니다. 99999번 노드로 가는 간선을 확인할 때마다 거리가 계속해서 줄어들기 때문에 99999번 노드는 우선순위 큐에 99997번이나 들어가게 됩니다!
 
