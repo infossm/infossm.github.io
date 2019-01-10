@@ -18,7 +18,7 @@ tags: [Delaunay-Triangulation]
 
 [5. 출처](#출처)
 
-!(사진1)[/assets/images/delaunay-triangulation/1.png]
+![사진1](/assets/images/delaunay-triangulation/1.png)
 [각주-1]
 
 # 개요
@@ -41,7 +41,7 @@ Deluanay Triangulation, 한국어로 들로네 삼각분할은 간단히 말하�
 
 먼저 거대한 삼각형을 그린다.
 
-!(사진2)[/assets/images/delaunay-triangulation/2.png]
+![사진2](/assets/images/delaunay-triangulation/2.png)
 [각주-2]
 
 이러한 거대한 삼각형을 Super Triangle 이라고 한다.
@@ -53,9 +53,9 @@ Deluanay Triangulation, 한국어로 들로네 삼각분할은 간단히 말하�
 3. Bad Triangle들은 전부 제거한다.
 4. 1로 돌아가 그 모든 과정을 반복한다.
 
-!(사진3)[/assets/images/delaunay-triangulation/3.png]
+![사진3](/assets/images/delaunay-triangulation/3.png)
 [각주-3]
-!(사진4)[/assets/images/delaunay-triangulation/4.png]
+![사진4](/assets/images/delaunay-triangulation/4.png)
 [각주-4]
 
 시간복잡도는 최악의 경우 $$O(N^2)$$ 의 시간복잡도를 가진다.
@@ -87,13 +87,13 @@ delete super_triangle from triangle_list
 이때 몇가지 궁금할 것이 있을것이다. 하나는 Circumcircle 인데, 외접원을 뜻하는 뜻으로 외접원 안에 v가 들어가면
 그 삼각형을 Bad Triangle 취급을 하는 것이다. 이때 삼각형의 외접원안에 v가 들어오는것을 확인하기 위해서는 다음과 같은 식이 필요하다.
 
-!(사진5)[/assets/images/delaunay-triangulation/5.png]
+![사진5](/assets/images/delaunay-triangulation/5.png)
 [각주-5]
 
 원리는 $$(x, y) -> (x, y, x^2 + y^2)$$ 으로 2차원 평면 상의 좌표를 3차원 곡면 상의 좌표로 옮긴다고 해보자.
 이때 삼각형의 세 좌표가 이루는 2차원 plane 보다 위에 있다면 determinant 가 양수, 아래에 있다면 음수, 정확히 같은 평면상에 위치한다면 0 이다.
 
-!(사진6)[/assets/images/delaunay-triangulation/6.png]
+![사진6](/assets/images/delaunay-triangulation/6.png)
 [각주-6]
 
 즉, CCW와 determinant를 구해주면 간단하게 판별할 수 있다. determinant와 CCW를 구하는 식은 아래 구현단계의 코드에서 확인하길 바란다.
@@ -289,11 +289,11 @@ return 0;
 이번 블로그 포스트를 통하여 Deluanay Triangulation 에 대한 개괄적인 이해도와 앞으로 진행할 간단한 응용등에 도움이 되었으면 좋겠다. 
 이제 방학도 본격적으로 시작되었으니 $$O(N log N)$$의 시간복잡도로 구축하는 방법과 그 이외에 다양한 응용 및 PS에 적용하는것을 한번 연구해보고 싶다.
 
-!(사진7)[/assets/images/delaunay-triangulation/7.png]
-!(사진8)[/assets/images/delaunay-triangulation/8.png]
-!(사진9)[/assets/images/delaunay-triangulation/9.png]
-!(사진10)[/assets/images/delaunay-triangulation/10.png]
-!(사진11)[/assets/images/delaunay-triangulation/11.png]
+![사진7](/assets/images/delaunay-triangulation/7.png)
+![사진8](/assets/images/delaunay-triangulation/8.png)
+![사진9](/assets/images/delaunay-triangulation/9.png)
+![사진10](/assets/images/delaunay-triangulation/10.png)
+![사진11](/assets/images/delaunay-triangulation/11.png)
 
 # 참고 자료
 
