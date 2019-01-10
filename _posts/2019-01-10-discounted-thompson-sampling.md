@@ -85,6 +85,6 @@ $$
 
 다음은 여러 알고리즘과 dTS의 performance를 비교한 그래프입니다.
 
-![](/assets/images/discounted-thompson-sampling/performance.PNG)
+![](/assets/images/discounted-thompson-sampling/performance.png)
 
 dTS는 환경의 변화에 잘 맞춰 regret을 감소시키는 것을 볼 수 있습니다. 특히 일반 Thompson Sampling에 비해 좋은 성능을 내고 있음을 알 수 있습니다.
