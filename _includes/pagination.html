@@ -23,7 +23,7 @@
             {% if p == paginator.page %}
                 <li class="page-number active">{{ p }}</li>
                 {% elsif p == 1 %}
-                <li class="page-number"><a href="{{ site.baseurl }}/">{{ p }}</a></li>
+                <li class="page-number"><a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">{{ page }}</a>
             {% else %}
                 <li class="page-number"><a
                             href="{{ site.baseurl }}{{ site.paginate_path | replace: ':num', p }}">{{ p }}</a></li>
