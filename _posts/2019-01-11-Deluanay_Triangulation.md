@@ -8,11 +8,15 @@ tags: [Delaunay-Triangulation]
 
 # 목차
 
-[TOC]
-
-![사진1](/assets/images/delaunay-triangulation/1.png)
+[1. 개요](#개요)
+[2. 원리](#원리)
+[3. 구현](#구현)
+[4. 마무리](#마무리)
+[5. 출처](#출처)
 
 # 개요
+
+![사진1](/assets/images/delaunay-triangulation/1.png)
 
 ## 이 포스트를 작성하게 된 계기
 이 글을 쓰게 된 계기는 학부 과정에 수학과 과목을 몰래 훔쳐 들으려고 하던 중, 계산 기하학에 대해 공부하는 과목을 알게 되었다. 바로 혹해서 들었다가
