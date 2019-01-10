@@ -11,7 +11,7 @@
 }
 
 #post-content ol li {
-  list-style: lower-roman;
+  list-style: decimal;
 }
 
 #post-content strong {
