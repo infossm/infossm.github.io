@@ -1,3 +1,4 @@
 ---
-name: 손민철
+name: blisstoner
+image: /assets/images/authors/blisstoner_icon.jpg
 ---
