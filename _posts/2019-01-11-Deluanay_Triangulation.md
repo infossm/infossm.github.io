@@ -18,10 +18,9 @@ tags: [Delaunay-Triangulation]
 
 [5. 출처](#출처)
 
-![사진1](/assets/images/delaunay-triangulation/1.png)
-[각주-1]
-
 # 개요
+
+![사진1](/assets/images/delaunay-triangulation/1.png)
 
 ## 이 포스트를 작성하게 된 계기
 이 글을 쓰게 된 계기는 학부 과정에 수학과 과목을 몰래 훔쳐 들으려고 하던 중, 계산 기하학에 대해 공부하는 과목을 알게 되었다. 바로 혹해서 들었다가
@@ -42,7 +41,6 @@ Deluanay Triangulation, 한국어로 들로네 삼각분할은 간단히 말하�
 먼저 거대한 삼각형을 그린다.
 
 ![사진2](/assets/images/delaunay-triangulation/2.png)
-[각주-2]
 
 이러한 거대한 삼각형을 Super Triangle 이라고 한다.
 
@@ -54,9 +52,7 @@ Deluanay Triangulation, 한국어로 들로네 삼각분할은 간단히 말하�
 4. 1로 돌아가 그 모든 과정을 반복한다.
 
 ![사진3](/assets/images/delaunay-triangulation/3.png)
-[각주-3]
 ![사진4](/assets/images/delaunay-triangulation/4.png)
-[각주-4]
 
 시간복잡도는 최악의 경우 $$O(N^2)$$ 의 시간복잡도를 가진다.
 생각해보면 원리는 간단하다. i번째 좌표가 추가될 때 $$O(i)$$ 개의 삼각형이 추가될 수 있기 때문이다.
@@ -88,13 +84,11 @@ delete super_triangle from triangle_list
 그 삼각형을 Bad Triangle 취급을 하는 것이다. 이때 삼각형의 외접원안에 v가 들어오는것을 확인하기 위해서는 다음과 같은 식이 필요하다.
 
 ![사진5](/assets/images/delaunay-triangulation/5.png)
-[각주-5]
 
 원리는 $$(x, y) -> (x, y, x^2 + y^2)$$ 으로 2차원 평면 상의 좌표를 3차원 곡면 상의 좌표로 옮긴다고 해보자.
 이때 삼각형의 세 좌표가 이루는 2차원 plane 보다 위에 있다면 determinant 가 양수, 아래에 있다면 음수, 정확히 같은 평면상에 위치한다면 0 이다.
 
 ![사진6](/assets/images/delaunay-triangulation/6.png)
-[각주-6]
 
 즉, CCW와 determinant를 구해주면 간단하게 판별할 수 있다. determinant와 CCW를 구하는 식은 아래 구현단계의 코드에서 확인하길 바란다.
 
@@ -300,18 +294,5 @@ return 0;
 - ["Primitives for the manipulation of general subdivisions and the computation of Voronoi"](http://delivery.acm.org/10.1145/290000/282923/p74-guibas.pdf?ip=121.168.175.226&id=282923&acc=ACTIVE%20SERVICE&key=0EC22F8658578FE1%2EC1DF9CF1870E8FEB%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&__acm__=1547120750_0fb9ed2eac1ce5d2b2ecd03280b74dbe), ACM Transactions on Graphics, 1985, pp.74–123
 - Liu, Yuanxin, and Jack Snoeyink. "A comparison of five implementations of 3D Delaunay tessellation." Combinatorial and Computational Geometry 52 (2005): pp.439-458
 - [kipl.tistory.com](https://kipl.tistory.com/16); 삼각형 외접원의 Inclusion Test. helloktk
-
-
-#### 1: en.wikipedia.org; Delaunay triangulation. Gjacquenot
-#### 2: en.wikipedia.org; Bowyer Watson algorithm. Johann Dreo
-#### 3: en.wikipedia.org; Bowyer Watson algorithm. Johann Dreo
-#### 4: en.wikipedia.org; Bowyer Watson algorithm. Johann Dreo
-#### 5: Guibas, Leonidas; Stolfi, Jorge (1985). "Primitives for the manipulation of general subdivisions and the computation of Voronoi". ACM Transactions on Graphics. 4 (2): 74~123
-#### 6: Guibas, Leonidas; Stolfi, Jorge (1985). "Primitives for the manipulation of general subdivisions and the computation of Voronoi". ACM Transactions on Graphics. 4 (2): 74~123
-
-[각주-1]: 1:-en.wikipedia.org;-delaunay-triangulation.-gjacquenot
-[각주-2]: 2:-en.wikipedia.org;-bowyer-watson-algorithm.-johann-dreo
-[각주-3]: 3:-en.wikipedia.org;-bowyer-watson-algorithm.-johann-dreo
-[각주-4]: 4:-en.wikipedia.org;-bowyer-watson-algorithm.-johann-dreo
-[각주-5]: 5:-guibas,-leonidas;-stolfi,-jorge-(1985).-"primitives-for-the-manipulation-of-general-subdivisions-and-the-computation-of-voronoi".-acm-transactions-on-graphics.-4-(2):-74~123
-[각주-6]: 6:-guibas,-leonidas;-stolfi,-jorge-(1985).-"primitives-for-the-manipulation-of-general-subdivisions-and-the-computation-of-voronoi".-acm-transactions-on-graphics.-4-(2):-74~123
+- en.wikipedia.org; Delaunay triangulation. Gjacquenot
+- en.wikipedia.org; Bowyer Watson algorithm. Johann Dreo
