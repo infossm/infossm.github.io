@@ -177,6 +177,6 @@ subset xor maximization 문제에 약간의 트릭을 섞은 문제입니다. �
 
 내년, 아니 올해 고려대학교 프로그래밍 경진대회는 언제 어떻게 열릴지 감도 잡히지 않지만, 작년의 장점을 계승하고 단점을 보완하는 대회가 되길 희망합니다.
 
-![]() <!-- how to increase the margin between the main text and footnotes? -->
+<br>
 
 
