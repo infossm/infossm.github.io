@@ -1,4 +1,4 @@
-{% assign abs_page_url = site.url | append: site.baseurl | append: page.url %}
+{% assign abs_page_url = page.url | absolute_url %}
 <ul id="shares">
     <li class="stalk" style="display:none">
         <a id="kakao-link-btn" href="javascript:;"></a>

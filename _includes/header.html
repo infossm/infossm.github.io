@@ -22,13 +22,13 @@
     </ul>
 </div>
 <!-- Script pointing to jekyll-search.js -->
-<script src="{{site.baseurl}}/dest/jekyll-search.js" type="text/javascript"></script>
+<script src="{{ "/dest/jekyll-search.js" | relative_url }}" type="text/javascript"></script>
 
 <script type="text/javascript">
     SimpleJekyllSearch({
         searchInput: document.getElementById('search-input'),
         resultsContainer: document.getElementById('results-container'),
-        json: '{{ site.baseurl }}/search2.json',
+        json: '{{ "/search2.json" | relative_url }}',
         searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
         noResultsText: '<li>No results found</li>',
         limit: 15,
