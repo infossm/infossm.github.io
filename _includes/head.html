@@ -52,15 +52,15 @@
 <meta property="article:author" content="{{ site.url }}{{ site.baseurl }}/authors/{{ page.author }}"/>
 {% endif %}
 <link href="{{ site.url }}/rss/" rel="alternate" type="application/rss+xml" title="RSS"/>
-<link href="{{ site.asset_url }}/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
-<link href="{{ site.asset_url }}/apple-touch-icon.png" rel="apple-touch-icon" type="image/png"/>
-<link href="{{ site.asset_url }}/apple-touch-icon.png" rel="apple-touch-icon-precomposed" type="image/png"/>
-<link href="{{ site.asset_url }}/lib/normalize.css" rel="stylesheet" type="text/css"/>
-<link href="{{ site.asset_url }}/css/monokai.css" rel="stylesheet" type="text/css"/> 
-<link href="{{ site.asset_url }}/lib/magnific-popup.min.css" rel="stylesheet" type="text/css"/>
-<link href="{{ site.asset_url }}/css/initialize.css" rel="stylesheet" type="text/css"/>
-<link href="{{ site.asset_url }}/css/secmem.css" rel="stylesheet" type="text/css"/>
-<link href="{{ site.asset_url }}/css/screen.css" rel="stylesheet" type="text/css"/>
+<link href="{{ site.asset_url | relative_url }}/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
+<link href="{{ site.asset_url | relative_url }}/apple-touch-icon.png" rel="apple-touch-icon" type="image/png"/>
+<link href="{{ site.asset_url | relative_url }}/apple-touch-icon.png" rel="apple-touch-icon-precomposed" type="image/png"/>
+<link href="{{ site.asset_url | relative_url }}/lib/normalize.css" rel="stylesheet" type="text/css"/>
+<link href="{{ site.asset_url | relative_url }}/css/monokai.css" rel="stylesheet" type="text/css"/> 
+<link href="{{ site.asset_url | relative_url }}/lib/magnific-popup.min.css" rel="stylesheet" type="text/css"/>
+<link href="{{ site.asset_url | relative_url }}/css/initialize.css" rel="stylesheet" type="text/css"/>
+<link href="{{ site.asset_url | relative_url }}/css/secmem.css" rel="stylesheet" type="text/css"/>
+<link href="{{ site.asset_url | relative_url }}/css/screen.css" rel="stylesheet" type="text/css"/>
 <!-- <script>
     if (window.location.host.indexOf('tech.kakao.com') > -1 && window.location.protocol == "https:"){
         window.location = window.location.toString().replace(/^https:/, "http:");

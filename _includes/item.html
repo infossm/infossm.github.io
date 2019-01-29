@@ -3,14 +3,14 @@
         {% assign author = site.authors | where: 'name', post.author | first %}
         <a href="{{ site.baseurl }}/authors/{{ post.author }}">
             <div class="author-image"
-                 {% if author.image %}style="background-image:url({{ author.image }});"{% endif %}>
+                 {% if author.image %}style="background-image:url({{ author.image | relative_url }});"{% endif %}>
                 <span class="sr-only">{{ author.name }}'s profile image</span>
             </div>
             <p class="author-name">{{ author.name }}</p>
         </a>
         <p class="post-date">{{ post.date | date: '%B %-d, %Y' }}</p>
     </div>
-    <a href="{{ post.url }}">
+    <a href="{{ post.url | relative_url }}">
         <h3 class="post-title">{{ post.title }}</h3>
         <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 75 }}</p>
     </a>

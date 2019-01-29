@@ -2,7 +2,7 @@
 layout: default
 ---
 <div id="cover" class="container-fluid"
-     {% if site.image %}style="background-image: url({{ site.image }});"{% endif %}>
+     {% if site.image %}style="background-image: url({{ site.image | relative_url }});"{% endif %}>
     <div>
         <h1>{{ page.title | default: page.name }}</h1>
         <p>All Posts in <strong>{{ page.name }}</strong></p>
