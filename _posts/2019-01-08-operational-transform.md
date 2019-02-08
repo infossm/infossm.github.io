@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  "실시간 문서 협업은 어떻게 동작할까"
-date:   2019-01-08 16:00:00
-author: 배선우
+date:   2019-01-09 15:00:00
+author: orange4glace
 tags: [operational-transform]
 ---
 
@@ -126,12 +126,12 @@ Client A는 상태가 **my unique Hello world** 인 시점에서, Server로 부�
 
 위에서 살펴본 것과 같이 각 Client는 Server와의 상태 동기화를 위해 항상 이전에 보낸 *operation*이 Server로 부터 *acknowledge*를 받았을 경우에만 다음 *operation*을 전송할 수 있다. 이럴 경우 많은 양의 *operation*이 계속 쌓일 경우, 클라이언트와 서버 모두 네트워크 상 무리를 줄 수 있다.
 
-![](/assets/images/operational-transform/diamond5.png)
+![](/assets/images/operational-transform/diamond5.PNG)
 
 이러한 상황을 방지하기 위해 Client는 여러 개의 *operation*을 그룹으로 묶어서 서버에 전송하는 방법을 사용한다. 다시 말해, *A, B, C, D, E, F* 라는 *operation*이 Client에 존재하고, *operation C*까지 서버에 전송된 상태라면, *operation D, E, F*와 그 이후에 발생하는 모든 *operation*들은 모두 하나의 *operation*으로 묶여서, 서버로부터 *acknowledge*를 받았을 때 이를 한번에 서버에 전송하게 된다. 
 *Operation*을 하나로 묶는 방법은 문서가 어떤 종류냐에 따라 다른데, 일반 Plain text document를 예로 들 경우 다음과 같다.
 
-![](/assets/images/operational-transform/compound.png)
+![](/assets/images/operational-transform/compound.PNG)
 
 Plain text document가 가지는 *operation*을 생각해보면 텍스트를 삽입하는 *Insert*, 텍스트를 지우는 *Delete* 로 나눌 수 있다. 여기서 *operation*을 grouping하기 위해 *Retain*이라는 *operation*을 추가한다. *Retain*은 단순히 현재 커서가 가르키는 위치를 증가하는 행동으로 생각하면 된다. 예를 들면, 아래 그림과 같이 **Hello world** 라는 텍스트가 존재할 때, 각 상태들에 대한 *operation*들은 다음과 같이 구성된다.
 

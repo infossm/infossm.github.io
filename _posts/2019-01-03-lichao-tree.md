@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  "LiChao Tree (with Dynamic Segment Tree)"
-author: 김진표
+author: kjp4155
 date: 2019-01-03 15:00
-tags: []
+tags: [data-structure]
 ---
 
 # 목표
@@ -19,23 +19,23 @@ LiChao Tree는 Dynamic Segment Tree에 기반한 자료구조입니다. Dynamic 
 
 이해를 돕기 위해 예시를 들어보겠습니다. Range increment update / Point value query 연산을 수행하는 일반적인 Segment Tree를 생각합시다. index 범위가 $$ 1...8 $$ 이라면 아래 그림과 같이 15개의 노드가 만들어진 상태로 시작할 것입니다. 이후 각 연산마다 $$ O(lg8) $$ 개의 노드를 살펴보면서 쿼리들을 처리할 수 있을 것입니다.
 
-![일반적인 Segment Tree 구조](/assets/images/lichao-tree/segtree1.png)
+![일반적인 Segment Tree 구조](/assets/images/lichao-tree/segtree1.PNG)
 
 그러나 Dynamic Segment Tree는 전체 구간을 관리하는 루트 노드 하나만 만들어진 채로 시작합니다.
 
-![Dynamic Segment Tree 초기상태](/assets/images/lichao-tree/segtree2.png)
+![Dynamic Segment Tree 초기상태](/assets/images/lichao-tree/segtree2.PNG)
 
 여기서 $$ [3,8] $$ 구간에 1을 더하는 연산을 수행하려면 어떻게 해야 할까요? 필요한 노드들을 생성해서 자식으로 붙여 주면 됩니다. 아래 그림과 같이 트리가 확장될 것입니다. 확장과 동시에 회색 노드들의 값을 갱신해주면 됩니다.
 
-![Dynamic Segment Tree 확장1](/assets/images/lichao-tree/segtree3.png)
+![Dynamic Segment Tree 확장1](/assets/images/lichao-tree/segtree3.PNG)
 
 이후에 $$ [5,6] $$ 구간에 1을 더하는 연산이 들어오면 아래 그림과 같이 트리가 확장될 것입니다. 마찬가지로 확장과 동시에 회색 노드의 값을 갱신해주면 됩니다.
 
-![Dynamic Segment Tree 확장2](/assets/images/lichao-tree/segtree4.png)
+![Dynamic Segment Tree 확장2](/assets/images/lichao-tree/segtree4.PNG)
 
 이제 $$ x=5 $$ 위치의 값을 구하려는 상황을 생각해 봅시다. 기존의 일반적인 Segment Tree에서는 담당하는 구간이 $$ x=5 $$를 포함하는 모든 노드를 확인했습니다. Dynamic Segment Tree의 경우에도 마찬가지이지만, 생성되지 않은 노드에 대해서는 걱정할 필요가 없으므로 존재하는 노드들 중에 담당하는 구간이 $$ x=5 $$ 를 포함하는 노드들만 확인하면 될 것입니다. 확인해야 될 노드들을 표시해 보면 아래 그림과 같습니다.
 
-![Dynamic Segment Tree 쿼리](/assets/images/lichao-tree/segtree5.png)
+![Dynamic Segment Tree 쿼리](/assets/images/lichao-tree/segtree5.PNG)
 
 이러한 Dynamic Segment Tree의 시간복잡도는 일반적인 Segment Tree와 마찬가지로 연산당 $$ O(lgX) $$입니다. 한번의 연산을 수행할 때 확인해야 할 노드(생성되는 것 포함)들의 개수가 최대 $$ O(lgX) $$ 개라는 점에서 쉽게 확인할 수 있습니다.
 
@@ -51,7 +51,7 @@ LiChao Tree는 Dynamic Segment Tree에 기반한 자료구조입니다. Dynamic 
 
 (2) 집합에 존재하는 직선들 중, 주어진 $$ x=x_i $$ 위치에서의 최댓값을 출력
 
-![Convex Hull Trick 문제 형태](/assets/images/lichao-tree/convex-hull-trick-problem.png)
+![Convex Hull Trick 문제 형태](/assets/images/lichao-tree/convex-hull-trick-problem.PNG)
 
 이 형태가 (삭제 연산이 없는) 일반적인 Convex hull trick 문제입니다. 대부분의 Convex hull trick 문제는 결국 위 두 연산을 빠르게 수행할 수 있다면 풀 수 있는 문제로 변환됩니다. 
 
@@ -73,13 +73,13 @@ insert 함수는 특정 노드가 담당하는 구간 $$ x=[x_l...x_r] $$ 에 �
 
 아래 그림과 같이 구간 내에서 한 직선이 항상 다른 직선보다 위에 있는 경우는 어떤 것을 선택해야 할지 명확합니다. 
 
-![l_high가 항상 유리한 경우](/assets/images/lichao-tree/lichao1.png)
+![l_high가 항상 유리한 경우](/assets/images/lichao-tree/lichao1.PNG)
 
 그런데 두 직선이 교차하는 경우는 어떤 것이 더 유리한지가 명확하지 않습니다. 이 경우는 두 직선의 교점이 구간의 중점 $$ x_m = (x_l+x_r)/2 $$ 기준으로 어느 쪽에 있는지에 따라 달라지게 됩니다. 
 
 교점이 중점보다 왼쪽에 있는 경우를 생각해 봅시다. 아래 그림과 같이 구간의 오른쪽 절반은 명확히 직선 $$ l_{low} $$가 유리한 것을 알 수 있습니다. 현재 노드에는 $$ l_{low} $$ 를 저장한 뒤에, 왼쪽 자식에게 재귀적으로 $$ l_{high} $$ 를 추가하도록 insert함수를 호출하면 될 것입니다. 이후 설명할 최댓값 쿼리 get함수의 작동 방식을 이해하면, 이러한 방식이 항상 올바른 답을 내놓는다는 것을 이해할 수 있습니다.
 
-![교점이 왼쪽 절반에 존재하는 경우](/assets/images/lichao-tree/lichao2.png)
+![교점이 왼쪽 절반에 존재하는 경우](/assets/images/lichao-tree/lichao2.PNG)
 
 교점이 중점보다 오른쪽에 있는 경우도 마찬가지로 처리하면 됩니다. 구간의 왼쪽 절반은 $$ l_{high} $$ 가 유리하므로, 현재 노드에 $$ l_{high} $$ 를 저장하고, 오른쪽 자식에게 $$ l_{low} $$ 를 추가하도록 insert 함수를 호출합니다.
 
