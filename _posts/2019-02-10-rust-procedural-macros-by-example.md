@@ -21,16 +21,14 @@ Rust 의 매크로 시스템은 매우 강력한데요. 크게 다음과 같이 
 첫 번째는 Declarative Macros 는 일반적으로 개발자들이 흔히 알고 있는 "선언적" 형태의 매크로 방식인데요. C/C++ 등의 타언어들과의 차이점은 문자열 전처리기 방식이 아니라 Abstract Syntax Tree 를 직접 건드리는 방식이라는 점입니다.
 ```rust
 // 출처 : https://doc.rust-lang.org/rust-by-example/macros/dsl.html
-{% raw %}
-macro_rules! calculate {
+{% raw %}macro_rules! calculate {
     (eval $e:expr) => {{
         {
             let val: usize = $e; // Force types to be integers
             println!("{} = {}", stringify!{$e}, val);
         }
     }};
-}
-{% endraw %}
+}{% endraw %}
 
 fn main() {
     calculate! {
