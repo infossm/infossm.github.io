@@ -1,8 +1,11 @@
+---
+---
+
 table td, table th, table {
 	border : 0 none;
 }
 .ssm .sec {padding:50px 5%; border-top:1px solid #e2e2e2; background: white;}
-.ssm h2 {padding:0 0 13px 0; background:url('/assets/images/ssm_title_bar.png') no-repeat 50% 100%; background-size:23px 3px; text-align:center; font-size:1.8em; font-weight:normal; color:#2b2b2b;}
+.ssm h2 {padding:0 0 13px 0; background:url('{{ "/assets/images/ssm_title_bar.png" | relative_url }}') no-repeat 50% 100%; background-size:23px 3px; text-align:center; font-size:1.8em; font-weight:normal; color:#2b2b2b;}
 /* ssm - selection_step */
 .ssm .selection_step {background:#fff;}
 .ssm .selection_step dl {margin:10px 0 0; color:#2b2b2b;}
@@ -27,7 +30,7 @@ table td, table th, table {
 /* ssm - article */
 .ssm .article_cont .article {margin:50px 0;}
 .ssm .article_cont .article:first-child {margin-top:0;}
-.ssm .article_cont .hgroup {margin:0 5%; background:url('/assets/images/ssm_article_bar.png') no-repeat 100% 6px; background-size:100% 2px;}
+.ssm .article_cont .hgroup {margin:0 5%; background:url('{{ "/assets/images/ssm_article_bar.png" | relative_url }}') no-repeat 100% 6px; background-size:100% 2px;}
 .ssm .article_cont .hgroup p {display:inline-block; padding:0 10px 0 0; background:#fff; color:#b5b5b5;}
 .ssm .article_cont .hgroup h3 {padding:10px 0 0; font-size:1.5em; font-weight:bold;}
 .ssm .article_cont .txt {padding:25px 5%; line-height:1.5; color:#505050;}

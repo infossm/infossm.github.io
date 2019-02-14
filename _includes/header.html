@@ -5,7 +5,7 @@
     <button id="search-toggle" type="button">
         <span class="sr-only">Toggle Search Form</span>
     </button>
-    <a id="logo" href="/">
+    <a id="logo" href="{{ "/" | relative_url }}">
         <span class="sr-only">Samsung Software Membership</span>
     </a>
     <div id="search">
@@ -14,21 +14,21 @@
     <ul class="search__results" id="results-container"></ul>
 
     <ul id="menu" class="nav">
-        <li class="{% if page.url contains '/blog' %} active {% endif %}"><a href="{{ base_path }}/blog">BLOG</a></li>
-        <li class="{% if page.url contains '/about' %} active {% endif %}"><a href="{{ base_path }}/about">ABOUT US</a></li>
+        <li class="{% if page.url contains '/blog' %} active {% endif %}"><a href="{{ "blog" | relative_url }}">BLOG</a></li>
+        <li class="{% if page.url contains '/about' %} active {% endif %}"><a href="{{ "about" | relative_url }}">ABOUT US</a></li>
         <!-- <li class="{% if page.url contains '/program' %} active {% endif %}"><a href="{{ base_path }}/program">PROGRAM</a></li>
         <li class="{% if page.url contains '/news' %} active {% endif %}"><a href="{{ base_path }}/news">NEWS & EVENTS</a></li>
         <li class="{% if page.url contains '/gallery' %} active {% endif %}"><a href="{{ base_path }}/gallery">GALLERY</a></li> -->
     </ul>
 </div>
 <!-- Script pointing to jekyll-search.js -->
-<script src="{{site.baseurl}}/dest/jekyll-search.js" type="text/javascript"></script>
+<script src="{{ "/dest/jekyll-search.js" | relative_url }}" type="text/javascript"></script>
 
 <script type="text/javascript">
     SimpleJekyllSearch({
         searchInput: document.getElementById('search-input'),
         resultsContainer: document.getElementById('results-container'),
-        json: '{{ site.baseurl }}/search2.json',
+        json: '{{ "/search2.json" | relative_url }}',
         searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
         noResultsText: '<li>No results found</li>',
         limit: 15,

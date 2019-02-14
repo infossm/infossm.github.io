@@ -2,7 +2,7 @@
 layout: default
 ---
 <div id="cover" class="container-fluid"
-     {% if page.image %}style="background-image: url({{ page.image }});"{% endif %}>
+     {% if page.image %}style="background-image: url({{ page.image | relative_url }});"{% endif %}>
     <div>
         <h1>{{ page.title }}</h1>
         <p>{{ page.description | newline_to_br }}</p>
