@@ -12,7 +12,7 @@ tags: [Delaunay-Triangulation]
 - [2. 원리](#원리)
 - [3. 구현](#구현)
 - [4. 마무리](#마무리)
-- [5. 출처](#출처)
+- [5. 참고자료](#참고자료)
 
 # 개요
 
@@ -285,7 +285,7 @@ int main() {
 ![사진10](/assets/images/delaunay-triangulation/10.png)
 ![사진11](/assets/images/delaunay-triangulation/11.png)
 
-# 참고 자료
+# 참고자료
 
 - ["Primitives for the manipulation of general subdivisions and the computation of Voronoi"](http://delivery.acm.org/10.1145/290000/282923/p74-guibas.pdf?ip=121.168.175.226&id=282923&acc=ACTIVE%20SERVICE&key=0EC22F8658578FE1%2EC1DF9CF1870E8FEB%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&__acm__=1547120750_0fb9ed2eac1ce5d2b2ecd03280b74dbe), ACM Transactions on Graphics, 1985, pp.74–123
 - Liu, Yuanxin, and Jack Snoeyink. "A comparison of five implementations of 3D Delaunay tessellation." Combinatorial and Computational Geometry 52 (2005): pp.439-458
