@@ -2,10 +2,10 @@
 layout: default
 ---
 <div id="cover" class="container-fluid"
-     {% if page.cover %}style="background-image: url({{ page.cover }});"{% endif %}>
+     {% if page.cover %}style="background-image: url({{ page.cover | relative_url }});"{% endif %}>
     <div>
         <div id="cover-author-image"
-             {% if page.image %}style="background-image:url({{ page.image }});"{% endif %}>
+             {% if page.image %}style="background-image:url({{ page.image | relative_url }});"{% endif %}>
             <span class="sr-only">{{ page.name }}'s profile image</span>
         </div>
         <h1>{{ page.title | default: page.name }}</h1>

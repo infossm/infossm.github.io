@@ -70,7 +70,7 @@ Parsedown이 extension에 대해 확장성 있게 설계되었기에 ParsedownEx
 * 배열의 마지막에 값을 삽입하는 것은 `[]=`이다. 역시 그 자체가 연산자는 아닌 것 같다.
 * `if (!isset($A)) return $A; else return null;` 같은 처리를 한 문장 안에서 해야 할 때가 있다. 그럴 때는 `@$A ?: null`로 간편하게 사용할 수 있다. `@`를 붙이는 것은 그냥 사용 시 발생하는 경고를 방지하기 위해서이다.
 
-## 릴리즈
+## 릴리즈<sup>[#](http://github.com/KENNYSOFT/parsedown-tablespan/releases)</sup>
 
 ```php
 $ParsedownTablespan = new ParsedownTablespan();
