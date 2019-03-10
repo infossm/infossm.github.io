@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "알고 나면 유용한 LaTeX 팁들"
+title:  "알고 나면 유용한 TeX 팁들"
 date:   2019-03-10 20:30
 author: evenharder
 tags:   latex tips
