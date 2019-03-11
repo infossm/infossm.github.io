@@ -183,9 +183,9 @@ index 36012b992..3c8a73706 100644
 
 중요한 내용만 보자면 3p/mathml.js:L65-78에서 `MJXc-display`가 있을 때만 적용되는 것이 아니라 없으면 직접 만들고 적용하도록 했고, extensions/amp-mathml/0.1/amp-mathml.css:L19에서 `vertical-align: middle;` 스타일을 추가했다. 이게 해결 전부고 나머지는 라이브러리 버전 bump, 코딩 스타일 맞추기, 문서/테스트 업데이트 정도다.
 
-## Pull Request<sup>[#](/assets/images/amphtml-contribution/http://github.com/ampproject/amphtml/pull/19436)</sup>
+## Pull Request<sup>[#](http://github.com/ampproject/amphtml/pull/19436)</sup>
 
-사실 위 작업에 앞서 Pull Request를 염두에 두고 Issue를 먼저 만들었다.<sup>[#](/assets/images/amphtml-contribution/http://github.com/ampproject/amphtml/issues/19420)</sup>
+사실 위 작업에 앞서 Pull Request를 염두에 두고 Issue를 먼저 만들었다.<sup>[#](http://github.com/ampproject/amphtml/issues/19420)</sup>
 
 ![Issue](/assets/images/amphtml-contribution/issue.png)
 
