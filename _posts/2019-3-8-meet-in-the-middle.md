@@ -96,3 +96,67 @@ $B^L \equiv N (mod$ $P)$
  이 과정에서 고려해야 하는 비트의 개수가 $lgMAXVAL$ 개 이며, 각 비트별로 $2^{n/2}$ 개의 합들을 순회하며 $2^{n/2}$ 개의 수들에 대해 이분 탐색을 진행합니다.
 
 따라서 총 $O(n * 2^{n/2} * lgMAXVAL)$ 에 해결이 가능합니다.
+
+아래는 문제를 위와 같은 방법으로 해결하는 코드입니다.
+
+    #include<bits/stdc++.h>
+    using namespace std;
+    
+    typedef long long ll;
+    
+    int N;
+    int A[33];
+    vector<ll> S[44];
+    
+    int count(int b, ll x) {
+        return upper_bound(S[b].begin(), S[b].end(), x) - S[b].begin();
+    }
+    int count(int b, ll l, ll r) {
+        return count(b, r) - count(b, l - 1);
+    }
+    
+    void main2(int tc) {
+        scanf("%d", &N);
+    
+        for(int i = 0; i < N; i++) {
+            scanf("%d", &A[i]);
+        }
+    
+        if(N == 1) {
+            printf("%d\n", A[0]);
+            return;
+        }
+    
+        int n1 = N / 2;
+        int n2 = N - n1;
+    
+        for(int i = 0; i < 35; i++) S[i].clear();
+        for(int mask = 0; mask < (1 << n1); mask++) {
+            ll sum = 0;
+            for(int i = 0; i < n1; i++) if(mask & (1 << i)) sum += A[i];
+            for(int i = 0; i < 35; i++) S[i].push_back(sum & ((1LL << (i + 1)) - 1));
+        }
+    
+        for(int i = 0; i < 35; i++) {
+            sort(S[i].begin(), S[i].end());
+        }
+    
+        ll ans = 0;
+        for(int mask = 0; mask < (1 << n2); mask++) {
+            ll sum = 0;
+            for(int i = 0; i < n2; i++) if(mask & (1 << i)) sum += A[n1 + i];
+            for(int i = 0; i < 35; i++) {
+                ll t = sum & ((1LL << i) - 1);
+    
+                if(count(i, (1LL << i) - t, (1LL << (i + 1)) - t - 1) % 2) {
+                    ans ^= (1LL << i);
+                }
+            }
+        }
+        printf("%lld\n", ans);
+    }
+    
+    int TC = 1;
+    int main() {
+        for(int i = 1; i <= TC; i++) main2(i);
+    }
