@@ -10,11 +10,22 @@ tags: [algorithm, graph]
 
 ## Chordal Graph
  Chordal Graph란, 길이 4 이상의 모든 simple cycle이 chord를 포함하는 그래프를 말한다. 여기서 chord란 cycle에 포함되는 edge는 아니지만 cycle에 포함하는 두 vertex를 잇는 edge를 뜻한다. 즉, 어떤 4개 이상의 vertex를 고르더라도 그 vertex들로 이뤄진 induced subgraph가 simple cycle이 되지 않는 그래프이다. 두 겹치는 구간을 edge로 연결한 Interval graph가 Chordal graph의 한 예이다.
+ 
+ ![Chordal](/assets/images/perfect-elimination-ordering_ainta/graph.PNG)
+ 
+ 위는 chordal graph의 예이다. 임의의 길이 4 이상인 cycle이 chord를 포함함을 쉽게 알 수 있다.
+ 
+ ![Not Chordal](/assets/images/perfect-elimination-ordering_ainta/graph.PNG)
+ 
+ 위는 chordal graph가 아닌 그래프의 예이다. vertex 0, 2, 4, 5로 이루어지는 cycle이 chord를 포함하지 않는다.
 
 ## Perfect Elimination Ordering
 
 그래프 $G = (V, E)$의 ordering $X$가 모든 vertex $v$에 대해, $v$와 인접한 정점들 중 $X$에서 $v$보다 늦게 등장하는 정점들이 clique(완전그래프)를 이루는 ordering이라면 $X$를 $G$의 perfect elimination ordering이라고 한다. 그래프 $G$에 chord를 가지지 않는 길이 4 이상의 cycle이 존재한다면 cycle에 포함되는 vertex 중 처음으로 등장하는 vertex는 perfect elimination ordering의 조건을 만족할 수 없으므로 는 perfect elimination ordering이 존재하지 않는다. 또한, 모든 chordal graph에 대해 perfect elimination ordering이 존재함이 알려져 있다(perfect elimination ordering을 직접 찾는 방법을 이후에 알아볼 것이다). 즉, 그래프 $G$의 perfect elimination ordering이 존재함과 $G$가 chordal graph임은 동치이다.
 
+![Chordal](/assets/images/perfect-elimination-ordering_ainta/graph.PNG)
+ 
+ 앞서 본 chordal graph의 perfect elimination ordering을 구해보자. 2와 인접한 vertex인 3, 0, 4는 clique을 이루지 않으므로 2로 시작하지는 않는다는 사실을 알 수 있다. 맨 앞에 올 수 있는 vertex를 그래프에서 제거하면서 나열하면 된다. 처음에는 3 또는 1이 올 수 있다. 이와 같은 방식으로 찾으면 3, 2, 0, 5, 4, 1이 perfect elimination ordering 중 하나임을 알 수 있다.
 
 ## Finding a perfect elimination ordering in a chordal graph
 
