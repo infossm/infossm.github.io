@@ -40,7 +40,7 @@ $$
 $$
 
 
-&nbsp;&nbsp;&nbsp;&nbsp;초기의 $\alpha,\beta$는 상황에 맞게 설정합니다. 일반적으로 $\theta$에 대한 아무런 정보를 가지지 않았다면 $(\alpha, \beta) = (1, 1)$에서 시작합니다. 이 때의 beta 분포는 uniform 분포가 됩니다. 시각 $t$일 때, Thompson Sampling은 각 arm $k$에 대해 추정값 $\hat{\theta}_k$를 posterior 분포인 $Beta(\alpha_k,\beta_k)$로부터 뽑습니다. 이 중에서 가장 큰 추정값에 대한 arm $x_t$를 수행하고 관찰된 reward $r_t$에 따라 앞에서 설명한 바와 같이 해당 파래매터 $\alpha_{x_t}, \beta_{x_t}$를 업데이트합니다.
+&nbsp;&nbsp;&nbsp;&nbsp;초기의 $\alpha,\beta$는 상황에 맞게 설정합니다. 일반적으로 $\theta$에 대한 아무런 정보를 가지지 않았다면 $(\alpha, \beta) = (1, 1)$에서 시작합니다. 이 때의 beta 분포는 uniform 분포가 됩니다. 시각 $t$일 때, Thompson Sampling은 각 arm $k$에 대해 추정값 $\hat{\theta_k}$을 posterior 분포인 $Beta(\alpha_k,\beta_k)$로부터 뽑습니다. 이 중에서 가장 큰 추정값에 대한 arm $x_t$를 수행하고 관찰된 reward $r_t$에 따라 앞에서 설명한 바와 같이 해당 파래매터 $\alpha_{x_t}, \beta_{x_t}$를 업데이트합니다.
 
 &nbsp;&nbsp;&nbsp;&nbsp;다음은  Bernoulli Bandit에 대한 Thompson Sampling의 의사 코드입니다.
 
