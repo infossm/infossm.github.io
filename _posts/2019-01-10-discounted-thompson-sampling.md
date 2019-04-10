@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  "Thompson Sampling으로 Non-stationary MAB 문제 해결하기"
+title:  "Thompson Sampling 소개 및 non-stationary MAB 문제 해결"
 date:   2019-01-10 04:00:00
 author: choyi0521
 tags: [thompson-sampling, multi-armed-bandit, non-stationary]
 ---
 
-&nbsp;&nbsp;&nbsp;&nbsp;이번 포스트에서는 Multi Armed Bandit 문제를 소개하고 non-stationary 환경에서 MAB를 해결하는 간단한 알고리즘 중 하나인 Discounted Thompson Sampling에 대해 알아보려고 합니다. 이 알고리즘은 Vishnu Raj, Sheetal Kalyani의 논문 [Taming Non-stationary Bandits: A Bayesian Approach](https://arxiv.org/abs/1707.09727)에 자세히 소개되어 있습니다. 이 논문에서는 또 하나의 알고리즘 Discounted Optimistic Thompson Sampling(dOTS)을 제안했지만 본 포스트에서는 다루지 않겠습니다.  
+&nbsp;&nbsp;&nbsp;&nbsp;이번 포스트에서는 Multi Armed Bandit 문제와 Thompson sampling을 소개하고 non-stationary MAB를 해결하는 간단한 알고리즘 중 하나인 Discounted Thompson Sampling에 대해 알아보려고 합니다. 이 알고리즘은 Vishnu Raj, Sheetal Kalyani의 논문 [Taming Non-stationary Bandits: A Bayesian Approach](https://arxiv.org/abs/1707.09727)에 자세히 소개되어 있습니다. 이 논문에서는 또 하나의 알고리즘 Discounted Optimistic Thompson Sampling(dOTS)을 제안했지만 본 포스트에서는 다루지 않겠습니다.  
 &nbsp;&nbsp;&nbsp;&nbsp;Multi Armed Bandit, Thompson sampling에 대한 소개글은 Daniel Russo, Benjamin Van Roy, Abbas Kazerouni, Ian Osband, Zheng Wen의 [A Tutorial on Thompson Sampling](https://arxiv.org/abs/1707.02038)을 참고하여 작성하였습니다.
 
 # Multi Armed Bandit Problem
