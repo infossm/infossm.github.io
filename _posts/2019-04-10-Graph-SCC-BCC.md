@@ -76,6 +76,7 @@ numbring(V):
 
 ## DFS Tree
 ![사진1](/assets/images/DFS-Numbering-shjgkwo/DFSTree.png)
+
  정말 빼놓을 수 없는 개념이 있는데, 그것은 바로 DFS Tree 이다. DFS를 진행할 때 사용한 간선만(정점을 방문할 때 사용한 간선) 남기고 사용하지 
 않은 간선을 제거하면 Tree, 상황에  따라서는 Forest가 만들어질것이다. 이때 만들어지는 Tree를 DFS Tree 라고 한다. 위의 그림이 DFS Tree가 만들어지는 좋은 예시이다. 이때, 여기서 중요한 개념들이 있다. 바로 **Forward Edge**와, **Back Edge**와, **Cross Edge**와, **Tree Edge**이다. 가장 먼저 Tree Edge는 위에서 말했던 DFS를 진행할 때, 사용한 간선들을 의미한다. 그 다음은 Back Edge인데, 어떤 정점에서 자신의 Ancestor로 향하는, 사용되지 않은 간선을 의미한다. 그 다음은 Forward Edge가 있는데, 이는 어떤 정점에서 자신의 Descendant로 향하는 Edge를 의미한다. 마지막은 Cross Edge인데, 저것중 그 무엇도 속하지 않는 edge를 의미한다. 즉, 두 정점의 LCA(부모를 타고가다 만나는 최초의 공통 조상)를 기준으로 부트리를 만들었을 때, 부트리간 이동하는 정점을 의미하게 된다. 이 정의들을 잘 숙지 해 두면 다양한 상황에서 응용할 수 있다.
 
