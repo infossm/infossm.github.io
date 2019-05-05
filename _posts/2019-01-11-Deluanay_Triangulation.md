@@ -42,7 +42,7 @@ Deluanay Triangulation, 한국어로 들로네 삼각분할은 간단히 말하�
 
 그 다음, 입력받은 좌표를 순서대로 좌표평면에 넣어가면서 Triangulation을 진행하는데 규칙은 다음과 같다.
 
-1. 외접원 안에 들어오는 삼각형들은 Bad Triagule 이라고 하는데 이 Bad Triangle 끼리 짝수번 접하는 변은 전부 제거한다.
+1. 외접원 안에 들어오는 삼각형들은 Bad Triangle 이라고 하는데 이 Bad Triangle 끼리 짝수번 접하는 변은 전부 제거한다.
 2. 그렇게 나온 Polygon의 변과 추가된 좌표를 이어서 새로운 삼각형들을 만들어준다.
 3. Bad Triangle들은 전부 제거한다.
 4. 1로 돌아가 그 모든 과정을 반복한다.
