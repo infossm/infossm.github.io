@@ -18,7 +18,15 @@ Matroid
 
 예시 2. Graphic matroid
 
-$G = (V, E)$가 무향 그래프일 때, $\mathcal{I} = \left\{I : I \subset E, I \: induces \: a \: forest \: in \: G \right\}$로 놓으면 $\mathcal{M} = (E, \mathcal{I})$는 matroid가 된다. 1, 2번 조건은 앞서와 마찬가지로 자명하고, 3번 조건의 경우 $X$에 포함된 edge들을 모두 이었을 때 component의 개수는 $N - |X|$이고, $X + y \in  \mathcal{I}$ 를 만족하는 $y \in Y \setminus X$가 존재하지 않는다면 $Y$의 edge들의 두 끝점이 한 component에 들어가야 하므로 $Y$에 포함된 edge들을 모두 이었을 때 component의 개수는 $N-|X|$ 이하인데 이것은 $N-|Y|$와 같아야 하므로 $|X| <|Y|$에 모순이다. 따라서, 3번 조건 역시 만족한다. Graphic matroid의 경우는 뒤에 다룰 minimum spanning tree를 구하는 kruskal 알고리즘의 증명에 이용된다.
+$G = (V, E)$가 무향 그래프일 때,  $\mathcal{I} = \left\{I : I \subset E, I \: induces \: a \: forest \: in \: G \right\}$로 놓으면 $\mathcal{M} = (E, \mathcal{I})$는 matroid가 된다. 1, 2번 조건은 앞서와 마찬가지로 자명하고, 3번 조건의 경우 $X$에 포함된 edge들을 모두 이었을 때 component의 개수는 $N - |X|$이고, $X + y \in  \mathcal{I}$ 를 만족하는 $y \in Y \setminus X$가 존재하지 않는다면 $Y$의 edge들의 두 끝점이 한 component에 들어가야 하므로 $Y$에 포함된 edge들을 모두 이었을 때 component의 개수는 $N-|X|$ 이하인데 이것은 $N-|Y|$와 같아야 하므로 $|X| <|Y|$에 모순이다. 따라서, 3번 조건 역시 만족한다. Graphic matroid의 경우는 뒤에 다룰 minimum spanning tree를 구하는 kruskal 알고리즘의 증명에 이용된다.
+
+
+
+예시 2-1. Graphic matroid의 변형
+
+그래프에서 matroid는 예시 2처럼만 정의할 수 있는 것이 아니다. $G = (V, E)$가 무향 연결 그래프일 때, $\mathcal{I} = \left\{I : I \subset E, E - I \: connects \: all \: vertex \: in \: G \right\}$로 두면 $\mathcal{M} = (E, \mathcal{I})$는 matroid이다. $\mathcal{I}$가 공집합을 포함해야 하므로 $G$가 connected가 아닌 경우에는 matroid가 되지 않음에 주의해야 한다. 또 다른 예시로는 어떤 edge 집합으로 induced되는 그래프에서 각 component의 edge 개수가 vertex 개수를 넘지 않는 경우를 독립집합으로 정의하면 matroid가 된다. 두 가지 matroid 모두 정의 3이 간단히 증명되며, 나중에 소개할 maximum weight independent set algorithm을 이용하면 재미있는 결과를 얻을 수 있다.
+
+
 
 예시 3. Uniform matroid
 
@@ -54,11 +62,20 @@ $\mathcal{I} = \left\{ I : I \subset V_1, \exist \: a \: matching \: M \: in \: 
 
 정의 3. $\mathcal{M}$의 independent set $I$에 대해 $I$를 진부분집합으로 갖는 independent set이 없다면 $I$를 $\mathcal{M}$의 base라고 한다.
 
-성질 1. $\mathcal{M}$의 모든 base들의 크기는 동일하다.
-
-​	이것은 matroid의 3번 조건에 의해 간단하게 증명 가능하다.
+성질 1. $\mathcal{M}$의 모든 base들의 크기는 동일하다. 이것은 정의 3에 의해 간단히 증명할 수 있다.
 
 
 
-정의 4. $\mathcal{M} = (S, \mathcal{I}) 가 matroid이고 $S' \subset S$ 일 때, $\mathcal{I}' = \left\{ I : I \subset S', I \in \mathcal{I} \right\}$ 로 두면 $\mathcal{M}' = (S', \mathcal{I}') $ 역시 matroid이고 이를 $\mathcal{M}$의 $S'$에 대한 restriction이라고 한다.
+정의 4. $\mathcal{M} = (S, \mathcal{I})$ 가 matroid이고 $S' \subset S$ 일 때, $\mathcal{I}' = \left\{ I : I \subset S', I \in \mathcal{I} \right\}$ 로 두면 $\mathcal{M}' = (S', \mathcal{I}') $ 역시 matroid이고 이를 $\mathcal{M}$의 $S'$에 대한 restriction이라고 한다. restriction이 matroid임은 정의에 의해 자명하다.
 
+
+
+정의 5. matroid에서 minimal dependent set을 circuit이라 한다. 즉, $C \subset S$가 circuit일 조건은 $C \notin \mathcal{I}$이면서  $\forall x \in C, C-x \in \mathcal{I}$를 만족하는 경우이다. graphic matroid에서의 circuit은 matroid가 정의된 그래프에서 simple cycle을 이룬다. 
+
+
+
+#Maximum weight independent set in a matroid
+
+matroid가 주어졌을 때, maximum weight independent set은 매우 빠른 시간에 계산할 수 있다. 또한, 음 아닌 정수 $k$가 주어졌을 때 size가 $k$인 independent set 중 weight가 maximum인 set도 쉽게 구할 수 있다. (minimum은 -1을 곱하면 maximum과 같은 방법으로 구해진다)
+
+정리 1. 다음 알고리즘은  maximum weight independent set을 올바르게 구한다.
