@@ -100,3 +100,10 @@ $I^*$이  maximum weight independent set 중 하나라고 하자. $e_1 \in I^*$�
 
 위의 알고리즘으로 해결할 수 있는 대표적인 문제로는 graph의 minimum weight spanning tree를 구하는 문제가 있다. 예시 2의 graphic matroid에서 알고리즘을 적용하기만 하면 된다. 이를 Kruskal's algorithm이라 한다. Graphic matroid에서만 이 알고리즘이 성립하는 것은 아니기 때문에 1의 vector matroid에도 이를 적용할 수 있다. 예를 들어, $N$개의 수로 이루어진 집합 $A =  \left\{a_1, a_2, ..., a_N\right\}$ 가 주어졌을 때 $S \subset A$를 골라 $S$의 어떤 공집합이 아닌 부분집합도 원소의 xor값이 0이 되지 않도록 하는 $S$ 중 원소의 합이 가장 큰 $S$를 구하려고 한다고 하자. 각 $a_i$들은 이진법으로 나타내면 체 $GF(2)$ 에서 정의된 벡터로 볼 수 있고, xor이 0이 아닌 것과 각 벡터들이 independent한 것이 동치이므로 매트로이드를 정의할 수 있다. 따라서, 큰 수부터 추가하면서 조건이 유지되는 것만 확인해주면 된다.
 
+
+
+문제 풀이
+
+Codeforces Round #441 Div. 1 F. Royal Questions
+
+이 문제는 weighted bipartite graph $G = (V,E)$, $V = V_1 + V_2$에서 $V_1$의 모든 vertex의 차수가 2이고 연결된 두 edge의 weight가 같다는 조건 하에서 maximum weighted matching을 구하는 문제이다. 언뜻 보면 이 문제는 weighted bipartite matching을 써야만 해결할 수 있는 문제로 보이지만, $N$ 제한이 20만으로 매우 크기 때문에 weighted bipartite matching을 해결하는 Hungarian method로는 시간 제한 안에 답을 구할 수 없다. 그러나 이 문제는 예시 2-1에서 다룬 graphic matroid의 변형으로 환원할 수 있다. 새로운 그래프 $G' = (V_2, E')$를 정의하자. $G$에서 $v_1$과 연결된 두 edge의 가중치가 $w$, 끝점이 각각 $u_1$과 $u_2$였다면 $G'$에서는 $u_1$과 $u_2$ 사이에 가중치 $w$인 간선을 잇는다. 
