@@ -72,10 +72,24 @@ $\mathcal{I} = \left\{ I : I \subset V_1, \exist \: a \: matching \: M \: in \: 
 
 정의 5. matroid에서 minimal dependent set을 circuit이라 한다. 즉, $C \subset S$가 circuit일 조건은 $C \notin \mathcal{I}$이면서  $\forall x \in C, C-x \in \mathcal{I}$를 만족하는 경우이다. graphic matroid에서의 circuit은 matroid가 정의된 그래프에서 simple cycle을 이룬다. 
 
+성질 2. $\mathcal{M} = (S, \mathcal{I})$ 가 matroid라 하자. $X \in \mathcal{I}, y \notin X$ 이면 $X+y \in \mathcal{I}$ 이거나 $X+y$가 unique한 circuit $C$를 포함하며, 그 경우 모든 $\widehat{y} \in C$ 에 대해 $X+y-\widehat{y} \in \mathcal{I}$ 가 성립한다.
 
+증명. $X+y \notin \mathcal{I}$이면 $X + y$는 적어도 하나의 circuit을 포함한다. 이를 $C_1$이라 하자. 만약 $X + y$가 다른 circuit $C_2$도 포함한다면 $X$는 independent하기 때문에 $C_1$과 $C_2$는 모두 $y$를 포함한다. $C_1 + C_2 - y$를 생각하면 
 
 #Maximum weight independent set in a matroid
 
 matroid가 주어졌을 때, maximum weight independent set은 매우 빠른 시간에 계산할 수 있다. 또한, 음 아닌 정수 $k$가 주어졌을 때 size가 $k$인 independent set 중 weight가 maximum인 set도 쉽게 구할 수 있다. (minimum은 -1을 곱하면 maximum과 같은 방법으로 구해진다)
 
-정리 1. 다음 알고리즘은  maximum weight independent set을 올바르게 구한다.
+정리 1. 다음의 greedy 알고리즘은 $\mathcal{M} = (S, \mathcal{I})$의  maximum weight independent set을 올바르게 구한다.
+
+1. $e \in S $의 weight을  $w(e)$로 표시하자. $e$가 loop(그 자체로 dependent한 원소)이거나 $w(e) \le 0$인 원소이면 무시한다.
+2. 1에서 무시한 원소를 제거했을 때 $S = \left\{e_1, ..., e_n\right\}$ 에서 $w(e_1) \ge w(e_2) \ge ... \ge w(e_n)$ 이라 하자.
+3. 초기 상태에서 $X \leftarrow \phi$.
+4. $i$를 1부터 $n$까지 증가시키면서 $X + e_i$가 $\mathcal{I}$의 원소이면 $X \leftarrow X + e_i$를 대입한다.
+5. $X$는 maximum weight independent set이다.
+
+정리 1의 증명.
+
+1번 step을 거치고 나면 $S = \left\{e_1, ..., e_n\right\}$ 에서 $w(e_1) \ge w(e_2) \ge ... \ge w(e_n) > 0$  이라 가정할 수 있다. 여기서 $e_1$을 포함하는 optimal solution(maximum weight independent set)이 항상 존재함을 보이면 $\mathcal{M}$의 $S-e_1$에 대한 restriction 역시 matroid이므로 수학적 귀납법에 의해 위의 greedy한 방법이 항상 optimal solution을 구한다는 것을 쉽게 보일 수 있다. 
+
+$I^*$이  maximum weight independent set 중 하나라고 하자. $e_1 \in I^*$인 경우, claim을 만족하였다. $e_1 \notin I^*$인 경우 $I^*+e_1$은 dependent하므로 circuit을 가진다. 
