@@ -92,4 +92,11 @@ matroid가 주어졌을 때, maximum weight independent set은 매우 빠른 시
 
 1번 step을 거치고 나면 $S = \left\{e_1, ..., e_n\right\}$ 에서 $w(e_1) \ge w(e_2) \ge ... \ge w(e_n) > 0$  이라 가정할 수 있다. 여기서 $e_1$을 포함하는 optimal solution(maximum weight independent set)이 항상 존재함을 보이면 $\mathcal{M}$의 $S-e_1$에 대한 restriction 역시 matroid이므로 수학적 귀납법에 의해 위의 greedy한 방법이 항상 optimal solution을 구한다는 것을 쉽게 보일 수 있다. 
 
-$I^*$이  maximum weight independent set 중 하나라고 하자. $e_1 \in I^*$인 경우, claim을 만족하였다. $e_1 \notin I^*$인 경우 $I^*+e_1$은 dependent하므로 circuit을 가진다. 
+claim : $e_1$을 포함하는 maixmum weight independent set이 존재한다.
+
+$I^*$이  maximum weight independent set 중 하나라고 하자. $e_1 \in I^*$인 경우, claim을 만족하였다. $e_1 \notin I^*$인 경우 $I^*+e_1$은 dependent하므로 circuit을 가진다. 성질 2에 의해 $I^* - e + e_1 \in \mathcal{I}$을 만족하는 $e \in I^*$가 존재하고, $w(e) \le w(e_1)$이므로 $I^* - e +e_1$은 $e_1$을 포함하는 maximum weight independent set이 된다. 따라서, claim을 증명하였다. 
+
+
+
+위의 알고리즘으로 해결할 수 있는 대표적인 문제로는 graph의 minimum weight spanning tree를 구하는 문제가 있다. 예시 2의 graphic matroid에서 알고리즘을 적용하기만 하면 된다. 이를 Kruskal's algorithm이라 한다. Graphic matroid에서만 이 알고리즘이 성립하는 것은 아니기 때문에 1의 vector matroid에도 이를 적용할 수 있다. 예를 들어, $N$개의 수로 이루어진 집합 $A =  \left\{a_1, a_2, ..., a_N\right\}$ 가 주어졌을 때 $S \subset A$를 골라 $S$의 어떤 공집합이 아닌 부분집합도 원소의 xor값이 0이 되지 않도록 하는 $S$ 중 원소의 합이 가장 큰 $S$를 구하려고 한다고 하자. 각 $a_i$들은 이진법으로 나타내면 체 $GF(2)$ 에서 정의된 벡터로 볼 수 있고, xor이 0이 아닌 것과 각 벡터들이 independent한 것이 동치이므로 매트로이드를 정의할 수 있다. 따라서, 큰 수부터 추가하면서 조건이 유지되는 것만 확인해주면 된다.
+
