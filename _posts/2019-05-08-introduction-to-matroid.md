@@ -1,4 +1,4 @@
-Matroid
+# Matroid
 
 
 
@@ -54,7 +54,7 @@ $\mathcal{I} = \left\{ I : I \subset V_1, \exist \: a \: matching \: M \: in \: 
 
 
 
-##매트로이드에서 쓰이는 기본 용어 및 성질
+## 매트로이드에서 쓰이는 기본 용어 및 성질
 
 
 
@@ -76,7 +76,9 @@ $\mathcal{I} = \left\{ I : I \subset V_1, \exist \: a \: matching \: M \: in \: 
 
 증명. $X+y \notin \mathcal{I}$이면 $X + y$는 적어도 하나의 circuit을 포함한다. 이를 $C_1$이라 하자. 만약 $X + y$가 다른 circuit $C_2$도 포함한다면 $X$는 independent하기 때문에 $C_1$과 $C_2$는 모두 $y$를 포함한다. $C_1 + C_2 - y$를 생각하면 
 
-#Maximum weight independent set in a matroid
+### Finding a maximum weight independent set in a matroid
+
+
 
 matroid가 주어졌을 때, maximum weight independent set은 매우 빠른 시간에 계산할 수 있다. 또한, 음 아닌 정수 $k$가 주어졌을 때 size가 $k$인 independent set 중 weight가 maximum인 set도 쉽게 구할 수 있다. (minimum은 -1을 곱하면 maximum과 같은 방법으로 구해진다)
 
@@ -102,9 +104,7 @@ $I^*$이  maximum weight independent set 중 하나라고 하자. $e_1 \in I^*$�
 
 
 
-
-
-## 문제 풀이
+### 문제 풀이
 
 Codeforces Round #441 Div. 1 F. Royal Questions
 
