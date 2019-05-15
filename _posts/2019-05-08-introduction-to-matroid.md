@@ -24,7 +24,7 @@ $G = (V, E)$가 무향 그래프일 때,  $\mathcal{I} = \left\{I : I \subset E,
 
 예시 2-1. Graphic matroid의 변형
 
-그래프에서 matroid는 예시 2처럼만 정의할 수 있는 것이 아니다. $G = (V, E)$가 무향 연결 그래프일 때, $\mathcal{I} = \left\{I : I \subset E, E - I \: connects \: all \: vertex \: in \: G \right\}$로 두면 $\mathcal{M} = (E, \mathcal{I})$는 matroid이다. $\mathcal{I}$가 공집합을 포함해야 하므로 $G$가 connected가 아닌 경우에는 matroid가 되지 않음에 주의해야 한다. 또 다른 예시로는 어떤 edge 집합으로 induced되는 그래프에서 각 component의 edge 개수가 vertex 개수를 넘지 않는 경우를 독립집합으로 정의하면 matroid가 된다. 두 가지 matroid 모두 정의 3이 간단히 증명되며, 나중에 소개할 maximum weight independent set algorithm을 이용하면 재미있는 결과를 얻을 수 있다.
+그래프에서 matroid는 예시 2처럼만 정의할 수 있는 것이 아니다. $G = (V, E)$가 무향 연결 그래프일 때, $\mathcal{I} = \left\{I : I \subset E, E - I \: connects \: all \: vertex \: in \: G \right\}$로 두면 $\mathcal{M} = (E, \mathcal{I})$는 matroid이다. $\mathcal{I}$가 공집합을 포함해야 하므로 $G$가 connected가 아닌 경우에는 matroid가 되지 않음에 주의해야 한다. 또 다른 예시로는 어떤 edge 집합으로 induced되는 그래프에서 각 component의 edge 개수가 vertex 개수를 넘지 않는 경우를 독립집합으로 정의하면 matroid가 된다. (즉, 각 컴포넌트가 트리 형태를 띠거나 하나의 cycle에 tree가 붙어 있는 형태인 경우) 두 가지 matroid 모두 정의 3이 간단히 증명되며, 나중에 소개할 maximum weight independent set algorithm을 이용하면 재미있는 결과를 얻을 수 있다.
 
 
 
@@ -106,4 +106,54 @@ $I^*$이  maximum weight independent set 중 하나라고 하자. $e_1 \in I^*$�
 
 Codeforces Round #441 Div. 1 F. Royal Questions
 
-이 문제는 weighted bipartite graph $G = (V,E)$, $V = V_1 + V_2$에서 $V_1$의 모든 vertex의 차수가 2이고 연결된 두 edge의 weight가 같다는 조건 하에서 maximum weighted matching을 구하는 문제이다. 언뜻 보면 이 문제는 weighted bipartite matching을 써야만 해결할 수 있는 문제로 보이지만, $N$ 제한이 20만으로 매우 크기 때문에 weighted bipartite matching을 해결하는 Hungarian method로는 시간 제한 안에 답을 구할 수 없다. 그러나 이 문제는 예시 2-1에서 다룬 graphic matroid의 변형으로 환원할 수 있다. 새로운 그래프 $G' = (V_2, E')$를 정의하자. $G$에서 $v_1$과 연결된 두 edge의 가중치가 $w$, 끝점이 각각 $u_1$과 $u_2$였다면 $G'$에서는 $u_1$과 $u_2$ 사이에 가중치 $w$인 간선을 잇는다. 
+이 문제는 weighted bipartite graph $G = (V,E)$, $V = V_1 + V_2$에서 $V_1$의 모든 vertex $v_1$에 대해 $v_1$의  차수가 2이고 연결된 두 edge의 weight가 같다는 조건을 만족할 때 $G$에서 maximum weighted matching을 구하는 문제이다. 언뜻 보면 이 문제는 weighted bipartite matching을 써야만 해결할 수 있는 문제로 보이지만, $N$ 제한이 20만으로 매우 크기 때문에 weighted bipartite matching을 해결하는 Hungarian method로는 시간 제한 안에 답을 구할 수 없다.
+
+그러나 이 문제는 예시 2-1에서 다룬 graphic matroid의 변형으로 환원할 수 있다. 새로운 그래프 $G' = (V_2, E')$를 정의하자. $G$에서 $v_1$과 연결된 두 edge의 가중치가 $w$, 끝점이 각각 $u_1$과 $u_2$였다면 $G'$에서는 $u_1$과 $u_2$ 사이에 가중치 $w$인 간선을 잇는다. 만약 $G$에서 $ M= \left\{e_1, e_2, ..., e_K\right\}$ 가 matching을 이룬다면, 즉 $M$의 edge들의 양 끝점이 모두 서로 다르다면 $M$의 양 끝점 중 $V_1$에 포함되는 vertex들을 $M_1 = \left\{v_1, v_2, ..., v_K\right\}$ 라 할 때  $M_1$에 포함되는 vertex들 각각에 대해 인접한 $V_2$의 vertex 두 개 중 하나를 잘 선택하면 서로 겹치지 않게 선택할 수 있다는 뜻이다. 이것은 $G'$에서 $M_1$에 의해 만들어지는 edge들만 놓고 보았을 때 edge들의 방향을 잘 주면 $G'$에서 각 vertex의 indegree가 1 이하가 되도록 할 수 있다는 것과 동치이다. 그리고 그것은 각 component에서 vertex의 개수가 edge의 개수보다 같거나 많아야 한다는 것과 동치임을 쉽게 알 수 있다.
+
+따라서, $G$에서 maximum weighted matching을 구하는 문제는 $G'$에서 edge들을 잘 골라서 각 component의 vertex의 개수가 edge의 개수보다 적지 않도록 할 때, 선택된 edge들의 weight 합을 최대화하는 문제가 된다. $\mathcal{M} = (E', \mathcal{I})$는 matroid이므로, 앞서 설명한 알고리즘으로 해결할 수 있다. 즉, $E'$에서 weight가 큰 edge부터 추가하면서 disjoint set union 자료구조로 서로소집합을 관리하면 각 component의 vertex 개수와 edge 개수를 저장할 수 있으므로 $O(M log M)$ 시간에 문제를 해결할 수 있다.
+
+간단한 코드는 아래와 같다.
+
+
+
+~~~c++
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+int n, m, SZ[201000], UF[201000];
+long long res;
+struct point{
+    int a, b, c;
+    bool operator <(const point &p)const{
+        return c<p.c;
+    }
+}w[201000];
+int Find(int a){
+    if(a==UF[a])return a;
+    return UF[a] = Find(UF[a]);
+}
+int main(){
+    int i, a, b;
+    scanf("%d%d",&n,&m);
+    for(i=0;i<m;i++){
+        scanf("%d%d%d",&w[i].a,&w[i].b,&w[i].c);
+    }
+    sort(w,w+m);
+    for(i=1;i<=n;i++)UF[i]=i,SZ[i]=1;
+    for(i=m-1;i>=0;i--){
+        a = Find(w[i].a), b = Find(w[i].b);
+        if(SZ[a]+SZ[b]==0)continue;
+        res += w[i].c;
+        if(a==b){
+            SZ[a]--;
+        }
+        else{
+            UF[b] = a;
+            SZ[a] += SZ[b]-1;
+        }
+    }
+    printf("%lld\n",res);
+}
+```
+~~~
+
