@@ -102,7 +102,9 @@ $I^*$이  maximum weight independent set 중 하나라고 하자. $e_1 \in I^*$�
 
 
 
-문제 풀이
+
+
+## 문제 풀이
 
 Codeforces Round #441 Div. 1 F. Royal Questions
 
@@ -158,4 +160,9 @@ int main(){
 
 
 
-다음은 
+위 문제는 예시 2-1에서 소개된 변형된 graph matroid 말고도 Transversal matroid라고 볼 수도 있다. 
+
+$\mathcal{I} = \left\{ I : I \subset V_1, \exist \: a \: matching \: M \: in \: G \: that \: covers \: I \right\}$ 로 두면 $\mathcal{M} = (V_1, \mathcal{I})$는 matroid이고, 각 vertex의 weight는 연결된 두 edge의 weight으로 놓으면 된다. 하지만 각 vertex를 independent set에 추가할 수 있는지 빠르게 확인하기 위해서는 앞서 본 관찰을 하는 것이 필요하기 때문에 이것만으로는 빠른 시간에 문제를 해결하기 부족하다.
+
+
+
