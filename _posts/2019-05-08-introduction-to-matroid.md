@@ -119,8 +119,9 @@ $I^*$이  maximum weight independent set 중 하나라고 하자. $e_1 \in I^*$�
 ### 문제 풀이
 
 
+다음과 같은 문제를 생각하자.
 
-문제 : $N$개의 수로 이루어진 집합 $A =  \left\{a_1, a_2, ..., a_N\right\}$ 가 주어졌을 때 $S \subset A$를 골라 $S$의 어떤 공집합이 아닌 부분집합도 원소의 xor값이 0이 되지 않도록 하는 $S$ 중 원소의 합이 가장 큰 $S$를 구하여라.
+$N$개의 수로 이루어진 집합 $A =  \left\{a_1, a_2, ..., a_N\right\}$ 가 주어졌을 때 $S \subset A$를 골라 $S$의 어떤 공집합이 아닌 부분집합도 원소의 xor값이 0이 되지 않도록 하는 $S$ 중 원소의 합이 가장 큰 $S$를 구하여라.
 
  각 $a_i$들은 이진법으로 나타내면 체 $GF(2)$ 에서 정의된 벡터로 볼 수 있고, $S$의 모든 공집합이 아닌 부분집합의 xor이 0이 아닌 것과 $S$의 각 벡터들이 independent한 것이 동치이므로 매트로이드를 정의할 수 있다. 따라서, 큰 수부터 추가하면서 조건이 유지되는 것만 확인해주면 된다. 원소를 추가했을 때 linearly independent한지 확인하는 것은 벡터공간의 basis를 유지하면서 새로 추가하고자 하는 vector가 이미 있는 vector들로 span되는지 확인해주면 충분하다. 
 
@@ -172,7 +173,7 @@ int main() {
 
 
 
-Codeforces Round #441 Div. 1 F. Royal Questions
+Codeforces Round #441 Div. 1 F. Royal Questions (https://codeforces.com/contest/875/problem/F)
 
 이 문제는 weighted bipartite graph $G = (V,E)$, $V = V_1 + V_2$에서 $V_1$의 모든 vertex $v_1$에 대해 $v_1$의  차수가 2이고 연결된 두 edge의 weight가 같다는 조건을 만족할 때 $G$에서 maximum weighted matching을 구하는 문제이다. 언뜻 보면 이 문제는 weighted bipartite matching을 써야만 해결할 수 있는 문제로 보이지만, $N$ 제한이 20만으로 매우 크기 때문에 weighted bipartite matching을 해결하는 Hungarian method로는 시간 제한 안에 답을 구할 수 없다.
 
