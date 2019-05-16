@@ -173,7 +173,9 @@ int main() {
 
 
 
-Codeforces Round #441 Div. 1 F. Royal Questions (https://codeforces.com/contest/875/problem/F)
+Codeforces Round #441 Div. 1 F. Royal Questions 
+
+[문제 링크](https://atcoder.jp/contests/dp/tasks/dp_a)
 
 이 문제는 weighted bipartite graph $G = (V,E)$, $V = V_1 + V_2$에서 $V_1$의 모든 vertex $v_1$에 대해 $v_1$의  차수가 2이고 연결된 두 edge의 weight가 같다는 조건을 만족할 때 $G$에서 maximum weighted matching을 구하는 문제이다. 언뜻 보면 이 문제는 weighted bipartite matching을 써야만 해결할 수 있는 문제로 보이지만, $N$ 제한이 20만으로 매우 크기 때문에 weighted bipartite matching을 해결하는 Hungarian method로는 시간 제한 안에 답을 구할 수 없다.
 
