@@ -58,23 +58,35 @@ $\mathcal{I} = \left\{ I : I \subset V_1, \exist \: a \: matching \: M \: in \: 
 
 
 
-정의 2. $\mathcal{M} = (S, \mathcal{I})$ 가 매트로이드일 때, $S$의 부분집합 중 $\mathcal{I}$에 포함되지 않는 것을 $\mathcal{M}$의  dependent set이라 한다.
+정의 2. $\mathcal{M} = (S, \mathcal{I})$가 매트로이드일 때, $S$의 부분집합 중 $\mathcal{I}$에 포함되지 않는 것을 $\mathcal{M}$의  dependent set이라 한다.
 
-정의 3. $\mathcal{M}$의 independent set $I$에 대해 $I$를 진부분집합으로 갖는 independent set이 없다면 $I$를 $\mathcal{M}$의 base라고 한다.
+정의 3. $\mathcal{M} = (S, \mathcal{I})$가 매트로이드일 때, $S$의 원소 $s$에 대해 $s$ 하나만으로 이루어진 집합이 dependent하다면 $s$를 loop이라고 한다.
 
-성질 1. $\mathcal{M}$의 모든 base들의 크기는 동일하다. 이것은 정의 3에 의해 간단히 증명할 수 있다.
+loop은 어떠한 independent set에도 포함될 수 없기 때문에 maximal independent set을 구할 때 보통 처음부터 제외시키고 생각한다.
 
+정의 4. $\mathcal{M}$의 independent set $I$에 대해 $I$를 진부분집합으로 갖는 independent set이 없다면 $I$를 $\mathcal{M}$의 base라고 한다.
 
+성질 1. $\mathcal{M}$의 모든 base들의 크기는 동일하다. 또한, base와 크기가 같은 independent set은 base이다.
 
-정의 4. $\mathcal{M} = (S, \mathcal{I})$ 가 matroid이고 $S' \subset S$ 일 때, $\mathcal{I}' = \left\{ I : I \subset S', I \in \mathcal{I} \right\}$ 로 두면 $\mathcal{M}' = (S', \mathcal{I}') $ 역시 matroid이고 이를 $\mathcal{M}$의 $S'$에 대한 restriction이라고 한다. restriction이 matroid임은 정의에 의해 자명하다.
+증명. 이것은 정의 1의 조건 3에 의해 간단히 증명할 수 있다. 두 base의 크기가 다르다면 둘 중 크기가 작은 base에 원소를 하나 추가시켜도 independent하도록 만들 수 있는데 이는 base가 maximal이라는 정의에 모순이기 때문이다. base와 크기가 같은 independent set이 base가 아니라면 maximal이 아닌 것이므로 더 크기가 큰 independent set이 존재해야 하는데 이는 base들의 크기가 동일하다는 것과 대치된다.
 
+성질 2. $\mathcal{M}$의 서로 다른 두 base $B_1$, $B_2$에 대해 $x \in B_1 \setminus B_2$, $y \in B_2 \setminus B_1$이 존재하여 $B_1 - x + y$가 $\mathcal{M}$의 base이다.
 
+증명. $B_1$이 base이므로 $B_1 - x$는 independent set이고, $B_1 - x$와 $B_2$는 서로 다른 independent set이며 모든 base의 크기가 같기 때문에 $B_2$의 크기가 $B_1 - x$보다 크므로 $y \in B_2 \setminus B_1 - x$가 존재하여 $B_1 - x + y$는 independent이다. 이는 $B_1$, $B_2$와 크기가 같은 independent set이므로 base이다. 
 
-정의 5. matroid에서 minimal dependent set을 circuit이라 한다. 즉, $C \subset S$가 circuit일 조건은 $C \notin \mathcal{I}$이면서  $\forall x \in C, C-x \in \mathcal{I}$를 만족하는 경우이다. graphic matroid에서의 circuit은 matroid가 정의된 그래프에서 simple cycle을 이룬다. 
+정의 5. $\mathcal{M} = (S, \mathcal{I})$ 가 matroid이고 $S' \subset S$ 일 때, $\mathcal{I}' = \left\{ I : I \subset S', I \in \mathcal{I} \right\}$ 로 두면 $\mathcal{M}' = (S', \mathcal{I}') $ 역시 matroid이고 이를 $\mathcal{M}$의 $S'$에 대한 restriction이라고 한다. restriction이 matroid임은 정의에 의해 자명하다.
 
-성질 2. $\mathcal{M} = (S, \mathcal{I})$ 가 matroid라 하자. $X \in \mathcal{I}, y \notin X$ 이면 $X+y \in \mathcal{I}$ 이거나 $X+y$가 unique한 circuit $C$를 포함하며, 그 경우 모든 $\widehat{y} \in C$ 에 대해 $X+y-\widehat{y} \in \mathcal{I}$ 가 성립한다.
+정의 6. matroid에서 minimal dependent set을 circuit이라 한다. 즉, $C \subset S$가 circuit일 조건은 $C \notin \mathcal{I}$이면서  $\forall x \in C, C-x \in \mathcal{I}$를 만족하는 경우이다.
 
-증명. $X+y \notin \mathcal{I}$이면 $X + y$는 적어도 하나의 circuit을 포함한다. 이를 $C_1$이라 하자. 만약 $X + y$가 다른 circuit $C_2$도 포함한다면 $X$는 independent하기 때문에 $C_1$과 $C_2$는 모두 $y$를 포함한다. $C_1 + C_2 - y$를 생각하면 
+graphic matroid에서의 circuit은 matroid가 정의된 그래프에서 simple cycle을 이룬다. 또한, 모든 loop은 그 자체로 circuit이다.
+
+성질 3. $C_1$, $C_2$가 서로 다른 두 circuit이고 $x \in C_1 \cap C_2$ 라 하자. $C_1 \cup C_2- x$은 dependent하다. 즉, circuit을 포함한다.
+
+증명. $C_1 \cup C_2- x$가 independent하다고 가정하자. $\mathcal{M}$의 $C_1 \cup C_2$에 대한 restriction을 생각했을 때, $ B = C_1 \cup C_2- x$은 base이다. $C_1$과 $C_2$가 circuit이므로 $I = C_1 \cap C_2$는 independent하다. matroid 정의 중 조건 3을 이용해서 $I$가 $B$와 크기가 같아지기 전까지 $I$에 포함되지 않고 $B$에는 포함되는 원소를 계속 추가하여 independent함을 유지할 수 있다. 그렇게 만들어진 $B$와 크기가 같은 집합을 $B'$라 하자. $|B'| = |C_1 \cup C_2| - 1$ 이고 $C_1 \cap C_2 \subset B'$ 이므로 $C_1 \subset B'$ 또는 $C_2 \subset B'$가 성립한다. 그런데 이는 $B'$는 independent함을 유지하면서 만들어진 집합이라는 것에 모순이다. 따라서, . $C_1 \cup C_2- x$은 dependent하다.
+
+성질 4. $\mathcal{M} = (S, \mathcal{I})$ 가 matroid라 하자. $X \in \mathcal{I}, y \notin X$ 이면 $X+y \in \mathcal{I}$ 이거나 $X+y$가 unique한 circuit $C$를 포함하며, 그 경우 모든 $\widehat{y} \in C$ 에 대해 $X+y-\widehat{y} \in \mathcal{I}$ 가 성립한다.
+
+증명. $X+y \notin \mathcal{I}$이면 $X + y$는 적어도 하나의 circuit을 포함한다. 이를 $C_1$이라 하자. 만약 $X + y$가 다른 circuit $C_2$도 포함한다면 $X$는 independent하기 때문에 $C_1$과 $C_2$는 모두 $y$를 포함한다. $C_1 \cup C_2 - y$는 성질 3에 의해 dependent한데 이는 $C_1 \cup C_2 - y \subset X$에 모순이므로 $X+y$는 단 하나의 circuit만을 가진다. 이를 $C$라 하면 circuit의 정의에 의해 $X+y$의 모든 dependent set은 $C$를  포함해야 한다. 따라서 모든 $\widehat{y} \in C$ 에 대해 $X+y-\widehat{y} \in \mathcal{I}$ 가 성립한다.
 
 ### Finding a maximum weight independent set in a matroid
 
@@ -96,7 +108,7 @@ matroid가 주어졌을 때, maximum weight independent set은 매우 빠른 시
 
 claim : $e_1$을 포함하는 maixmum weight independent set이 존재한다.
 
-$I^*$이  maximum weight independent set 중 하나라고 하자. $e_1 \in I^*$인 경우, claim을 만족하였다. $e_1 \notin I^*$인 경우 $I^*+e_1$은 dependent하므로 circuit을 가진다. 성질 2에 의해 $I^* - e + e_1 \in \mathcal{I}$을 만족하는 $e \in I^*$가 존재하고, $w(e) \le w(e_1)$이므로 $I^* - e +e_1$은 $e_1$을 포함하는 maximum weight independent set이 된다. 따라서, claim을 증명하였다. 
+$I^*$이  maximum weight independent set 중 하나라고 하자. $e_1 \in I^*$인 경우, claim을 만족하였다. $e_1 \notin I^*$인 경우 $I^*+e_1$은 dependent하므로 circuit을 가진다. 성질 4에 의해 $I^* - e + e_1 \in \mathcal{I}$을 만족하는 $e \in I^*$가 존재하고, $w(e) \le w(e_1)$이므로 $I^* - e +e_1$은 $e_1$을 포함하는 maximum weight independent set이 된다. 따라서, claim을 증명하였다. 
 
 
 
@@ -162,7 +174,8 @@ int main(){
 
 위 문제는 예시 2-1에서 소개된 변형된 graph matroid 말고도 Transversal matroid라고 볼 수도 있다. 
 
-$\mathcal{I} = \left\{ I : I \subset V_1, \exist \: a \: matching \: M \: in \: G \: that \: covers \: I \right\}$ 로 두면 $\mathcal{M} = (V_1, \mathcal{I})$는 matroid이고, 각 vertex의 weight는 연결된 두 edge의 weight으로 놓으면 된다. 하지만 각 vertex를 independent set에 추가할 수 있는지 빠르게 확인하기 위해서는 앞서 본 관찰을 하는 것이 필요하기 때문에 이것만으로는 빠른 시간에 문제를 해결하기 부족하다.
+$\mathcal{I} = \left\{ I : I \subset V_1, \exist \: a \: matching \: M \: in \: G \: that \: covers \: I \right\}$ 로 두면 $\mathcal{M} = (V_1, \mathcal{I})$는 matroid이고, 각 vertex의 weight는 연결된 두 edge의 weight으로 놓으면 된다. 하지만 각 vertex를 independent set에 추가할 수 있는지 빠르게 확인하기 위해서는 앞서 본 관찰을 하는 것이 필요하기 때문에 이것만으로는 빠른 시간에 문제를 해결하기 부족하다. 문제를 풀 때 matroid 구조를 찾기만 하면 해결되는 문제도 있지만 이처럼 그렇지 않은 경우 역시 존재한다.
 
+## Next article - matroid intersection
 
-
+다음 편에는 같은 집합에서 정의된 두 매트로이드 $\mathcal{M}_1 = (S, \mathcal{I}_1)$, $\mathcal{M}_2 = (S, \mathcal{I}_2)$에서 모두 independent한 $S$의 부분집합 중 원소의 개수가 가장 많은 (maximum) 집합 또는 가중치가 가장 큰 집합을 구하는 matroid intersection 알고리즘에 대해 다룰 것이다. matroid intersection 알고리즘을 이용하면 다른 방법으로는 절대 풀리지 않을 것처럼 보이는 어려운 문제들도 해결할 수 있다.
