@@ -128,6 +128,50 @@ $I^*$이  maximum weight independent set 중 하나라고 하자. $e_1 \in I^*$�
 
 
 
+```c++
+#include<cstdio>
+#include<algorithm>
+#include<vector>
+using namespace std;
+int n, A[101000];
+int Basis[32];
+long long sum = 0;
+
+bool Ins(int a) {
+	int i;
+	for (i = 30; i >= 0; i--) {
+		if ((a >> i) & 1) {
+			a ^= Basis[i];
+			if ((a >> i) & 1) {
+				Basis[i] = a;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+int main() {
+	int i;
+	scanf("%d", &n);
+	for (i = 1; i <= n; i++) {
+		scanf("%d", &A[i]);
+	}
+	sort(A + 1, A + n + 1);
+	vector<int>Res;
+	for (i = n; i >= 1; i--) {
+		if (Ins(A[i])) {
+			sum += A[i];
+			Res.push_back(A[i]);
+		}
+	}
+	printf("%d %lld\n", Res.size(), sum);
+	for (auto &t : Res)printf("%d ", t);
+}
+```
+
+
+
 Codeforces Round #441 Div. 1 F. Royal Questions
 
 이 문제는 weighted bipartite graph $G = (V,E)$, $V = V_1 + V_2$에서 $V_1$의 모든 vertex $v_1$에 대해 $v_1$의  차수가 2이고 연결된 두 edge의 weight가 같다는 조건을 만족할 때 $G$에서 maximum weighted matching을 구하는 문제이다. 언뜻 보면 이 문제는 weighted bipartite matching을 써야만 해결할 수 있는 문제로 보이지만, $N$ 제한이 20만으로 매우 크기 때문에 weighted bipartite matching을 해결하는 Hungarian method로는 시간 제한 안에 답을 구할 수 없다.
