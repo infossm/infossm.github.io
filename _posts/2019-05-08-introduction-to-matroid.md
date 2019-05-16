@@ -112,11 +112,21 @@ $I^*$이  maximum weight independent set 중 하나라고 하자. $e_1 \in I^*$�
 
 
 
-위의 알고리즘으로 해결할 수 있는 대표적인 문제로는 graph의 minimum weight spanning tree를 구하는 문제가 있다. 예시 2의 graphic matroid에서 알고리즘을 적용하기만 하면 된다. 이를 Kruskal's algorithm이라 한다. Graphic matroid에서만 이 알고리즘이 성립하는 것은 아니기 때문에 1의 vector matroid에도 이를 적용할 수 있다. 예를 들어, $N$개의 수로 이루어진 집합 $A =  \left\{a_1, a_2, ..., a_N\right\}$ 가 주어졌을 때 $S \subset A$를 골라 $S$의 어떤 공집합이 아닌 부분집합도 원소의 xor값이 0이 되지 않도록 하는 $S$ 중 원소의 합이 가장 큰 $S$를 구하려고 한다고 하자. 각 $a_i$들은 이진법으로 나타내면 체 $GF(2)$ 에서 정의된 벡터로 볼 수 있고, xor이 0이 아닌 것과 각 벡터들이 independent한 것이 동치이므로 매트로이드를 정의할 수 있다. 따라서, 큰 수부터 추가하면서 조건이 유지되는 것만 확인해주면 된다.
+위의 알고리즘으로 해결할 수 있는 대표적인 문제로는 graph의 minimum weight spanning tree를 구하는 문제가 있다. 예시 2의 graphic matroid에서 알고리즘을 적용하기만 하면 된다. 이를 Kruskal's algorithm이라 한다. Graphic matroid에서만 이 알고리즘이 성립하는 것은 아니기 때문에 1의 vector matroid에도 이를 적용할 수 있다. 실제 적용 예를 다음 장에서 다룰 것이다.
 
 
 
 ### 문제 풀이
+
+
+
+문제 : $N$개의 수로 이루어진 집합 $A =  \left\{a_1, a_2, ..., a_N\right\}$ 가 주어졌을 때 $S \subset A$를 골라 $S$의 어떤 공집합이 아닌 부분집합도 원소의 xor값이 0이 되지 않도록 하는 $S$ 중 원소의 합이 가장 큰 $S$를 구하여라.
+
+ 각 $a_i$들은 이진법으로 나타내면 체 $GF(2)$ 에서 정의된 벡터로 볼 수 있고, $S$의 모든 공집합이 아닌 부분집합의 xor이 0이 아닌 것과 $S$의 각 벡터들이 independent한 것이 동치이므로 매트로이드를 정의할 수 있다. 따라서, 큰 수부터 추가하면서 조건이 유지되는 것만 확인해주면 된다. 원소를 추가했을 때 linearly independent한지 확인하는 것은 벡터공간의 basis를 유지하면서 새로 추가하고자 하는 vector가 이미 있는 vector들로 span되는지 확인해주면 충분하다. 
+
+실제 구현한 코드는 아래와 같다.
+
+
 
 Codeforces Round #441 Div. 1 F. Royal Questions
 
@@ -126,7 +136,7 @@ Codeforces Round #441 Div. 1 F. Royal Questions
 
 따라서, $G$에서 maximum weighted matching을 구하는 문제는 $G'$에서 edge들을 잘 골라서 각 component의 vertex의 개수가 edge의 개수보다 적지 않도록 할 때, 선택된 edge들의 weight 합을 최대화하는 문제가 된다. $\mathcal{M} = (E', \mathcal{I})$는 matroid이므로, 앞서 설명한 알고리즘으로 해결할 수 있다. 즉, $E'$에서 weight가 큰 edge부터 추가하면서 disjoint set union 자료구조로 서로소집합을 관리하면 각 component의 vertex 개수와 edge 개수를 저장할 수 있으므로 $O(M log M)$ 시간에 문제를 해결할 수 있다.
 
-간단한 코드는 아래와 같다.
+실제 구현한 코드는 아래와 같다.
 
 
 
