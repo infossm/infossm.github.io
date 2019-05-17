@@ -31,7 +31,7 @@ tags: [algorithm, String]
 ## 중요한 성질
  우선 중요한 성질부터 살펴보자
 
-> 어떤 String $s$ 에 대해, Substring $s'$ 중 서로다른 Palindrome의 개수는 많아봐야 n개 이다.
+> 어떤 String $s$ 에 대해, Substring $s'$ 중 서로다른 Palindrome의 개수는 $s$의 길이를 n이라고 할때, 많아봐야 n개 이다.
 
  증명은 간단하다. 우선 중요한 정의부터 내리겠다.
  $x \in \Sigma$, $y \in \Sigma \cup \{\epsilon\}$, ${a, b, c} \subset Strings$, $s^{R}$ 은 string $s$를 뒤집은 것 을 의미한다.
