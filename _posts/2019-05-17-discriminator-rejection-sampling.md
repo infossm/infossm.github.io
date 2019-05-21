@@ -24,7 +24,7 @@ tags: [generative-adversarial-networks, rejection-sampling, discriminator-reject
 
 <!--$$\min_G\max_DV(D,G)=\mathbb{E}_{x\sim p_d(x)}[\log D(x)]+\mathbb{E}_{z\sim p_z(z)}[\log (1-D(G(z)))]$$-->
 
-![출처: http://cs231n.stanford.edu/slides/2017/cs231n_2017_lecture13.pdf](/assets/images/discriminator-rejection-sampling/GANs_objective_function.PNG)
+![](/assets/images/discriminator-rejection-sampling/GANs_objective_function.PNG)
 
 &nbsp;&nbsp;&nbsp;&nbsp;DRS를 이해하기 위해서는 최적 판별자(optimal discriminator)에 대해 알아둘 필요가 있습니다. 최적 판별자 $D_G^\ast(x)$는 생산자를 고정시켰을 때 $V(D,G)$를 최대화시키는 $D(x)$로 정의됩니다. $D_G^\ast(x)$를 구하기 위해 $V(D,G)$를 다음과 같이 표현해봅시다.
 
