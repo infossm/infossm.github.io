@@ -3,7 +3,7 @@ layout: post
 title:  "Discriminator Rejection Sampling"
 date:   2019-05-17 23:56:00
 author: choyi0521
-tags: [generative-adversarial-networks, discriminator-rejection-sampling, Metropolis-Hastings-GAN]
+tags: [generative-adversarial-networks, rejection-sampling, discriminator-rejection-sampling]
 ---
 
 &nbsp;&nbsp;&nbsp;&nbsp;Generative Adversarial Networks(GANs)는 머신러닝 기술의 일종으로 생성자(generator)와 판별자(discriminator) 두 네트워크를 적대적으로 경쟁시켜 학습시키는 프레임워크를 말합니다. 보통 GANs에서는 학습이 완료되면 생성자 네트워크만 사용하고 판별자 네트워크는 버리게 됩니다. 하지만, 학습 이후에 여전히 생성자 네트워크가 실제 데이터 분포를 완벽히 묘사하지 못하고 판별자 네트워크가 이에 대해 중요한 정보를 가지고 있을 수도 있습니다. 그렇다면 학습 이후에도 판별자 네트워크를 활용하여 생성자 네트워크의 성능을 높일 수 있지 않을까요?
@@ -18,7 +18,7 @@ tags: [generative-adversarial-networks, discriminator-rejection-sampling, Metrop
 
 ![출처: https://sthalles.github.io/intro-to-gans/](/assets/images/discriminator-rejection-sampling/GANs.PNG)
 
-&nbsp;&nbsp;&nbsp;&nbsp;위 그림에서 noise 값을 $z$라 하고 분포 $p_z(z)$를 따른다고 합시다. 그러면 생성자 G는 파라매터 ${\theta}_g$의 뉴럴 네트워크로 표현된 미분 가능한 함수 $G(z;{\theta}_g)$로 나타낼 수 있습니다. 마찬가지로 실제 데이터 $x$가 분포 $p_{data}(x)$를 따른다고 하면 판별자 $D$를 파라매터 ${\theta}_d$의 뉴럴 네트워크로 표현된 미분 가능한 함수 $D(x;{\theta}_d)$로 나타낼 수 있습니다. 이때 $D(x)$는 $x$가 생성자가 아닌 실제 데이터에서 왔을 확률을 가리킵니다.
+&nbsp;&nbsp;&nbsp;&nbsp;위 그림에서 noise 값을 $z$라 하고 분포 $p_z(z)$를 따른다고 합시다. 그러면 생성자 $G$는 파라매터 $\theta_g$의 뉴럴 네트워크로 표현된 미분 가능한 함수 $G(z;\theta_g)$로 나타낼 수 있습니다. 마찬가지로 실제 데이터 $x$가 분포 $p_{data}(x)$를 따른다고 하면 판별자 $D$를 파라매터 $\theta_d$의 뉴럴 네트워크로 표현된 미분 가능한 함수 $D(x;\theta_d)$로 나타낼 수 있습니다. 이때 $D(x)$는 $x$가 생성자가 아닌 실제 데이터에서 왔을 확률을 가리킵니다.
 
 &nbsp;&nbsp;&nbsp;&nbsp;그래서 $D$는 $D(x)$에서 $x$가 실제 데이터이면 높은 값을, 가짜 데이터이면 낮은 값을 부여하도록 학습하게 됩니다. 반대로 $G$는 이를 방해하는 방향으로 학습이 진행됩니다. 이를 간단히 수식으로 표현하면, 학습은 다음과 같은 식 $V(D,G)$를 두고 $D$와 $G$가 minmax 게임을 진행하는 것과 같다고 할 수 있습니다.
 
@@ -26,15 +26,15 @@ tags: [generative-adversarial-networks, discriminator-rejection-sampling, Metrop
 
 ![출처: http://cs231n.stanford.edu/slides/2017/cs231n_2017_lecture13.pdf](/assets/images/discriminator-rejection-sampling/GANs_objective_function.PNG)
 
-&nbsp;&nbsp;&nbsp;&nbsp;DRS를 이해하기 위해서는 최적 판별자(optimal discriminator)에 대해 알아둘 필요가 있습니다. 최적 판별자 $D_G^*(x)$는 생산자를 고정시켰을 때 $V(D,G)$를 최대화시키는 $D(x)$로 정의됩니다. $D_G^*(x)$를 구하기 위해 $V(D,G)$를 다음과 같이 표현해봅시다.
+&nbsp;&nbsp;&nbsp;&nbsp;DRS를 이해하기 위해서는 최적 판별자(optimal discriminator)에 대해 알아둘 필요가 있습니다. 최적 판별자 $D_G^\ast(x)$는 생산자를 고정시켰을 때 $V(D,G)$를 최대화시키는 $D(x)$로 정의됩니다. $D_G^\ast(x)$를 구하기 위해 $V(D,G)$를 다음과 같이 표현해봅시다.
 
 ![](/assets/images/discriminator-rejection-sampling/GANs_optimal_discriminator_1.PNG)
 
-&nbsp;&nbsp;&nbsp;&nbsp;$(a,b)\in \mathbb{R}^2{\backslash}\{(0,0)\}$일 때, $(0,1)$에서 정의된 함수 $y=a\log(x) + b\log(1-x)$는 $x = {a\over{a+b}}$에서 최댓값을 가집니다. 또한, 위 식에서 $p_{data}(x)$나 $p_g(x)$가 0이 되는 $x$는 고려하지 않아도 되므로 $D^*_G(x)$는 다음과 같게 됩니다.
+&nbsp;&nbsp;&nbsp;&nbsp;$(a,b)\in \mathbb{R}^2{\backslash}\{(0,0)\}$일 때, $(0,1)$에서 정의된 함수 $y=a\log(x) + b\log(1-x)$는 $x = {a\over{a+b}}$에서 최댓값을 가집니다. 또한, 위 식에서 $p_{data}(x)$나 $p_g(x)$가 0이 되는 $x$는 고려하지 않아도 되므로 $D_G^\ast(x)$는 다음과 같게 됩니다.
 
 ![](/assets/images/discriminator-rejection-sampling/GANs_optimal_discriminator_2.PNG)
 
-&nbsp;&nbsp;&nbsp;&nbsp;이처럼 $D^*_G(x)$는 $p_{data}(x)$와 $p_g(x)$ 두 분포로 간단히 나타나게 됩니다. 후에 자세히 설명하겠지만, 이 식은 GANs에서 rejection sampling을 할 수 있게 하는 핵심적인 역할을 하게 됩니다.
+&nbsp;&nbsp;&nbsp;&nbsp;이처럼 $D_G^\ast(x)$는 $p_{data}(x)$와 $p_g(x)$ 두 분포로 간단히 나타나게 됩니다. 후에 자세히 설명하겠지만, 이 식은 GANs에서 rejection sampling을 할 수 있게 하는 핵심적인 역할을 하게 됩니다.
 
 ## Rejection Sampling
 &nbsp;&nbsp;&nbsp;&nbsp;rejection sampling은 주어진 확률 분포의 확률 밀도 함수는 알고 있지만 직접 샘플링하기 어려울 때 사용할 수 있는 방법입니다. 샘플링하고 싶은 분포가 $p$라고 했을 때, rejection sampling을 하기 위해서는 먼저 샘플링 하기 쉬운 제안 분포(proposal dsitribution) $q$를 잡아야 합니다. 그 다음에는 모든 $x$에 대해 $p(x) \leq Mq(x)$가 성립하는 상수 M을 잡아야 합니다.
@@ -87,19 +87,19 @@ $$
 
 ![](/assets/images/discriminator-rejection-sampling/DRS_3.PNG)
 
-&nbsp;&nbsp;&nbsp;&nbsp;$x^*$를 $p_d(x)/p_g(x)$를 최대화하는 $x$ 값이라고 하면 $M=e^{\tilde D^*(x^*)}$이 됩니다. 편의상 $\tilde D^*_M:=\tilde D^*(x^*)$로 표기하면 acceptance probability는 $e^{\tilde D^*(x)-\tilde D^*_M}\in[0,1]$가 됩니다. 결과적으로 rejection sampling를 하기 위해 $D^*$와 $M$을 알아야 합니다.
+&nbsp;&nbsp;&nbsp;&nbsp;$x^\ast$를 $p_d(x)/p_g(x)$를 최대화하는 $x$ 값이라고 하면 $M=e^{\tilde D^\ast(x^\ast)}$이 됩니다. 편의상 $\tilde D^\ast_M:=\tilde D^\ast(x^\ast)$로 표기하면 acceptance probability는 $e^{\tilde D^\ast(x)-\tilde D^\ast_M}\in[0,1]$가 됩니다. 결과적으로 rejection sampling를 하기 위해 $D^\ast$와 $M$을 알아야 합니다.
 
 &nbsp;&nbsp;&nbsp;&nbsp;논문에서는 위에서 분석한 결과가 다음과 같은 현실적인 문제를 가지고 있다고 합니다.
 
-1. 실제로 확률 밀도 함수를 최적화할 수 없으므로 $D^*$를 구할 수 없습니다. 또한, acceptance probability가 $p_d(x)/p_g(x)$에 비례할 필요가 없습니다.
+1. 실제로 확률 밀도 함수를 최적화할 수 없으므로 $D^\ast$를 구할 수 없습니다. 또한, acceptance probability가 $p_d(x)/p_g(x)$에 비례할 필요가 없습니다.
 2. 큰 데이터셋에서 $p_g$와 $p_d$의 support가 같지 않습니다. 만약 $p_g$와 $p_d$의 support intersection이 작을 경우, 많은 구역에서 $p_d(x)/p_g(x)$를 단순히 0으로 놓게 될 것입니다.
 3. 실제로 $p_d$에서 무한히 샘플링을 할 수 없습니다. 만약 $D$를 유한한 양의 데이터로 최적화하면 학습하지 않은 지점에서 0이 아닌 값을 내놓을 것입니다.
 4. 실제로 $M$을 정확하게 구할 수 없습니다.
 5. rejection sampling은 target distribution이 고차원일 때 acceptance probability가 매우 낮게 나오는 경향이 있습니다.
 
-&nbsp;&nbsp;&nbsp;&nbsp;이를 해결하기 위해 논문에서는 $D^*$와 $M$을 적당한 방법으로 근사하고 있습니다. GANs에서 학습시킨 $D$가 좋은 샘플과 나쁜 샘플을 잘 구분할 것이라고 가정하고 이를 $D^*$로 놓습니다. 그리고 $M$을 처음에 많은 수(실험에서는 10000번)의 샘플링을 해서 구한 $e^{\tilde D^*(x)}$의 최댓값으로 근사하고 이후 샘플링을 할 때마다 최댓값으로 갱신하여 사용했습니다.
+&nbsp;&nbsp;&nbsp;&nbsp;이를 해결하기 위해 논문에서는 $D^\ast$와 $M$을 적당한 방법으로 근사하고 있습니다. GANs에서 학습시킨 $D$가 좋은 샘플과 나쁜 샘플을 잘 구분할 것이라고 가정하고 이를 $D^\ast$로 놓습니다. 그리고 $M$을 처음에 많은 수(실험에서는 10000번)의 샘플링을 해서 구한 $e^{\tilde D^\ast(x)}$의 최댓값으로 근사하고 이후 샘플링을 할 때마다 최댓값으로 갱신하여 사용했습니다.
 
-&nbsp;&nbsp;&nbsp;&nbsp;이 때, 5번 문제 때문에 DRS에서는 샘플링을 계속하다가 acceptance probability가 매우 낮아질 수 있습니다. $\tilde D^*_M$의 값이 너무 크면 acceptance probability인 $e^{\tilde D^*(x)-\tilde D^*_M}$가 작아져서 대부분의 샘플이 reject되는 문제가 발생하기 때문입니다. 이를 해결하기 위해 논문에서는 다음과 같이 새로운 함수 $F(x)$를 정의하였습니다.
+&nbsp;&nbsp;&nbsp;&nbsp;이 때, 5번 문제 때문에 DRS에서는 샘플링을 계속하다가 acceptance probability가 매우 낮아질 수 있습니다. $\tilde D^\ast_M$의 값이 너무 크면 acceptance probability인 $e^{\tilde D^\ast(x)-\tilde D^\ast_M}$가 작아져서 대부분의 샘플이 reject되는 문제가 발생하기 때문입니다. 이를 해결하기 위해 논문에서는 다음과 같이 새로운 함수 $F(x)$를 정의하였습니다.
 
 ![](/assets/images/discriminator-rejection-sampling/DRS_4.PNG)
 ![](/assets/images/discriminator-rejection-sampling/DRS_5.PNG)
