@@ -43,7 +43,7 @@ tags: [generative-adversarial-networks, rejection-sampling, discriminator-reject
 
 ![출처: https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/lectures/lecture17.pdf](/assets/images/discriminator-rejection-sampling/rejection_sampling_graph.PNG)
 
-&nbsp;&nbsp;&nbsp;&nbsp;$p$에서 샘플을 얻기 위해서는 최소한 두 번의 샘플링 과정이 필요합니다. 먼저, $q(x)$에서 샘플 $x$를 얻습니다. 그 다음에는 $[0,1]$ 구간의 uniform distribution에서 샘플 $u$를 얻습니다. 여기서 $u$가 acceptance probability $p(x)\over Mq(x)$보다 작다면 $x$를 $p$의 샘플로 accept하고 그렇지 않다면 reject합니다. 이 과정을 의사코드로 나타내면 다음과 같습니다.
+&nbsp;&nbsp;&nbsp;&nbsp;$p$에서 샘플을 얻기 위해서는 최소한 두 번의 샘플링 과정이 필요합니다. 먼저, $q(x)$에서 샘플 $x$를 얻습니다. 그 다음에는 $[0,1]$ 구간의 uniform distribution에서 샘플 $u$를 얻습니다. 여기서 $u$가 acceptance probability인 $p(x)\over Mq(x)$보다 작다면 $x$를 $p$의 샘플로 accept하고 그렇지 않다면 reject합니다. 이 과정을 의사코드로 나타내면 다음과 같습니다.
 
 ![출처: https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/lectures/lecture17.pdf](/assets/images/discriminator-rejection-sampling/rejection_sampling_pseudocode.PNG)
 
