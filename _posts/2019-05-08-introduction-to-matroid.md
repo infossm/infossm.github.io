@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "Introduction to matroid"
+date:   2019-05-15 23:30:00
+author: ainta
+tags: [algorithm, matroid, greedy algorithm, structure]
+---
+
 # Matroid
 
 
