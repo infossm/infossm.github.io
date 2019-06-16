@@ -2,7 +2,7 @@
 layout: post
 title:  "그래프 색칠과 NP-Completeness"
 author: ho94949
-date: 2019-04-08 15:00
+date: 2019-05-05 15:00
 tags: [Graph]
 ---
 
