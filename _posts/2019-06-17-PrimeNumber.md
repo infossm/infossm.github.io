@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  "Palindromic Tree"
-date:   2019-05-17 15:00:00
+title:  "Prime Number"
+date:   2019-06-17 23:55:00
 author: shjgkwo
-tags: [algorithm, String]
+tags: [algorithm, Number-Theory]
 ---
 
 # 목차
@@ -18,347 +18,323 @@ tags: [algorithm, String]
 # 개요
 
 ## 이 포스트를 쓰며
- 두달 전에 Manacher's Algorithm 에 대해 소개했다. 이번에는 그것의 연장선상이며, 조금 지엽적이면서도 활용도가 높은 Palindromic Tree에 대해서 소개하고자 이 포스트를 쓰게 되었다. 이 포스트를 이해 하기 위해서는 간단한 오토마타에 대한 지식을 요구한다. 또한 KMP Algorithm에 대해 알고 있으면 이해하기 훨씬 수월하다. 또한 Manacher's Algorithm 에 대한 지식이 없다면 Manacher's Algorithm 에 대한 포스트를 한번 읽어보길 바란다. 또한 Trie에 대한 지식이 있으면 역시 도움이 된다.
+ 학교 고급 알고리즘 시간에 Miller–Rabin Algorithm 에 대해서 공부하게 되었다. 매우 흥미로운 내용이 많았으며, 다른 사람들과 공유하면 좋겠다고 생각하여 소인수 분해 알고리즘 등의 다양한 알고리즘을 알게 된것을 포함하여 공유하고 싶어졌다. 이번 포스트에서는 그 알고리즘들의 구현과 실제 문제에 대해 어떻게 사용되는지 소개하고자 한다.
 
-## 간단한 원리
+## 기본 지식
+ 일단 최소한 Modulo Operation, 즉, 나머지 연산에 대해서 조금 설명할 필요가 있다. 
 
-![사진1](/assets/images/Palindromic-Tree-shjgkwo/suffix-link.png)
+> Mod 연산은 나머지 연산자로서 $a = qn + r$ 꼴로 나타낼 수 있는 모든 정수에 대해서(단, q는 0보다 크다.) $0 < r < q$ 를 만족 할 때, $r = a \mod q$ 로 나타낸다.
 
- 우선 **Suffix Link**의 개념에 대해 간단히 소개하겠다. Suffix Link란, Palindromic Tree를 구축하는 데 있어서 가장 중요한, 일종의 KMP의 Fail Function과 같으며, 현재 노드에 해당하는 Palindrome의 Suffix중, 가장 긴 것으로 돌아가는 링크를 의미한다. 이는 KMP의 Fail Function이 Prefix 와 Suffix가 가장 길게 일치하는 것을 구하는 것과 비슷하다고 생각하면 편하다. 그러면 KMP를 구축하듯이, Tree를 만들되, 이 Suffix Link로 현재 노드에서 다음노드로 전진할 수 없는 상황에서 돌아가게 하는 것이다. 그리고 이러한 Suffix Link는 구축과 탐색 둘 다 용이하게 사용된다. 일단, 홀수 Palindrome과 짝수 Palindrome을 동시에 다룰 수 있도록 기본적으로 두개의 Root를 가지고 있게 된다. 이제 본격적으로 설명을 시작하겠다.
+ 매우 기본적인 정의이다. 다양한 정의가 있지만, 일단은 후술할 모든 알고리즘들이 위의 정의를 사용한다고 생각하면 된다. 여기서 덧셈과 곱셈에 대해 결합법칙과, 분배법칙, 교환법칙이 모두 성립한다. 단, 나눗셈에 대해서는 성립하지 않으므로 후술할 곱셈의 역원의 개념이 반드시 필요하다. 이것들에 대한 증명은 이 포스트를 읽는 사람에게 맡기기로 하겠다. 일단 나머지 연산을 주로 사용하게 되므로 위에 기본 지식들을 꼭 기억해두자.
 
 # 개념
 
-## 중요한 성질
- 우선 중요한 성질부터 살펴보자
+## 합동
+ 영어로 congruent modulo이며, 나머지 연산을 설명할 때 매우 중요한 개념이다. 아래의 수식을 살펴보자.
+> $a  \equiv r (\mod q)$ 
 
-> 어떤 String $$s$$ 에 대해, Substring $$s'$$ 중 서로다른 Palindrome의 개수는 $$s$$의 길이를 n이라고 할때, 많아봐야 n개 이다.
+ 이 경우엔 $a$와 $r$이 $q$에 대해 합동이라고 하며, 이는 $a$를 $q$로 나누었을때 나머지 연산의 정의에 의해 나온 값이 $r$과 같음을 의미한다. 예시를 들어 $37 \equiv 2 (\mod 7)$ 이라는 식이 있다고 하자. 이 경우엔 37과 2는 합동이다. 왜냐하면 37을 7로 나눈 나머지가 2 이기 때문이다. 이제부터 더 넓은 범주로 나타내면 다음과 같다.
 
- 증명은 간단하다. 우선 중요한 정의부터 내리겠다.
- $$x \in \Sigma$$, $$y \in \Sigma \cup \{\epsilon\}$$, $${a, b, c} \subset Strings$$, $$s^{R}$$ 은 string $$s$$를 뒤집은 것 을 의미한다.
+> $a  \equiv b (\mod q)$
 
- 여기서 시그마는 문자의 집합, 즉, $$x$$는 문자 하나를 의미한다. $$y$$는 $$\epsilon$$즉, 빈 문자를 포함한 문자를 의미한다. 이때, $$x$$는 새롭게 출현하는 문자, $$y$$는 그 어떤 palindrome의 중심이 되는 문자라고 해보자. $$a$$, $$b$$, $$c$$ 들은 각각 어떤 문자열을 의미한다. 물론 빈 문자열도 가능하다.
+ 이때, $a$ 와 $b$ 모두 q에 대한 나머지가 같은경우 둘을 합동으로 본다. 즉, $39 \equiv 44 (\mod 5)$ 라고 한다면, 39나 44나 5에 대한 나머지가 4로 같으므로 둘은 합동인 것이다.
 
-> 어떤 문자열 $$s$$의 뒤에 $$x$$를 붙였을 때 발생하는 팰린드롬 중, 제일 긴 팰린드롬은 $$xaya^{R}x$$ 로 나타낼 수 있다.
-
-자, 여기서 한가지 알아낼 수 있는 사실은 만약 여기서 이 팰린드롬 보다 길이가 작은 팰린드롬이 존재한다고 가정 해보자. 이때 이 팰린드롬은 반드시 $$s$$에 속할 수 밖에 없다. 그것에 대한 증명은 간단하다.
-
-> 우선 $$a^{R}$$에 속하는 경우 $$xaycxbx$$ 꼴로 나타낼 수 있다. 이때, $$cxb = a^{R}$$ 과 같으며, 이때 $$a = b^{R}xc^{R}$$로 나타낼 수 있다.
-
-여기서
-
-> 이때 $$xbx$$ 가 팰린드롬이면 $$b$$역시 팰린드롬이다. 따라서 $$b = b^{R}$$이다. 즉, $$a = bxc^{R}$$ 이며, $$xbxc^{R}ycxbx$$ 로 나타낼 수 있으며, 이는 $$xbx$$가 $$s$$안에 속한다는걸 보인다.
-
-이렇게 유도 할 수 있다. 이때 이때 $$x$$가 $$a^{R}$$ 이 아닌 $$a$$에 속하는 경우를 생각해보자.
-
-> $$xbxcya^{R}x$$ 로 나타낼 수 있게 되는데, 이 경우에, $$xcya^{R}x$$가 팰린드롬이 되게 된다. 이때, $$a=bxc$$ 이므로 $$a^{R}=c^{R}xb^{R}$$ 이 된다. 이때, $$xcya^{R}x = xayc^{R}x$$ 이므로, $$xcya^{R}x = xcyc^{R}xb^{R}x = xbxcyc^{R}x$$ 가 되며, 이때, 처음 식에 대입하게 되면, 다음의 식을 얻게 된다.
-
-> $$xbxcyc^{R}xb^{R}x$$
-
-여기서 $$xbxcyc^{R}x$$ 가 $$xcya^{R}x$$ 와 같으므로, 즉, $$s$$안에 속하게 된다.
-이를 통해 얻어낼 수 있는 결론은 다음과 같다.
-
-> $$s$$의 뒤에 임의의 문자 $$x$$를 추가해서 새로운 문자열을 만들 때, 늘어날 수 있는 palindrome인 substring은 많아야 1개이다.
-> 즉, 빈 문자열로 부터 점점 문자를 붙여나가서 어떤 문자열을 만들때, Palindrome인 substring은 n보다 작거나 같을 수 밖에 없다.
-
-이 아이디어는 추후 Palindromic Tree를 구축할 떄 쓰이게 된다.
-
-## Palindromic Tree 구축
- 먼저, 1번과 2번 노드를 루트로 설정한다. 그리고 2번 노드에 Suffix Link로 1번노드를 연결하고 1번노드는 더 이상 후퇴할 수 없는 상황, 즉, 길이가 1인 팰린드롬에 연결시켜주는 마지막 보루이므로 Suffix Link는 존재할 수 없다. 그리고 각 노드들이 나타내고 있는 팰린드롬의 길이를 저장할 필요가 있다. 이때, 1번노드는 길이가 -1 이며, 2번 노드는 길이가 0이다. 이는 길이가 1인 팰린드롬과 길이가 2인 팰린드롬 두가지를 모두 갖기 위함이다. 이후 연결 과정은 Trie와 매우 유사하다. 먼저 마지막에 만들었던 Palindrome의 위치에 대해서 x를 추가했을때 Palindrome을 만들 수 있다면 그 위치에서 바로 x를 추가하기만 하면 된다. 하지만, 그렇게 하지 못한다면은 Suffix Link를 타고 다음 만들 Palindrome 을 찾아내는 것이다.
-
- 아래의 그림을 보자
-
- ![사진2](/assets/images/Palindromic-Tree-shjgkwo/build.png)
-
- 이 그림에서 전체 String을 S라고 했을때 내가 지금 P까지 진행된 상황인 것이다. 이때 그 다음 P+1을 볼때 X가 추가 되었는데, XAX의 팰린드롬이 존재하게 되는 경우를 찾기 위해 Suffix Link를 계속 타고 내려가게 되는것이다. 그렇게 새롭게 만들어진 노드에 대해서 새로 다시 연결하려면 타고 내려가던 Suffix Link를 그대로 다시 타고 내려가서 XAX의 Suffix Link를 XBX로 하는것이다. 만약 빈문자열 까지 내려가게 된다면, 즉 1번 노드 까지 내려가게 된다면 X 자기 자신을 Suffix Link로 사용하게 되는것이다. 자 그렇다면 이때, Suffix Link인 XBX가 없을 수 가 있을까? 답은 아니다 이다. 항상 만들어져 있다. 그 이유는 위 증명을 생각해보면 간단하다. XBX는 반드시 P 어딘가에서 적어도 한번 출현했을 것이기 때문이다.
-
- 그리고 이 과정에서 주의할 점이 있다. 만약 X를 추가했을때, X에서 아무것도 만들지 못할 경우엔 자동으로 X 자기자신을 팰린드롬으로 하는 길이가 1인 팰린드롬이 만들어지게 되는데, 이 경우 Suffix Link를 자기자신으로 가르키게 할 수는 없다. 이 경우엔 2번 노드에 연결하여 짝수 팰린드롬을 만드는 방향으로 진행해야 한다.
-
- 아래는 위의 구축 방법의 pseudo code 이다.
+## 최대공약수
+ 너무 유명한 개념이라 Uclidean Algorithm 만 짧게 소개하고 끝내겠다.
 
 ```
-s = string
-cnt = 2
-last = 2
-tree = [ { length, suffix_link, link} ]
-make_node(position, ch):
-    cur = last
-    while position - tree[cur].length - 1 < 0 || s[position - tree[cur].length - 1] != ch:
-        cur = tree[cur].suffix_link
-    if ch exist tree[cur].link:
-        last = tree[cur].link[ch];
-        return
-    cnt += 1
-    last = tree[cur].link[ch] = cnt;
-    tree[last] = { tree[cur].length + 2, 1, map };
-    if tree[last].length == 1:
-        return
-    do:
-        cur = tree[cur].sufflink
-    while position - tree[cur].length - 1 < 0 || s[position - tree[cur].length - 1] != ch
-    tree[last].suffix_link = tree[cur].nxt[ch]
-
-main():
-    tree[0] = NULL
-    tree[1] = {-1, 1, map}
-    tree[2] = { 0, 1, map}
-    s = input()
-    for i in 0 to length(s) - 1:
-        make_node(i, s[i]);
+def gcd(a, b):
+    if(b == 0):
+        return a
+    elif(a % b == 0):
+        return b
+    else:
+        return gcd(b, a % b)
 ```
 
-## 구현
- 위의 pseudo code를 기반으로 C++로 구현한 것이다.
+ 심플하다, 매우 유명한 알고리즘이니 이정도만 설명하고 넘어가도록 한다. 최대공약수를 구하기 위해 서로의 나머지로 계속 나누다가 나누어 떨어지면 그것이 최대 공약수다 라는게 요지이고 이것의 대한 증명은 생략하도록 하겠다.
+
+## 페르마 소정리
+ 이제 본격적으로 소수의 성질들에 대해 설명할 것이다. 우선 소수의 성질 중에 매우 심플하면서도 매우 중요한 성질이 있는데 이는 바로 페르마 소정리(Fermat’s little theorem)이다. 이 정리는 다음과 같다. 어떤 소수 $p$에 대해. $np$가 아닌($n$은 모든 정수) 모든 정수 $a$에 대해 다음과 같은 식이 성립한다.
+
+> $a^{p-1} \equiv 1 (\mod p)$
+
+ 이 심플하면서도 강력한 정리는 나머지가 소수일때 한정하여 곱셈의 역원을 구할 수 있다. 이는 후술할 것이며 그 이외에도 후술할 Miller-Rabin Algorithm 에도 사용된다. 단, 주의할 점은 **필요조건**이지 **충분조건은 아니기** 때문에, 저것이 성립한다고 항상 소수라고 볼수는 없다.
+
+## 빠른 제곱
+ 한국어로 적절한 번역이 딱히 없는듯하여 임의로 빠른 제곱이라고 표현했다. 일단 영문 표기상 Modular exponentiation 이며, 나머지 연산이 있을때 제곱 연산을 의미한다. 여기서 $a^{n} \mod p$를 계산할 때
+
+```cpp
+int ans = 1
+for(int i = 0; i < n; i++) {
+    ans *= a;
+    ans %= p;
+}
+printf("%d", ans);
+```
+
+ 라고 naive 하게 계산하면 곱셈의 시간복잡도를 O(1)이라고 가정하면, $O(n)$ 의 시간복잡도를 가진다. 여기서는 $O(log n)$의 시간복잡도로 해결하는 것을 하도록 한다. 우선 pseudo code는 다음과 같다.
+
+```
+def exp(a, n, p):
+    if n == 0:
+        return 1
+    tmp = exp(a, n // 2, p)
+    tmp = (tmp * tmp) % p
+    if n % 2 == 1
+        tmp = (tmp * a) % p
+    return tmp
+```
+
+ 일단 Python base로 써 보았으며, //는 소숫점을 버리는 정수 나눗셈 즉, 3 // 2 = 1 이라고 생각하면 된다. 알고리즘의 시간복잡도의 증명은 간단하다. $n$을 2로 계속 나누다가 0에 다다르면 return 하므로 당연하게도 $O(log n)$이다. 두번째는 정당성인데, 이에 대한 증명 역시 간단하다. 일단 $n$을 일단 계산 되었던 것을 제곱 한 뒤, 이진수로 나타낸 것에 대해 1이 나오면 우선 a를 곱한다. 이것을 반복 하게되는데 이 경우엔 $a^{1}$ 부터 시작하여 $a^{2}$, $a^{4}$ 점점 늘어가게 되는 것은 자명하다. 이 와중에 $a$가 곱해져서 $a^{n}$을 완성하게 되는 것이다. 예시를 들어 자세하게 설명하면 $7^11 \mod 13$ 이 있다고 하자. $11$은 이진수로 $1011_{2}$로 나타낼 수 있고, 맨 처음에 1이 나오게 되므로 위의 pseudo code에 따라 7을 곱하고 return된 $7^1$ 을 제곱하여 $7^2$으로 만들고 이번엔 0이므로 그냥 return 한다. 그 다음 $7^4$ 으로 만든 뒤, 7을 한번 더 곱하여 $7^5$을 return 그리고 $7^10$을 만든 뒤, 7을 한번 더 곱하여 $7^11$이 완성된다.
+
+ 이 빠른 제곱법은 후술할 Miller-Rabin 법과 곱셈의 역원을 구하는데에 유용하게 쓰인다.
+
+## Trivial Solution square root
+ 이는 소수가 가지는 매우 간단한 성질이다. 일단 이 성질에 대해 설명하면 어떤 소수 $p$에 대해 다음과 명제가 성립한다.
+
+> $x^2 \equiv 1 (\mod p)$ 에 대한 해는 항상 $x \equiv 1 or -1 (\mod p)$ 밖에 없다.
+
+ 여기서 $1$, $-1$은 알다시피 합동이며 $1-p$, $1-2p$, $1+p$, ... 등 모두 $1$에 속하며, $p-1$, $2p-1$, $-p-1$, ... 등 모두 $-1$에 속한다. 좀더 자세히 설명하면, $0 < r < p$ 인 $r$ 에 대해 $1$과 $p-1$만이 정답으로서 존재한다는 뜻이다. 즉, 저것이외에 다른 해를 가졌다면, 합성수 일 **수**도 있다는 것이다. 마찬가지로 필요조건이지 충분조건이 아니기 때문이다. 당장에 4만 해도 1과 3 이외엔 없다.
+
+
+# 구현
+
+## Miller-Rabin Algorithm
+ 이제 본론인 Miller Rabin Algorithm 이다. 이 알고리즘은 소수를 판별하기 위한 확률적 알고리즘으로서 매우 빠른 시간복잡도를 가지고 있다. 시간 복잡도는 곱셈의 시간복잡도를 $O(log^{2} n)$이라고 한다면, $O(log^{3} n)$ 이라는 엄청나게 빠른 스피드를 자랑한다. 만약 long long 범위 내라 곱셈의 시간복잡도를 $O(1)$로 무시가 가능하다면 당연하게도 $O(log n)$ 그럼 이제 본격적인 pseudo code를 보자.
+
+```
+def withness(s, n):
+    t = n - 1;
+    cnt = 0;
+    while(t % 2 == 0):
+        cnt = cnt + 1
+        t = t // 2
+    x = exp(s, n, t)
+    pre = x
+    for i in range(cnt):
+        x = mult(x, x, n)
+        
+        if(x == 1 && pre != 1 && pre != n - 1):
+            return true
+        
+        pre = x
+    }
+    
+    if(x != 1):
+        return true
+    
+    return false
+```
+
+이 작업은 withness, 즉, 증인을 찾는 과정이다. 증인이라는 것은 주어진 수 $n$에 대해서 s가 n이 소수가 아니라는, 즉 합성수라는 증인이 되어주는 것을 찾는 것이다. 원리는 간단한데, $n - 1 = 2^{cnt}t$일 때, 우선 $s^{t}$ 을 구할 것인데, 이것을 제곱 해 가면서 non-trivial solution이 발생하는 지 확인하는 것이다. 즉, $n - 1$, $1$과 합동인 수를 제외한 다른 무언가의 제곱이 1이 되는 경우를 발견하는 것이다. **if(x == 1 && pre != 1 && pre != n - 1)** 이 코드가 그것을 나타내준다. 두번째, 마지막에 x가 1이 아닌 경우, 즉 $s^{n-1}$ 이 1이 아니라면 소수의 필요조건을 만족하지 못하므로 합성수라 볼 수 있다. 이 모든것들을 이용해서 랜덤한 수를 뽑아내어 증인인지 확인해 보는 것이다. 놀랍게도 어떤 합성수에 대해 증인이 아닐 확률은 $\frac{1}{2}$라고 한다. 즉, 베르누이 시행을 사용하여 확실한 랜덤이라고 가정하였을 때 여러번의 시행으로 증인이 한번이라도 나올 확률을 구하면 시행 횟수를 $m$ 이라고 한다면 $1 - (\frac{1}{2})^{m}$이 되고 이 확률은 m이 크면 클수록 더욱 높아진다. 하지만 대부분의 경우 3번의 테스트만으로 보통 소수를 판별할 수 있다고 한다.
+
+```cpp
+long long gcd(long long a, long long b) {
+    if(b == 0) return a;
+    else if(a % b == 0) return b;
+    else return gcd(b, a % b);
+}
+
+long long exp(long long a, long long n, long long p) {
+    if(p == 0) return 1;
+    long long x = exp(a, n, p >> 1);
+    x = mult(x, x, n);
+    
+    if(p & 1) x = mult(x, a, n);
+    return x;
+}
+
+bool withness(long long s, long long n) {
+    long long t = n - 1;
+    int cnt = 0;
+    while(!(t & 1)) {
+        cnt++;
+        t /= 2;
+    }
+    long long x = exp(s, n, t);
+    long long pre = x;
+    for(int i = 0; i < cnt; i++) {
+        x = mult(x, x, n);
+        
+        if(x == 1 && pre != 1 && pre != n - 1) return true;
+        
+        pre = x;
+    }
+    
+    if(x != 1) return true;
+    
+    return false;
+}
+```
+
+위의 코드는 앞에서 나온 모든 pseudo code를 C++로 구현한 것들이다.
+
+```cpp
+bool is_prime(long long n) {
+    for(int i = 0; i < 10; i++) {
+        int flag ;
+        long long tmp = rnd() % n; // rnd 랜덤함수를 의미한다.
+        while(tmp == 0) tmp = rnd() % n;
+        flag = withness(tmp, n);
+        if(flag) return false;
+    }
+    return true;
+}
+```
+
+이 코드는 10번의 테스트를 해보는 코드이다.
+
+## Polard's rho Algorithm
+
+ 폴라드 로 알고리즘은 소인수분해를 빠르게 하는 알고리즘이다. 지금까지 사용했던 모든 알고리즘을 총 동원해서 해결한다.
+
+ 우선 factor를 뽑아내는 polard's rho algorithm의 pseudo는 아래와 같다.
+
+```
+def polard(n):
+    i = 0
+    x = random(0, n - 1)
+    y = x
+    k = 2
+    d = n
+    while(1) :
+        i++;
+        x = (x * x - 1) % n
+        d = gcd(Abs(y - x), n)
+        if(d != 1):
+            break
+        if(i == k):
+            y = x
+            k = k * 2
+```
+
+폴라드로가 적어도 하나의 factor를 찾는데 걸리는 시간은 $O(n^{\frac{1}{4}})$ 라고 한다. 하지만 소수 판정, 최대공약수 등의 온갖 log 알고리즘이 잔뜩 들어가서 정확한 시간복잡도를 구하는건 상당히 애를먹게 되며, 대충 naive한 알고리즘인 $O(n^{\frac{1}{2}})$보단 빠르다는 것만 알아두면 될것 같다. 구현은 아래와 같다.
 
 ```cpp
 #include <cstdio>
-#include <map>
+#include <algorithm>
 
 using namespace std;
 
-struct node {
-    int len;
-    int sufflink;
-    map<char, int> nxt;
-};
+long long seed = 1987152371;
+long long mod = 1000000009;
+long long salt = 113;
 
-char o[200010];
-int cnt = 2;
-int lastsuff = 2;
+inline long long rnd() {  // 랜덤 함수이다.
+    seed *= seed;
+    seed %= mod;
+    seed += salt;
+    seed %= mod;
+    return seed;
+}
 
-node tree[200010];
+inline long long mult(long long x, long long y, long long n) { //128비트 곱셈
+    __int128 tmp = x;
+    tmp *= y;
+    tmp %= n;
+    return (long long)tmp;
+}
 
-void make_node(char c, int pos) {
-    int cur = lastsuff;
+long long gcd(long long a, long long b) {
+    if(b == 0) return a;
+    else if(a % b == 0) return b;
+    else return gcd(b, a % b);
+}
+
+inline long long Abs(long long x) {
+    return x < 0 ? -x : x;
+}
+
+long long exp(long long a, long long n, long long p) {
+    if(p == 0) return 1;
+    long long x = exp(a, n, p >> 1);
+    x = mult(x, x, n);
+    
+    if(p & 1) x = mult(x, a, n);
+    return x;
+}
+
+inline bool withness(long long s, long long n) {
+    long long t = n - 1;
+    int cnt = 0;
+    while(!(t & 1)) {
+        cnt++;
+        t /= 2;
+    }
+    long long x = exp(s, n, t);
+    long long pre = x;
+    for(int i = 0; i < cnt; i++) {
+        x = mult(x, x, n);
+        
+        if(x == 1 && pre != 1 && pre != n - 1) return true;
+        
+        pre = x;
+    }
+    
+    if(x != 1) return true;
+    
+    return false;
+}
+
+inline bool is_prime(long long n) {
+    for(int i = 0; i < 10; i++) {
+        int flag ;
+        long long tmp = rnd() % n;
+        while(tmp == 0) tmp = rnd() % n;
+        flag = withness(tmp, n);
+        if(flag) return false;
+    }
+    return true;
+}
+
+long long ans[100010], sz;
+
+void polard_rho(long long n) {
+    if(is_prime(n)) {
+        ans[sz++] = n;
+        return;
+    }
+    int i = 0;
+    long long x = rnd() % n;
+    long long y = x;
+    long long k = 2;
+    long long d = n;
     while(1) {
-        if(pos - tree[cur].len - 1 >= 0 && c == o[pos - tree[cur].len - 1]) break; // 만약 palindrome 을 만들 수 있다면
-        cur = tree[cur].sufflink; // 그렇지 못한경우 suffix link를 타고 간다.
-    }
-    if(tree[cur].nxt.count(c)) { // 만약 link에 해당하는 char가 존재한다면
-        lastsuff = tree[cur].nxt[c]; // last를 바꾼다.
-        return;
-    }
-    int nxt = lastsuff = tree[cur].nxt[c] = ++cnt; // 새로운 노드를 만들어낸다.
-    tree[nxt].len = tree[cur].len + 2; // 길이를 구한다.
-    
-    if(tree[nxt].len == 1) { // 만약 길이가 1이라면
-        tree[nxt].sufflink = 2; // 2번 노드에 연결한다.
-        return;
-    }
-    
-    while(cur > 1) {
-        cur = tree[cur].sufflink;
-        if(pos - tree[cur].len - 1 >= 0 && c == o[pos - tree[cur].len - 1]) { // 만약 palindrome을 만들 수 있다면
-            tree[nxt].sufflink = tree[cur].nxt[c]; // 해당 palindrome에 해당하는 노드에 연결한다. 이는 반드시 존재한다.
+        i++;
+        x = (mult(x, x, n) - 1 + n) % n;
+        d = gcd(Abs(y - x), n);
+        if(d != 1) {
             break;
         }
+        if(i == k) {
+            y = x;
+            k *= 2;
+        }
+    }
+    if(d != n) {
+        polard_rho(d);
+        polard_rho(n / d);
+        return;
+    }
+    if(!(n & 1)) {
+        polard_rho(2);
+        polard_rho(d / 2);
+        return;
+    }
+    for(long long i = 3; i * i <= n; i += 2) if(n % i == 0) {
+        polard_rho(i);
+        polard_rho(d / i);
+        return;
     }
 }
 
 int main() {
-    tree[1] = {-1, 1, map<char, int>()};
-    tree[2] = { 0, 1, map<char, int>()};
-
-    scanf("%s", o);
-        
-    for(char *k = o; *k != '\0'; k++) make_node(*k, (int)(k - o));
+    long long n;
+    scanf("%lld",&n);
+    polard_rho(n);
+    sort(ans, ans + sz);
+    for(int i = 0; i < sz; i++) printf("%lld\n", ans[i]);
+    return 0;
 }
 ```
-
-주석으로 설명을 대체하도록 하겠다.
-
-## 시간복잡도
- Correctness를 증명하는 것은 이 포스트를 읽는이의 도전으로 남겨두고 싶다. 힌트를 하나 주자면 KMP의 Correctness를 증명하는 것과 거의 유사하다. 다만 시간복잡도가 $$O(n)$$ (만약, map을 사용했다면 $$O(n log \alpha))$$)인 것을 설명하자면, last가 늘어나는것은 1 뿐이지만 suffix_link를 타고 가는 것이 음수가 될수는 없으므로 while문은 최대 n번씩 밖에 돌 수 없다. 즉, 시간복잡도는 $$O(n)$$ 이다.
-
-# 문제풀이
-
-## 팰린드롬
- 이 [링크](https://www.acmicpc.net/problem/10066)를 통하여 문제에 접근할 수 있다.
- 이 문제는 어떤 문자열에서 부분 문자열중 팰린드롬인것이 출현한 횟수에서 그 팰린드롬의 길이를 곱한 값 중 제일 큰 값을 구하는 매우 간단한 문제이다. 이를 해결 하기 위해서는 manacher's Algorithm 과 Suffix Array 그리고 Segment Tree를 사용하면 해결 할 수 있으나, 저 두가지의 자료구조를 구현 하는 것이 매우 매우 어렵기 때문에 Palindromic Tree 를 구현하여 해결하는 방법을 소개하고자 한다. 먼저 palindromic tree를 만들면서 노드에 방문할때마다, 혹은 생성될 때 마다 카운트 해준다. 이때, 현재 카운트 된 개수는 suffix link에 해당하는 노드에 영향을 주므로, 즉, suffix palindrome도 증가해야 하므로, 모두 만들고 나서 for문을 역으로 돌리면서 카운트된 개수를 다시 갱신해 주면 모든 palindrome에 대해서 값을 구할 수 있게 된다. 시간 복잡도는 당연하게도 $$O(n)$$
-
- 아래는 정답 코드이다.
-
-```cpp
-#include <cstdio>
-#include <map>
-
-using namespace std;
-
-struct node {
-    int len;
-    int sufflink;
-    map<char, int> nxt;
-};
-
-int cnt = 2;
-int lastsuff = 2;
-
-node tree[300010];
-
-char o[300010];
-
-int table[300010];
-
-void make_node(char c, int pos) {
-    int cur = lastsuff;
-    while(1) {
-        if(pos - tree[cur].len - 1 >= 0 && c == o[pos - tree[cur].len - 1]) break;
-        cur = tree[cur].sufflink;
-    }
-    if(tree[cur].nxt.count(c)) {
-        lastsuff = tree[cur].nxt[c];
-        table[lastsuff]++; // 원래 있었으므로 1 카운트
-        return;
-    }
-    int nxt = lastsuff = tree[cur].nxt[c] = ++cnt;
-    tree[nxt].len = tree[cur].len + 2;
-    table[lastsuff]++; // 새로 만들어지면서 1 카운트
-    
-    if(tree[nxt].len == 1) {
-        tree[nxt].sufflink = 2;
-        return;
-    }
-    
-    while(cur > 1) {
-        cur = tree[cur].sufflink;
-        if(pos - tree[cur].len - 1 >= 0 && c == o[pos - tree[cur].len - 1]) {
-            tree[nxt].sufflink = tree[cur].nxt[c];
-            break;
-        }
-    }
-}
-
-long long ans = 0;
-
-int main() {
-    tree[1] = {-1, 1, map<char, int>()};
-    tree[2] = { 0, 1, map<char, int>()};
-    scanf("%s", o);
-    for(char *k = o; *k != '\0'; k++) {
-        make_node(*k, (int)(k - o));
-    }
-    for(int i = cnt; i > 2; i--) { // 역순으로 돌면서
-        ans = max(ans, (long long)table[i] * tree[i].len); // 가장 끝 노드는 이미 계산이 완료 된 것이므로 정답 후보에 넣는다.
-        table[tree[i].sufflink] += table[i]; // suffix_link 에 해당하는 노드에 값 전파
-    }
-    printf("%lld\n",ans); // 정답 출력
-}
-```
-
-## The Problem to Slow Down You
- 이 [링크](https://codeforces.com/gym/100548/attachments)를 통하여 문제를 볼 수 있다.
- 이 문제는 두개의 문자열이 주어졌을 때, 서로 같은 팰린드롬인 부분문자열의 쌍의 개수(이때 위치가 다르면 서로 다른것으로 센다.)를 구하는 문제이다. 이 문제는 푸는 방법이 두 가지가 있지만 KMP처럼 Palindromic Tree를 사용하는 방법을 보여주기 위해, 즉, 오토마타 처럼 사용하는 풀이를 보여주도록 하겠다. 일단 위의 팰린드롬 문제 처럼 Palindromic Tree를 구축한 뒤, 카운팅을 모두 완료시킨 상태에서 두번째 문자열을 오토마타로 읽듯이 훑어보는 과정이 필요하다. 하지만 여기서 중요한 것은 어떤 팰린드롬이 존재함을 감지했다면, 그것을 suffix link로 가지고 있는 모든 노드들에 값을 다시 전파해야한다. 즉, 이번엔 역순으로 카운트한 배열을 다시 정순으로 전파하는 작업을 해야한다. 그 작업을 완료한 뒤, 훑으면서 팰린드롬을 발견할 때 마다 우리가 정순으로 전파한 값을 더해나가면 쉽게 풀 수 있다.
-
- 시간 복잡도는 정말 당연하게도 $$O(n)$$ 이다.
-
- 아래는 정답 코드이다. 주석으로 자세히 설명하겠다.
-
-```cpp
-#include <cstdio>
-#include <map>
-
-using namespace std;
-
-struct node {
-    int len;
-    int sufflink;
-    map<char, int> nxt;
-};
-
-int cnt;
-int lastsuff;
-
-node tree[200010];
-
-char o[200010];
-char u[200010];
-
-int table[200010];
-
-long long sub[200010];
-
-void make_node(char c, int pos) {
-    int cur = lastsuff;
-    while(1) {
-        if(pos - tree[cur].len - 1 >= 0 && c == o[pos - tree[cur].len - 1]) break;
-        cur = tree[cur].sufflink;
-    }
-    if(tree[cur].nxt.count(c)) {
-        lastsuff = tree[cur].nxt[c];
-        table[lastsuff]++;
-        return;
-    }
-    int nxt = lastsuff = tree[cur].nxt[c] = ++cnt;
-    tree[nxt].len = tree[cur].len + 2;
-    table[lastsuff]++;
-    
-    if(tree[nxt].len == 1) {
-        tree[nxt].sufflink = 2;
-        return;
-    }
-    
-    while(cur > 1) {
-        cur = tree[cur].sufflink;
-        if(pos - tree[cur].len - 1 >= 0 && c == o[pos - tree[cur].len - 1]) {
-            tree[nxt].sufflink = tree[cur].nxt[c];
-            break;
-        }
-    }
-}
-
-int main() {
-    tree[1] = {-1, 1, map<char, int>()};
-    tree[2] = { 0, 1, map<char, int>()};
-    int t, f = 0;
-    scanf("%d",&t);
-    while(t--) {
-        lastsuff = 2;
-        cnt = 2;
-        
-        scanf("%s", o);
-        scanf("%s", u);
-        
-        for(char *k = o; *k != '\0'; k++) make_node(*k, (int)(k - o));
-        long long ans = 0;
-        for(int i = cnt; i > 2; i--) table[tree[i].sufflink] += table[i]; // 역순 전파
-        for(int i = 3; i <= cnt; i++) { // 정순으로 다시 전파
-            sub[i] = table[i];
-            sub[i] += sub[tree[i].sufflink];
-        }
-        
-        int now = 1;
-        for(char *k = u; *k != '\0'; k++) {
-            int flag = 0;
-            int pos = (int)(k - u);
-            while(pos - tree[now].len - 1 < 0 || u[pos - tree[now].len - 1] != *k || tree[now].nxt.count(*k) == 0) { // KMP 돌리듯이 타고 간다.
-                if(now == 1) {
-                    flag = 1; // 만약 더이상 타고갈 suffix link가 없다면 위 문자열에선 없는 문자이므로 무시하기 위해 flag를 세운다.
-                    break;
-                }
-                now = tree[now].sufflink;
-            }
-            if(flag) continue;
-            now = tree[now].nxt[*k]; // 이동
-            ans += sub[now]; // 정답을 더해준다.
-        }
-        
-        for(int i = cnt; i > 2; i--) {
-            sub[i] = 0;
-            table[i] = 0;
-            tree[i].nxt.clear();
-            tree[i].len = 0;
-            tree[i].sufflink = 0;
-        }
-        tree[1].nxt.clear();
-        tree[2].nxt.clear();
-        table[2] = table[1] = 0;
-        printf("Case #%d: %lld\n", ++f, ans);
-    }
-}
-```
-
-# 마무리
- 이번 포스트를 계기로 많은 사람들이 Palindromic Tree에 대해 이해하고 무난하게 사용할 수 있게 되었으면 좋겠다. 그리 좋은 글 솜씨는 아니지만 최대한 이해하기 쉽게 써보았으며, 많은 사람들이 Palindromic Tree를 활용하여 팰린드롬 문제를 대응할 수 있게 되었으면 좋겠다.
- 
-# 참고자료
-
-- [adilet.org](http://adilet.org/blog/palindromic-tree/); Palindromic Tree. Adilet Zhaxybay
