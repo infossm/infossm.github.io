@@ -18,7 +18,7 @@
 딥러닝이 현재 큰 인기와 관심이 주목된 가운데, 데이터과학의 중요도 또한 크게 중요해지고 있다.<br>
 <br>
 데이터들이 중요한 이유는 무엇일까?<br>
-다음 그림에서 보이듯이 AI(인공지능)는 learning 을 통해서 자신의 내부 computation을 견고하게 만들고, <br>
+AI(인공지능)는 learning 을 통해서 자신의 내부 computation을 견고하게 만들고, <br>
 그 learning은 다름이 아닌 data들의 집합을 통해서 이루어진다.<br>
 <br>
 여러가지 예를 들 수 있겠지만 image classification 이라는 대표적인 주제가 있다고 가정하자.<br>
