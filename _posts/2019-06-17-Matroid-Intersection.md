@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Matroid Intersection"
-date:   2019-05-15 23:30:00
+date:   2019-06-17 23:30:00
 author: ainta
 tags: [algorithm, matroid, greedy algorithm, structure, graph theory]
 
