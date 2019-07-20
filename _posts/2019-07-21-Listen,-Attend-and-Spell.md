@@ -32,7 +32,7 @@ $$P(y|x)=\text{AttendAndSpell}(h, y)$$
 
 &nbsp;&nbsp;&nbsp;&nbsp;아래 그림은 LAS 모델을 시각화한 그림입니다.
 
-![](/assets/images/listen-attend-and-spell/capture.PNG)
+![](/assets/images/listen-attend-and-spell/Capture.PNG)
 
 ## Listen
 
@@ -114,11 +114,11 @@ $$s(y|x)={\log P(y|x) \over |y|_c} + \lambda \log P_{LM}(y)$$
 
 &nbsp;&nbsp;&nbsp;&nbsp;LAS에서는 같은 음향 데이터에 대해 여러 가지의 의미있는 표현을 내놓기도 했습니다. 예를 들어서 아래 표와 같이 실제 답이 "aaa"를 포함할 때 LAS의 beam search 후보군에서 "aaa"뿐만 아니라 "triple a"와 같은 단어도 확인할 수 있었습니다. 이것은 LAS가 decoder에서 다음 스텝의 문자를 예측할 때 특별히 어떠한 제약을 두지 않기 때문에 가능했을 것으로 보입니다. 기존의 CTC 모델의 경우 결과 값에 대한 독립성 가정이 존재하고, 전통적인 DNN-HMM 시스템의 경우 발음 사전을 사용하기 때문에 이와 같은 유연한 결과를 보이기 힘들 것입니다.
 
-![](/assets/images/listen-attend-and-spell/aaa.png)
+![](/assets/images/listen-attend-and-spell/aaa.PNG)
 
 &nbsp;&nbsp;&nbsp;&nbsp;LAS는 content-based attention을 사용하기 때문에 디코딩을 할 때 일부 정보를 잃기 쉽다고 생각할 수 있습니다. 그래서 같은 단어를 여러 번 반복해서 출력해야 하는 예제의 경우 원래보다 적은 횟수 혹은 많은 횟수의 단어를 출력할 것이라고 예측할 수 있습니다. 하지만, 실제로 다음과 같이 한 단어를 여러번 반복 출력해야 하는 상황에서도 LAS는 성공적으로 답을 출력하는 것을 확인할 수 있습니다.
 
-![](/assets/images/listen-attend-and-spell/seven.png)
+![](/assets/images/listen-attend-and-spell/seven.PNG)
 
 ## 논문에서 유의할 점
 
