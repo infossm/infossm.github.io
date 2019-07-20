@@ -68,9 +68,9 @@ $$c_i=\sum_u \alpha_{i,u}h_u$$
 
 &nbsp;&nbsp;&nbsp;&nbsp;앞에서 설명한 Listen과 AttendAndspell 함수는 같이 학습(end-to-end 학습)이 가능합니다. sequence to sequence 모델에서 다음 식과 같이 log 확률을 최대하는 방법으로 학습할 수 있습니다.
 
-$$\max_{\theta} \sum_i {\log P(y_i|x, y_{<i}^*;\theta)}$$
+$$\max_{\theta} \sum_i {\log P(y_i|x, y_{<i}^\ast;\theta)}$$
 
-&nbsp;&nbsp;&nbsp;&nbsp;여기에서 $y_{<i}^*$는 모델이 실제 문자를 나타냅니다. sequence to sequence 모델에서 이와 같이 입력 값으로 이전 스텝에서 예측한 라벨이 아닌 실제 라벨을 쓰는 이유는 학습을 안정적으로 빠르게 하기 위해서 입니다.(Teacher forcing)
+&nbsp;&nbsp;&nbsp;&nbsp;여기에서 $y_{<i}^\ast$는 모델이 실제 문자를 나타냅니다. sequence to sequence 모델에서 이와 같이 입력 값으로 이전 스텝에서 예측한 라벨이 아닌 실제 라벨을 쓰는 이유는 학습을 안정적으로 빠르게 하기 위해서 입니다.(Teacher forcing)
 
 &nbsp;&nbsp;&nbsp;&nbsp;이 방식은 매우 효율적이지만 문자들간의 관계가 중요한 문장에서 낮은 에러를 예측하기 때문에 학습이 힘들어질 수 있습니다. 이 문제를 해결하기 위해서 일정 확률로 실제 라벨 대신에 모델에서 샘플링한 라벨을 입력 값으로 사용합니다.(Scheduled sampling)
 
