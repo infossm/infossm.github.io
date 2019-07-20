@@ -110,6 +110,10 @@ $$s(y|x)={\log P(y|x) \over |y|_c} + \lambda \log P_{LM}(y)$$
 
 &nbsp;&nbsp;&nbsp;&nbsp;이 논문이 쓰여질 당시 state-of-the-art 모델인 CLDNN-HMM은 clean 데이터에서 WER 8.0%, noisy 데이터에서 WER 8.9%를 받았습니다. 비록 LAS는 이 모델보다 성능이 떨어지지만 end-to-end 학습이 가능한 모델이라는 점에서 의의가 있습니다.
 
+&nbsp;&nbsp;&nbsp;&nbsp;다음 사진은 "how much would a woodchuck chuck" 문장이 주어졌을 때 attention의 분포가 어떻게 나타났는지 보여줍니다. 모델에 발음에 대한 위치 정보를 주지 않았음에도 불구하고 그림과 같이 발음의 시작위치를 올바르게 찾을 수 있음을 보여줍니다. "woodchuck"와 "chuck"는 비슷한 발음을 가지고 있기 때문에 이에 대한 attention 메커니즘 결과가 약간 혼란스러운 것을 볼 수 있습니다.
+
+![](/assets/images/listen-attend-and-spell/result2.PNG)
+
 ## 흥미로운 예제
 
 &nbsp;&nbsp;&nbsp;&nbsp;LAS에서는 같은 음향 데이터에 대해 여러 가지의 의미있는 표현을 내놓기도 했습니다. 예를 들어서 아래 표와 같이 실제 답이 "aaa"를 포함할 때 LAS의 beam search 후보군에서 "aaa"뿐만 아니라 "triple a"와 같은 단어도 확인할 수 있었습니다. 이것은 LAS가 decoder에서 다음 스텝의 문자를 예측할 때 특별히 어떠한 제약을 두지 않기 때문에 가능했을 것으로 보입니다. 기존의 CTC 모델의 경우 결과 값에 대한 독립성 가정이 존재하고, 전통적인 DNN-HMM 시스템의 경우 발음 사전을 사용하기 때문에 이와 같은 유연한 결과를 보이기 힘들 것입니다.
