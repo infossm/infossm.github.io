@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  "Digital Signature and Nonce Reuse"
-date:   2019-07-21 23:20:00
-author: rbtree
+date:   2019-07-21 23:20
+author: RBTree
 tags: [digital signature, dsa, security, number theory]
 ---
 
@@ -44,7 +44,7 @@ DSA는 Digital Signature Algorithm의 약자로, NIST에서 2013년에 발표한
 
 우선 key length $$L, N$$을 정의한다. 이는 일반적으로 (1024, 160), (2048, 224), (2048, 256), (3072, 256) 중 하나이다.
 
-메시지를 해싱할 함수 $$H$$를 정의한다. $$H$$의 output의 길이 $$|H|$$ 는 $$N$$ 이상이어야 한다.
+메시지를 해싱할 함수 $$H$$를 정의한다. $$H$$의 output의 길이 $$\mid H\mid$$ 는 $$N$$ 이상이어야 한다.
 
 $$L, N$$을 정하면 $$N$$-bit 소수 $$q$$를 구하고, $$p - 1$$이 $$q$$의 배수가 되는 $$L$$-bit 정수 $$p$$를 구한다.
 
