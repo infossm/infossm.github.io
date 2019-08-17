@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "SHA-256 구현"
+title: "Purely Functional Business Logic In Scala"
 date: 2019-08-18 01:25
 author: taeguk
 tags: [Fuctional Programming, scala, cats, rwst, monad, DDD, Software Design]
@@ -236,3 +236,5 @@ Failed to perform a logic: java.lang.Exception: Money is not enough to play dart
 오늘은 스칼라에서 비지니스 로직을 purely functional 하게 작성하고 DDD 설계시에 활용하는 방법에 대해 간단하게 살펴보았습니다. <br/>
 앞으로는 스칼라나 함수형쪽으로 포스팅을 자주 하게 될 것 같네요. <br/>
 다음에 또 만나요~
+
+**[이 포스팅을 taeguk 블로그에서 보기](https://taeguk2.blogspot.com/2019/08/purely-functional-business-logic-in.html)**
