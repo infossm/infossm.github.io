@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Python의 큰 정수 표현법 2 - 사칙연산"
+title:  "Python의 큰 정수 표현법 3 - 기타 연산"
 date:   2019-08-17-17:34
 author: djm03178
 tags: biginteger, python, 파이썬, 큰수
