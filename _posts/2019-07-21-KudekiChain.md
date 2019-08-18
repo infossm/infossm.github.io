@@ -1,9 +1,9 @@
-```
+---
 layout: post
 title:  "Kudeki Chain과 CUDA Programming"
 date:   2019-07-21 17:00:00
 author: zigui_ps
-```
+---
 
 
 목차
