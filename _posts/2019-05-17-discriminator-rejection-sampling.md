@@ -75,7 +75,7 @@ $$
 
 &nbsp;&nbsp;&nbsp;&nbsp;$p_d(=p_{data})$를 우리가 구하고자 하는 실제 데이터의 분포라고 합시다. 그리고 $p_g$와 $p_d$의 support가 같다고 가정합니다.(즉, $p_g(x)\neq 0 \iff p_d(x)\neq 0$) rejection sampling을 하기 위해서는 제안 분포와 위에서 설명한 상수 $M$이 필요합니다. 제안 분포는 생성자의 분포인 $p_g$로 놓고 $M$은 $\max_x p_d(x)/p_g(x)$으로 놓습니다. 그런데 $p_d(x)$와 $p_g(x)$ 모두 implicit하게 정의된 분포이기 때문에 값을 정확히 알 수 없습니다. 그렇다면 acceptance probability인 $p_d(x)/Mp_g(x)$ 값은 어떻게 구할까요?
 
-&nbsp;&nbsp;&nbsp;&nbsp;위에서 구한 최적 판별자 $D^*(=D_g^*)$에 관한 식에 주목합시다.
+&nbsp;&nbsp;&nbsp;&nbsp;위에서 구한 최적 판별자 $D^\ast(=D_g^\ast)$에 관한 식에 주목합시다.
 
 ![](/assets/images/discriminator-rejection-sampling/DRS_1.PNG)
 
@@ -83,7 +83,7 @@ $$
 
 ![](/assets/images/discriminator-rejection-sampling/DRS_2.PNG)
 
-&nbsp;&nbsp;&nbsp;&nbsp;그러면 다음과 같이 $D^*(x)$로 $p_d(x)/p_g(x)$를 표현할 수 있습니다.
+&nbsp;&nbsp;&nbsp;&nbsp;그러면 다음과 같이 $D^\ast(x)$로 $p_d(x)/p_g(x)$를 표현할 수 있습니다.
 
 ![](/assets/images/discriminator-rejection-sampling/DRS_3.PNG)
 
