@@ -295,15 +295,11 @@ $$
 
 # **Discussion**
 
-바로 보이는 아쉬운 점은 Tabular 세팅에서의 Soft Policy Iteration에서 Soft Actor-Critic으로 넘어갈 때 여러 가정들이 무시되는 부분입니다. Action space의 크기가 finite 하다는 가정도 깨졌고, 현재 policy의 value function으로 완전히 수렴 후 improvement 한다는 가정도 깨졌기 때문입니다. 다만 이는 대부분의 RL 알고리즘이 공통적으로 가지는 문제이기 때문에 크게 아쉬운 점은 아니라고 생각합니다.
+아쉬운 점 중 하나는 Tabular 세팅에서의 Soft Policy Iteration에서 Soft Actor-Critic으로 넘어갈 때 여러 가정들이 무시되는 부분입니다. Action space의 크기가 finite 하다는 가정도 깨졌고, 현재 policy의 value function으로 완전히 수렴 후 improvement 한다는 가정도 깨졌기 때문입니다. 다만 이는 대부분의 RL 알고리즘이 공통적으로 가지는 문제이기 때문에 크게 아쉬운 점은 아니라고 생각합니다.
 
 엔트로피 계수를 조정하는 부분에선 각 timestep에 대한 라그랑지안 함수의 최적 파라미터를 계산할 때, 초기 $$ \alpha_t $$ 에 대해 optimal policy를 계산한 뒤, 그 optimal policy에 대한 optimal entropy coefficient를 찾는데 이것이 global하게 optimal한 policy, coefficient 인지에 관한 설명이 없습니다(아마 아닐 것 같습니다).
 
 또한 이론적으로는 각 timestep마다 최적의 policy를 찾고 그에 대응되는 최적의 coefficient를 찾았다 해도 실제 알고리즘에서는 현재 policy에 대해서만 coefficient를 찾는다는 한계가 있습니다. Timestep 별 policy야 이론적으로 하나의 policy를 잘 학습시키면 각 timestep에 대해 최적의 policy와 동일한 결과를 보이게 할 수 있겠지만, $$ \alpha $$ 를 모든 timestep에 대해 같은 값을 사용하는 것은 수학적으로는 비약이 있어 보입니다. 다만 $$ \alpha $$ 에 대한 최적화 목표를 직관적으로 해석했을 때는 이해되는 부분이긴 합니다.
-
-가능한 Future Work로는 Function Approximator를 적용했을 때 Soft Policy Iteration 정리가 이론적으로 보장되는지와 Automating Entropy Adjustment 에서 minimum entropy는 어떻게 정할지에 관해 생각해 볼 수 있겠습니다. 특히 후자의 경우는 논문에도 적혀 있는 것과 같이 대부분의 경우에서 부등식이 tight 할텐데, 즉 Entropy가 Minimum entropy 근처에 가게 될 것으로 기대되기 때문에 값 선정이 더 중요해 보입니다(아쉬운 점이기도 합니다).
-
-또 다른 방향으로는 Maximum Entropy Objective는 유지하되 Improvement를 통상적인 Policy Gradient 처럼 initial state의 value function에 대해 진행하는 것을 생각해 볼 수도 있겠습니다.
 
 
 =========
