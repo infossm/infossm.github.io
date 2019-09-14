@@ -220,11 +220,15 @@ Berlekamp-Massey에서 활용하는 것은 행렬의 **sparse** 함이다. 위�
 
 고로, 위에서 설명한 대로 최소 방정식을 구한 후, $A^k \times b$ 역시 위에서 설명한 대로 구하면, $O(nm)$ 에 쉽게 해결할 수 있다. $A^{-1}$을 구하는 것은 어렵지만, $A^{-1}\times b$ 를 구하는 것은 쉽다는 것이 흥미롭다. Frievald's algorithm과 비슷한 패러독스.
 
+연습 문제: Petrozavodsk Winter 2019. Ildar Gainullin Contest E.
+
 
 
 ### 예시 2: $A^k \times b$ 빠르게 계산하기
 
 이것 역시 최소 다항식을 구했으면 어렵지 않다. $A^k$ 를 최소 다항식으로 나눈 나머지를 repeated squaring으로 계산하고, 결과적으로 나온 $k-1$ 차 이하의 다항식에 $v$ 를 곱해서 계산하면 되기 때문이다. 키타마사법에서 사용한 트릭과 동일하다 :smile: 시간 복잡도는 $O(nm + n^2 \log k)$ 이다. 
+
+연습 문제 : [Codechef October 2018 Long Challenge. Walk on Tree](<https://www.codechef.com/problems/TREEWALK>)
 
 
 
