@@ -80,7 +80,7 @@ plt.plot(ndata['date'],ndata['amount'])
 ```
 
 다음과 같은 그래프가 형성됨을 알 수 있다.    <br>
-![plotAmount](/01.png)
+![plotAmount](/assets/images/datascience-analysis/01.png)
 <br>
 평균 10000 값을 유지하는 것을 쉽게 시각적으로 확인할 수 있다. <br>
 <br>
@@ -108,7 +108,7 @@ plt.subplot(1,2,2)
 plt.hist(tt)
 ```
 
-![plotHolyday](/02.png)
+![plotHolyday](/assets/images/datascience-analysis/02.png)
 <br>
 위에 표시한 값은 holyday 즉 휴일때 매출의 최댓값과 최솟값 그리고 평균값이다.<br>
 아래에 표시한 값은 휴일이 아닐때 매출의 최댓값과 최솟값 그리고 평균값이다.<br>
@@ -158,9 +158,9 @@ plt.plot(XX[1:50],ZZ[1:50],'r')
 
 위 코드에서 U, s, Vt = np.linalg.svd(YY,full_matrices = False) 부분이 고윳값, 고유벡터를 구하는 부분으로 numpy에서 라이브러리를 제공한다. <br>
 주요하다고 생각하는 amount 와 holyday를 가지고 진행하였고 고윳값벡터로 표현된 매출 변화도는 파란색으로, 기존 메출변화를 빨강색으로 표시했다. <br>
-![plotDifference](/03-1.png) <br>
+![plotDifference](/assets/images/datascience-analysis/03-1.png) <br>
 차이가 없어보이지만 plt.plot(XX,T) 부분을 실행하게 되면 T에는 두 매출변화도의 값 차이를 그래프로 나타낸 것으로 다음과 같이 변화가 있는 것을 확인할 수 있다. <br>
-![plotDifference](/03-2.png) <br>
+![plotDifference](/assets/images/datascience-analysis/03-2.png) <br>
 YY 를 선언하는 위치에서 model.weight.data.numpy()[0][1]을 holyday feature값에 곱하는 부분이 있다. <br>
 이를 통해서 T에서 나타나는 변화차이가 더 뚜렷해지는 것을 확인할 수 있는데, 기존에는 holyday값이 0 or 1 뿐이므로, 사실 amount 값에 비해 <br>
 중요한 feature로 계산상 해석되기 힘들다. 따라서 가중치값을 곱해주었다. <br>
@@ -203,7 +203,7 @@ plt.show()
 ```
 
 다음은 linear regression 의 결과이다. <br>
-![linearRegression](/04.png)
+![linearRegression](/assets/images/datascience-analysis/04.png)
 <br>
 이는 SVD의 효율성을 증가시킨것을 실제로 확인할 수 있다. <br>
 그렇다면 SVD는 왜 사용할까? 우리는 PCA로 요소들을 분석할 때, PCA가 기존 feaure들보다 더 data들을 잘 나타내기 때문이다 <br>
@@ -251,7 +251,7 @@ po.to_csv("filename.csv", index=False, mode='w')
 이 작업을 해주는 이유는 R의 경우에 지원되는 format이 정해져 있고, feature(Header)의 첫글자가 대문자가 아닌 경우 class를 잘 인식 못할 경우가 발생한다. <br>
 따라서 이를 변경해주는 작업을 거쳤다. <br>
 이제 위의 R코드의 결과를 확인해보자.<br>
-![R visualize](/05.png)
+![R visualize](/assets/images/datascience-analysis/05.png)
 보여지는 Boundary는 예측된 값의 오차 범위를 의미한다. 결과가 보다 직관적이지 못함을 알 수 있다.<br>
 
 ETS예측에는 ARIMA Seasonal, ARIMA Non Seasonal, AVERAGE SEASONAL ETS AND ARIMA , ETS Seasonal, ETS Non Seasonal 5가지 방법이 있다.<br>
@@ -261,7 +261,7 @@ ETS예측에는 ARIMA Seasonal, ARIMA Non Seasonal, AVERAGE SEASONAL ETS AND ARI
 앞선 R 코드에서 추출된 CSV파일을 추가만해주면 된다. 실행한 결과 5개알고리즘에 대해서 모두 예측값을 보여주고 그 예측값은 다음과 같다.<br>
 <br>
 Visualize 한 결과는 다음과 같다.<br>
-![Visualize Forecast data](/06.png)
+![Visualize Forecast data](/assets/images/datascience-analysis/06.png)
 
 앞선 R코드에서 예측한 결과보다 좀더 앞부분에 detail한 결과를 얻을 수 있다.<br>
 하지만 생각보다 우리가 원하는 결과가 아님을 알 수 있는데 이는 ETS 예측자체가 시계열 데이터에 대해서 연도별 또는 계절별 구간의 변화를 파악해서 예측하는 것이어서, 구간의 특징이 없거나, 약한 경우 좋은 결과를 예측하지 못할 수 있다. <br>
