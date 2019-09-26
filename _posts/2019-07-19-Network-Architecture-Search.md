@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Network Architecture Search"
-date: 2019-07-19 22:00
+date: 2019-07-19 12:00
 author: junodeveloper
 tags: [deep-learning]
 ---
@@ -50,15 +50,21 @@ Controller의 학습은 RNN controller의 parameter vector인 $$\theta_c$$를 �
 $$
 J(\theta_c)=E_{P(a_{1:T};\theta_c)}[R]
 $$
+
 여기서 $$T$$는 controller가 예측해야 할 파라미터의 개수, $$R$$은 reward (child network로부터 얻은 validation accuracy), $$a_{1:T}$$는 action list (controller가 선택하는 hyperparameter들의 list)입니다. 즉, 우리가 원하는 것은 reward $$R$$의 기댓값을 최대화하는 최적의 policy (각 action의 확률)을 찾는 것입니다. 이를 위해 policy gradient를 이용하게 되는데, 구체적으로는 REINFORCE rule을 사용합니다.
+
 $$
 \nabla_{\theta_c}J(\theta_c)=\sum_{n=1}^TE_{P(a_{1:T};\theta_c)}[\nabla_{\theta_c}logP(a_t|a_{(t-1):1};\theta_c)R]
 $$
+
 만약 $$m$$개의 sample을 하나의 batch로 한 번에 update하고자 하는 경우, 위 식을 다음과 같이 approximate할 수 있습니다.
+
 $$
 \frac{1}{m}\sum_{k=1}^{m}\sum_{t=1}^{T}\nabla_{\theta_c}logP(a_t|a_{(t-1):1};\theta_c)R_k
 $$
+
 $$R_k$$는 $$k$$번째 child network로부터 얻은 validation accuracy입니다. 단, 위 식으로 학습을 할 경우 variance가 매우 커질 수 있기 때문에 baseline function을 도입한 다음의 식을 사용합니다.
+
 $$
 \frac{1}{m}\sum_{k=1}^{m}\sum_{t=1}^{T}\nabla_{\theta_c}logP(a_t|a_{(t-1):1};\theta_c)(R_k-b)
 $$
