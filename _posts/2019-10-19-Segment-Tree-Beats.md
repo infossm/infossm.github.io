@@ -4,6 +4,7 @@ title: Segment Tree Beats
 date: 2019-10-19 12:00
 author: rdd6584
 tags: [algorithm]
+
 ---
 
 안녕하세요. 권일우입니다. 이곳에 글을 처음 써보네요.
@@ -202,6 +203,7 @@ void add(int i, int l, int r, int le, int ri, int val) {
 	tree[i] = merge(tree[i * 2], tree[i * 2 + 1]);
 }
 ```
+
 각 쿼리를 구현한 코드입니다. $add\_lazy$는 구간에 값을 더하는 tag이며, $sup\_lazy$는 구간에 값을 대입하는 tag입니다. 대입은 구간의 값이 전부 같다는 정보를 주므로, $add\_lazy$와 쉽게 합쳐줄 수 있으며 이를 바탕으로 propagate를 다음과 작성할 수 있습니다.
 
 
@@ -334,6 +336,6 @@ void od(int i, int l, int r, int le, int ri, int val) {
 
 ## 마치며
 
-궁금하신 점이나 잘못된 부분이 있다면, 제 블로그([링크](rdd573.blog.me))계정을 통해 전달하실 수 있습니다.
+궁금하신 점이나 잘못된 부분이 있다면, 제 블로그([링크](https://blog.naver.com/rdd573))계정을 통해 전달하실 수 있습니다.
 
 긴 글 읽어주셔서 감사합니다.
