@@ -93,6 +93,8 @@ void update(int i, int l, int r, int le, int ri, int X) {
 
 <img src="/assets/images/rdd6584_1/1_4.png" width="100%" height="100%">
 
+$max\_val$과 $smax\_val$로 트리를 구축한 모습입니다.
+
 여기에 `1 1 N 999999` 쿼리를 보내면 어떻게 될까요?
 
 <img src="/assets/images/rdd6584_1/1_5.png" width="100%" height="100%">
@@ -107,8 +109,6 @@ void update(int i, int l, int r, int le, int ri, int X) {
 
 
 <img src="/assets/images/rdd6584_1/1_6.png" width="100%" height="100%">
-
-$max\_val$과 $smax\_val$로 트리를 구축한 모습입니다.
 
 여기에 `1 1 N 999999` 쿼리를 보내면 어떻게 될까요?
 
