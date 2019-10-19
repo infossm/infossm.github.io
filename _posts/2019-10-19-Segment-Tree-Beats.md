@@ -11,13 +11,13 @@ tags: [algorithm]
 
 안녕하세요. rdd6584로 활동하고 있는 권일우입니다.
 
-요즘 유행하는 segment tree beats(이하 세그비츠)에 대해서 소개하겠습니다. 이를 위해서는, segment tree with lazy propagation에 대한 지식이 선행되어야 하며, 이 게시글에서는 소개하지 않습니다. 
+이 글에서는 요즘 유행하는 segment tree beats(이하 세그비츠)에 대해서 소개하겠습니다. 이를 위해서는, segment tree with lazy propagation에 대한 지식이 선행되어야 하지만 여기서는 소개하지 않겠습니다. 
 
 
 
 # Segment Tree Beats
 
-여기서 segment tree beats의 beats는 일본 애니메이션 "angel beats"에서 따온 것으로 특별한 의미를 가지고 있지 않습니다. 그러면 세그비츠가 뭘까요? 세그비츠는 lazy propagation의 활용형으로 중단조건과 갱신조건을 적절히 조절하여 까다로운 구간 쿼리를 해결하는 방법 중 하나입니다. 
+segment tree beats의 beats는 일본 애니메이션 "angel beats"에서 따온 것으로 특별한 의미를 가지고 있지 않습니다. 그러면 세그비츠가 뭘까요? 세그비츠는 lazy propagation의 활용형으로 중단조건과 갱신조건을 적절히 조절하여 까다로운 구간 쿼리를 해결하는 방법 중 하나입니다. 
 
 아래와 같은 문제가 있습니다.
 
@@ -89,14 +89,14 @@ void update(int i, int l, int r, int le, int ri, int X) {
 
 그러면 어떤 조건을 추가로 주는 것이 좋을까요? 구간에서 두번째로 큰 값을 $smax\_val$이라고 해봅시다. 여기서 두번째로 큰 값은 첫번째로 큰 값보다 엄격히 작아야 합니다.
 
-이때, 갱신조건에서 `tree[i].max_val > X && tree[i].smax_val < X`를 추가로 해볼까요? 이 구간에서 $max\_val$ 값의 개수를 $max\_cnt$ 라고 할때, 이 구간의 합은 $(max\_val - X) * max\_cnt$만큼 감소합니다. 
+이때, 갱신조건에서 `tree[i].max_val > X && tree[i].smax_val < X`를 추가로 해볼까요? 이 구간에서 $max\_val$ 값의 개수를 $max\_cnt$ 라고 할때, 이 구간의 합은 $(max\_val - X) * max\_cnt$만큼 감소하므로 구간합을 정확히 관리할 수 있습니다.
 
 <img src="/assets/images/rdd6584_1/1_4.png" width="100%" height="100%">
 
-여기에 1 1 N 999999 쿼리를 보내면 어떻게 될까요?
+여기에 `1 1 N 999999` 쿼리를 보내면 어떻게 될까요?
 
 <img src="/assets/images/rdd6584_1/1_5.png" width="100%" height="100%">
-(\*표시는 이 노드와 하위 노드의 max_val이 전부 이 값의 이하라는 lazy propagation 태그입니다.)
+($*$표시는 이 노드와 하위 노드의 $max\_val$이 전부 이 값의 이하라는 lazy propagation 태그입니다.)
 
 위와 같은 예제는 루트노드만 갱신되고 나머지 propagation도 빠르게 연산되므로 쉽게 해결되겠네요.
 
@@ -108,13 +108,15 @@ void update(int i, int l, int r, int le, int ri, int X) {
 
 <img src="/assets/images/rdd6584_1/1_6.png" width="100%" height="100%">
 
-여기에 1 1 N 999999 쿼리를 보내면 어떻게 될까요?
+$max\_val$과 $smax\_val$로 트리를 구축한 모습입니다.
+
+여기에 `1 1 N 999999` 쿼리를 보내면 어떻게 될까요?
 
 <img src="/assets/images/rdd6584_1/1_7.png" width="100%" height="100%">
 
-서로 다른 두 값이 같은 값이 되면서 max_val과 함께 smax_val도 같이 업데이트 되고 있습니다.
+서로 다른 두 값이 같은 값이 되면서 $max\_val$과 함께 $smax\_val$도 같이 업데이트 되고 있습니다.
 
-여기에 1 1 N 999998 쿼리도 보내볼까요? 이제는 루트노드만 바꿔줘도 되겠네요.
+여기에 `1 1 N 999998` 쿼리도 보내볼까요? 이제는 루트노드만 바꿔줘도 되겠네요.
 
 <img src="/assets/images/rdd6584_1/1_8.png" width="100%" height="100%">
 
