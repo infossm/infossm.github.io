@@ -9,7 +9,7 @@ tags: [algorithm]
 
 ---
 
-안녕하세요. 권일우입니다. 이곳에 글을 처음 써보네요.
+안녕하세요. rdd6584로 활동하고 있는 권일우입니다.
 
 요즘 유행하는 segment tree beats(이하 세그비츠)에 대해서 소개하겠습니다. 이를 위해서는, segment tree with lazy propagation에 대한 지식이 선행되어야 하며, 이 게시글에서는 소개하지 않습니다. 
 
