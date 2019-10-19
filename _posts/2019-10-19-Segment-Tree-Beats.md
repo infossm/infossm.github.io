@@ -126,7 +126,7 @@ void update(int i, int l, int r, int le, int ri, int X) {
 
 
 
-이 로직을 작성한 코드입니다.
+이 로직을 작성한 코드입니다. 위에 설명한 동작과 약간 다르지만, 전체적인 역할은 동일합니다.
 
 설명한 문제는 수열과 쿼리 26([링크](https://www.acmicpc.net/problem/17474)) 에서 풀어보실 수 있습니다.
 
