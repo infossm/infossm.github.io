@@ -4,6 +4,9 @@ title: Segment Tree Beats
 date: 2019-10-19 12:00
 author: rdd6584
 tags: [algorithm]
+
+
+
 ---
 
 안녕하세요. 권일우입니다. 이곳에 글을 처음 써보네요.
@@ -72,17 +75,52 @@ void update(int i, int l, int r, int le, int ri, int X) {
 
 
 
-
 갱신조건을 `구간에 속한 값이 모두 같은 경우`를 추가 조건으로 주면 구간합의 변화는 정확히 계산할 수 있습니다. 
+
+
 
 하지만, $A = [1000000,\space1,\space1000000,\space1,\space1000000,\space1,\space..., \space1000000, \space1]$과 같은 꼴일때,
 `1 1 N MAX_VAL-1`으로 입력이 계속해서 들어오면 $O(QNlogN)$의 복잡도를 가지게 됩니다.
 
+<img src="/assets/images/rdd6584_1/1_1.png" width="500" height="155">
+<img src="/assets/images/rdd6584_1/1_2.png" width="100%" height="100%">
+<img src="/assets/images/rdd6584_1/1_3.png" width="100%" height="100%">
+
+
 그러면 어떤 조건을 추가로 주는 것이 좋을까요? 구간에서 두번째로 큰 값을 $smax\_val$이라고 해봅시다. 여기서 두번째로 큰 값은 첫번째로 큰 값보다 엄격히 작아야 합니다.
 
-이때, 갱신조건에서 `tree[i].max_val > X && tree[i].smax_val < X `를 추가로 해볼까요? 이 구간에서 $max\_val$ 값의 개수를 $max\_cnt$ 라고 할때, 이 구간의 합은 $(max\_val - X) * max\_cnt$만큼 감소합니다. 
+이때, 갱신조건에서 `tree[i].max_val > X && tree[i].smax_val < X`를 추가로 해볼까요? 이 구간에서 $max\_val$ 값의 개수를 $max\_cnt$ 라고 할때, 이 구간의 합은 $(max\_val - X) * max\_cnt$만큼 감소합니다. 
 
-`l <= le && ri <= r && smax_val >= X`인 경우 어떻게 될까요? 위 경우, 노드의 양쪽 자식으로 분기해 내려갔을 때 $max\_val$을 가지는 노드와 $smax\_val$을 가지는 노드는 쿼리 이후 같은 값 $X$가 됩니다. 즉, 이 조건을 만족하는 경우 최소 2개의 서로 다른 노드가 같은 값을 가지게 되는 것이죠. 이 얘기는 distinct한 값의 개수가 1개이상 줄어든다는 것과 같으므로, 트리에서 위 조건을 가지는 경로를 대략 $N$번정도 지난 후에는 전부 같은 값을 가진다는 얘기가 됩니다!! 그리고 저 조건은 $smax\_val$이 존재할 때만 발생하므로 많아야 $N$번 발생하겠네요.
+<img src="/assets/images/rdd6584_1/1_4.png" width="100%" height="100%">
+
+여기에 1 1 N 999999 쿼리를 보내면 어떻게 될까요?
+
+<img src="/assets/images/rdd6584_1/1_5.png" width="100%" height="100%">
+(\*표시는 이 노드와 하위 노드의 max_val이 전부 이 값의 이하라는 lazy propagation 태그입니다.)
+
+위와 같은 예제는 루트노드만 갱신되고 나머지 propagation도 빠르게 연산되므로 쉽게 해결되겠네요.
+
+
+
+`l <= le && ri <= r && smax_val >= X`인 경우가 문제되지 않을까요? 이때는, 노드의 양쪽 자식으로 분기해 내려갔을 때 $max\_val$을 가지는 노드와 $smax\_val$을 가지는 노드는 쿼리 이후 같은 값 $X$가 됩니다. 즉, 이 조건을 만족하는 경우 최소 2개의 서로 다른 노드가 같은 값을 가지게 되는 것이죠. 이 얘기는 distinct한 값의 개수가 1개이상 줄어든다는 것과 같으므로, 트리에서 위 조건을 가지는 경로를 대략 $N$번정도 지난 후에는 전부 같은 값을 가진다는 얘기가 됩니다!! 그리고 저 조건은 $smax\_val$이 존재할 때만 발생하므로 많아야 $N$번 발생하겠네요.
+
+
+
+<img src="/assets/images/rdd6584_1/1_6.png" width="100%" height="100%">
+
+여기에 1 1 N 999999 쿼리를 보내면 어떻게 될까요?
+
+<img src="/assets/images/rdd6584_1/1_7.png" width="100%" height="100%">
+
+서로 다른 두 값이 같은 값이 되면서 max_val과 함께 smax_val도 같이 업데이트 되고 있습니다.
+
+여기에 1 1 N 999998 쿼리도 보내볼까요? 이제는 루트노드만 바꿔줘도 되겠네요.
+
+<img src="/assets/images/rdd6584_1/1_8.png" width="100%" height="100%">
+
+이렇게 `l <= le && ri <= r && smax_val >= X`조건을 만족해서 내려갈 때마다, 노드들이 합쳐지니 시간이 amortized 하게 보장이 됩니다. 
+
+
 
  이해를 위해 이렇게 적었지만, 사실은 한 번의 `1 L R X` 쿼리마다, $L-1$과 $L$ 그리고 $R$과 $R+1$번 위치는 각각 서로 같은 값이었다가 쿼리 이후 다른 값을 가지는 경우도 존재합니다. 따라서 약 $2Q$번정도의 다른 값이 되는 경우도 생깁니다. 그래도 $2Q$번을 더해서 최대 $N + 2Q$번만 `l <= le && ri <= r && smax_val >= X`인 경로를 지나가게 되므로 여전히 많지 않습니다. 위 조건을 제외하면 평범한 세그먼트 트리와 과정이 같으며, 위 조건을 가지는 경로는 많아야 $N+2Q$번 발생하고 한번 당 $O(log N)$이므로 $O((N+Q)log N)$의 시간으로 이 문제를 해결할 수 있게 됩니다.
 
@@ -146,7 +184,7 @@ void update(int i, int l, int r, int le, int ri, int val) {
 
 3. 관리해야 하는 값을 propagate와 각 조건에서 빠르게 처리할 수 있어야 합니다.
 
-여러가지 조건이 있을 수 있겠지만, 가장 중요한 것들은 이 3가지라고 생각됩니다. 세그비츠에 대한 보다 더 자세한 설명은 https://codeforces.com/blog/entry/57319 에서 찾아보실 수 있으며, 이를 이용하는 문제는 수열과 쿼리 25~30([링크]( [https://www.acmicpc.net/problemset?search=%EC%88%98%EC%97%B4%EA%B3%BC+%EC%BF%BC%EB%A6%AC](https://www.acmicpc.net/problemset?search=수열과+쿼리) ))에서 풀어보실 수 있습니다. 세그비츠를 이용한 2문제를 추가로 소개하고 글을 마치겠습니다.
+여러가지 조건이 있을 수 있겠지만, 가장 중요한 것들은 이 3가지라고 생각됩니다. 세그비츠에 대한 보다 더 자세한 설명은 https://codeforces.com/blog/entry/57319 에서 찾아보실 수 있으며, 이를 이용하는 문제는 수열과 쿼리 25~30([링크](https://www.acmicpc.net/problemset?search=%EC%88%98%EC%97%B4%EA%B3%BC+%EC%BF%BC%EB%A6%AC))에서 풀어보실 수 있습니다. 세그비츠를 이용한 2문제를 추가로 소개하고 글을 마치겠습니다.
 
 
 
@@ -202,6 +240,7 @@ void add(int i, int l, int r, int le, int ri, int val) {
 	tree[i] = merge(tree[i * 2], tree[i * 2 + 1]);
 }
 ```
+
 각 쿼리를 구현한 코드입니다. $add\_lazy$는 구간에 값을 더하는 tag이며, $sup\_lazy$는 구간에 값을 대입하는 tag입니다. 대입은 구간의 값이 전부 같다는 정보를 주므로, $add\_lazy$와 쉽게 합쳐줄 수 있으며 이를 바탕으로 propagate를 다음과 같이 작성할 수 있습니다.
 
 
