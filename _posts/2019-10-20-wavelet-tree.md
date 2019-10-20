@@ -30,6 +30,8 @@ Wavelet이라는 이름은 신호를 재귀적으로 저주파수와 고주파�
 
 아래 [그림 1]은 "alabar a la alabarda"라는 긴 문자열을 wavelet tree로 인코딩한 결과를 보여줍니다.
 
+<img src="/assets/images/junis3/1910/1.PNG">
+
 [그림 1] [https://users.dcc.uchile.cl/~gnavarro/ps/cpm12.pdf](https://users.dcc.uchile.cl/~gnavarro/ps/cpm12.pdf)
 
 이 결과 문자열을 이루는 각 알파벳은 0과 1들로 인코딩되고, wavelet tree는 이 인코딩된 결과를 순서를 유지하며 모은 trie와 같습니다. 따라서 쿼리들도 trie와 유사한 방식으로 구현할 수 있다는 점을 눈치채셨을지도 모릅니다.
@@ -44,6 +46,8 @@ Wavelet이라는 이름은 신호를 재귀적으로 저주파수와 고주파�
 위에서 소개한 *일반적인 wavelet tree*는 문자열을 최대한 적은 공간에 표현하려는 노력의 산물이었습니다. 따라서 충분한 메모리 저장공간이 있다면 wavelet tree가 보다 다양한 기능을 수행하도록 할 수 있습니다.
 
 먼저 우리가 다루던 객체인 문자열의 각 알파벳을 $1$부터 $m$까지의 정수에 대응시켜, 수열로 생각합니다. Wavelet tree는 알파벳의 개수에 대한 로그 시간에 작동했으므로, 정수의 범위가 매우 커져도 수행 시간엔 큰 차이가 없습니다. 아래 [그림 2]는 수열 $S = (3, 3, 9, 1, 2, 1, 7, 6, 4, 8, 9, 4, 3, 7, 5, 9, 2, 7, 3, 5, 1, 3)$을 나타낸 wavelet tree입니다. [그림 1]에서 나타난 것과의 차이점은 [그림 2]는 "수"를 다룬다는 것뿐입니다. 물론 그 덕분에 노드 $S$에 해당하는 알파벳 집합을 둘로 나눌 때 알파벳을 일일히 찾아 나눌 필요 없이 기준이 되는 수 $m_S$를 잡아 왼쪽 자식($l_S$라 쓰겠습니다)에는 $m_S$ 이하인 수들, 오른쪽 자식($r_S$라 쓰겠습니다)에는 $m_S$ 초과인 수들로 나눌 수 있게 되었습니다. 각 노드의 순서열 밑에 기준 $m_S$가 적혀 있습니다.
+
+<img src="/assets/images/junis3/1910/2.PNG">
 
 [그림 2] [https://ioinformatics.org/journal/v10_2016_19_37.pdf](https://ioinformatics.org/journal/v10_2016_19_37.pdf)
 
@@ -61,7 +65,7 @@ Wavelet이라는 이름은 신호를 재귀적으로 저주파수와 고주파�
 - Quantile query: 이진 탐색을 이용하지 않습니다. 루트로부터 재귀적으로 내려가면서 $k$번째 원소가 될 수 있는 범위를 좁혀나가, 결국은 어떠한 수로 특정짓습니다. 만약 어떤 노드 $S$에 대해 부분열 $a[l..r]$ 안에 있는 0의 개수가 $k$ 이상이라면 부분열의 $k$번째 수는 0으로 표현됩니다. 즉 $c = 0_S(r) - 0_S(l-1) \ge k$이면 왼쪽 자식으로 내려갑니다: $\mathbf{quantile}(S, l, r, k) = \mathbf{quantile}(l_S, 0_S(l-1) + 1, 0_S(r), k)$. 반대의 경우에는 오른쪽 자식으로 내려갑니다. 이 때에는 오른쪽 자식에서 $k$번째 수가 아니라 $k-c$번째 수를 구해야 함에 유의해야 합니다. 즉, $c < k$이면 $\mathbf{quantile}(S, l, r, k) = \mathbf{quantile}(r_S, 1_S(l-1) + 1, 1_S(r), k-c)$.
 - Range counting query: Quantile query와 매우 유사하게 작동합니다. 조건을 수의 개수가 아닌 수의 범위로 바꾸어 처리하면 됩니다. 독자에게 맡깁니다.
 
-세 쿼리 모두 $O(\log m)$의 시간에 작동합니다. 특히 quantile query의 시간 복잡도는 $O(\log^3 n)$의 시간이 소요되는 merge sort tree에 비해 월등히 낮습니다.
+세 쿼리 모두 $O(\log m)$의 시간에 작동합니다. 특히 quantile query의 시간 복잡도는 $O(\log^3 n)$의 시간이 소요되는 merge sort tree에 비해 월등합니다.
 
 Wavelet tree는 제한적인 업데이트도 지원합니다. 아래 세 종류의 업데이트 쿼리를 빠른 시간에 일관성을 유지하면서 할 수 있습니다.
 
