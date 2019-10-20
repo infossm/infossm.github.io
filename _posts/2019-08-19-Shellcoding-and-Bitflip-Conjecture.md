@@ -49,7 +49,7 @@ But first, how do you want the registers initialized before executing the code?
  3. Dont bother. Leave them as they are
 ```
 
-즉, 주어진 코드의 임의의 n-bit를 flip해도 원래 의도대로 돌아가는 코드를 **n-flip resistant**하다고 정의합니다. 그리구 문제에서는 `'I am Invincible!'`을 출력하는 1-flip resistant한 코드를 작성하는 것이 목표입니다.
+즉, 주어진 코드의 임의의 n-bit를 flip해도 원래 의도대로 돌아가는 코드를 **n-flip resistant**하다고 정의합니다. 그리고 문제에서는 `'I am Invincible!'`을 출력하는 1-flip resistant한 코드를 작성하는 것이 목표입니다.
 
 실제 문제에서는 최대 200 bytes를 보냈을 때 모든 1 bit를 한 번 씩 flip해보고, 그 중 올바르게 작동하지 않은 경우의 수를 카운트해서 1000점에서 빼서 점수를 부여했습니다. 예를 들어, 1, 2, 3, 4번째 bit를 flip했더니 올바르게 작동하지 않았다면 1000 - 4 = 996점이 됩니다.
 
@@ -67,7 +67,7 @@ But first, how do you want the registers initialized before executing the code?
 
 X64 Assembly 코딩을 하기 위해서는 어셈블리에 대해서 잘 알고 있어야겠죠? 그리고 어셈블리로 쉽게 코딩할 수 있는 방법이 필요할 겁니다. 안타깝게도 어셈블리에 대해서 설명하는 것은 매우 시간이 오래 걸리기 때문에, 어셈블리 자체보다는 어떻게 하면 어셈블리를 CTF level에서 쉽게 코딩해보고, 어떻게 문제를 풀었는지에 초점을 맞추려고 합니다.
 
-#Shellcoding
+# Shellcoding
 
 Shellcoding을 편하게 하는 방법은 여러 가지가 있을 수 있지만, 저는 Python의 pwntools 라이브러리를 사용하는 편입니다. pwntools에는 Shellcraft와 같은 Shellcoding 편의 기능이 있기 때문에, 익혀두면 좋을 것입니다.
 
@@ -112,7 +112,7 @@ Stack에 `'I am Invincible!'` 이라는 string을 push하고, write syscall을 �
 
 이를 주어진 바이너리에 넣고 실행해보면, `'I am Invincible!'`을 정상적으로 출력하고 끝납니다.
 
-##1-Flip Resistant 하게 만들기 위한 아이디어
+## 1-Flip Resistant 하게 만들기 위한 아이디어
 
 이제 이 코드를 1-flip resistant하게 만들어야 합니다. 위의 메시지를 다시 살펴보시면, 문제에서 세 가지 옵션을 줬습니다.
 
