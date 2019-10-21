@@ -14,7 +14,7 @@ tags: [algorithm]
 
 ## Introduction
 
-![graph의 cut](../assets/images/karger/cut.png)
+![graph의 cut](/assets/images/karger/cut.png)
 
 그래프를 두 집합 $S$, $T$로 나누는 것을 그래프의 cut이라고 합니다. 간선에 weight가 있는 그래프에서, 두 점 $s$와 $t$가 주어졌을 때 $s \in S$, $t \in T$를 만족하도록 그래프를 cut하는 상황을 생각해봅시다.
 
@@ -44,7 +44,7 @@ Karger's Algorithm은 굉장히 간단한 방식으로 작동합니다.
 
 Edge contraction은 다음 그림과 같이 두 노드를 합치는 것을 의미합니다.
 
-![Edge contraction](../assets/images/karger/contraction.png)
+![Edge contraction](/assets/images/karger/contraction.png)
 
 남은 노드의 수가 2개가 될 때까지 edge contraction을 진행하는 것은 disjoint-set 자료구조를 이용하면 $O(E)$ 시간에 작동하도록 구현할 수 있습니다.
 
@@ -89,7 +89,7 @@ $$(1 - \frac{2}{n(n - 1)})^T$$
 
 이 때 $T = n^2 \ln{n}$으로 잡으면, 올바른 minimum cut을 찾지 못할 확률이 $\frac{1}{n}$ 미만이 됨을 보일 수 있습니다.
 
-$1 - x \le e^{-x}$라는 식을 이용하면 쉽게 계산 가능합니다.
+이는 $1 - x \le e^{-x}$라는 식을 이용하면 쉽게 계산 가능합니다.
 $$(1 - \frac{2}{n(n - 1)})^{n^2 \ln{n}} < (1 - \frac{1}{n^2})^{n^2 \ln{n}}\\
 \le (e^{- \frac{1}{n^2}})^{n^2 \ln{n}} = \frac{1}{e^{\ln{n}}} = \frac{1}{n}$$
 
@@ -198,7 +198,7 @@ def fastmincut(G = (V, E)):
 
 먼저 V의 크기가 일정 수준 이하로 작을 때에는, Brute force로 모든 경우의 수를 따져보며 mincut을 찾습니다.
 
-그렇지 못한 경우에는, node의 갯수가 t = ceil(1 + |V| / sqrt(2))개가 될 때까지 각각 다른 contraction을 2번 진행해줍니다. 해당 t가 선택된 이유는, Minimum cut에 속할 확률이 $\frac{1}{2}$을 넘는 수이기 때문입니다.
+그렇지 못한 경우에는, node의 갯수가 t = ceil(1 + \|V\| / sqrt(2))개가 될 때까지 각각 다른 contraction을 2번 진행해줍니다. 해당 t가 선택된 이유는, Minimum cut에 속할 확률이 $\frac{1}{2}$을 넘는 수이기 때문입니다.
 
 contraction을 통해 더 작은 크기의 그래프 2개가 만들어지면, 재귀적으로 mincut을 찾는 것을 반복하며 그 중 작은 값을 return합니다.
 
@@ -340,4 +340,4 @@ int main() {
 
 [Karger's algorithm wikipedia](https://en.wikipedia.org/wiki/Karger%27s_algorithm)
 
-[A simple Min Cut Algorithm](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.456.7514&rep=rep1&type=pdf)
+[A New Approach to the Minimum Cut Problem](http://www.columbia.edu/~cs2035/courses/ieor6614.S09/Contraction.pdf)
