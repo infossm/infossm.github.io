@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Judger와 Express를 이용한 채점 서버 구현 후기"
-date:   2019-10-21 20:30:00
+date:   2019-10-21 21:10:00
 author: shjgkwo
 tags: [C, Node.JS, Express, Docker]
 ---
@@ -38,7 +38,7 @@ $ cd ./Judger
 $ mkdir build && cd build && cmake .. && make && sudo make install
 ```
 
-이제 본격적으로 수행하는 작업입니다! 이 스크립트를 쉘에 입력하고 나면 '''libjudger.so'''가 어디에 설치되었다고 나올것입니다. 이후 cp 명령어를 사용하여 적절한 위치로 옮깁시다. 저 같은 경우 /home/Desktop/tester 디렉토리를 만들어서 그곳으로 옮겨주었습니다.
+이제 본격적으로 수행하는 작업입니다! 이 스크립트를 쉘에 입력하고 나면 **libjudger.so**가 어디에 설치되었다고 나올것입니다. 이후 cp 명령어를 사용하여 적절한 위치로 옮깁시다. 저 같은 경우 /home/Desktop/tester 디렉토리를 만들어서 그곳으로 옮겨주었습니다.
 
 ```bash
 $ /home/Desktop/tester/libjudger.so --max_cpu_time=1000 --max_real_time=2000 --max_memory=536870912 --max_process_number=200 --max_output_size=16384 --exe_path="/home/Desktop/tester/test.o" --input_path="/home/Desktop/tester/input.txt" --output_path="/home/Desktop/tester/output.txt" --error_path="/home/Desktop/tester/error.txt" --uid=0 --gid=0 --seccomp_rule_name="c_cpp"
@@ -60,7 +60,7 @@ $ {
 
 이런식으로 파싱하기 쉬운 형태가 되어 Js나 Python에서 오브젝트로 만들기 쉬운 형태로 제공해줍니다. 우리는 이 결과값을 잘 활용하면 됩니다.
 
-우리가 주로 쓰게될 것은 '''result'''입니다. 0은 정상종료, 1은 cpu 시간 초과, 2는 real time 시간초과, 3은 메모리 초과, 4는 런타임 에러, 5는 Judger 자체가 뻗은 경우입니다. 5를 보게되는 경우는 파라미터를 잘못 입력했거나, 진짜로 Judge가 뻗는 흔치 않는 상황이니 파라미터를 제대로 입력했다면 거의 볼일이 없는 숫자입니다. 또한 4번 런타임 에러에서 signal이 25가 나왔다면 출력 버퍼 초과 이므로 Presentaion Error 등을 감지하면 유용할 것 입니다.
+우리가 주로 쓰게될 것은 **result**입니다. 0은 정상종료, 1은 cpu 시간 초과, 2는 real time 시간초과, 3은 메모리 초과, 4는 런타임 에러, 5는 Judger 자체가 뻗은 경우입니다. 5를 보게되는 경우는 파라미터를 잘못 입력했거나, 진짜로 Judge가 뻗는 흔치 않는 상황이니 파라미터를 제대로 입력했다면 거의 볼일이 없는 숫자입니다. 또한 4번 런타임 에러에서 signal이 25가 나왔다면 출력 버퍼 초과 이므로 Presentaion Error 등을 감지하면 유용할 것 입니다.
 
 ## Mac 또는 Window에서 Judger 활용
  [Docker](http://pyrasis.com/private/2014/11/30/publish-docker-for-the-really-impatient-book)를 사용하여 Window와 Mac환경에서도 Judger를 활용하는 것을 보겠습니다. Docker를 이런 용도로 쓰려고 만든건 아니지만 개발 환경에서 테스트 하는것을 보기 위해서 Docker를 사용할것입니다. 위의 Docker 링크에 들어가 원고를 공개해준 작가한테 감사하는 마음을 가지고 Docker를 먼저 설치를 해주세요.
@@ -85,7 +85,6 @@ $ docker attach makeJudger
 
 ```bash
 $ apt-get update
-$ apt-get install sudo
 $ apt-get install libseccomp-dev
 $ apt-get install git
 $ apt-get install gcc
@@ -97,7 +96,7 @@ $ apt-get install cmake
 ```bash
 $ git clone https://github.com/QingdaoU/Judger.git
 $ cd ./Judger
-$ mkdir build && cd build && cmake .. && make && sudo make install
+$ mkdir build && cd build && cmake .. && make && make install
 ```
 
 이렇게 하면 docker 컨테이너 /usr/lib/judger 안에 libjudger.so 가 생성이 될것입니다.
@@ -481,4 +480,3 @@ trimEnd 로 뒤에 붙은 공백만 제거하고 \n으로 split 하여 남는 �
 # 후기
  저도 많이 미숙하지만, 완전 초보인 분들에게 어느정도나마 길을 제시할 수 있는 계기가 되었으면 좋겠습니다. 너무 이론보다는 구현 위주로 설명한 것 같습니다. 하지만 제 코드와 설명이 도움이 되었길 바라며 혹시 제 코드에 치명적인 결함이나 피드백을 하시고 싶으시다면 [이슈](https://github.com/Byeong-Chan/Judge-Server/issues)함에 언제든 알려주세요! 만약 해주시면 정말로 감사드립니다.
 
- 
