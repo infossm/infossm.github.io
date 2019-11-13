@@ -1,3 +1,15 @@
+---
+layout: post
+title:  "2018 ICPC world Finals C. Conquer the world와 Tree DP optimization"
+date:   2019-06-17 23:30:00
+author: ainta
+tags: [algorithm, dynamic programming, icpc, data structure, optimization]
+
+
+
+---
+
+
 2018년 World Finals에서 어느 팀도 풀지 못했던 문제인 Conquer the world(https://www.acmicpc.net/problem/15691) 문제에 대한 풀이와 사용된 아이디어에 대해 간단히 소개한다.
 
 # 문제
