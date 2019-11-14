@@ -214,4 +214,4 @@ int main() {
 }
 ```
 
-그러나 이 방법으로 Matroid Partition을 구하면 분할하고자 하는 Matroid에 대해 $$O\left(\left(\sum_{i=1}^{k}\mid S_i\mid\right)^3\right)$$번의 Oracle Call(주어진 집합이 Matroid인지 확인하는 subroutine)을 사용하여 매우 느리다. 다음 포스팅에서는 다른 방법으로 Matroid Partition을 구하는 방법에 대해 다룰 것이다.
+이 방법으로 Matroid Partition을 구하면 다항 시간에 문제를 해결할 수 있지만 분할하고자 하는 Matroid에 대해 $$O\left(\left(\sum_{i=1}^{k}\mid S_i\mid\right)^3\right)$$번의 Oracle Call(주어진 집합이 Matroid인지 확인하는 subroutine)을 사용하여 매우 느리다. 다음 포스팅에서는 다른 방법으로 Matroid Partition을 구하는 방법에 대해 다룰 것이다.
