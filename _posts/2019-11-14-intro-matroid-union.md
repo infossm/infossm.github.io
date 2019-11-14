@@ -65,4 +65,153 @@ $$
 
 # Matroid Partition
 
-Matroid Partition은 주어진 집합이 Matroid들로 나누어질 수 있는지 판단하고 그 방법을 찾는 문제로, 다르게 말하면 주어진 집합이 Matroid Union의 독립집합인지 판단하는 문제이다. 이러한 문제의 예시로는 무방향 그래프를 스패닝 트리로 분할하는 문제가 있다. 다음 포스팅에서는 Matroid Partition을 찾는 두 가지 방법에 대해서 다룰 것이다.
+Matroid Partition은 주어진 집합이 Matroid들로 나누어질 수 있는지 판단하고 그 방법을 찾는 문제로, 다르게 말하면 주어진 집합이 Matroid Union의 독립집합인지 판단하는 문제이다. 이러한 문제의 예시로는 그래프를 스패닝 트리로 분할하는 문제가 있다.
+
+Matroid Partition의 간단한 해법으로는 증명에서 사용한 $$\hat{M}, M_p$$의 intersection으로 문제를 해결하는 방법이 있다. 아래 코드는 그래프를 입력으로 받아 최소 개수의 스패닝 트리로 분할하는 코드이다.
+
+```c++
+#include <bits/stdc++.h>
+
+using namespace std;
+
+const int N = 15, M = 35;
+struct Union_Find {
+    int P[N];
+    void init() {
+        for (int i = 0; i < N; ++i) P[i] = i;
+    }
+    int find(int x) {
+        if (P[x] != x) return P[x] = find(P[x]);
+        return x;
+    }
+    bool merge(int x, int y) {
+        x = find(x);
+        y = find(y);
+        if (x == y) return 0;
+        P[y] = x;
+        return 1;
+    }
+};
+
+int v, e, k;
+int S[M], E[M];
+struct Matroid_Intersection {
+    static const int N = M * M;
+    int n, D[N], P[N];
+    bool G[N][N], I[N], V[N];
+    bool check1() {
+        for (int i = 0; i < e; ++i) {
+            int cnt = 0;
+            for (int j = 0; j < k; ++j) cnt += I[j * e + i];
+            if (cnt > 1) return 0;
+        }
+        return 1;
+    }
+    bool check2() {
+        for (int i = 0; i < k; ++i) {
+            Union_Find uf;
+            uf.init();
+            for (int j = 0; j < e; ++j) {
+                if (!I[i * e + j]) continue;
+                if (!uf.merge(S[j], E[j])) return 0;
+            }
+        }
+        return 1;
+    }
+    void change(int x) {
+        I[x] ^= 1;
+    }
+    bool change1(int p, int x) {
+        change(p), change(x);
+        bool ret = check1();
+        change(p), change(x);
+        return ret;
+    }
+    bool change2(int p, int x) {
+        change(p), change(x);
+        bool ret = check2();
+        change(p), change(x);
+        return ret;
+    }
+    bool add1(int i) {
+        change(i);
+        bool ret = check1();
+        change(i);
+        return ret;
+    }
+    bool add2(int i) {
+        change(i);
+        bool ret = check2();
+        change(i);
+        return ret;
+    }
+    bool augment() {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (I[i] == I[j]) G[i][j] = 0;
+                else G[i][j] = I[i] ? change1(i, j) : change2(j, i);
+            }
+        }
+        memset(V, 0, sizeof(V));
+        memset(D, 0, sizeof(D));
+        queue<int> q;
+        for (int i = 0; i < n; ++i) {
+            if (I[i]) continue;
+            if (add1(i)) {
+                D[i] = 1;
+                q.push(i);
+            }
+            V[i] = add2(i);
+        }
+        int x = -1;
+        while (!q.empty()) {
+            x = q.front();
+            q.pop();
+            if (V[x]) break;
+            for (int i = 0; i < n; ++i) {
+                if (D[i] || !G[x][i]) continue;
+                D[i] = D[x] + 1;
+                P[i] = x;
+                q.push(i);
+            }
+        }
+        if (x == -1 || !V[x]) return 0;
+        for (int i = D[x]; i--; x = P[x]) change(x);
+        return 1;
+    }
+    int solve() {
+        n = k * e;
+        memset(I, 0, sizeof(I));
+        int ret = 0;
+        for (int i = 0; i < n; ++i) {
+            if (add1(i) && add2(i)) change(i), ++ret;
+        }
+        while (augment()) ++ret;
+        return ret;
+    }
+};
+
+int main() {
+    Matroid_Intersection matroid;
+    cin >> v >> e;
+    assert(v > 1 && e > 0);
+    for (int i = 0; i < e; ++i) {
+        cin >> S[i] >> E[i];
+        assert(S[i] != E[i]);
+    }
+    for (k = 1; ; ++k) {
+        if (matroid.solve() == e) break;
+    }
+    for (int i = 0; i < k; ++i) {
+        cout << "Spanning Tree " << i + 1 << " :";
+        for (int j = 0; j < e; ++j) {
+            if (matroid.I[i * e + j])
+                cout << " (" << S[j] << "," << E[j] << ")";
+        }
+        cout << endl;
+    }
+    return 0;
+}
+```
+
+그러나 이 방법으로 Matroid Partition을 구하면 분할하고자 하는 Matroid에 대해 $$O\left(\left(\sum_{i=1}^{k}\mid S_i\mid\right)^3\right)$$번의 Oracle Call(주어진 집합이 Matroid인지 확인하는 subroutine)을 사용하여 매우 느리다. 다음 포스팅에서는 다른 방법으로 Matroid Partition을 구하는 방법에 대해 다룰 것이다.
