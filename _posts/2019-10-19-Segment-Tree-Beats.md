@@ -7,6 +7,7 @@ tags: [algorithm]
 
 
 
+
 ---
 
 안녕하세요. rdd6584로 활동하고 있는 권일우입니다.
@@ -60,7 +61,7 @@ void update(int i, int l, int r, int le, int ri, int X) {
 
 - 갱신조건(tag condition) : 이 구간에 속한 모든 노드가 갱신되야 함을 의미하는 조건입니다.  `l <= le && ri <= r`에 해당하며 현재 노드가 관리하는 구간이 업데이트 되는 구간에 완전히 속하므로, 현재 노드와 그 자식 노드 전부 값이 갱신되어야 합니다.
 
-위 1번 쿼리에서 업데이트 구간에 속한 어떤 노드의 $max\_val$이 $X$이하라면, 그 구간에서 갱신되는 값이 없으므로, 중단조건을 `le > r || ri < l || tree[i].max_val <= X`로 변경할 수 있겠습니다. 하지만, 아직은 이것으로 얻을 수 있는 효과는 모르겠네요.
+위 1번 쿼리에서 업데이트 구간에 속한 어떤 노드의 $max\space val$이 $X$이하라면, 그 구간에서 갱신되는 값이 없으므로, 중단조건을 `le > r || ri < l || tree[i].max_val <= X`로 변경할 수 있겠습니다. 하지만, 아직은 이것으로 얻을 수 있는 효과는 모르겠네요.
 
 
 
@@ -71,6 +72,7 @@ void update(int i, int l, int r, int le, int ri, int X) {
 각 노드마다, 관리하는 구간의 합을 잘 관리하고 있어야 위 쿼리를 효율적으로 해결할 수 있을텐데요. 현재 갱신조건을 만족하는 부분을 업데이트 시킨다고 하더라도 업데이트 되는 $A_i$에 따라서 변경되는 가중치가 다를테니 더 엄격한 조건이 필요할 듯 합니다.
 
 > $A = [3,\space8,\space8,\space8,\space5,\space6]$에서 쿼리 `1 1 6 4`를 적용해봅시다.
+>
 > $A = [3, \space8+(-4),\space8+(-4),\space8+(-4),\space5+(-1),\space6+(-2)]$가 됩니다.
 
 
@@ -87,24 +89,24 @@ void update(int i, int l, int r, int le, int ri, int X) {
 <img src="/assets/images/rdd6584_1/1_3.png" width="100%" height="100%">
 
 
-그러면 어떤 조건을 추가로 주는 것이 좋을까요? 구간에서 두번째로 큰 값을 $smax\_val$이라고 해봅시다. 여기서 두번째로 큰 값은 첫번째로 큰 값보다 엄격히 작아야 합니다.
+그러면 어떤 조건을 추가로 주는 것이 좋을까요? 구간에서 두번째로 큰 값을 $smax\space val$이라고 해봅시다. 여기서 두번째로 큰 값은 첫번째로 큰 값보다 엄격히 작아야 합니다.
 
-이때, 갱신조건에서 `tree[i].max_val > X && tree[i].smax_val < X`를 추가로 해볼까요? 이 구간에서 $max\_val$ 값의 개수를 $max\_cnt$ 라고 할때, 이 구간의 합은 $(max\_val - X) * max\_cnt$만큼 감소하므로 구간합을 정확히 관리할 수 있습니다.
+이때, 갱신조건에서 `tree[i].max_val > X && tree[i].smax_val < X`를 추가로 해볼까요? 이 구간에서 $max\space val$ 값의 개수를 $max\space cnt$ 라고 할때, 이 구간의 합은 $(max\space val - X) * max\space cnt$만큼 감소하므로 구간합을 정확히 관리할 수 있습니다.
 
 <img src="/assets/images/rdd6584_1/1_4.png" width="100%" height="100%">
 
-$max\_val$과 $smax\_val$로 트리를 구축한 모습입니다.
+$max\space val$과 $smax\space val$로 트리를 구축한 모습입니다.
 
 여기에 `1 1 N 999999` 쿼리를 보내면 어떻게 될까요?
 
 <img src="/assets/images/rdd6584_1/1_5.png" width="100%" height="100%">
-($*$표시는 이 노드와 하위 노드의 $max\_val$이 전부 이 값의 이하라는 lazy propagation 태그입니다.)
+($*$표시는 이 노드와 하위 노드의 $max\space val$이 전부 이 값의 이하라는 lazy propagation 태그입니다.)
 
 위와 같은 예제는 루트노드만 갱신되고 나머지 propagation도 빠르게 연산되므로 쉽게 해결되겠네요.
 
 
 
-`l <= le && ri <= r && smax_val >= X`인 경우가 문제되지 않을까요? 이때는, 노드의 양쪽 자식으로 분기해 내려갔을 때 $max\_val$을 가지는 노드와 $smax\_val$을 가지는 노드는 쿼리 이후 같은 값 $X$가 됩니다. 즉, 이 조건을 만족하는 경우 최소 2개의 서로 다른 노드가 같은 값을 가지게 되는 것이죠. 이 얘기는 distinct한 값의 개수가 1개이상 줄어든다는 것과 같으므로, 트리에서 위 조건을 가지는 경로를 대략 $N$번정도 지난 후에는 전부 같은 값을 가진다는 얘기가 됩니다!! 그리고 저 조건은 $smax\_val$이 존재할 때만 발생하므로 많아야 $N$번 발생하겠네요.
+`l <= le && ri <= r && smax_val >= X`인 경우가 문제되지 않을까요? 이때는, 노드의 양쪽 자식으로 분기해 내려갔을 때 $max\space val$을 가지는 노드와 $smax\space val$을 가지는 노드는 쿼리 이후 같은 값 $X$가 됩니다. 즉, 이 조건을 만족하는 경우 최소 2개의 서로 다른 노드가 같은 값을 가지게 되는 것이죠. 이 얘기는 distinct한 값의 개수가 1개이상 줄어든다는 것과 같으므로, 트리에서 위 조건을 가지는 경로를 대략 $N$번정도 지난 후에는 전부 같은 값을 가진다는 얘기가 됩니다!! 그리고 저 조건은 $smax\space val$이 존재할 때만 발생하므로 많아야 $N$번 발생하겠네요.
 
 
 
@@ -114,7 +116,7 @@ $max\_val$과 $smax\_val$로 트리를 구축한 모습입니다.
 
 <img src="/assets/images/rdd6584_1/1_7.png" width="100%" height="100%">
 
-서로 다른 두 값이 같은 값이 되면서 $max\_val$과 함께 $smax\_val$도 같이 업데이트 되고 있습니다.
+서로 다른 두 값이 같은 값이 되면서 $max\space val$과 함께 $smax\space val$도 같이 업데이트 되고 있습니다.
 
 여기에 `1 1 N 999998` 쿼리도 보내볼까요? 이제는 루트노드만 바꿔줘도 되겠네요.
 
@@ -243,7 +245,7 @@ void add(int i, int l, int r, int le, int ri, int val) {
 }
 ```
 
-각 쿼리를 구현한 코드입니다. $add\_lazy$는 구간에 값을 더하는 tag이며, $sup\_lazy$는 구간에 값을 대입하는 tag입니다. 대입은 구간의 값이 전부 같다는 정보를 주므로, $add\_lazy$와 쉽게 합쳐줄 수 있으며 이를 바탕으로 propagate를 다음과 같이 작성할 수 있습니다.
+각 쿼리를 구현한 코드입니다. $add\space lazy$는 구간에 값을 더하는 tag이며, $sup\space lazy$는 구간에 값을 대입하는 tag입니다. 대입은 구간의 값이 전부 같다는 정보를 주므로, $add\space lazy$와 쉽게 합쳐줄 수 있으며 이를 바탕으로 propagate를 다음과 같이 작성할 수 있습니다.
 
 
 
