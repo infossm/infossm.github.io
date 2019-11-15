@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "C++ STL 컨테이너의 메모리 사용량 (1)"
-date:   2019-11-11 19:00
+date:   2019-11-14 19:00
 author: evenharder
 image:  /assets/images/evenharder-post/c++-container/pexel-pok-rie-1655166.jpg
 tags:   c++ data-structure
@@ -246,7 +246,7 @@ void stack_512_test()
     std::cout << "\n[-] ---- stack test ----\n";
 }
 ```
-이를 `main`에서 호출하면 로그가 길어져서 별도 링크로 첨부하도록 하겠습니다.
+이를 `main`에서 호출하면 로그가 길어져서 [별도 링크](https://gist.github.com/evenharder/5885e28e2abb8e30ee29b3f6ad97cb05#file-stack_512_test-txt)로 첨부하도록 하겠습니다.
 알 수 있는 점을 보자면 다음과 같습니다.
 
 + 스택이 생성되면서 **64바이트 메모리**와 **512바이트 메모리**가 동적할당됩니다.
@@ -294,7 +294,7 @@ void deque_512_push_test()
 }
 ```
 `deque_512_push_test`를 호출해서 실행해본 결과, 위의 가설이 어느 정도 맞다는
-것을 확인할 수 있었습니다.
+것을 확인할 수 있었습니다. 로그는 [여기에](https://gist.github.com/evenharder/5885e28e2abb8e30ee29b3f6ad97cb05#file-deque_512_push_test-txt) 있습니다.
 
 + 데크가 생성되면서 **64바이트 메모리**와 **512바이트 메모리**가 동적할당됩니다.
 + 매 512 바이트짜리 원소를 삽입한 후, 다음을 위한 512바이트를 새롭게 할당합니다.
@@ -333,7 +333,8 @@ void deque_512_push_test2()
 
 실행 결과는 `deque_512_push_test`와 매우 흡사하였으나,
 재할당이 이루어지는 index가 (8, 18, 38)에서 (7, 18, 37)로 변경되었습니다. 초기
-시작 위치 차이로 인해 +1/-1 정도의 차이가 나는 것 같습니다.
+시작 위치 차이로 인해 +1/-1 정도의 차이가 나는 것 같습니다. [여기서](https://gist.github.com/evenharder/5885e28e2abb8e30ee29b3f6ad97cb05#file-deque_512_push_test2-txt)
+확인할 수 있습니다.
 
 한 쪽으로만 삽입을 진행하던 (5, 12, 26)와 chunk를 저장하는 배열의 길이
 (8, 18, 38), 그리고 교대로 삽입하면 이 배열에 딱 맞게 저장할 수 있다는 점을
@@ -397,7 +398,8 @@ void deque_72_push_test()
     std::cout << "\n[-] ---- deque push test ----\n";
 }
 ```
-실행해본 결과 이전 실험에서는 알 수 없던 내용을 알 수 있었습니다.
+실행해본 결과 이전 실험에서는 알 수 없던 내용을 알 수 있었습니다. 로그는
+[여기서](https://gist.github.com/evenharder/5885e28e2abb8e30ee29b3f6ad97cb05#file-deque_72_push_test-txt) 확인할 수 있습니다.
 
 + 한 chunk의 크기는 504바이트로, `data_9`형 변수가 7개 들어갈 수 있습니다.
 512바이트에 맞추어 잡히는 것을 알 수 있습니다.
