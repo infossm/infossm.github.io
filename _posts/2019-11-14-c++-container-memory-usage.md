@@ -65,26 +65,22 @@ void list_test()
     std::list<uint64_t> l;
     std::list<uint64_t>::iterator it = l.begin();
     
-    for(int i=1;i<=2;i++)
-    {
+    for(int i=1;i<=2;i++) {
         std::cout << "[*] list push_back " << i << '\n';
         l.push_back(i);
     }
     
-    for(int i=3;i<=4;i++)
-    {
+    for(int i=3;i<=4;i++) {
         std::cout << "[*] list push_front " << i << '\n';
         l.push_front(i);
     }
     
-    for(int i=5;i<=6;i++)
-    {
+    for(int i=5;i<=6;i++) {
         std::cout << "[*] list insert " << i << '\n';
         l.insert(it, i);
     }
     
-    for(int i=1;i<=3;i++)
-    {
+    for(int i=1;i<=3;i++) {
         std::cout << "[*] list pop_front " << i << '\n';
         l.pop_front();
     }
@@ -153,8 +149,7 @@ void vector_test()
     std::cout << "\n[+] ---- vector test ----\n";
     std::vector<uint64_t> v;
 
-    for(int i=1;i<=9;i++)
-    {
+    for(int i=1;i<=9;i++) {
         std::cout << "[*] vector push_back " << i << '\n';
         v.push_back(i);
     }
@@ -238,14 +233,12 @@ void stack_512_test()
     std::cout << "\n[+] ---- stack test ----\n";
     std::stack<data> st;
     
-    for(int i=1;i<=36;i++)
-    {
+    for(int i=1;i<=36;i++) {
         std::cout << "[*] stack insert " << i << '\n';
         st.push(data());
     }
     
-    for(int i=1;i<=36;i++)
-    {
+    for(int i=1;i<=36;i++) {
         std::cout << "[*] stack delete " << i << '\n';
         st.pop();
     }
