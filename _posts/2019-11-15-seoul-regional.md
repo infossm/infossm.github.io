@@ -223,6 +223,8 @@ $$D[i]$$를 집합 $$S$$를 좌표 순으로 정렬 했을 때 1번 부터 $$i$$
 
 이 트리의 중심(지름의 중점)은 변 위, 혹은 한 점에 있을 수 있다.
 
+[[그림: TBD]]
+
 한 점으로 부터 거리가 $$k$$이하인 점을 만들기 위해서는, 정점을 가능한 최대 차수만큼 추가해야 한다.
 
 한 점이 중심일 때는, 거리가 $$k$$이하인 점을 추가하면 $$1+3\times 2^0 + 3\times 2^1 +\cdots + 3 \times 2^{k-1}$$만큼의 정점이 생기고, $$3 \times 2^k -2$$ 가 지름 $$2k$$로 가능한 최대 정점 갯수이다.
@@ -247,6 +249,8 @@ $$k=1$$일 때는 그냥 식을 계산해 주면 된다. 그래서 우리는 $$k
 
 이는 가령이면, $$S_1$$에 $$R_2, G_2, B_2$$와의 거리가 더 가까운 점 $$(r, g, b)$$가 있다고 하자. 이 경우에, $$(r, g, b)$$를 집합 $$S_1$$에서 $$S_2$$로 옮겨 주면, $$((r-R_1)^2 + (g-G_1)^2+(b-B_1)^2) - ((r-R_2)^2 + (g-G_2)^2+(b-B_2)^2)$$ 만큼 color transfer가 줄어든다는 사실을 알 수 있다. 이로 인해 평균이 바뀌어서 color transfer가 늘어나는 경우는 없다. 왜냐하면, color transfer  $$\sum_{i=1}^n (r_i-x)^2 + (g_i-y)^2 +(b_i-z)^2 $$ 의 최솟값은 $$x, y, z$$가 각각 $$r_i, g_i, b_i$$들의 평균인 경우에 발생하기 때문이다. (간단한 이차함수의 전개를 통해 확인할 수 있다.)
 
+[[그림: TBD]]
+
 즉, 최적인 $$S_1$$과 $$S_2$$는 평면을 기준으로 나뉘어 진다. 이렇게 나뉘어진 평면을 $$S_1$$과 $$S_2$$에 닿게 기울여 주면, $$N$$개의 점 중 3개의 점으로 이루어진 평면으로 $$S_1$$과 $$S_2$$가 나뉘어 진다는 것을 알 수 있고, 평면이 $$O(n^3)$$개 존재하기 때문에 총 $$O(n^4)$$에 시간으로 문제를 해결할 수 있다.
 
 # L - What's Mine is Mine
@@ -265,3 +269,489 @@ $$D[i]$$를 $$i$$일까지 일을 했을 때 번 돈의 최댓값이라고 정�
 - $$s$$일에 시작하여 $$i$$일에 끝나는 일의 가치가 $$c$$일 때: $$D[i] = D[s] + c$$
 
 동적 계획법 테이블을 채우면서, 이 중 최댓값을 골라가며 채우면 된다. 시간복잡도는 $$O(n \log n)$$이다. 
+
+# 코드
+
+## A
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int N; cin >> N;
+    vector<int> A(N+1, 1);
+
+    for(int i=2; i<=N; ++i)
+    {
+        set<int> S;
+        for(int k=1; i-2*k>=0; ++k)
+            S.insert(2*A[i-k]-A[i-2*k]);
+        
+        for(int k=1;; ++k)
+            if(!S.count(k))
+            {
+                A[i] = k;
+                break;
+            }
+    }
+    cout << A[N] << endl;
+    return 0;
+}
+```
+
+## B
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+
+set<pair<int, int> > conn[101010];
+int deg[101010];
+int sz[101010];
+vector<int> nodes;
+void dfs(int a, int pa)
+{
+    nodes.push_back(a);
+    sz[a] = 1;
+    for(auto tmp: conn[a])
+    {
+        if(tmp.first==pa) continue;
+        dfs(tmp.first, a);
+        sz[a] += sz[tmp.first];
+    }
+    return;
+}
+int find_cen(int a)
+{
+    nodes.clear();
+    dfs(a, 0);
+    int tot = sz[a];
+    for(auto x: nodes)
+    {
+        int v = tot-sz[x];
+        for(auto tmp: conn[x])
+        {
+            if(sz[tmp.first] < sz[x])
+                v = max(v, sz[tmp.first]);
+        }
+        if(v<=tot/2) return x;
+    }
+}
+vector<int> dists;
+void dfs2(int a, int pa, int w)
+{
+    for(auto tmp: conn[a])
+    {
+        int x, ww; tie(x, ww) = tmp;
+        if(x==pa) continue;
+        dfs2(x, a, w+ww);
+        
+    }
+    if(deg[a] == 1) dists.push_back(w);
+}
+long long solve(int x)
+{
+    if(deg[x] == 1) return 0LL;
+    vector<vector<int> > V;
+    vector<long long> sum;
+    vector<long long> squaresum;
+    for(auto tmp: conn[x])
+    {
+        dists.clear();
+        dfs2(tmp.first, x, tmp.second);
+        V.push_back(dists);
+        long long sv = 0, ssv =0;
+        for(auto x: dists)
+        {
+            sv += x;
+            ssv += 1LL*x*x;
+        }
+        sum.push_back(sv);
+        squaresum.push_back(ssv);
+    }
+    long long ans = 0;
+    for(int i=0; i<(int)V.size(); ++i)
+        for(int j=0; j<i; ++j)
+            ans += squaresum[i]*V[j].size() + squaresum[j]*V[i].size() + 2*sum[i]*sum[j];
+    return ans;    
+}
+int main()
+{
+    int N; cin >> N;
+    for(int i=0; i<N-1; ++i)
+    {
+        int u, v, w;
+        cin >> u >> v >> w;
+        conn[u].emplace(v, w);
+        conn[v].emplace(u, w);
+        ++deg[u]; ++deg[v];
+    }
+    queue<int> Q;
+    Q.push(1);
+    long long ans = 0;
+    while(!Q.empty())
+    {
+        int x = Q.front(); Q.pop();
+        int y = find_cen(x);
+        ans += solve(y);
+        for(auto tmp: conn[y])
+        {
+            int a, w; tie(a, w) = tmp;
+            conn[a].erase(make_pair(y, w));
+            Q.push(a);
+        }
+        conn[y].clear();
+    }
+    cout << ans;
+}
+```
+
+## C
+
+TBD
+
+## D
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+vector<int> ladder[1010];
+map<pair<int, int>, pair<int, int> > name;
+int perm[50];
+pair<int, int> swapv[50][50];
+int main()
+{
+    int N;
+    scanf("%d", &N);
+    for(int i=0; i<N-1; ++i)
+    {
+        int cnt = 0;
+        while(true)
+        {
+            int t; scanf("%d", &t);
+            if(t==0) break;
+            ladder[t].push_back(i);
+            name[make_pair(t, i)] = make_pair(i+1, ++cnt);
+        }
+    }
+    {
+    LOOP:
+        for(int i=0; i<N; ++i) perm[i] = i;
+        for(int t=1; t<=1000; ++t)
+        {
+            for(int i=0; i<(int)ladder[t].size(); ++i)
+            {
+                int x = ladder[t][i];
+                int leftv = perm[x];
+                int rightv = perm[x+1];
+                if(leftv<rightv)
+                {
+                    swapv[leftv][rightv] = make_pair(t, i);
+                    swap(perm[x], perm[x+1]);
+                }
+                else
+                {
+                    ladder[t].erase(ladder[t].begin()+i);
+                    int ft, fi;
+                    tie(ft, fi) = swapv[rightv][leftv];
+                    ladder[ft].erase(ladder[ft].begin()+fi);
+                    goto LOOP;
+                }
+            }
+        }
+    }
+    int cnt = 0;
+    for(int t=1; t<=1000; ++t) cnt += (int)ladder[t].size();
+    printf("%d\n", cnt);
+    for(int t=1; t<=1000; ++t)
+    {
+        for(int x: ladder[t])
+        {
+            int a, b; tie(a, b) = name[make_pair(t, x)];
+            printf("%d %d\n", a, b);
+        }
+    }
+    return 0;
+}
+```
+
+## E
+
+TBD
+
+## F
+
+TBD
+
+## G
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+int N;
+const int MAXN = 131072;
+int X[MAXN], C[MAXN];
+int idx[2*MAXN];
+
+int getv(int a, int b)
+{
+    a+=MAXN; b+=MAXN;
+    int ans = 0x3f3f3f3f;
+    while(a<=b)
+    {
+        if(a%2==1) ans = min(ans, idx[a++]);
+        if(b%2==0) ans = min(ans, idx[b--]);
+        a/=2; b/=2;
+    }
+    return ans;
+}
+
+void setv(int a, int v)
+{
+    idx[a+=MAXN] = v;
+    while((a=a/2))
+        idx[a] = min(idx[2*a], idx[2*a+1]);
+}
+
+int main()
+{
+    scanf("%*d%d", &N);
+    for(int i=0; i<N; ++i) scanf("%d", X+i);
+    for(int i=0; i<N; ++i) scanf("%d", C+i);
+    memset(idx, 0x3f, sizeof idx);
+    int tp = 0;
+    while(C[0] == C[tp])
+        setv(tp++, 1);
+
+    int ptp = 0;
+    while(tp < N)
+    {
+        int ntp = tp;
+        while(C[tp] == C[ntp]) ++ntp;
+
+        int lpos = tp;
+        int rpos = tp-1;
+
+        for(int i=tp; i<ntp; ++i)
+        {
+            while(lpos != ptp && X[tp-1]-X[lpos-1] <= X[i]-X[tp-1]) --lpos;
+            while(rpos != ptp-1 && X[tp]-X[rpos] < X[i]-X[tp]) --rpos;
+            int ans = min(getv(lpos, rpos), getv(tp, i-1) )+1;
+            setv(i, ans);
+        }
+        ptp = tp, tp = ntp;
+    }
+    printf("%d\n", getv(ptp, N-1));
+}
+```
+
+## H
+
+```cpp
+#include<bits/stdc++.h>
+
+using namespace std;
+const int MAXN = 2048;
+
+long long dp[2*MAXN];
+long long dpL[2*MAXN];
+long long dpR[2*MAXN];
+long long sumv[2*MAXN];
+
+void setv(int a, int v)
+{
+    a += MAXN;
+    sumv[a] += v;
+    dp[a] = dpL[a] = dpR[a] = max(0LL, sumv[a]);
+    while((a=a/2))
+    {
+        dp[a] = max({dp[2*a], dp[2*a+1], dpR[2*a] + dpL[2*a+1]});
+        dpL[a] = max(dpL[2*a], sumv[2*a] + dpL[2*a+1]);
+        dpR[a] = max(dpR[2*a+1], sumv[2*a+1] + dpR[2*a]);
+        sumv[a] = sumv[2*a] + sumv[2*a+1];
+    }
+}
+long long getv()
+{
+    return dp[1];
+}
+
+void clear()
+{
+    memset(dp, 0, sizeof dp);
+    memset(dpL, 0, sizeof dpL);
+    memset(dpR, 0, sizeof dpR);
+    memset(sumv, 0, sizeof sumv);
+}
+
+int main()
+{
+    int N;
+    vector<tuple<int, int, int> > V;
+    vector<int> xc, yc;
+
+    int N1, N2;
+    cin >> N1;
+    for(int i=0; i<N1; ++i)
+    {
+        int x, y; cin >> x >> y;
+        V.emplace_back(x, y, +1);
+        xc.push_back(x);
+        yc.push_back(y);
+    }
+    cin >> N2;
+    for(int i=0; i<N2; ++i)
+    {
+        int x, y; cin >> x >> y;
+        V.emplace_back(x, y, -1);
+        xc.push_back(x);
+        yc.push_back(y);
+    }
+    N = N1+N2;
+
+    int c1, c2; cin >> c1 >> c2;
+    for(int i=0; i<N; ++i)
+    {
+        if(get<2>(V[i]) == 1)
+            get<2>(V[i]) = c1;
+        else
+            get<2>(V[i]) = -c2;
+    }
+
+    sort(xc.begin(), xc.end());
+    xc.erase(unique(xc.begin(), xc.end()), xc.end());
+    sort(yc.begin(), yc.end());
+    yc.erase(unique(yc.begin(), yc.end()), yc.end());
+    
+    int K = xc.size();
+    vector<vector<pair<int, int> > > dat(K);
+    for(int i=0; i<N; ++i)
+    {
+        int x, y, w; tie(x, y, w) = V[i];
+        x = lower_bound(xc.begin(), xc.end(), x) - xc.begin();
+        y = lower_bound(yc.begin(), yc.end(), y) - yc.begin();
+        dat[x].emplace_back(y, w);
+        //printf("%d %d %d\n", x, y, w);
+    }
+    long long ans = 0;
+    for(int i=0; i<K; ++i)
+    {
+        clear();
+        for(int j=i; j<K; ++j)
+        {
+            for(auto tmp: dat[j])
+            {
+                int y, w; tie(y, w) = tmp;
+                setv(y, w);
+            }
+            ans = max(ans, getv());
+        }
+    }
+    printf("%lld\n", ans);
+}
+```
+
+## I
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int N;
+    vector<pair<int, int> > V;
+    cin >> N;
+    for(int i=0; i<N; ++i)
+    {
+        int a, b; cin >> a >> b;
+        V.emplace_back(a, a+b);
+    }
+    sort(V.begin(), V.end());
+
+    function<bool(int)> can = [&](int x)
+    {
+        int left_end = 0;
+        for(auto tmp: V)
+        {
+            int l, r; tie(l, r) = tmp;
+            left_end = max(left_end, l);
+            if(left_end > r) return false;
+            left_end += x;
+        }
+        return true;
+    };
+
+    int lo = 0;
+    int hi = (int)2e9+1;
+    while(lo+1!=hi)
+    {
+        int mi = lo + (hi-lo)/2;
+        if(can(mi)) lo = mi;
+        else hi = mi;
+    }
+    cout << lo << endl;
+}
+```
+
+## J
+
+```
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int N; cin >> N;
+    for(int k=0;;++k)
+    {
+        int maxnode;
+        if(k%2==1)
+            maxnode = 4<<(k/2);
+        else
+            maxnode = 3<<(k/2);
+        if(N<=maxnode)
+        {
+            cout << k << endl;
+            return 0;
+        }
+    }
+}
+```
+
+## K
+
+TBD
+
+## L
+
+```
+#include<bits/stdc++.h>
+using namespace std;
+int M, N;
+int A[10101];
+
+vector<pair<int, int> > SC[15101];
+int D[15101];
+int main()
+{
+    cin >> M >> N;
+    for(int i=0; i<M; ++i) cin >> A[i];
+    for(int i=0; i<N; ++i)
+    {
+        int s, e, t;
+        cin >> s >> e >> t;
+        int cost = (e-s)*A[t-1];
+        SC[e].emplace_back(s, cost);
+    }
+    for(int i=1; i<15101; ++i)
+    {
+        D[i] = D[i-1];
+        for(auto tmp: SC[i])
+        {
+            int s, t; tie(s, t) = tmp;
+            D[i] = max(D[s]+t, D[i]);
+        }
+    }
+    cout << D[15001] << endl;
+}
+```
