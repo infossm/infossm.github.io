@@ -379,6 +379,9 @@ void deque_512_push_test2()
 `push_front`를 하는 코드입니다.
 
 ```c++
+struct data_9 {
+    uint64_t a[9];
+};
 void deque_72_push_test()
 {
     std::cout << "\n[+] ---- deque push test ----\n";
