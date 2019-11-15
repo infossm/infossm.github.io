@@ -181,7 +181,7 @@ n(s)의 경우에는 seasonal 요소의 평활화 정도를 관리한다고 앞�
      autoplot()
 
 아래는 위 코드의 실행 결과 그래프이다. <br>
-![STLsamsung](/dataAnalysis/01.png)
+![STLsamsung](/assets/images/dataForecast/01.png)
 
 trend 요소도 잘 평활화 되지 않았고, (사실상 원 data와 거의 비슷하다)<br>
 계절 요소도 별반 뚜렷한 특징이 없는 것을 확인할 수 있다.<br>
@@ -208,7 +208,7 @@ trend 요소도 잘 평활화 되지 않았고, (사실상 원 data와 거의 �
     plot(detrend_a10)
 
 결과는 아래와 같다.<br>
-![trend](/dataAnalysis/02.png)
+![trend](/assets/images/dataForecast/02.png)
 
 trend 요소가 뚜렷하게 걸러졌고, 추세요소를 제거한 Y-T 값도 잘 나오는 모습이다.<br>
 계절성 요소도 확인해 보자.<br>
@@ -227,11 +227,11 @@ trend 요소가 뚜렷하게 걸러졌고, 추세요소를 제거한 Y-T 값도 
       autoplot()
 
 결과는 아래와 같다.<br>
-![seasonal](/dataAnalysis/03.png)
+![seasonal](/assets/images/dataForecast/03.png)
 
 seasonal 요소가 뚜렷하게 걸러졌다.<br>
 마지막에 stl 함수를 이용해 분해된 그래프와 비교해보자.<br>
-![stl2](/dataAnalysis/04.png)
+![stl2](/assets/images/dataForecast/04.png)
 
 올바르게 분해 된 것을 확인할 수 있다.<br>
 
@@ -275,7 +275,7 @@ ETS모델을 적용시키는 것만 저번에 다루었었다.<br>
             S[i] = (1 - alpha) * S[i-1] + alpha * y[i-1]
     plt.plot(x,S)
     
-![es](/dataAnalysis/05.png)
+![es](/assets/images/dataForecast/05.png)
 보다시피 원본 데이터를 잘 따라가고 있지만, 추세에 약한 모습을 보인다. <br>
 따라서 이중 지수 평활법이라는 것이 나왔는데, 이는 추세 변화량을 보정(평활화)하여 기존 지수 평활법에 더해주는 방법이다. <br>
 식으로 표현하면 다음과 같다<br>
@@ -305,7 +305,7 @@ F(t+m) = s(t) + m * b(t) <br>
             B[i] = (1 - alpha) * B[i-1] + gamma * (S[i] - S[i-1])
     plt.plot(x,S)
 
-![ees](/dataAnalysis/06.png)
+![ees](/assets/images/dataForecast/06.png)
 거의 완벽에 가깝게 예측이 진했되었는데, 이는 내가 구해온 데이터가 너무 깔끔한 형태를 가지고 있어서 그런 모습이다.<br>
 이제 우리는 마지막인 ETS 모델에 다르게 되었는데, ETS모델은<br>
 세개의 요소인 Error, Trend, Seasonal 3가지 요소로 구성된 모델을 의미한다.<br>
@@ -316,7 +316,7 @@ R에서는 매우 간단하게 앞서 다룬 a10데이터 코드에 <br>
     a10 %>% forecast(h=20) %>%
       autoplot()
 를 추가하면 ETS 모델로 예측을 진행해준다. h 값은 예측 할 기간이다.<br>
-![ets](/dataAnalysis/07.png)
+![ets](/assets/images/dataForecast/07.png)
 
 ### Conclusion
 
