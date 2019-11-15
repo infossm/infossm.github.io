@@ -49,24 +49,45 @@ g++ -std=c++14 -o gmem_test gmem_test.cpp \
 ```
 
 ## `list` 컨테이너
-`list`는 doubly-linked list 형태로 구현되어 있습니다. 즉, 각 원소마다 (내부적으로)
-원소의 값, 이전 원소를 가리키는 포인터, 다음 원소를 가리키는 포인터를
-가지고 있습니다. 때문에 `std::list<uint64_t>` 형 `list`에 원소를 삽입하면
+`list`는 doubly-linked list 형태로 구현되어 있습니다. 즉, 각 원소마다
+(내부적으로) 원소의 값, 이전 원소를 가리키는 포인터,
+다음 원소를 가리키는 포인터를 가지고 있습니다.
+때문에 `std::list<uint64_t>` 형 `list`에 원소를 삽입하면
 내부적으로 이 원소를 저장하기 위한 **24바이트**의 메모리를 동적으로 할당합니다.
 
-이를 확인하기 위한 `list_test` 함수를 작성해보았습니다.
+이를 확인하기 위한 `list_test` 함수를 작성해보았습니다. `list` 특성상,
+임의의 위치에 대한 삽입이 
 
 ```c++
 void list_test()
 {
     std::cout << "\n[+] ---- list test ----\n";
     std::list<uint64_t> l;
+    std::list<uint64_t>::iterator it = l.begin();
     
-    l.push_back(1);
-    l.push_back(2);
-    l.push_back(3);
-    l.push_back(5);
-    l.push_back(4);
+    for(int i=1;i<=2;i++)
+    {
+        std::cout << "[*] list push_back " << i << '\n';
+        l.push_back(i);
+    }
+    
+    for(int i=3;i<=4;i++)
+    {
+        std::cout << "[*] list push_front " << i << '\n';
+        l.push_front(i);
+    }
+    
+    for(int i=5;i<=6;i++)
+    {
+        std::cout << "[*] list insert " << i << '\n';
+        l.insert(it, i);
+    }
+    
+    for(int i=1;i<=3;i++)
+    {
+        std::cout << "[*] list pop_front " << i << '\n';
+        l.pop_front();
+    }
     
     std::cout << "\n[-] ---- list test ----\n";
 }
@@ -76,18 +97,29 @@ void list_test()
 
 ```
 [+] ---- list test ----
-[gmem] new(24) > 0x562554a7f280
-[gmem] new(24) > 0x562554a7f2f0
-[gmem] new(24) > 0x562554a7f340
-[gmem] new(24) > 0x562554a7f2d0
-[gmem] new(24) > 0x562554a7f400
+[*] list push_back 1
+[gmem] new(24) > 0x55d3a02d3280
+[*] list push_back 2
+[gmem] new(24) > 0x55d3a02d32f0
+[*] list push_front 3
+[gmem] new(24) > 0x55d3a02d3340
+[*] list push_front 4
+[gmem] new(24) > 0x55d3a02d32d0
+[*] list insert 5
+[gmem] new(24) > 0x55d3a02d3400
+[*] list insert 6
+[gmem] new(24) > 0x55d3a02d3450
+[*] list pop_front 1
+[gmem] delete(0x55d3a02d32d0)
+[*] list pop_front 2
+[gmem] delete(0x55d3a02d3340)
+[*] list pop_front 3
+[gmem] delete(0x55d3a02d3280)
 
 [-] ---- list test ----
-[gmem] delete(0x562554a7f280)
-[gmem] delete(0x562554a7f2f0)
-[gmem] delete(0x562554a7f340)
-[gmem] delete(0x562554a7f2d0)
-[gmem] delete(0x562554a7f400)
+[gmem] delete(0x55d3a02d32f0)
+[gmem] delete(0x55d3a02d3400)
+[gmem] delete(0x55d3a02d3450)
 ```
 
 `gmem`이 할당된 메모리를 어떻게 로깅하는지 알 수 있습니다. `new`를 통해
@@ -121,15 +153,11 @@ void vector_test()
     std::cout << "\n[+] ---- vector test ----\n";
     std::vector<uint64_t> v;
 
-    v.push_back(1);
-    v.push_back(2);
-    v.push_back(3);
-    v.push_back(4);
-    v.push_back(5);
-    v.push_back(9);
-    v.push_back(8);
-    v.push_back(7);
-    v.push_back(6);
+    for(int i=1;i<=9;i++)
+    {
+        std::cout << "[*] vector push_back " << i << '\n';
+        v.push_back(i);
+    }
     
     std::cout << "\n[-] ---- vector test ----\n";
 }
@@ -137,18 +165,27 @@ void vector_test()
 `main` 함수에서 `vector_test`를 호출한 결과는 다음과 같습니다.
 ```
 [+] ---- vector test ----
-[gmem] new(8) > 0x562554a7f400
-[gmem] new(16) > 0x562554a7f2d0
-[gmem] delete(0x562554a7f400)
-[gmem] new(32) > 0x562554a7f420
-[gmem] delete(0x562554a7f2d0)
-[gmem] new(64) > 0x562554a7f450
-[gmem] delete(0x562554a7f420)
-[gmem] new(128) > 0x562554a7f4a0
-[gmem] delete(0x562554a7f450)
+[*] vector push_back 1
+[gmem] new(8) > 0x55fc59b54280
+[*] vector push_back 2
+[gmem] new(16) > 0x55fc59b542f0
+[gmem] delete(0x55fc59b54280)
+[*] vector push_back 3
+[gmem] new(32) > 0x55fc59b542a0
+[gmem] delete(0x55fc59b542f0)
+[*] vector push_back 4
+[*] vector push_back 5
+[gmem] new(64) > 0x55fc59b54370
+[gmem] delete(0x55fc59b542a0)
+[*] vector push_back 6
+[*] vector push_back 7
+[*] vector push_back 8
+[*] vector push_back 9
+[gmem] new(128) > 0x55fc59b543c0
+[gmem] delete(0x55fc59b54370)
 
 [-] ---- vector test ----
-[gmem] delete(0x562554a7f4a0)
+[gmem] delete(0x55fc59b543c0)
 ```
 
 일련의 과정을 요약하면 다음과 같습니다.
