@@ -200,84 +200,14 @@ void update(int i, int l, int r, int le, int ri, int val) {
 - `2 L R`: 모든 $L ≤ i ≤ R$에 대해서 $A_i = ⌊√A_i⌋$를 적용한다.
 - `3 L R`: $A_L + A_{L+1} + ... + A_R$을 출력한다.
 
-1, 3번 쿼리는 평범한 Lazy Propagation 문제와 같습니다. 2번 쿼리는 $A_i$에 따라 변경되는 가중치가 달라서 까다롭게 느껴집니다. 하지만 제곱근 연산 특성상 값이 빠르게 감소함에 따라 같은 값이 많아집니다. 그래서 `l <= le && ri <= r`을 만족하면서 갱신조건을 만족하지 않는 조건이 적게 등장합니다. 그리고 구간에 존재하는 값이 전부 같은 경우, 변경되는 가중치가 전부 같으므로 빠르게 처리할 수 있겠네요. 단, 1번 쿼리는 distinct한 값을 감소시키는 경향이 없으므로, sqrt와 같은 조건으로 작성해서는 안됩니다.
+1, 3번 쿼리는 평범한 Lazy Propagation 문제와 같습니다. 2번 쿼리는 $A_i$에 따라 변경되는 가중치가 달라서 까다롭게 느껴집니다. 하지만 제곱근 연산 특성상 값이 빠르게 감소함에 따라 같은 값이 많아집니다. 그래서 `l <= le && ri <= r`을 만족하면서 갱신조건을 만족하지 않는 조건이 적게 등장합니다. 구간에 존재하는 값의 sqrt한 값이 전부 같을 경우, 변경되는 가중치를 빠르게 계산할 수 있으므로 이를 갱신조건으로 주면 되겠네요. 이는 구간내의 max값과 min값의 sqrt값이 같은 지로 판별할 수 있습니다. 하지만 이런 예제를 봅시다.
+
+$A = [10200, 10201, 10200, 10201, 10200, 10201, ...]$
+
+여기서 `2 1 N`, `1 1 N 10100`과 쿼리가 반복해서 주어지면 같은 sqrt값으로 합쳐지지 않는데요. 이러한 예제는, 인접한 원소의 값이 1차이가 날때만 발생하므로 이에 대해 따로 처리해주면 됩니다.
 
 ```cpp
-typedef long long ll;
-
-struct node {
-	ll max_val, sum;
-} tree[262144];
-
-ll add_lazy[262144];
-ll sup_lazy[262144];
-
-node merge(node a, node b) {
-	return { max(a.max_val, b.max_val), a.sum + b.sum };
-}
-
-// 2번 쿼리
-void sq(int i, int l, int r, int le, int ri) {
-	propagate(i, ri - le + 1);
-	if (ri < l || le > r) return;
-	if (l <= le && ri <= r && tree[i].max_val * (ri - le + 1) == tree[i].sum) {
-		sup_lazy[i] = sqrt(tree[i].max_val);
-		propagate(i, ri - le + 1);
-		return;
-	}
-	sq(i * 2, l, r, le, (le + ri) / 2);
-	sq(i * 2 + 1, l, r, (le + ri) / 2 + 1, ri);
-	tree[i] = merge(tree[i * 2], tree[i * 2 + 1]);
-}
-
-// 1번 쿼리
-void add(int i, int l, int r, int le, int ri, int val) {
-	propagate(i, ri - le + 1);
-	if (ri < l || le > r) return;
-	if (l <= le && ri <= r) {
-		add_lazy[i] += val;
-		propagate(i, ri - le + 1);
-		return;
-	}
-	add(i * 2, l, r, le, (le + ri) / 2, val);
-	add(i * 2 + 1, l, r, (le + ri) / 2 + 1, ri, val);
-	tree[i] = merge(tree[i * 2], tree[i * 2 + 1]);
-}
-```
-
-각 쿼리를 구현한 코드입니다. $add\space lazy$는 구간에 값을 더하는 tag이며, $sup\space lazy$는 구간에 값을 대입하는 tag입니다. 대입은 구간의 값이 전부 같다는 정보를 주므로, $add\space lazy$와 쉽게 합쳐줄 수 있으며 이를 바탕으로 propagate를 다음과 같이 작성할 수 있습니다.
-
-
-
-```cpp
-void propagate(int i, int ra) {
-	if (!add_lazy[i] && !sup_lazy[i]) return;
-
-	if (add_lazy[i]) {
-		tree[i].max_val += add_lazy[i];
-		tree[i].sum += add_lazy[i] * ra;
-	}
-	else {
-		tree[i].max_val = sup_lazy[i];
-		tree[i].sum = tree[i].max_val * ra;
-	}
-
-	if (i < szz) {
-		for (int ii : {i * 2, i * 2 + 1}) {
-			if (add_lazy[i]) {
-				if (sup_lazy[ii]) sup_lazy[ii] += add_lazy[i];
-				else add_lazy[ii] += add_lazy[i];
-			}
-			else {
-				add_lazy[ii] = 0;
-				sup_lazy[ii] = sup_lazy[i];
-			}
-		}
-	}
-
-	add_lazy[i] = sup_lazy[i] = 0;
-}
-
+// 추후 코드를 업로드 할 예정입니다.
 ```
 
 
