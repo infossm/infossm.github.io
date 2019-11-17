@@ -269,6 +269,8 @@ $$k=1$$일 때는 그냥 식을 계산해 주면 된다. 그래서 우리는 $$k
 
 즉, 최적인 $$S_1$$과 $$S_2$$는 평면을 기준으로 나뉘어 진다. 이렇게 나뉘어진 평면을 $$S_1$$과 $$S_2$$에 닿게 기울여 주면, $$N$$개의 점 중 3개의 점으로 이루어진 평면으로 $$S_1$$과 $$S_2$$가 나뉘어 진다는 것을 알 수 있고, 평면이 $$O(n^3)$$개 존재하기 때문에 총 $$O(n^4)$$에 시간으로 문제를 해결할 수 있다.
 
+평면에 어느쪽에 있는 지는, 평면의 법선벡터를 외적으로 구하고, 법선벡터와 내적을 하여, 각도가 90도 이상인지 아닌지 알 수 있다.
+
 # L - What's Mine is Mine
 
 ## 문제
@@ -1000,7 +1002,104 @@ int main()
 
 ## K
 
-TBD
+```cpp
+#include<bits/stdc++.h>
+#pragma GCC optimize("Ofast")
+using namespace std;
+using P = tuple<long long, long long, long long>;
+vector<P> coord;
+int N, K;
+
+P operator -(P a, P b)
+{
+    long long ax, ay, az; tie(ax, ay, az) = a;
+    long long bx, by, bz; tie(bx, by, bz) = b;
+    return P(ax-bx, ay-by, az-bz);
+}
+
+P operator *(P a, P b)
+{
+    long long ax, ay, az; tie(ax, ay, az) = a;
+    long long bx, by, bz; tie(bx, by, bz) = b;
+    long long cx = ay*bz-az*by;
+    long long cy = az*bx-ax*bz;
+    long long cz = ax*by-ay*bx;
+    return P(cx, cy, cz);
+}
+
+long long operator ^(P a, P b)
+{
+    long long ax, ay, az; tie(ax, ay, az) = a;
+    long long bx, by, bz; tie(bx, by, bz) = b;
+    return ax*bx+ay*by+az*bz;
+}
+
+double var(const vector<P>& V)
+{
+    long long exr = 0, exg = 0, exb = 0, ex2 = 0;
+    for(int i=0; i<(int)V.size(); ++i)
+    {
+        long long r, g, b; tie(r, g, b) = V[i];
+        exr += r; exg += g; exb += b;
+        ex2 += r*r+g*g+b*b;
+    }
+    return ex2-(exr*exr+exg*exg+exb*exb)/(double)V.size();
+}
+
+double tryfor(int x, int y, int z)
+{
+    P Plane = (coord[y]-coord[x])*(coord[z]-coord[x]);
+    vector<P> p1, p2;
+    for(int i=0; i<N; ++i)
+    {
+        if(i==x||i==y||i==z) continue;
+        if( ((Plane)^(coord[i]-coord[x])) > 0 ) p1.push_back(coord[i]);
+        else p2.push_back(coord[i]);
+    }
+    double ans = 1e18;
+    for(int xp=0; xp<2; ++xp)
+    {
+        for(int yp=0; yp<2; ++yp)
+        {
+            for(int zp=0; zp<2; ++zp)
+            {
+                if(xp==yp&&yp==zp) continue;
+                if(xp) p1.push_back(coord[x]); else p2.push_back(coord[x]);
+                if(yp) p1.push_back(coord[y]); else p2.push_back(coord[y]);
+                if(zp) p1.push_back(coord[z]); else p2.push_back(coord[z]);
+                ans = min(ans, var(p1)+var(p2));
+                if(xp) p1.pop_back(); else p2.pop_back();
+                if(yp) p1.pop_back(); else p2.pop_back();
+                if(zp) p1.pop_back(); else p2.pop_back();
+            }
+        }
+    }
+    return ans; 
+}
+double solve()
+{
+    if(N<=K) return 0;
+
+    if(K == 1) return var(coord);
+
+    double ans = 1e18;
+    for(int i=0; i<N; ++i)
+        for(int j=0; j<i; ++j)
+            for(int k=0; k<j; ++k)
+                ans = min(ans, tryfor(i, j, k));
+    return ans;
+}
+int main()
+{
+    scanf("%d%d", &N, &K);
+    for(int i=0; i<N; ++i)
+    {
+        int r, g, b; scanf("%d%d%d", &r, &g, &b);
+        coord.emplace_back(r, g, b);
+    }
+    printf("%.6lf\n", solve());
+}
+```
 
 ## L
 
