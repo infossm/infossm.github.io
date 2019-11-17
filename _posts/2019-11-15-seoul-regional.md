@@ -286,7 +286,7 @@ $$k=1$$일 때는 그냥 식을 계산해 주면 된다. 그래서 우리는 $$k
 
 즉, 최적인 $$S_1$$과 $$S_2$$는 평면을 기준으로 나뉘어 진다. 이렇게 나뉘어진 평면을 $$S_1$$과 $$S_2$$에 닿게 기울여 주면, $$N$$개의 점 중 3개의 점으로 이루어진 평면으로 $$S_1$$과 $$S_2$$가 나뉘어 진다는 것을 알 수 있고, 평면이 $$O(n^3)$$개 존재하기 때문에 총 $$O(n^4)$$에 시간으로 문제를 해결할 수 있다.
 
-평면에 어느쪽에 있는 지는, 평면의 법선벡터를 외적으로 구하고, 법선벡터와 내적을 하여, 각도가 90도 이상인지 아닌지 알 수 있다.
+평면에 어느쪽에 있는 지는, 평면의 법선벡터를 외적으로 구한 후 법선 벡터와 내적을 통해 값이 0 이상인지 아닌지에 따라 각도가 90도 이상인지 아닌지 알 수 있다.
 
 # L - What's Mine is Mine
 
@@ -448,8 +448,6 @@ int main()
 #include<bits/stdc++.h>
 using namespace std;
 
-#pragma optimize("Ofast");
-
 int N;
 vector<int> A, B;
 vector<int> invA, invB;
@@ -604,7 +602,6 @@ int main()
 ## E
 
 ```cpp
-#pragma GCC optimize("Ofast")
 #include<bits/stdc++.h>
 using namespace std;
 const int MAXN = 2048;
@@ -931,7 +928,6 @@ int main()
         x = lower_bound(xc.begin(), xc.end(), x) - xc.begin();
         y = lower_bound(yc.begin(), yc.end(), y) - yc.begin();
         dat[x].emplace_back(y, w);
-        //printf("%d %d %d\n", x, y, w);
     }
     long long ans = 0;
     for(int i=0; i<K; ++i)
@@ -995,7 +991,7 @@ int main()
 
 ## J
 
-```
+```cpp
 #include<bits/stdc++.h>
 using namespace std;
 int main()
@@ -1120,7 +1116,7 @@ int main()
 
 ## L
 
-```
+```cpp
 #include<bits/stdc++.h>
 using namespace std;
 int M, N;
