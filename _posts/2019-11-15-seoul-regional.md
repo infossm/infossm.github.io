@@ -425,7 +425,97 @@ int main()
 
 ## C
 
-TBD
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+
+#pragma optimize("Ofast");
+
+int N;
+vector<int> A, B;
+vector<int> invA, invB;
+
+int main()
+{
+    scanf("%d", &N);
+    A.resize(N); B.resize(N);
+    invA.resize(N); invB.resize(N);
+    for(int i=0; i<N; ++i)
+    {
+        scanf("%d", &A[i]);
+        --A[i];
+        invA[A[i]] = i;
+    }
+    for(int i=0; i<N; ++i)
+    {
+        scanf("%d", &B[i]);
+        --B[i];
+        invB[B[i]] = i;
+    }
+    auto inc=[&](int x)
+    {
+        ++x; if(x==N) x=0; return x;
+    };
+    auto dec=[&](int x)
+    {
+        --x; if(x==-1) x=N-1; return x;
+    };
+    vector<bool> tried(N, false);
+    for(int s=0; s<N; ++s)
+    {
+        if(tried[s]) continue;
+        tried[s] = true;
+        vector<int> log;
+        int Alo, Ahi, Blo, Bhi; 
+        Alo = Ahi = invA[s];
+        Blo = Bhi = invB[s];
+        bool flag = true;
+        log.push_back(s);
+        while(log.size() != N)
+        {
+            int t = log.back();
+            int AL = A[dec(Alo)], AR = A[inc(Ahi)];
+            int BL = B[dec(Blo)], BR = B[inc(Bhi)];
+            if(AL == BL)
+            {
+                Alo = dec(Alo); Blo = dec(Blo);
+                log.push_back(AL);
+                tried[AL] = true;
+            }
+            else if(AL == BR)
+            {
+                Alo = dec(Alo); Bhi = inc(Bhi);
+                log.push_back(AL);
+                tried[AL] = true;
+            }
+            else if(AR == BL)
+            {
+                Ahi = inc(Ahi); Blo = dec(Blo);
+                log.push_back(AR);
+                tried[AR] = true;
+            }
+            else if(AR==BR)
+            {
+                Ahi = inc(Ahi); Bhi = inc(Bhi);
+                log.push_back(AR);
+                tried[AR] = true;
+            }
+            else
+            {
+                flag = false; break;
+            }
+        }
+        if(flag)
+        {
+            for(auto x: log) printf("%d ", x+1);
+            puts("");
+            return 0;
+        }
+    }
+    puts("-1");
+    return 0;
+}
+```
 
 ## D
 
@@ -575,7 +665,104 @@ int main()
 
 ## F
 
-TBD
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+int N;
+int X[1010];
+int Y[1010];
+
+long long ccw(int a, int b, int c)
+{
+    long long bx = X[b]-X[a];
+    long long by = Y[b]-Y[a];
+    long long cx = X[c]-X[a];
+    long long cy = Y[c]-Y[a];
+    return bx*cy-cx*by;
+}
+
+int sgn(long long x)
+{
+    if(x<0) return -1;
+    if(x==0) return 0;
+    return 1;
+}
+
+long long solve()
+{
+    vector<pair< int, int> > slopes;
+    for(int i=0; i<N; ++i)
+        for(int j=0; j<i; ++j)
+            slopes.push_back(make_pair(i, j));
+    
+    sort(slopes.begin(), slopes.end(), [&](pair<int, int> a, pair<int, int> b)
+    {
+        auto cs = [&](int x, int y)
+        {
+            int dx = X[x]-X[y];
+            int dy = Y[x]-Y[y];
+            if(dx<0) dx=-dx, dy=-dy;
+            return make_pair(dy, dx);
+        };
+        pair<int, int> ca = cs(a.first, a.second);
+        pair<int, int> cb = cs(b.first, b.second);
+        if(cb.second == 0) return false;
+        if(ca.second == 0) return true; // infinite slope first
+        return 1LL*ca.first*cb.second < 1LL*ca.second*cb.first;
+    });
+
+    vector<int> perm(N), invperm(N);
+    for(int i=0; i<N; ++i) perm[i] = i;
+    sort(perm.begin(), perm.end(), [&](int a, int b)
+    {
+        return make_pair(X[a], -Y[a])< make_pair(X[b], -Y[b]);
+    });
+    for(int i=0; i<N; ++i) invperm[perm[i]] = i;
+
+    long long diag = 0;
+
+    long long ans = 0;
+    long long minarea = (long long)8.5e18;
+    auto upd = [&](int a, int b, int c, int d)
+    {
+        long long x = abs(ccw(a, b, d)) + abs(ccw(c, b, d));
+        bool conc = (sgn(ccw(a,c,b)) == sgn(ccw(a,c,d)));
+        if(minarea > x)
+        {
+            minarea = x;
+            ans = 0;
+        }
+        if(minarea == x)
+        {
+            ++ans;
+            if(conc) ++ans;
+        }
+    };
+
+    for(auto tmp: slopes)
+    {
+        int x, y; tie(x, y) = tmp;
+        int ipx = invperm[x], ipy = invperm[y];
+        assert(abs(ipx-ipy) == 1);
+        swap(perm[ipx], perm[ipy]);
+        swap(invperm[x], invperm[y]);
+
+        int k = min(ipx, ipy);
+        for(int i=max(0, k-2); i<k; ++i)
+            for(int j=k+2; j<min(k+4, N); ++j)
+                upd(perm[i], perm[k], perm[j], perm[k+1]);
+        diag += k * (N-k-2);
+    }
+    return diag+ans;
+}
+
+int main()
+{
+    scanf("%d", &N);
+    for(int i=0; i<N; ++i) scanf("%d%d", X+i, Y+i);
+    printf("%lld\n", solve());
+}
+```
 
 ## G
 
