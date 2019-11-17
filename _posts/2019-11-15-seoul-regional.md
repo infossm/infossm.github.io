@@ -117,7 +117,23 @@ TBD
 
 ## 풀이
 
-TBD
+구간들을 전처리를 통해서, 같은 구간그래프를 만들면서 좌표가 1이상 N+1이하가 되도록 줄여줄 수 있다. 또한, 구간의 왼쪽 끝 점을 기준으로 구간을 정렬해 주자. 여기서 우리는 다음과 같은 동적계획법을 돌릴 것이다.
+
+$$dp_{i, j, k}=$$ 0번째 부터 $$i$$번째 구간까지 고려를 했을 때, 그래프 연결 성분의 갯수가 $$j$$개가 되면서, 이 구간의 마지막 끝 점이 $$k$$인 조건을 만족하면서 넣을 수 있는 최대 연결 성분의 갯수
+
+초기 조건은, $$dp_{-1, 0, 0} = 0$$ 이다.
+
+이 때, $$i+1$$번째 구간의 시작점을 $$L$$, 마지막 점을 $$R$$이라고 하고, $$L$$이 가장 오른쪽 연결성분의 시작점 보다 오른쪽에 있음을 유의하면, 다음과 같은 동적계획법 점화식을 세울 수 있다. $$a \rightarrow b$$를 "$$b$$가 $$a$$를 부분해로 가지기 때문에, $$b = max(b, a)$$로 계산된다." 로 정의하겠다.
+
+- $$D_{i, j, k} \rightarrow D_{i+1, j, k}$$
+  - 이 경우는, $$i+1$$번째 구간을 사용하지 않은 경우이다.
+
+-  $$k < L$$: $$D_{i,j,k}+1 \rightarrow D_{i+1,j+1,R}$$
+  - 이 경우는, 마지막 연결성분보다 시작점이 오른쪽에 있는 경우이기 때문에, 새로운 연결성분이 만들어지게 된다. (2번째 성분이 $$j+1$$이 된다.) 또한, 이 때 오른쪽 끝 점은 $$R$$이 된다.
+- $$ L \le k$$: $$D_{i,j,k} +1 \rightarrow D_{i+1, j, max(k, R)}$$
+  - 이 경우는, 마지막 연결성분보다 시작점이 같거나 왼쪽에 있는 경우이기 때문에, 새로운 연결성분이 만들어지지 않고, (2번째 성분이 $$j$$이다.) 이 때 오른쪽 끝 점은, 기존의 값인 $$k$$와, 새 구간인 $$R$$중 최댓값이 된다.
+
+이 동적계획법 테이블을 그대로 계산한 후 최적화를 해 주면 $$O(N^3)$$의 시간에 문제를 해결할 수 있다. $$i+1$$번째 동적계획법 식은 $$i$$번째만 이용하기 때문에, DP테이블을 $$i$$번째와 $$i+1$$번째만 들고 있는 것과, $$i+1$$번째에서 값이 크게 바뀌는 것이 $$D_{i+1, *, R}$$ 인 점 등을 이용하여 최적화를 해 주면 문제를 해결하기에 충분하다. 또한, Segment tree with lazy propagation등을 사용하여 최적화를 하여서 $$O(N^2 \log N)$$에 문제를 해결할 수도 있다.
 
 # F - Quadrilaterals
 
@@ -478,7 +494,84 @@ int main()
 
 ## E
 
-TBD
+```cpp
+#pragma GCC optimize("Ofast")
+#include<bits/stdc++.h>
+using namespace std;
+const int MAXN = 2048;
+int N;
+pair<int, int> interval[MAXN];
+int dp[MAXN][MAXN];
+int dpR[MAXN]; // dp[*][R]
+int main()
+{
+    vector<int> RP;
+    scanf("%d", &N);
+    for(int i=0; i<N; ++i)
+    {
+        scanf("%d%d", &interval[i].first, &interval[i].second);
+        RP.push_back(interval[i].second);
+    }
+    RP.push_back((int)-1e9-1);
+    RP.push_back((int)-1e9);
+    sort(RP.begin(), RP.end());
+    RP.resize(unique(RP.begin(), RP.end()) - RP.begin());
+    for(int i=0; i<N; ++i)
+    {
+        interval[i].first = lower_bound(RP.begin(), RP.end(), interval[i].first) - RP.begin();
+        interval[i].second = lower_bound(RP.begin(), RP.end(), interval[i].second) - RP.begin();
+    }
+    sort(interval, interval+N);
+    memset(dp, 0xaf, sizeof dp);
+    dp[0][0] = 0;
+
+    int maxcomp = 0;
+    for(int i=0; i<N; ++i)
+    {
+        int L = interval[i].first, R = interval[i].second;
+        for(int j=0; j<=maxcomp+1; ++j)
+            dpR[j] = dp[j][R];
+        for(int j=0; j<=maxcomp; ++j)
+        {
+            int val = dpR[j+1];
+            for(int k=0; k<L; ++k)
+                val = max(val, dp[j][k]+1);
+            dpR[j+1] = val;
+
+            val = dpR[j];
+            for(int k=L; k<R; ++k)
+                val = max(val, dp[j][k]+1);
+            dpR[j] = val;
+
+            for(int k=R; k<(int)RP.size(); ++k)
+                dp[j][k] += 1;
+        }
+        if(dpR[maxcomp+1] > 0) ++maxcomp;
+        for(int j=0; j<=maxcomp; ++j)
+            dp[j][R] = max(dp[j][R], dpR[j]);
+    }
+
+    vector<int> res(N+1);
+    for(int i=0; i<=N; ++i)
+        for(int j=0; j<(int)RP.size(); ++j)
+            res[i] = max(res[i], dp[i][j]);     
+
+    for(int i=0; i<=N-1; ++i)
+    {
+        int comp = N-i;
+        for(int j=comp; j>=1; --j)
+        {
+            if(res[j] >= comp)
+            {
+                printf("%d ", j);
+                break;
+            }
+        }
+    }
+    puts("");
+    return 0;
+}
+```
 
 ## F
 
