@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "2018 ICPC world Finals C. Conquer the world와 Tree DP optimization"
-date:   2019-06-17 23:30:00
+date:   2019-11-17 23:30:00
 author: ainta
 tags: [algorithm, dynamic programming, icpc, data structure, optimization]
 
