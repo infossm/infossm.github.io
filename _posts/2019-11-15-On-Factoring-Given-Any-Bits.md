@@ -46,7 +46,7 @@ $2^{n-k_1} x_1 + 2^{k_2} a + x_2 \equiv 0 (\mathbb{mod}\ p)$
 
 ## Howgrave-Graham Theorem
 
-어떤 다항식 $f(x)$가 주어졌을 때, $f(x)$의 coefficient vector를 $f(x)$의 계수들을 모아서 vector로 만든 것이라고 합시다. 예를 들어, $x^2 + 3x + 2$는 $[1, 3, 2]^T$로 표현하는 식입니다. 그리고 이 vector의 euclidean norm을 $f(x)$의 norm이라고 하고, $||f(x)||$로 표기합시다. 예를 들어서, $||x^2+3x+2|| = \sqrt{1^2+3^2+2^2} = \sqrt{14}$라고 할 수 있습니다.
+어떤 다항식 $f(x)$가 주어졌을 때, $f(x)$의 coefficient vector를 $f(x)$의 계수들을 모아서 vector로 만든 것이라고 합시다. 예를 들어, $x^2 + 3x + 2$는 $[1, 3, 2]^T$로 표현하는 식입니다. 그리고 이 vector의 euclidean norm을 $f(x)$의 norm이라고 하고, $\lvert \lvert f(x) \rvert \rvert$로 표기합시다. 예를 들어서, $\lvert \lvert x^2+3x+2 \rvert \rvert = \sqrt{1^2+3^2+2^2} = \sqrt{14}$라고 할 수 있습니다.
 
 Howgrave-Graham Theorem은 $f(x) \equiv 0 (\mathbb{mod}\ p^m)$이 주어져 있을 때, 어떤 조건이 성립해야지 $f(x) \equiv 0 (\mathbb{mod}\ p^m)$의 근들을 $f(x) = 0$을 풂으로써 얻을 수 있는 지를 알려줍니다.
 
@@ -56,14 +56,14 @@ Howgrave-Graham Theorem은 $f(x) \equiv 0 (\mathbb{mod}\ p^m)$이 주어져 있�
 
 Let $g(x_1,\ldots,x_n) \in \mathbb{Z}[x_1,\ldots,x_n]$ be an integer polynomial with at most $\omega$ monomials. Suppose that
 
-1. $g(y_1, \ldots, y_n) \equiv 0 (\mathbb{mod}\ p^m)$ for $|y_1|\leq X_1,\ldots, |y_n| \leq X_n$
-2. $||g(x_1X_1, \ldots, x_nX_n)|| < \frac{p^m}{\sqrt{\omega}}$
+1. $g(y_1, \ldots, y_n) \equiv 0 (\mathbb{mod}\ p^m)$ for $\lvert y_1 \rvert \leq X_1,\ldots, \lvert y_n \rvert \leq X_n$
+2. $\lvert \lvert g(x_1X_1, \ldots, x_nX_n) \rvert \rvert  < \frac{p^m}{\sqrt{\omega}}$
 
 Then $g(y_1,\ldots, y_n) = 0$ holds over the integers.
 
 ---
 
-이를 정리해보자면, 우리가 구하려고 하는 근 $y_1, y_2, \ldots, y_n$이 있고, 이 근들이 어떤 값보다 작은지 ($|y_1|\leq X_1,\ldots, |y_n| \leq X_n$)를 알고 있으며, $g(x_1X_1, \ldots, x_nX_n)$의 norm이 충분히 작다면 $g(x_1,\ldots, x_n) = 0$을 풀어서 $y_1, y_2, \ldots, y_n$을 구할 수 있다는 것입니다.
+이를 정리해보자면, 우리가 구하려고 하는 근 $y_1, y_2, \ldots, y_n$이 있고, 이 근들이 어떤 값보다 작은지 ($\lvert y_1 \rvert \leq X_1,\ldots, \lvert y_n \rvert \leq X_n$)를 알고 있으며, $g(x_1X_1, \ldots, x_nX_n)$의 norm이 충분히 작다면 $g(x_1,\ldots, x_n) = 0$을 풀어서 $y_1, y_2, \ldots, y_n$을 구할 수 있다는 것입니다.
 
 하지만 이것으로는 뭔가 부족해보입니다. 우리가 구했던 식 $2^{n-k_1} x_1 + 2^{k_2} a + x_2 \equiv 0 (\mathbb{mod}\ p)$ 이 Howgrave-Graham Theorem을 만족하지 않으면 의미가 없기 때문입니다. 이를 해결하기 위해서 LLL Algorithm이 사용됩니다.
 
@@ -71,7 +71,7 @@ Then $g(y_1,\ldots, y_n) = 0$ holds over the integers.
 
 Lattice라고 하는 개념이 있습니다. Lattice의 basis vector $v_1, \ldots, v_n$이 주어져 있을 때, 이 vector들로 표현되는 lattice의 집합은 다음과 같이 정의됩니다.
 
-$L = \{v \in \mathbb{Z}^m | v = \sum^{n}_{i=1} a_iv_i\ \mathbb{with}\ a_i \in \mathbb{Z} \}$
+$L = \{v \in \mathbb{Z}^m \mid v = \sum^{n}_{i=1} a_iv_i\ \mathbb{with}\ a_i \in \mathbb{Z} \}$
 
 즉, 주어진 vector들의 정수배의 합으로만 이루어진 것을 lattice라고 하는 것입니다. 격자라는 이름의 뜻에서 살펴볼 수 있듯이 매우 쉬운 개념입니다. Basis vector의 개수는 lattice의 rank이고, basis vector의 size가 $n$이고 basis vector가 총 $n$개일 때 full-rank lattice라고 합니다. Matrix와 개념이 똑같죠? 심지어 lattice의 determinant도 정의할 수 있는데, full-rank lattice의 경우 basis vector로 구성된 matrix의 determinant와 동일합니다.
 
@@ -83,7 +83,7 @@ LLL Algorithm은 input으로 basis vector $b_1, \ldots, b_n$이 주어져 있을
 
 Let $L \in \mathbb{Z}^n$ be a lattice spanned by $B = \{b_1, \ldots, b_n\}$. The LLL-algorithm outputs a reducecd lattice basis $\{v_1, \ldots, v_n\}$ with
 
-$||v_i|| \leq 2^{\frac{n(n-1)}{4(n-i+1)}} \det(L)^{\frac{1}{n-i+1}}$
+$\lvert \lvert v_i \rvert \rvert \leq 2^{\frac{n(n-1)}{4(n-i+1)}} \det(L)^{\frac{1}{n-i+1}}$
 
 in time polynomial in $n$ and in the bit-size of the entries of the basis matrix $B$.
 
