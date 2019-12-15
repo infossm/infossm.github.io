@@ -319,8 +319,8 @@ int main()
 
 ### 항목 10. 범위 없는 enum보다 범위 있는 enum을 선호하라.
 확실히 범위 있는 enum을 선호하는 게 맞긴 한데 범위 있는 enum은 underlying type으로 implicit type conversion이 안되서 좀 불편할 때가 많다. 보통 enum의 값을 배열 혹은 컨테이너의 index와 연관지을 때가 많은데, 이럴 때 일일히 static_cast를 해줘야 하는 점이 좀 불편하다. namespace와 범위 없는 enum을 조합하면, 범위는 있되, implicit type conversion은 가능한 enum을 만들 수 있다.
-#include <type_traits>
 ```cpp
+#include <type_traits>
 
 enum class Enum_A { A_1, A_2, A_3, };  // SCOPED, and implicit type conversion is not admitted.
 namespace Enum_B { enum { B_1, B_2, B_3, }; }  // SCOPED, and implicit type conversion to underlying type.
