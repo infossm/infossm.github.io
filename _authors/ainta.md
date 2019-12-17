@@ -1,4 +1,4 @@
 ---
-name: 조승현
-image:
+name: ainta
+title: 조승현
 ---
