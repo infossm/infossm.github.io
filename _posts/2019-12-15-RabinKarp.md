@@ -18,6 +18,13 @@ Rabin-Karp 해싱은 문자열의 해쉬함수입니다. 이 글의 내용에서
 
 코드는 아래와 같이 아주 간단하게 만들 수 있습니다.
 
+```python
+def RabinKarp(S, p, m):
+  h = 0
+  for ch in S:
+    h = (h * p + ord(ch)) % m
+  return h
+```
 
 서술의 편의를 위해 글에서도 곱해지는 값과 modulo를 언급할 때 각각 $$p$$, $$m$$으로 기술하겠습니다.
 
