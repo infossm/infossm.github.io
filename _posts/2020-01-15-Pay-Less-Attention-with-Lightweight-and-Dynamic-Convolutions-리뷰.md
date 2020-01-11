@@ -138,7 +138,7 @@ where $f(X_i)=\sum_{c=1}^d W^Q_{h,j,c}X_{i,c}$
 
 ##실험 및 결과
 
-&nbsp;&nbsp;&nbsp;&nbsp;저자는 기계 번역(machine translation), 언어 모델링(language modeling), 요약(summarization) 테스크를 수행했습니다. lightweight 컨볼루션과 dynamic 컨볼루션은 다양한 테스크에서 셀프 어텐션 베이스라인보다 좋은 성능을 보여주었습니다. 특히, Dynamic 컨볼루션의 WMT’14 영어-독일어 데이터 셋에서 기계 번역 모델 점수는 29.7 BLEU로 높은 성능을 보여주었습니다. 비록 현재 이 성능은 SOTA가 아니지만 지금까지도 많은 모델이 트랜스포머 모델 기반으로 구현되는 것을 생각하면 저자의 접근은 의미있는 시도였다고 생각합니다.
+&nbsp;&nbsp;&nbsp;&nbsp;저자는 기계 번역(machine translation), 언어 모델링(language modeling), 요약(summarization) 테스크를 수행했습니다. lightweight 컨볼루션과 dynamic 컨볼루션은 다양한 테스크에서 셀프 어텐션 베이스라인보다 좋은 성능을 보여주었습니다. 특히, Dynamic 컨볼루션의 WMT’14 영어-독일어 데이터 셋에서 기계 번역 모델 점수는 29.7 BLEU로 높은 성능을 보여주었습니다. 비록 현재 이 성능은 SOTA가 아니지만 지금까지도 많은 모델이 트랜스포머 모델 기반으로 구현되는 것을 보면 저자의 접근이 흥미로운 면이 있습니다.
 
 <center>
 <img src="/assets/images/payless-attention/machine-translation-results.png" alt="drawing" width="500"/><br/>
@@ -157,13 +157,69 @@ where $f(X_i)=\sum_{c=1}^d W^Q_{h,j,c}X_{i,c}$
 </br>
 
 ##개인적인 실험
-##의문점
+
+<center>
+<img src="/assets/images/payless-attention/suggestion.png" alt="drawing" width="300"/><br/>
+<em>수정한 Dynamic 모듈</em>
+</center>
+</br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;Dynamic 컨볼루션은 lightweight 컨볼루션에 비해 커널에 필요한 파라매터 수가 입력 벡터의 차원배수 만큼 더 많이 필요합니다. Dynamic 컨볼루션의 커널이 타입 스탭에 의존하게 만들기 위해 너무 많은 파라매터를 쓰는 것 같아서 이를 조절할 수 있도록 위 그림과 같이 value, query 벡터 프로젝션을 나눠보는 실험을 해보았습니다. 이렇게 나누면 입력 벡터를 커널의 가중치로 바로 프로젝션하기 전에 차원을 줄일 수 있습니다. query 벡터의 차원을 1에 가깝게 줄이면 lightweight 컨볼루션과 비슷하게 되고 늘려서 value 벡터의 차원에 도달하면 dynamic 컨볼루션과 비슷하게 될 것으로 예상합니다.
+&nbsp;&nbsp;&nbsp;&nbsp;기존 Dynamic 모듈을 사용한 베이스 모델은 IWSLT’14 German-English(De-En) 기계 번역 모델로 잡았습니다.
+(https://github.com/pytorch/fairseq/blob/master/examples/pay_less_attention_paper/README.md)
+&nbsp;&nbsp;&nbsp;&nbsp;수정한 dynamic 모듈을 사용한 모델은 베이스 모델에서 value 벡터의 차원을 512, query 벡터의 차원을 256으로 놓은 것을 제외하고 모두 같은 값의 하이퍼파라매터로 구성하였습니다. 저자가 IWSLT14 De-En 데이터 셋에서 실험할 때 모델에 GLU 활성 함수를 사용하지 않았기 때문에 수정한 모델에서도 GLU 활성 함수를 사용하지 않았습니다. 
+(수정한 모듈 - https://github.com/choyi0521/fairseq/tree/dev6)
+
+###수정한 모델의 학습 및 평가 설정(IPython)
+```python
+# Training
+!mkdir -p "{SAVE}" 
+!CUDA_VISIBLE_DEVICES=0 $(which fairseq-train) data-bin/iwslt14.tokenized.de-en \
+    --encoder-conv-type ddynamic --decoder-conv-type ddynamic \
+    --clip-norm 0 --optimizer adam --lr 0.0005 \
+    --source-lang de --target-lang en --max-tokens 4000 --no-progress-bar \
+    --log-interval 100 --min-lr '1e-09' --weight-decay 0.0001 \
+    --criterion label_smoothed_cross_entropy --label-smoothing 0.1 \
+    --lr-scheduler inverse_sqrt \
+    --ddp-backend=no_c10d \
+    --max-update 80000 --warmup-updates 4000 --warmup-init-lr '1e-07' \
+    --adam-betas '(0.9, 0.98)' \
+    -a lightconv_iwslt_de_en --save-dir "{SAVE}" \
+    --dropout 0.3 --attention-dropout 0.1 --weight-dropout 0.1 \
+    --encoder-glu 0 --decoder-glu 0 \
+    --encoder-gau 0 --decoder-gau 0 \
+    --conv-mixed 0 \
+    --encoder-conv-dim 512 --decoder-conv-dim 512 \
+    --encoder-query-dim 256 --decoder-query-dim 256 \
+    --encoder-attention-heads 4 --decoder-attention-heads 4 \
+    --encoder-attention-query-heads 1 --decoder-attention-query-heads 1 \
+    2>&1 | tee "{SAVE}/train.log"
+
+# Evaluation
+!CUDA_VISIBLE_DEVICES=0 fairseq-generate data-bin/iwslt14.tokenized.de-en --path "{SAVE}/checkpoint_last10_avg.pt" --batch-size 128 --beam 4 --remove-bpe --lenpen 1 --gen-subset test --quiet 
+```
+
+###수정한 모델 성능
+```
+Namespace(beam=4, bpe=None, cpu=False, criterion='cross_entropy', data='data-bin/iwslt14.tokenized.de-en', dataset_impl=None, decoding_format=None, diverse_beam_groups=-1, diverse_beam_strength=0.5, empty_cache_freq=0, force_anneal=None, fp16=False, fp16_init_scale=128, fp16_scale_tolerance=0.0, fp16_scale_window=None, gen_subset='test', iter_decode_eos_penalty=0.0, iter_decode_force_max_iter=False, iter_decode_max_iter=10, lazy_load=False, left_pad_source='True', left_pad_target='False', lenpen=1.0, load_alignments=False, log_format=None, log_interval=1000, lr_scheduler='fixed', lr_shrink=0.1, match_source_len=False, max_len_a=0, max_len_b=200, max_sentences=128, max_source_positions=1024, max_target_positions=1024, max_tokens=None, memory_efficient_fp16=False, min_len=1, min_loss_scale=0.0001, model_overrides='{}', momentum=0.99, nbest=1, no_beamable_mm=False, no_early_stop=False, no_progress_bar=False, no_repeat_ngram_size=0, num_shards=1, num_workers=1, optimizer='nag', path='/content/gdrive/My Drive/colab/payless/save_base/dynamic_conv_iwslt/checkpoint_last10_avg.pt', prefix_size=0, print_alignment=False, print_step=False, quiet=True, raw_text=False, remove_bpe='@@ ', replace_unk=None, required_batch_size_multiple=8, results_path=None, sacrebleu=False, sampling=False, sampling_topk=-1, sampling_topp=-1.0, score_reference=False, seed=1, shard_id=0, skip_invalid_size_inputs_valid_test=False, source_lang=None, target_lang=None, task='translation', tbmf_wrapper=False, temperature=1.0, tensorboard_logdir='', threshold_loss_scale=None, tokenizer=None, unkpen=0, unnormalized=False, upsample_primary=1, user_dir=None, warmup_updates=0, weight_decay=0.0)
+| [de] dictionary: 8848 types
+| [en] dictionary: 6632 types
+| loaded 6750 examples from: data-bin/iwslt14.tokenized.de-en/test.de-en.de
+| loaded 6750 examples from: data-bin/iwslt14.tokenized.de-en/test.de-en.en
+| data-bin/iwslt14.tokenized.de-en test de-en 6750 examples
+| loading model(s) from /content/gdrive/My Drive/colab/payless/save_base/dynamic_conv_iwslt/checkpoint_last10_avg.pt
+| Translated 6750 sentences (149022 tokens) in 74.4s (90.73 sentences/s, 2002.97 tokens/s)
+| Generate test with beam=4: BLEU4 = 35.44, 69.4/43.9/29.8/20.7 (BP=0.958, ratio=0.958, syslen=125712, reflen=131161)
+```
+IWSLT14 De-En 데이터 셋에서 수정한 모델이 저자의 Dynamic 콘볼루션 모델 성능인 35.2 BLEU보다 높은 35.44 BLEU를 받았습니다. Query 벡터로 프로젝션하기 위해 추가적인 파라매터가 필요하고 약간의 하이퍼파라매터 튜닝을 요구하지만 성능차이를 고려하면 의미있는 수정으로 보입니다.
+
+
 ##참고문헌
-https://qiita.com/koreyou/items/328fa92a1d3a7e680376
-
-https://paperswithcode.com/sota/machine-translation-on-wmt2014-english-german
-
-
-Kim. 2014. Convolutional Neural Networks for Sentence Classification. EMNLP 2014. 
-
-Xception: Deep Learning with Depthwise Separable Convolutions
+* Yoon Kim. 2014. Convolutional Neural Networks for Sentence Classification. EMNLP 2014. 
+* François Chollet. 2017. Xception: Deep Learning with Depthwise Separable Convolutions. CVPR 2017.
+* Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N, Gomez, Lukasz Kaiser, and Illia Polosukhin. 2017. Attention is all you need. NIPS 2017.
+* Felix Wu, Angela Fan, Alexei Baevski, Yann Dauphin,
+and Michael Auli. 2019. Pay less attention with
+lightweight and dynamic convolutions. ICLR 2019.
+* https://qiita.com/koreyou/items/328fa92a1d3a7e680376
+* https://paperswithcode.com/sota/machine-translation-on-wmt2014-english-german
