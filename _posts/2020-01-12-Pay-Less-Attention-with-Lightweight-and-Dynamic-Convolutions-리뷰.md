@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Pay Less Attention with Lightweight and Dynamic Convolutions 리뷰"
-date:   2020-01-15 23:59:59
+date:   2020-01-12 23:59:59
 author: choyi0521
 tags: [self-attention, machine-learning, natural-language-processing]
 ---
