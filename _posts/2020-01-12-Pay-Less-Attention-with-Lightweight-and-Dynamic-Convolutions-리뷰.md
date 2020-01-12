@@ -141,17 +141,17 @@ where $f(X_i)=\sum_{c=1}^d W^Q_{h,j,c}X_{i,c}$
 &nbsp;&nbsp;&nbsp;&nbsp;저자는 기계 번역(machine translation), 언어 모델링(language modeling), 요약(summarization) 테스크를 수행했습니다. lightweight 컨볼루션과 dynamic 컨볼루션은 다양한 테스크에서 셀프 어텐션 베이스라인보다 좋은 성능을 보여주었습니다. 특히, Dynamic 컨볼루션의 WMT’14 영어-독일어 데이터 셋에서 기계 번역 모델 점수는 29.7 BLEU로 높은 성능을 보여주었습니다. 비록 현재 이 성능은 SOTA가 아니지만 지금까지도 많은 모델이 트랜스포머 모델 기반으로 구현되는 것을 보면 저자의 접근이 흥미로운 면이 있습니다.
 
 <center>
-<img src="/assets/images/payless-attention/machine-translation-results.png" alt="drawing" width="500"/><br/>
+<img src="/assets/images/payless-attention/machine-translation-results.PNG" alt="drawing" width="500"/><br/>
 <em>Machine translation accuracy in terms of BLEU for WMT En-De and WMT En-Fr on newstest2014.</em>
 </center>
 </br>
 <center>
-<img src="/assets/images/payless-attention/language-modeling-results.png" alt="drawing" width="500"/><br/>
+<img src="/assets/images/payless-attention/language-modeling-results.PNG" alt="drawing" width="500"/><br/>
 <em>Language modeling results on the Google Billion Word test set.</em>
 </center>
 </br>
 <center>
-<img src="/assets/images/payless-attention/summarization-results.png" alt="drawing" width="500"/><br/>
+<img src="/assets/images/payless-attention/summarization-results.PNG" alt="drawing" width="500"/><br/>
 <em>Results on CNN-DailyMail summarization. We compare to likelihood trained approaches except for Celikyilmaz et al. (2018).</em>
 </center>
 </br>
