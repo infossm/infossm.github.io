@@ -182,7 +182,7 @@ int main()
 ```
 
 ### statement를 expression으로 사용 ###
-GCC에서는 중괄호로 둘러싸인 compound statement를 하나의 expression으로 사용하는 것을 허용합니다. 누구나 한 번쯤 짜보는 (그러나 허점이 많은) `max` 매크로는 보통 다음과 같이 생겼습니다.
+GCC에서는 소괄호로 둘러싸인 compound statement를 하나의 expression으로 사용하는 것을 허용합니다. 누구나 한 번쯤 짜보는 (그러나 허점이 많은) `max` 매크로는 보통 다음과 같이 생겼습니다.
 
 ```c
 #define max(a,b) ((a) > (b) ? (a) : (b))
@@ -195,7 +195,7 @@ GCC에서는 중괄호로 둘러싸인 compound statement를 하나의 expressio
   ({int _a = (a), _b = (b); _a > _b ? _a : _b; })
 ```
 
-중괄호 내에 다수의 statement가 들어가 있으며, 그 중 마지막 statement의 값이 compound statement의 값이 되며 이 전체를 하나의 expression으로 사용이 가능합니다. 따라서 아래와 같은 코드를 사용할 수 있게 됩니다.
+중괄호 내에 다수의 statement가 들어가 있으며, 그 중 마지막 statement의 값이 compound statement의 값이 되며 이 전체를  소괄호로 묶어 하나의 expression으로 사용이 가능합니다. 따라서 아래와 같은 코드를 사용할 수 있게 됩니다.
 
 ```c
 int x = 1, y = 2;
