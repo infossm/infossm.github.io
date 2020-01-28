@@ -4,7 +4,7 @@ title:  "C++ STL 컨테이너의 메모리 사용량 (1)"
 date:   2019-11-14 19:00
 author: evenharder
 image:  /assets/images/evenharder-post/c++-container/pexel-pok-rie-1655166.jpg
-tags:   c++ data-structure
+tags:   C++ data-structure
 ---
 
 C++로 Problem Solving을 하는 사람도, 일반적인 프로그래밍을 하는 사람도
