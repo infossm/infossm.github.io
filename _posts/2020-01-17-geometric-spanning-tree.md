@@ -3,7 +3,7 @@ layout: post
 title: "A simple solution to the $d$-dimensional $L_1$ spanning tree in $O(n\log^{d-1} n)$""
 author: koosaga
 date: 2020-01-17
-tags: algorithm, computation-geometry
+tags: [algorithm, computation-geometry]
 ---
 
 # A simple solution to the $d$-dimensional $L_1$ spanning tree in $O(n\log^{d-1} n)$
