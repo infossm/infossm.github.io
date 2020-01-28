@@ -47,7 +47,8 @@ tags: [self-attention, machine-learning, natural-language-processing]
 &nbsp;&nbsp;&nbsp;&nbsp;"Convolutional Neural Networks for Sentence Classification"에서 콘볼루션 뉴럴 네트워크를 워드 벡터들에 적용하는 방법을 소개하고 있습니다. 일반적인 컨볼루션은 입력 벡터와 출력 벡터의 채널 수가 각각 $d_{in}$, $d_{out}$이고 커널의 너비가 $k$일 때, 총 $d_{in} \times d_{out} \times k$개의 파라매터가 필요합니다. 입력 시퀀스 $X \in \mathbb{R}^{n \times d_{in}}$와 커널의 가중치 $W \in \mathbb{R}^{d_{in} \times d_{out} \times k}$, bias 항 $b\in\mathbb{R}$가 주어졌을 때 컨볼루션 연산 결과 $Y \in \mathbb{R}^{n \times d_{out}}$는 다음과 같이 정의됩니다.
 
 $$
-Y_{r,c}=\sum_{i=1}^{d_{in}} \sum_{j=1}^k {W_{i,c,j} \cdot X_{r+j-{\lceil {{k+1}\over 2}\rceil},c}} + b
+//typo check
+//Y_{r,c}=\sum_{i=1}^{d_{in}} \sum_{j=1}^k {W_{i,c,j} \cdot X_{r+j-{\lceil {{k+1}\over 2}\rceil},c}} + b
 $$
 
 ##Depthwise 컨볼루션
