@@ -134,7 +134,7 @@ where $f(X_i)=\sum_{c=1}^d W^Q_{h,j,c}X_{i,c}$
 <em>제시된 인코더-디코더 모델</em>
 </center>
 
-&nbsp;&nbsp;&nbsp;&nbsp;저자는 트랜스포머 아키텍쳐와 유사한 형태로 자신의 모델 아키텍쳐를 구현하였습니다. 셀프 어텐션 베이스라인으로 fairseq에서 재구현한 트랜스포머 아키텍쳐를 사용하고 셀프 어텐션 부분을 lightweight, dynamic 모듈로 바꿔써 제시한 모듈 성능을 테스트하였습니다.
+&nbsp;&nbsp;&nbsp;&nbsp;저자는 트랜스포머 아키텍쳐와 유사한 형태로 자신의 모델 아키텍쳐를 구현하였습니다. 셀프 어텐션 베이스라인으로 fairseq에서 재구현한 트랜스포머 아키텍쳐를 사용하고 셀프 어텐션 부분을 lightweight, dynamic 모듈로 바꿔서 제시한 모듈 성능을 테스트하였습니다.
 
 ## 실험 및 결과
 
@@ -165,10 +165,11 @@ where $f(X_i)=\sum_{c=1}^d W^Q_{h,j,c}X_{i,c}$
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;Dynamic 컨볼루션은 lightweight 컨볼루션에 비해 커널에 필요한 파라매터 수가 입력 벡터의 차원배수 만큼 더 많이 필요합니다. Dynamic 컨볼루션의 커널이 타입 스탭에 의존하게 만들기 위해 너무 많은 파라매터를 쓰는 것 같아서 이를 조절할 수 있도록 위 그림과 같이 value, query 벡터 프로젝션을 나눠보는 실험을 해보았습니다. 이렇게 나누면 입력 벡터를 커널의 가중치로 바로 프로젝션하기 전에 차원을 줄일 수 있습니다. query 벡터의 차원을 1에 가깝게 줄이면 lightweight 컨볼루션과 비슷하게 되고 늘려서 value 벡터의 차원에 도달하면 dynamic 컨볼루션과 비슷하게 될 것으로 예상합니다.
-&nbsp;&nbsp;&nbsp;&nbsp;기존 Dynamic 모듈을 사용한 베이스 모델은 IWSLT’14 German-English(De-En) 기계 번역 모델로 잡았습니다.
-(https://github.com/pytorch/fairseq/blob/master/examples/pay_less_attention_paper/README.md)
-&nbsp;&nbsp;&nbsp;&nbsp;수정한 dynamic 모듈을 사용한 모델은 베이스 모델에서 value 벡터의 차원을 512, query 벡터의 차원을 256으로 놓은 것을 제외하고 모두 같은 값의 하이퍼파라매터로 구성하였습니다. 저자가 IWSLT14 De-En 데이터 셋에서 실험할 때 모델에 GLU 활성 함수를 사용하지 않았기 때문에 수정한 모델에서도 GLU 활성 함수를 사용하지 않았습니다. 
-(수정한 모듈 - https://github.com/choyi0521/fairseq/tree/dev6)
+
+&nbsp;&nbsp;&nbsp;&nbsp;기존 Dynamic 모듈을 사용한 베이스 모델은 IWSLT’14 German-English(De-En) 기계 번역 모델로 잡았습니다. (https://github.com/pytorch/fairseq/blob/master/examples/pay_less_attention_paper/README.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;수정한 dynamic 모듈을 사용한 모델은 베이스 모델에서 value 벡터의 차원을 512, query 벡터의 차원을 256으로 놓은 것을 제외하고 모두 같은 값의 하이퍼파라매터로 구성하였습니다. 저자가 IWSLT14 De-En 데이터 셋에서 실험할 때 모델에 GLU 활성 함수를 사용하지 않았기 때문에 수정한 모델에서도 GLU 활성 함수를 사용하지 않았습니다. (수정한 모듈 - https://github.com/choyi0521/fairseq/tree/dev6)
+
 
 ### 수정한 모델의 학습 및 평가 설정(IPython)
 ```python
@@ -211,7 +212,7 @@ Namespace(beam=4, bpe=None, cpu=False, criterion='cross_entropy', data='data-bin
 | Translated 6750 sentences (149022 tokens) in 74.4s (90.73 sentences/s, 2002.97 tokens/s)
 | Generate test with beam=4: BLEU4 = 35.44, 69.4/43.9/29.8/20.7 (BP=0.958, ratio=0.958, syslen=125712, reflen=131161)
 ```
-IWSLT14 De-En 데이터 셋에서 수정한 모델이 저자의 Dynamic 콘볼루션 모델 성능인 35.2 BLEU보다 높은 35.44 BLEU를 받았습니다. Query 벡터로 프로젝션하기 위해 추가적인 파라매터가 필요하고 약간의 하이퍼파라매터 튜닝을 요구하지만 성능차이를 고려하면 의미있는 수정으로 보입니다.
+&nbsp;&nbsp;&nbsp;&nbsp;IWSLT14 De-En 데이터 셋에서 수정한 모델이 저자의 Dynamic 콘볼루션 모델 성능인 35.2 BLEU보다 높은 35.44 BLEU를 받았습니다. Query 벡터로 프로젝션하기 위해 추가적인 파라매터가 필요하고 약간의 하이퍼파라매터 튜닝을 요구하지만 성능차이를 고려하면 의미있는 수정으로 보입니다.
 
 
 ## 참고문헌
