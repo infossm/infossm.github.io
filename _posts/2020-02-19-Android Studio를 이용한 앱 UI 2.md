@@ -20,7 +20,7 @@
 
 우선 이번에 만들어볼 화면은 바로 잘 알려진 SNS 앱인 인스타그램 어플의 UI입니다. 실제 인스타그램은 Android Studio가 아닌 React-Native 를 이용해서 만들어졌습니다. 리액트 네이티브 툴의 경우 안드로이드/ios를 동시에 지원하는 장점이 있습니다. 하지만 화면 자체는 Android Studio로도 구성이 가능하기에 진행하려고 합니다. 아래는 인스타그램의 화면입니다.
 
-![](C:\Users\USER-PC\Desktop\work\x.jpg)
+![](/assets/images/AndroidUI/x.png)
 
 맨 위에 상태바가 그대로 존재하며, (상태바란 KT 5:06 이 표시된 모바일 기기 위에 뜨는 기본 창을 말한다) 그 아래로 instagram 메인 수평 바가 존재한다. 사진을 바로 찍을 수 있는 카메라 기능과, 라이브, 포스팅 기능으로 연결되는 아이콘들이 존재한다. 그 아래로는 수평인데 넘길 수 scroll이 가능한 바가 존재하고 내가 팔로우 한 사람들로 연결되는 메인 이미지들로 구성되어 있다. 그 밑으로는 팔로우한 사람들의 포스트들을 확인 할 수 있는 수직 scroll 바가 존재한다. 그리고 맨 아래에 고정되어 있는 하단 바가 존재한다.
 
@@ -466,7 +466,7 @@ setFrag 함수는 위와 같이 구성되어 있습니다. fm, ft를 선언한 �
 
 위는 간단하게 layout을 잡아주는 코드라고 생각해주면 된다. 이렇게 구성이 된 후에, margin들을 이쁘게 조절하고, icon / 글씨체를 수정하고, DB와 연동해서 post들을 불러와 view를 동적으로 추가할 수 있게 바꾸어 주어야 한다. ScrollView에 보여지는 post 수와 HorizontalScrollView에 보여지는 follow들의 수는 정해진 것이 아니기 때문이다.
 
-![](C:\Users\USER-PC\Desktop\work\y.png)
+![](/assets/images/AndroidUI/y.png))
 
 그리고 bottom navigation view의 경우에 item들을 원칙으로 가지고 있으므로 우리가 실제 인스타그램 앱에서 볼 수 있는 bottom bar와는 조금 다르다. 실제 어플 처럼 하단 바를 만들고 싶다면, 그냥 모든 뷰마다 아래에 똑같이 만들 bar 모양의 layout을 박아주고 layout_gravity="bottom"으로 지정해주면 해결된다. 매우 매우 극심한 노가다를 필요로 한다. 
 
