@@ -181,3 +181,5 @@ Aggregate Pattern 은 정말 최근 저의 최애 원픽 설계 기법인데요.
 * [Aggregates & Entities in Domain-Driven Design](http://thepaulrayner.com/blog/aggregates-and-entities-in-domain-driven-design/)
 * [Effective Aggregate Design](https://dddcommunity.org/library/vernon_2011/)
 * [Saga Pattern](https://microservices.io/patterns/data/saga.html)
+
+**[이 포스팅을 taeguk 블로그에서 보기](https://taeguk2.blogspot.com/2020/02/ddd-aggregate-pattern.html)**
