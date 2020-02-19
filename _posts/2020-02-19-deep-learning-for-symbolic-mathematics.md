@@ -53,6 +53,7 @@ $Fg$가 dataset에 있는 경우에도 마찬가지이며, 둘다 존재하지 �
 
 
 ### Differential Equation Data Sets
+
 이 논문에서는 미분방정식 중에서도 1차, 2차 상미분방정식(Ordinary differential equation)에 초점을 맞추었습니다.
 
 **ODE1**
@@ -71,13 +72,16 @@ $c$에 대해 solvable한 $f$를 만들어내는 가장 간단한 방법은 rand
 
 ### Dataset result
 다음은 data generation에 사용된 숫자, 변수, 연산기호 들입니다.
+
 ![Dataset elements](/assets/images/sym-math/dataset.jpg)
 
 다음은 generated된 data의 크기와 input/output의 length를 비교한 표입니다. 위에 언급한 것처럼 backward 방식은 input이 길고, forward는 output이 긴 것을 볼 수 있습니다. 흥미롭게도 IBP(부분적분) 방식은 backward로 만들어냈음에도 불구하고 forward 처럼 output이 긴 것을 확인할 수 있습니다. 즉, IBP를 dataset에 포함시킴으로써 forward와 backward의 단점을 일부 커버할 수 있습니다.
+
 ![Dataset statistics](/assets/images/sym-math/dataset-statistics.jpg)
 
 
 # Model
+
 네트워크 아키텍쳐는 [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf)에서 소개된 seq2seq 모델을 사용하였습니다. Attention은 seq2seq 모델의 성능을 크게 올려주는 기법으로 [Cold Fusion](http://www.secmem.org/blog/2019/09/18/cold-fusion/)에서도 간략히 소개된 바 있습니다. 기존의 seq2seq 모델은 input sequence를 context vector로 바꾸는 encoder와 context vector 하나를 받아서 output sequence로 바꾸는 decoder로 이루어져 있습니다.  하지만 Input이 길어짐에 따라 context vector로 부터 긴 output을 생성할 때 sequence의 local한 context를 prediction하기가 어려워집니다.  이를 해결하기 위한 개념이 attention이고, 이는 전체 sequence의 context를 볼 뿐만 아니라 local한 context를 볼 수 있게 해줍니다.
 
 모델이 inference를 할 때는 [beam search](https://medium.com/@dhartidhami/beam-search-in-seq2seq-model-7606d55b21a5) 기법을 사용했습니다. beam search는 attention과 마찬가지로 seq2seq 모델에서 자주 쓰이는 테크닉인데, output sequence의 각 문자를 차례로 만들 때 1개만 만들지 않고 score가 높은 top-k개를 계속 유지하며 최종 score가 높은 sequence를 선택하는 방법입니다. 이때 k를 1, 10, 50으로 바꿔가며 실험을 진행했습니다.
@@ -85,10 +89,13 @@ $c$에 대해 solvable한 $f$를 만들어내는 가장 간단한 방법은 rand
 Seq2seq로 만든 output sequence가 전위표현식의 형태가 아니면 valid한 expression을 만들 수 없습니다. 이전 연관 논문에서는 이를 만족시키기 위해 여러 제한조건을 두었지만, 이 논문에서는 거의 대부분 valid한 경우였기 때문에 테스트단계에서 valid하지 않은 output은 단순히 잘못된 답으로 처리했습니다.
 
 # Result & Conclusion
+
 다음 표는 위의 모델을 각 dataset으로 학습하여 얻은 test accuracy 결과입니다. Symbolic integration의 경우 beam size가 작아도 test accuracy가 상당히 높으며, ODE의 경우 beam size를 늘리자 test accuracy가 굉장히 높아졌습니다.
+
 ![Accuracy of the proposed model](/assets/images/sym-math/result.jpg)
 
 다음 표는 기존의 CAS 프로그램들과 BWD dataset에 대해 test accuracy를 비교한 표입니다. Symbolic integration과 differential equation 모두 BWD dataset에 대해서는 outperform 한 것을 볼 수 있습니다.
+
 ![Comparison between test accuracy of CAS and the proposed model](/assets/images/sym-math/comparison.jpg)
 
 FWD의 경우에는 CAS의 test accuracy가 100%이므로 비교하는 것이 의미가 없지만, IBP 데이터에 대해서 비교를 안한 것은 살짝 아쉬운 부분입니다. 논문에 따르면 CAS와 비교를 할 때는 test set의 사이즈가 500밖에 안되는데, 그 이유가 mathematica가 solution을 구하는데 굉장히 오래걸리기도 하고 500인 경우와 5000인 경우에 accuracy에 큰 차이가 없어서 500으로도 충분하다는 것이 저자의 주장입니다. IBP는 이전에 구축된 데이터가 있어야 만들 수 있으므로, 이렇게 작은 test set에서는 실험을 하지 못한 것 같습니다.
