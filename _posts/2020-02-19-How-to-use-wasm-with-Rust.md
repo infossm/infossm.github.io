@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "How to build WebAssembly app with Rust"
-date:   2019-02-19 22:00
+date:   2020-02-19 22:00
 author: RBTree
 tags: [rust, web, webassembly, wasm]
 ---
