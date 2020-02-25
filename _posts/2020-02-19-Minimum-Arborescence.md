@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Tree Isomorphism"
+title:  "Minimum Arborescence"
 date: 2019-02-19 23:00
 author: junodeveloper
 tags: [tree,graph theory]
