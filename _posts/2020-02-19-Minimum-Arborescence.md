@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Minimum Arborescence"
-date: 2020-02-19
+date: 2020-02-19 23:00
 author: junodeveloper
 tags: [graph theory]
 ---
