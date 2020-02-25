@@ -8,7 +8,7 @@ tags: polygon, codeforces, problem solving, competitive programming, programming
 
 ## Polygon이란?
 
-**Polygon**이란 Codeforces에서 제공하는 Competitive Programming Contest를 위한 **문제 출제를 위한 플랫폼**입니다. 출제를 위해 필요한 과정 - 데이터 제작, 검증, 솔루션 검증 등에 굉장히 유용한 기능들이 많으며 그 과정을 다른 사람과 공유하며 협업할 수도 있습니다.
+[**Polygon**](https://polygon.codeforces.com/)이란 Codeforces에서 제공하는 Competitive Programming Contest를 위한 **문제 출제를 위한 플랫폼**입니다. 출제를 위해 필요한 과정 - 데이터 제작, 검증, 솔루션 검증 등에 굉장히 유용한 기능들이 많으며 그 과정을 다른 사람과 공유하며 협업할 수도 있습니다.
 
 폴리곤에서의 작업은 각 문제 단위로 동작합니다. 문제를 등록하는 방법부터 완성된 문제를 패키지로 다운받는 방법까지, 필요한 기능들을 간략히 확인하고 언제 어떤 메뉴를 사용해야 하는지 문제 출제 단계에 따라 익혀봅시다. 아, 그 전에 회원가입은 다들 하셔야겠죠?
 
