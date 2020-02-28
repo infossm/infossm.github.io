@@ -54,7 +54,7 @@ public:
     int ret = 0;
     for(l += n, r += n+1; l < r; l >>= 1, r >>= 1){
       if(l&1) ret += a[l++];
-      if(r&1) ret += a[r--];
+      if(r&1) ret += a[--r];
     }
     return ret;
   }
