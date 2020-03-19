@@ -281,6 +281,10 @@ output = model(x) 를 통해서 class 갯수만큼의 숫자를 갖는 배열을
 
 ## 참고
 
-[hoya012님 블로그]: https://hoya012.github.io/blog/Self-training-with-Noisy-Student-improves-ImageNet-classification-Review/?fbclid=IwAR2Z3v3aBDS1Zc-UEG2YCdmrdlqJG3qn4_qubVoLYvJPjXNYZKsLklXTA1s
-[캐글 cat vs dog]: https://www.kaggle.com/c/dogs-vs-cats
+[hoya012님 블로그]
+https://hoya012.github.io/blog/Self-training-with-Noisy-Student-improves-ImageNet-classification-Review/?fbclid=IwAR2Z3v3aBDS1Zc-UEG2YCdmrdlqJG3qn4_qubVoLYvJPjXNYZKsLklXTA1s
+
+
+[캐글 cat vs dog]
+https://www.kaggle.com/c/dogs-vs-cats
 
