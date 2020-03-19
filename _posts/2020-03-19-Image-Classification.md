@@ -48,7 +48,7 @@ tags: deep learning
 
 사실 이 g 함수에서는 각 분류별로 확률p를 도출해내게 됩니다. 이 이미지가 이 분류일 확률을 계산해내는 것이죠. 그래서 가장 높은 확률을 가지는 분류를 결과값으로 출력하게 됩니다.
 
-![](./lenet.png)
+![](/assets/images/imageclassification/01.png)
 
 위 이미지는 위에 간략히 설명한 내용을 가장 잘 표현해주는 그림으로 LeNet 이라는 CNN구조를 소개한 논문에서 발췌했습니다. 기존의 이미지를 Convolution을 통해 6개의 feature maps를 만들어 내게 되고 subsampling 후에 다시 16개의 maps를 만들고 그 후에는 FC(fully connected layer)를 통해서 각 분류값별 확률을 도출해내게 됩니다.
 
