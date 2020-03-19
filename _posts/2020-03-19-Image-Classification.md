@@ -1,5 +1,3 @@
-# AI tutorial - 1 . Image Classification
-
 ---
 layout: post
 title: AI tutorial - Image Classification
@@ -7,6 +5,8 @@ date: 2020-03-19 16:10
 author: cjmp1
 tags: deep learning
 ---
+
+# AI tutorial - 1 . Image Classification
 
 ## Contents
 
