@@ -1,12 +1,12 @@
 ---
 layout: post
-title: "A simple solution to the $d$-dimensional $L_1$ spanning tree in $O(n\log^{d-1} n)$""
+title: "Geometric spanning tree"
 author: koosaga
 date: 2020-01-17
-tags: algorithm, computation-geometry
+tags: [algorithm, computation-geometry]
 ---
 
-# A simple solution to the $d$-dimensional $L_1$ spanning tree in $O(n\log^{d-1} n)$
+
 
 $d$ 차원 좌표공간 상에 크기 $N$ 의 점 집합 $S$ 가 주어졌을 때, 집합 $S$ 를 정점 집합으로 하며 각 정점 쌍마다 두 점의 거리를 가중치로 한 그래프를 생각할 수 있다. 이러한 그래프에서 최소 스패닝 트리를 찾는 문제를 *Minimum Geometric Spanning Tree* 라고 한다 (Encyclopedia of Algorithms 533p). 두 정점의 "거리" 를 지정하는 방법은 여러 가지가 존재하고, 이 거리계를 어떻게 지정하느냐에 따라서 문제를 해결하는 양상이 많이 달라진다. 일반적으로 사용하는 거리계는 $L_1$ metric (Taxicab distance), $L_2$ metric (Euclidean distance), $L_{\infty}$ metric (Chebyshev distance) 이다.
 
