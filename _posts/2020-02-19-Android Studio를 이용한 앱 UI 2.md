@@ -5,7 +5,6 @@ date: 2020-02-19 10:10
 author: cjmp1
 tags: app
 ---
-
 # Android Studio를 이용한 앱 UI 2
 
 ## Contents
