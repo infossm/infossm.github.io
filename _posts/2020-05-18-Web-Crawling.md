@@ -62,11 +62,11 @@ html = req.text
 
  위의 코드를 실행하면 html 안에 우리는 text형식으로 웹페이지의 html 코드를 모두 받아오게 된다. 이 html은 출력으로 확인할 수 있고, 실제 웹페이지에서 F12를 눌러서 확인해 볼 수 도 있다.
 
-![웹 페이지 화면](./a.png)
+![웹 페이지 화면](/assets/images/webcrawling/a.png)
 
 F12를 누르게 되면 위에 보이는 사진의 오른쪽 부분처럼 그 해당 웹페이지의 html코드가 나오게 된다. 우리는 이 부분의 text를 받아온 것이다. 이제 사진의 왼쪽 부분인, 테이블 형태의 데이터를 한 번 저장해보려고 한다. 웹페이지에서 Ctrl+Shift+C를 누르고 테이블을 선택해주면, 
 
-![웹페이지2](./b.png)
+![웹페이지2](/assets/images/webcrawling/b.png)
 
 위의 사진 처럼 html의 해당 코드 부분이 선택되게 된다. 우리는 집중해서 봐야할 부분이 바로  <table class = "~~"> 하는 부분이다. 이부분을 이용해서 BeautifulSoup를 통해 해당 부분만 불러올 수 있게 된다. 아래 코드를 참고하자.
 
@@ -162,7 +162,7 @@ display(df)
 
 rowlist[i] 에는 해당 지역명이 들어있고, columnlist 에는 각 column 이름이들어있으며, res[] 에는 각 지역별 수치들이 들어있다. 위와 같이 dataframe을 만들어 준 후에, 발생률에 누락된 '-' 값이 있으므로 0으로 치환해준 모습이다. display를 해주면 아래와 같이 우리가 원하는 테이블을 얻어낼 수 있다.
 
-![displaytable](./c.png)
+![displaytable](/assets/images/webcrawling/c.png)
 
 이제 아쉬운 부분이 있다면 현재 데이터들이 text형태로 존재한다는 것이다. 이를 바꿔주기 위해서는, astype으로 바꿔주거나, to_numeric 함수를 사용할 수 있다. 우선 ',' 가 존재하므로 앞서 my_dict.update 부분 위에다가 콤마를 삭제하는 코드를 넣어준다.
 
@@ -193,7 +193,7 @@ df['사망률'] = df['사망자']/df['확진환자']
 df.sort_values(by='사망률',axis=0,ascending=False)
 ```
 
-![displaylast](./d.png)
+![displaylast](/assets/images/webcrawling/d.png)
 
 사망률로 정렬된 최종 모습이 나왔다.
 
