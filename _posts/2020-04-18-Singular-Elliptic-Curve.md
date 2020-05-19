@@ -25,7 +25,7 @@ tags: [cryptography, elliptic curve, ecc]
 
 각 경우를 살펴봅시다.
 
-##$y^2=x^3$의 경우
+## $y^2=x^3$의 경우
 
 $y^2 = x^3$의 경우 $(0, 0)$에서만 덧셈과 곱셈이 정의되지 않습니다. 다른 점에 대해서는 모두 정의가 가능합니다. 이렇게 정의가 불가능한 점을 singular point, 정의가 가능한 다른 점들을 non-singular point라고 합니다.
 
