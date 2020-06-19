@@ -1,3 +1,11 @@
+---
+layout: post
+title: visualizing data
+date: 2019-06-19 23:17
+author: cjmp1
+tags: data science
+---
+
 # Visualizing data
 
 ## Contents
