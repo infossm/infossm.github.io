@@ -152,7 +152,7 @@ plt.bar(x,df['확진환자'])
 plt.title("확진환자")
  ```
 
-![ㅇㅇ](./fig1.png)
+![ㅇㅇ](/assets/images/visualizedata/fig1.png)
 
  가장 기본적인 bar 그래프다. bar그래프는 바의 길이를 이용해서 데이터의 크고 작음을 아주 효율적으로 알아 낼 수 있는 plot이다. sort_values를 이용해서 정렬 후에 bar 그래프를 출력하면 더욱 직관적인 이미지를 뽑아낼 수 있다. 이 외에도 bar를 이용해 여러가지 종류의 plot을 그려낼 수 있다.
 
@@ -168,7 +168,7 @@ plt.legend((p1[0], p2[0]), ('확진환자', '격리해제'), fontsize=15)
 plt.show()
 ```
 
-![](./fig2.png)
+![](/assets/images/visualizedata/fig2.png)
 
  위와 같이 하나의 요소에 대해 2개 이상의 feature를 비교하고 싶을 때는 여러개의 plt.bar를 만들어주면된다. plt.bar 의 첫 번째 attribute인 x 의 경우에 실질적인 xlabel 을 의미함과 동시에, 그 위치의 스칼라값도 지정이 되므로, index 라는 리스트에 0~18값을 넣은 후, +bar_width 를 해주면 바로 옆에 바가 추가되는 것을 확인할 수 있다.
 
@@ -184,7 +184,7 @@ plt.legend((p1[0], p2[0]), ('확진', '사망'), fontsize=15)
 plt.show()
 ```
 
-![](./fig3.png)
+![](/assets/images/visualizedata/fig3.png)
 
  위처럼 바 위에다가 추가적인 속성을 붙여서 표현할 수 도 있다. 상대적인 길이나 비율을 볼 때 용이하며, plt.bar에 있는 'bottom' 이라는 속성을 이용해서 구현 가능합니다.
 
@@ -261,7 +261,7 @@ for index, row in df.iterrows():
 m
 ```
 
-![](./fig4.png)
+![](/assets/images/visualizedata/fig4.png)
 
  folium.Map 과 folium.Circle을 이용해 확진환자의 양을 지도상에 표기하는 방식이다.  folium 에는 이렇게 실제 지리학적인 위치를 이용해서, 단순히 원 뿐만 아니라 선, 도형 또는 마커를 이용해서, 표기할 수 있는 장점이 존재한다. 지역별 확진환자를 시각적으로 가장 잘 볼 수 있는 이미지이다.
 
@@ -274,7 +274,7 @@ fig = px.scatter(df, x="확진환자", y="사망자", size="격리중", color="r
 fig.show()
 ```
 
- ![](./fig5.png)
+ ![](/assets/images/visualizedata/fig5.png)
 
  위와 같은 형태로 각 원의 중심은 확진환자와 사망자 수의 상관관계를 나타내며, 원의 크기는 현재 격리중인 사람 수를 표현하고 있다. 즉 3가지의 정보를 효과적으료 표현해줄 수 있는 것이다. bubble plot에서는 color를 군집별로 다르게 해줄 수 있는데, 지금은 row값(지역) 마다 모두 색을 다르게 했지만, 만약 대륙별로 또는 지역을 크게 나누어 준다면 같은 군집간에는 같은 색깔로 표현가능하다는 장점도 존재한다.
 
@@ -296,7 +296,7 @@ sns.heatmap(flights_passengers, annot=True, fmt="d", linewidths=1)
 plt.show()
 ```
 
-![](./fig6.png)
+![](/assets/images/visualizedata/fig6.png)
 
 ## 마치며
 
