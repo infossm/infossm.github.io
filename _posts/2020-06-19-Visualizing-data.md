@@ -1,7 +1,7 @@
 ---
 layout: post
 title: visualizing data
-date: 2019-06-19 23:17
+date: 2020-06-19 23:17
 author: cjmp1
 tags: data science
 ---
