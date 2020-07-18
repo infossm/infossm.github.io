@@ -9,6 +9,8 @@ tags: [Bloom Filter, Scalable Bloom Filter, membership test, 자료구조]
 안녕하세요, 오늘은 Bloom Filter 와 변종들중에 하나인 Scalable Bloom Filter 에 대해서 알아보는 시간을 가지려고 합니다. <br/>
 너무 자세하거나 수학적인 설명은 배제하고 직관적인 이해를 기반으로 포스팅하겠습니다! ~~자세한건 그냥 논문을 보세요...~~
 
+**[>> 이 글을 좀 더 좋은 가독성으로 읽기 <<](https://taeguk2.blogspot.com/2019/05/bloom-filter.html)**
+
 ## Bloom Filter 란?
 
 [Bloom Filter]([https://en.wikipedia.org/wiki/Bloom_filter]) 는 집합내에 특정 원소가 존재하는지 확인하는데 사용되는 자료구조입니다. <br/>

@@ -8,6 +8,8 @@ tags: [C++, Boost, Boost.Exception, Exception, Error Handling]
 
 안녕하세요~ 오늘은 Boost.Exception 에 대해서 간단하게 소개해볼까 합니다.
 
+**[>> 이 글을 좀 더 좋은 가독성으로 읽기 <<](https://taeguk2.blogspot.com/2019/06/boostexception.html)**
+
 ## Boost.Exception 이란?
 [Boost.Exception](https://www.boost.org/doc/libs/1_70_0/libs/exception/doc/boost-exception.html) 은 예외 계층을 설계하고 예외 핸들링을 수행할 때 도움을 주는 라이브러리입니다.
 제가 Boost.Exception 을 사용하면서 얻을 수 있었던 이점은 다음과 같습니다.
