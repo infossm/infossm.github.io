@@ -1,3 +1,12 @@
+
+---
+layout: post
+title: "Weighted Min-Cut: Sequential, Cut-Query and Streaming Algorithms"
+author: koosaga
+date: 2020-07-19
+tags: [graph-theory, trees, random-algorithm]
+---
+
 # Weighted Min-Cut: Sequential, Cut-Query and Streaming Algorithms
 
 그래프의 최소 컷 (Minimum cut) 은 그래프를 연결되지 않게 하기 위해서 지워야 하는 간선의 최소 개수, 혹은 간선 가중치의 최소 합이다. 만약 간선의 최소 개수로 컷을 정의한다면, 최소 컷은 그래프의 [connectivity](https://en.wikipedia.org/wiki/Connectivity_(graph_theory)) 를 정의하는 수량이 된다. 고로 최소 컷은 그래프가 주어졌을 때 계산하고 싶은 가장 기초적인 수량에 해당되며, 응용 예시 또한 무수히 많다.
