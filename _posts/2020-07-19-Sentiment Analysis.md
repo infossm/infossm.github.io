@@ -1,3 +1,11 @@
+---
+layout: post
+title: sentiment analysis
+date: 2020-07-19 16:03
+author: cjmp1
+tags: AI, NLP
+---
+
 # Sentiment Analysis
 
 ## Contents
