@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: "Weighted Min-Cut: Sequential, Cut-Query and Streaming Algorithms"
