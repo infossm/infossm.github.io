@@ -10,6 +10,8 @@ tags: [rust, macros, procedural-macros, proc_macro, meta-programming]
 그래서 오늘은 Rust 1.29.0 부터 stable 이 된 Procedural Macros 에 대해서 포스팅해보도록 하겠습니다.
 포스팅은 구구절절한 설명보다는 예제 코드 위주가 될 예정입니다!
 
+**[>> 이 글을 좀 더 좋은 가독성으로 읽기 <<](https://taeguk2.blogspot.com/2019/02/rust-procedural-macros-by-example.html)**
+
 ## Rust 의 매크로 시스템
 Rust 의 매크로 시스템은 매우 강력한데요. 크게 다음과 같이 분류 할 수 있습니다.
 1. Declarative Macros

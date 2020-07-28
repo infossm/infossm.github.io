@@ -10,6 +10,8 @@ tags: [Github, Chrome Extension, Open Source]
 오늘은 가벼운 주제로 포스팅해보려고 합니다. 다들 github 많이 사용하실텐데요~ <br/>
 오늘은 제가 사용하는 크롬 확장 프로그램들중에서 github 를 사용할 때 아주 유용한 것들을 소개해드리는 시간을 가져보려고 합니다^^ <br/>
 
+**[>> 이 글을 좀 더 좋은 가독성으로 읽기 <<](https://taeguk2.blogspot.com/2019/10/github_20.html)**
+
 ## 1. Refined Github
 
 이거는 진짜 필수입니다!! <br/>
@@ -88,5 +90,3 @@ Github 를 돌아다니면서 여러 오픈소스들을 구경할 때 전체 코
 * [Git History Browser Extension](https://github.com/LuisReinoso/git-history-browser-extension)
 * [Github Gloc](https://github.com/artem-solovev/gloc)
 * [ColorGit](https://github.com/ddyokim/colorGit)
-
-**[이 포스팅을 taeguk 블로그에서 보기](https://taeguk2.blogspot.com/2019/10/github_20.html)**
