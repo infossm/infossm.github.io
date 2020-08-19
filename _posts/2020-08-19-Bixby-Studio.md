@@ -391,5 +391,5 @@ function setTrainLineNumber(subwayList){
 
 ## 참고
 
-[빅스비 디벨로퍼 사이트]: https://bixby.developer.samsung.com/
+https://bixby.developer.samsung.com/
 
