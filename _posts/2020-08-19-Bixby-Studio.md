@@ -1,3 +1,11 @@
+---
+layout: post
+title: Bixby Studio
+date: 2020-08-19 00:00
+author: cjmp1
+tags: bixby, ai
+---
+
 # Bixby Studio
 
 ## Contents
