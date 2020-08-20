@@ -13,11 +13,11 @@ P, NP, 다항 시간 환원, 그리고 NP-완전 문제에 대해서는 koosaga�
 
 # NP-완전 문제
 
-1971년, Stephen Cook은 [The complexity of theorem proving procedures](https://dl.acm.org/citation.cfm?coll=GUIDE&dl=GUIDE&id=805047) 논문에서 "비결정적 튜링 기계로 다항 시간에 결정할 수 있는 문제는 SAT 문제로 다항 시간에 환원할 수 있다"는 것을 증명합니다. 그 다음 해에 1972년에 나온 [Reducibility Among Combinatorial Problems](https://people.eecs.berkeley.edu/~luca/cs172/karp.pdf) 논문에서 Karp는 NP-완전성을 정의하고, 21개의 예시 문제가 모두 NP-완전임을 증명함으로써 이 문제들이 계산 복잡도 상으로 서로 엮여 있음을 보입니다. 이것이 학부 알고리즘 수업에서 흔히 배우는 NP-완전성의 시작이 되었습니다.
+1971년, Stephen Cook은 [The complexity of theorem proving procedures](https://dl.acm.org/citation.cfm?coll=GUIDE&dl=GUIDE&id=805047) 논문에서 "비결정적 튜링 기계로 다항 시간에 결정할 수 있는 문제는 SAT 문제로 다항 시간에 환원할 수 있다"는 것을 증명합니다. 그 다음 해인 1972년에 나온 [Reducibility Among Combinatorial Problems](https://people.eecs.berkeley.edu/~luca/cs172/karp.pdf) 논문에서 Karp는 NP-완전성을 정의하고, 21개의 예시 문제가 모두 NP-완전임을 증명함으로써 이 문제들이 계산 복잡도 상으로 서로 엮여 있음을 보입니다. 이것이 학부 알고리즘 수업에서 흔히 배우는 NP-완전성의 시작이 되었습니다.
 
 SAT은 프로그램 논리와 밀접한 연관이 있으니 NP-완전이라는 것이 납득이 가지만, 그래프 같은 구조에서 정의되는 문제는 어떻게 NP-완전성을 증명했을까요? 이미 NP-완전임이 알려져 있는 문제를 하나만 골라서 우리가 원하는 문제로 환원하면 됩니다. 그러면 임의의 NP 문제가 주어졌을 때, 우리가 고른 NP-완전 문제로 다항 시간에 환원할 수 있다는 사실은 이미 알고 있고, 그렇게 환원한 문제를 또 다항 시간에 우리가 원하는 문제로 환원할 수 있습니다. 이 모든 과정에 다항 시간이 걸리므로, 임의의 NP 문제를 우리가 원하는 문제로 다항 시간에 환원할 수 있다는 결론을 얻습니다.
 
-다음은 Karp의 21대 NP-완전 문제입니다. 현대의 용어를 사용하기 위해 논문과 다른 이름을 사용하였으며, 이해가 쉽도록 설명을 살짝 바꾸었습니다. 줄임말은 제가 임의로 정했습니다.
+다음은 Karp의 21대 NP-완전 문제입니다. 현대의 용어를 사용하기 위해 논문과 다른 이름을 사용하였으며, 이해가 쉽도록 설명을 살짝 바꾸었습니다.
 
 1. **Satisfiability** - 주어진 CNF 식 $$\phi$$의 해가 존재하는가?
 2. **0-1 Integer Programming** - 정수 행렬 $$C$$와 정수 벡터 $$d$$가 주어졌을 때, 모든 $$i$$에 대해 $$(Cx)_i \geq d_i$$가 성립하는 0-1 벡터 $$x$$가 존재하는가?[^1]
