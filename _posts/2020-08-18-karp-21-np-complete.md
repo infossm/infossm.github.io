@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Karp의 21대 NP-완전 문제"
-date: 2020-07-08
+date: 2020-08-18
 author: jh05013
 ---
 
