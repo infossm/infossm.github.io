@@ -159,7 +159,7 @@ N*N 2차원 공간에 M개의 점이 있다. 특정 영역에 포함되어 있�
 
 4번째 원소가 바뀜에 따라 4개의 노드는 변경이 필요하지만 나머지 노드는 그냥 그대로 가져오면 됩니다.
 
-어느 정도 개념을 잡았더라도 구현에서 다소 애를 먹을 수 있습니다. Persistent Segment Tree의 개념을 잡기 위해 예로 든 이차원 상의 점 갯수를 세는 문제는 BOJ 11012번 - Egg([링크](https://www.acmicpc.net/problem/11012))에서 확인할 수 있습니다. [정답 코드](http://boj.kr/6ef65821e32142e8a8d45c02168d6a02)를 확인해보세요.
+어느 정도 개념을 잡았더라도 구현에서 다소 애를 먹을 수 있습니다. Persistent Segment Tree의 개념을 잡기 위해 예로 든 이차원 상의 점 갯수를 세는 문제는 BOJ 11012번 - Egg([링크](https://www.acmicpc.net/problem/11012))에서 확인할 수 있습니다. [정답 코드](http://boj.kr/c21e97aa35b64714898868c588ff0782)를 확인해보세요.
 
 이외에도 BOJ 13538번 - XOR 쿼리([링크](https://www.acmicpc.net/problem/13538)), BOJ 11932번 - 트리와 K번째 수([링크](https://www.acmicpc.net/problem/11932)) 등의 문제가 Persistent Segment Tree로 해결할 수 있는 문제입니다.
 
