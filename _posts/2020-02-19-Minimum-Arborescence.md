@@ -3,7 +3,7 @@ layout: post
 title:  "Minimum Arborescence"
 date: 2020-02-19 23:00
 author: junodeveloper
-tags: [graph theory]
+tags: [graph-theory]
 ---
 
 안녕하세요. 이번 글에서는 weighted directed graph에서 minimum arborescence를 찾는 알고리즘을 소개해드리려고 합니다. minimum arborescence는 minimum spanning tree의 directed 버전이라고 할 수 있습니다.

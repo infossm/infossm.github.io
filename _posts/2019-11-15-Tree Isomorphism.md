@@ -3,7 +3,7 @@ layout: post
 title:  "Tree Isomorphism"
 date: 2019-11-15
 author: junodeveloper
-tags: [tree,graph theory]
+tags: [tree, graph-theory]
 ---
 
 ## 소개

@@ -3,7 +3,7 @@ layout: post
 title: "그래프의 간선 색칠 문제"
 date: 2020-05-19
 author: koosaga
-tags: icpc, korean-regional, algorithm, graph-theory, random-algorithm
+tags: [ICPC, Korean-regional, algorithm, graph-theory, random-algorithm]
 ---
 ## 그래프의 간선 색칠 문제
 

@@ -3,7 +3,7 @@ layout: post
 title:  "특별한 정렬 알고리즘들"
 date:   2019-04-10 13:56:00
 author: djm03178
-tags: 정렬 알고리즘 sorting algorithm
+tags: sorting algorithm
 ---
 ## 개요 ##
 

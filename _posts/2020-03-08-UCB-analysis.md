@@ -3,7 +3,7 @@ layout: post
 title: UCB1 알고리즘의 pseudo-regret 분석
 date: 2020-03-08 14:30
 author: choyi0521
-tags: [machine-learning, multi-armed bandit, upper confidence bound]
+tags: [machine-learning, multi-armed-bandit, upper-confidence-bound]
 ---
 
 

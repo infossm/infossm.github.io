@@ -3,7 +3,7 @@ layout: post
 title:  "이항계수의 빠른 계산"
 author: ho94949
 date: 2019-12-14 15:00
-tags: [Factorial, Sterling Number]
+tags: [factorial, Stirling-number]
 ---
 
 # 서론

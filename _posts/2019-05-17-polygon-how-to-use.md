@@ -3,7 +3,7 @@ layout: post
 title:  "문제 출제를 위한 플랫폼 - Polygon 사용하기"
 date:   2019-05-17 23:30:00
 author: Acka1357
-tags: polygon, codeforces, problem solving, competitive programming, programming contest, setter
+tags: [Polygon, Codeforces, problem-solving, competitive-programming, programming-contest, setter]
 ---
 
 ## Polygon이란?

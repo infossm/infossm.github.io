@@ -3,7 +3,7 @@ layout: post
 title:  "General Matching and applications"
 date: 2020-08-19
 author: koosaga
-tags: [graph theory]
+tags: [graph-theory]
 ---
 
 # General Matching and applications

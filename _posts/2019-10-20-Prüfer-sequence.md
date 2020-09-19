@@ -3,7 +3,7 @@ layout: post
 title:  "Prüfer sequence"
 date: 2019-10-20
 author: junodeveloper
-tags: [combinatorics,algorithm]
+tags: [combinatorics, algorithm]
 ---
 
 

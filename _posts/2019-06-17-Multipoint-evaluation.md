@@ -3,7 +3,7 @@ layout: post
 title:  "다항식 나눗셈과 다중계산"
 author: ho94949
 date: 2019-06-16 15:00
-tags: [Graph]
+tags: [graph-theory]
 ---
 
 # 서론

@@ -6,7 +6,7 @@ author:     evenharder
 image:      /assets/images/evenharder-post/ucpc-2020/pexels-sebastian-voortman-189349.jpg
 tags:
   - algorithm
-  - ucpc
+  - UCPC
 
 ---
 

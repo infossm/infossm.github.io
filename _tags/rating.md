@@ -1,0 +1,4 @@
+---
+name: rating
+title: 'rating'
+---

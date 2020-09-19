@@ -3,7 +3,7 @@ layout: post
 title:  "STL set을 이용한 Convex Hull Trick 구현"
 date: 2020-05-19
 author: junodeveloper
-tags: [data structure, geometry]
+tags: [data-structure, geometry]
 ---
 
 

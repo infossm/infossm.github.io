@@ -3,7 +3,7 @@ layout: post
 title:  "제곱수의 합"
 author: ho94949
 date: 2019-10-18 15:00
-tags: [Gaussian Integer, Prime Factorization]
+tags: [Gaussian-integer, prime-factorization]
 ---
 
 # 서론

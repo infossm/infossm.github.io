@@ -3,7 +3,7 @@ layout: post
 title:  "최소 외접원 찾기"
 author: ho94949
 date: 2019-04-08 15:00
-tags: [Geometry]
+tags: [geometry]
 ---
 
 # 서론

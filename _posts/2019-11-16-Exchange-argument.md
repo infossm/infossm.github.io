@@ -3,7 +3,7 @@ layout: post
 title: Exchange argument
 date: 2019-11-16 19:00
 author: rdd6584
-tags: [algorithm, math]
+tags: [algorithm, mathematics]
 
 ---
 

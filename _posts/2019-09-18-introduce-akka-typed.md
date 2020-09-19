@@ -3,7 +3,7 @@ layout: post
 title: "Akka typed 소개"
 date: 2019-09-18 23:55
 author: taeguk
-tags: [akka, akka typed, scala, actor, strongly typing, functional programming]
+tags: [Akka, Akka-Typed, Scala, Actor, strongly-typing, functional-programming]
 ---
 안녕하세요~ 오늘은 akka 의 새로운 인터페이스 (API) 인 akka typed 에 대해서 소개시켜드리는 시간을 가져볼까 합니다!<br/>
 Akka 및 액터 모델에 대한 기본적인 내용은 이미 알고 있다고 가정하며 scala 를 기반으로 설명하겠습니다.

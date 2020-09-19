@@ -3,7 +3,7 @@ layout: post
 title: "Monad Transformer In Scala"
 date: 2020-07-19 13:00
 author: taeguk
-tags: [Scala, Monad Transformer, Monad, MTL, Functional Programming, RWST, ZIO]
+tags: [Scala, Monad-Transformer, Monad, MTL, functional-programming, RWST, ZIO]
 ---
 
 안녕하세요~

@@ -3,7 +3,7 @@ layout: post
 title:  "2D Segment Tree"
 date:   2019-11-15 23:50:00
 author: blisstoner
-tags: [data structure]
+tags: [data-structure]
 ---
 
 안녕하세요, 이번 글에서는 2D Segment Tree 에 대해 알아보도록 하겠습니다.

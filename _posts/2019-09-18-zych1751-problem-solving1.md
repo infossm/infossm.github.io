@@ -3,7 +3,7 @@ layout: post
 title: problem solving 1
 date: 2019-09-18 12:00
 author: zych1751
-tags: [problem solving]
+tags: [problem-solving]
 ---
 
 

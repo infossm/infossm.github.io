@@ -3,7 +3,7 @@ layout: post
 title:  "Generative Adversarial Networks"
 author: tigersden
 date: 2019-01-10 23:20
-tags: [machine-learning, deep-learning, neural-networks]
+tags: [machine-learning, deep-learning, neural-network]
 ---
 
 # 서론

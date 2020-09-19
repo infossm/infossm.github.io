@@ -3,7 +3,7 @@ layout: post
 title:  "Understanding CRC"
 date:   2020-08-19 23:59
 author: RBTree
-tags: [mathematics, ctf]
+tags: [mathematics, CTF]
 ---
 
 # 서론

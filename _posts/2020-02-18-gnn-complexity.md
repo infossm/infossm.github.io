@@ -3,7 +3,7 @@ layout: post
 title: "GNN의 시간 복잡도와 공간 복잡도"
 author: jihoon
 date: 2020-02-18 19:30
-tags: [GNN, GCN, Complexity, ClusterGCN]
+tags: [GNN, GCN, complexity, ClusterGCN]
 ---
 
 ## Introduction

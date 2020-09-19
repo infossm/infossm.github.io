@@ -3,7 +3,7 @@ layout: post
 title:  "RSA Puzzles"
 date:   2020-07-19 19:40
 author: RBTree
-tags: [cryptography, rsa, ctf]
+tags: [cryptography, RSA, CTF]
 ---
 
 # 서론

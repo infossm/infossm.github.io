@@ -3,7 +3,7 @@ layout: post
 title:  "Audio rendering in web"
 date:   2019-5-16 18:00:00
 author: orange4glace
-tags: [audior-rendering, audioworklet, web, atomics]
+tags: [audior-rendering, AudioWorklet, web, Atomics]
 ---
 
 HTML Video 태그를 대신 할 비디오 플레이어를 웹 기술을 통해 만든다고 상상해보세요. 영상을 재생하기 위해서는 두 가지가 필요하죠. 비디오 렌더링과 오디오 렌더링입니다.

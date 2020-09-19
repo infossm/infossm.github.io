@@ -4,7 +4,7 @@ title:  "2018 고려대학교 프로그래밍 경진대회 (KCPC) 출제 후기"
 date:   2019-01-10 21:30
 author: evenharder
 image:  /assets/images/evenharder-post/kcpc2018/kcpc2018-logo-edit.jpg
-tags:   kcpc competitive-programming retrospect
+tags:   KCPC competitive-programming retrospect
 ---
 
 이 포스트는 2018년 고려대학교 프로그래밍 경진대회 출제 과정에 있었던 일들과 대회의 지향점 및 결과 및 사견을 다룹니다. 원래 대회가 끝나고 바로 쓰고 싶었으나 대회 1주일 후가 기말고사이기도 했고 준비가 워낙에 힘들었기 때문에 한 달이 지난 지금 쓰게 되었습니다.

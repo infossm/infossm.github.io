@@ -5,7 +5,7 @@ date:       2020-03-19 17:05
 author:     evenharder
 image:      /assets/images/evenharder-post/js-type/pexels-pixabay-glass-302743.jpg
 tags:
-  - javascript
+  - Javascript
   - cheatsheet
 ---
 

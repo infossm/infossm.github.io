@@ -3,7 +3,7 @@ layout: post
 title: "Weighted Min-Cut: Sequential, Cut-Query and Streaming Algorithms"
 author: koosaga
 date: 2020-07-19
-tags: [graph-theory, trees, random-algorithm]
+tags: [graph-theory, tree, random-algorithm]
 ---
 
 # Weighted Min-Cut: Sequential, Cut-Query and Streaming Algorithms
