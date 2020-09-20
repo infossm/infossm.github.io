@@ -73,7 +73,7 @@ unsigned int crc32b(unsigned char *message) {
 
 다른 CRC 방법도 살펴보면, 항상 이런 형태로 계산하지는 않습니다. `0xFFFFFFFF`가 아니라 `0`에서 시작하는 계산 방법도 있으며, 직관적으로 MSB가 최고차항의 계수이고 LSB가 상수항을 나타내는 계산 방법(Normal form)도 있습니다. 하지만 일반적으로 사용되는 방법들은 `0xFFFFFFFF`에서 시작해 계산한 뒤 `0xFFFFFFFFF`를 다시 더하고, LSB를 최고차항으로 삼는 Reversed form을 주로 사용합니다.
 
-##Playing with CRC
+## Playing with CRC
 
 이제 CRC를 좀 더 깊게 이해하기 위해서, Python을 통해 위의 CRC와 $\text{GF}(2^{32})$를 구현해봅시다. 여기에서는 구현의 편의상 Reversed form이 아닌 Normal form을 사용합니다.
 
