@@ -1,3 +1,11 @@
+---
+layout: post
+title: AI tutorial - Reinforcement Learning
+date: 2020-09-20 20:55
+author: cjmp1
+tags: deep learning
+---
+
 # AI tutorial - 2 . Reinforcement Learning
 
 ## Contents
