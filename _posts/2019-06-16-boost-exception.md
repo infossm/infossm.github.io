@@ -3,7 +3,7 @@ layout: post
 title: "Boost.Exception 소개"
 date: 2019-06-16 23:30
 author: taeguk
-tags: [C++, Boost, Boost.Exception, Exception, Error Handling]
+tags: [C++, Boost, Boost.Exception, exception, error-handling]
 ---
 
 안녕하세요~ 오늘은 Boost.Exception 에 대해서 간단하게 소개해볼까 합니다.

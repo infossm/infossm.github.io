@@ -3,7 +3,7 @@ layout: post
 title: "Effective Modern C++ (3)"
 date: 2020-01-18 18:07
 author: taeguk
-tags: [C++, Modern C++, Effective Modern C++]
+tags: [C++, Modern-C++, Effective-Modern-C++]
 ---
 
 저번시간에 이어서 오늘은 예전에 Effective Modern C++ 을 공부하며 정리했던 내용들을 포스팅해볼까 합니다~\

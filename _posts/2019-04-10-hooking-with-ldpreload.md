@@ -3,7 +3,7 @@ layout: post
 title: "LD_PRELOAD 를 이용한 후킹"
 date: 2019-04-10 22:54
 author: taeguk
-tags: [linux, hooking, LD_PRELOAD]
+tags: [Linux, hooking, LD_PRELOAD]
 ---
 
 안녕하세요. 오늘은 리눅스 환경에서 LD_PRELOAD 환경변수를 이용해서 후킹을 하는 방법에 대해 간략히 포스팅해볼까 합니다~

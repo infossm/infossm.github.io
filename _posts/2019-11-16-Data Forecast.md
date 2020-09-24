@@ -3,7 +3,7 @@ layout: post
 title: Data Forecast
 date: 2019-11-16 12:16
 author: cjmp1
-tags: data science
+tags: data-science
 ---
 
 # Data Forecast

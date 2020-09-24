@@ -3,7 +3,7 @@ layout: post
 title:  "Smooth number and Factorization"
 date:   2019-10-20 22:00
 author: RBTree
-tags: [cryptography, number theory, ctf]
+tags: [cryptography, number-theory, CTF]
 ---
 
 # 서론

@@ -3,7 +3,7 @@ layout: post
 title: "C++ Boost 라이브러리를 Windows XP 에서 동작하도록 빌드하기"
 date: 2019-01-09 22:00
 author: taeguk
-tags: [C++, Boost, Windows, XP]
+tags: [C++, Boost, Windows-XP]
 ---
 
 안녕하세요~ 반갑습니다! <br/>

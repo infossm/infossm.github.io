@@ -3,7 +3,7 @@ layout: post
 title: "유용한 Github 관련 크롬 익스텐션 소개"
 date: 2019-10-20 19:03
 author: taeguk
-tags: [Github, Chrome Extension, Open Source]
+tags: [GitHub, Chrome-extension, open-source]
 ---
 
 안녕하세요! 제 이름은 [taeguk](https://taeguk.github.io)입니다~ (~~갑자기?~~) <br/>

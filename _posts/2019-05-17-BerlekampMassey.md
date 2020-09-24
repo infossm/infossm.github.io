@@ -3,7 +3,7 @@ layout: post
 title: Berlekamp-Massey 알고리즘의 이해와 응용
 date: 2019-05-17 23:59:59
 author: koosaga
-tags: [algorithm, linear algebra]
+tags: [algorithm, linear-algebra]
 ---
 
 # Berlekamp-Massey 알고리즘의 이해와 응용

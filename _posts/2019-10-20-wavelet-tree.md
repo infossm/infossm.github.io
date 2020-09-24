@@ -8,7 +8,7 @@ author: junis3
 
 date: 2019-10-20 23:00
 
-tags: [Data structure]
+tags: [data-structure]
 
 ---
 

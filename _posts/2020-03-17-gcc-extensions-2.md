@@ -3,7 +3,7 @@ layout: post
 title:  "GCC 확장 기능 2"
 date:   2020-03-17-22:30
 author: djm03178
-tags: gcc, extensions, c, c++
+tags: [GCC, extension, C, C++]
 ---
 
 ## 서론 ##

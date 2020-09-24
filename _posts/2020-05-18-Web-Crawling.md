@@ -3,7 +3,7 @@ layout: post
 title: Web Crawling & Scraping
 date: 2020-05-19 02:00
 author: cjmp1
-tags: data science
+tags: data-science
 ---
 
 # Web Crawling & Scraping

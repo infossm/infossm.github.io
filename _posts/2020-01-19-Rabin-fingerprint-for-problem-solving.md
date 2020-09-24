@@ -3,7 +3,7 @@ layout: post
 title: Rabin fingerprint for problem solving
 date: 2020-01-19 10:00
 author: rdd6584
-tags: [algorithm, math]
+tags: [algorithm, mathematics]
 ---
 
 # Rabin fingerprint란?

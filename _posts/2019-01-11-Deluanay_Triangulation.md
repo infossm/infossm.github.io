@@ -3,7 +3,7 @@ layout: post
 title:  "Delaunay Triangulation 구현"
 date:   2019-01-11 01:00:00
 author: shjgkwo
-tags: [Delaunay-Triangulation]
+tags: [Delaunay-triangulation]
 ---
 
 # 목차

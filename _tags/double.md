@@ -1,0 +1,4 @@
+---
+name: double
+title: 'double'
+---

@@ -3,7 +3,7 @@ layout: post
 title:  "A Generalized Birthday Problem"
 date:   2020-08-19 09:00:00
 author: blisstoner
-tags: [Cryptography]
+tags: [cryptography]
 ---
 
 안녕하세요, 이번 글에서는 CRYPTO 2002에 소개된 `David Wagner - A Generalized Birthday Problem` 논문의 내용을 따라가며 논문에서 소개하는 Birthday Problem의 확장을 알아보겠습니다.

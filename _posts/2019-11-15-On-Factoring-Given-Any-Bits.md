@@ -3,7 +3,7 @@ layout: post
 title:  "On Factoring Given Any Bits"
 date:   2019-11-15 23:50
 author: RBTree
-tags: [cryptography, number theory]
+tags: [cryptography, number-theory]
 ---
 
 # 서론

@@ -1,0 +1,4 @@
+---
+name: factorial
+title: 'factorial'
+---

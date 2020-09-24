@@ -3,7 +3,7 @@ layout: post
 title:  "Flow with demands"
 date:   2019-12-15 23:59:00
 author: shjgkwo
-tags: [Algorithms, 최대 유량]
+tags: [algorithm, maximum-flow]
 ---
 
 # 목차

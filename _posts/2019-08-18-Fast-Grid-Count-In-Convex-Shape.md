@@ -3,7 +3,7 @@ layout: post
 title:  "빠른 격자점 세기"
 author: ho94949
 date: 2019-08-17 15:00
-tags: [Grid, Stern-Brocot Tree, Number of divisor]
+tags: [grid, Stern-Brocot-tree, number-of-divisor]
 ---
 
 # 서론

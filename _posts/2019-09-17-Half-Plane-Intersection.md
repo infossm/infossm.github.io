@@ -3,7 +3,7 @@ layout: post
 title:  "Half Plane Intersection"
 date: 2019-09-17
 author: junodeveloper
-tags: [geometry,algorithm]
+tags: [geometry, algorithm]
 ---
 
 ## 소개

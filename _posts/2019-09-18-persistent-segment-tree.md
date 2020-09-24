@@ -3,7 +3,7 @@ layout: post
 title:  "Persistent Segment Tree"
 date:   2019-09-18 02:00:00
 author: blisstoner
-tags: [data structure, algorithm]
+tags: [data-structure, algorithm]
 ---
 
 안녕하세요, 이번 글에서는 Persistent Segment Tree 에 대해 알아보도록 하겠습니다.

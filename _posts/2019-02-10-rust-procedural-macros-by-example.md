@@ -3,7 +3,7 @@ layout: post
 title: "Rust Procedural Macros By Example"
 date: 2019-02-10 22:22
 author: taeguk
-tags: [rust, macros, procedural-macros, proc_macro, meta-programming]
+tags: [Rust, macros, procedural-macros, proc_macro, meta-programming]
 ---
 
 안녕하세요. 제가 최근에 Rust 공부를 시작했는데요~

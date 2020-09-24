@@ -3,7 +3,7 @@ layout: post
 title: "Purely Functional Business Logic In Scala"
 date: 2019-08-18 01:25
 author: taeguk
-tags: [Fuctional Programming, scala, cats, rwst, monad, DDD, Software Design]
+tags: [functional-programming, Scala, Cats, RWST, monad, DDD, software-design]
 ---
 안녕하세요~ 오늘은 스칼라에서 비지니스 로직을 purely functional 하게 설계하는 방법에 대해서 소개해볼까 합니다. <br/>
 함수형 프로그래밍, 스칼라, cats, DDD 에 대해서 알고 계시면 이해가 수월하시겠지만 모르시는 분들을 위해서 기본적인 설명도 같이 첨부해두었습니다.

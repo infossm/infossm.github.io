@@ -3,7 +3,7 @@ layout: post
 title:  "Digital Signature and Nonce Reuse"
 date:   2019-07-21 23:20
 author: RBTree
-tags: [digital signature, dsa, security, number theory]
+tags: [digital-signature, DSA, security, number-theory]
 ---
 
 # 서론

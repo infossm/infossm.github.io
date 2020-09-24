@@ -3,7 +3,7 @@ layout: post
 title: "Bloom Filter"
 date: 2019-05-17 22:48
 author: taeguk
-tags: [Bloom Filter, Scalable Bloom Filter, membership test, 자료구조]
+tags: [Bloom-filter, scalable-Bloom-filter, membership-test, data-structure]
 ---
 
 안녕하세요, 오늘은 Bloom Filter 와 변종들중에 하나인 Scalable Bloom Filter 에 대해서 알아보는 시간을 가지려고 합니다. <br/>

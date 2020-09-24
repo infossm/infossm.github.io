@@ -3,7 +3,7 @@ layout: post
 title:  "Palindromic Tree"
 date:   2019-05-17 15:00:00
 author: shjgkwo
-tags: [algorithm, String]
+tags: [algorithm, string]
 ---
 
 # 목차

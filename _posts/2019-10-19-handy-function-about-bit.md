@@ -3,7 +3,7 @@ layout: post
 title:  "알아두면 편리한 비트 연산 몇 가지"
 date:   2019-10-19 23:59:59
 author: Acka1357
-tags: builtin function, submask iteration
+tags: [builtin-function, submask-iteration]
 ---
 
 ## Bitwise Operation

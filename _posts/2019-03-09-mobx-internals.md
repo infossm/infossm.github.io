@@ -3,7 +3,7 @@ layout: post
 title:  "MobX 내부 살펴보기"
 date:   2019-03-09 22:00:00
 author: orange4glace
-tags: [mobx, react]
+tags: [MobX, React]
 ---
 
 React는 상태 관리(State management)를 위해 기본적으로 setState 함수를 사용합니다. React를 처음 접하기 시작했다면 몇 가지 컴포넌트들을 만들고, 활용해보면서 React가 props와 state를 변경하는 것 만으로도 인터렉티브한 웹 어플리케이션을 얼마나 쉽고 간단하게 만들 수 있는지에 감탄할겁니다. 

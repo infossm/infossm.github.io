@@ -3,7 +3,7 @@ layout: post
 title: "꼬리 재귀와 Trampoline In Scala"
 date: 2020-04-22 23:59
 author: taeguk
-tags: [Scala, Tail Recursion, Trampoline, Functional Programming, TailRec, Coroutine]
+tags: [Scala, tail-recursion, Trampoline, functional-programming, TailRec, coroutine]
 ---
 
 안녕하세요! 오늘은 스칼라 초심자를 대상으로 **Tail Recursion (꼬리 재귀)** 와 **Trampoline** 에 대해 포스팅하려고 합니다. <br/>

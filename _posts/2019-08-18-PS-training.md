@@ -3,7 +3,7 @@ layout: post
 title: "PS Training 1"
 date: 2019-08-17 23:00:00
 author: tataky
-tags: [PS]
+tags: [problem-solving]
 ---
 
 안녕하세요, 저번 달에 이어 다시 Problem Solving을 주제로 글을 쓰게 되었습니다. 최근에는 이렇다 할 연습을 따로 하지 않았는데, 한국인 problem setter가 준비한 코드포스 라운드도 있었고, SCPC 등을 이유로 조금씩 테크닉을 연습한 문제 등이 있어 모아 쓰게 되었습니다. 지난번엔 코드포스의 div1C 수준 정도의 문제를 다루었지만, 이번에는 div1B~div1C 수준의 문항에 대해 다룰 예정입니다. 각 문제의 디스크립션, 풀이, 그리고 풀어볼 수 있는 링크를 정리합니다.

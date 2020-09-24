@@ -1,4 +1,4 @@
 ---
 name: test
-title: 'S/W Tag Test'
+title: 'test'
 ---

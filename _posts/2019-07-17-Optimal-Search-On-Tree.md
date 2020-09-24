@@ -3,7 +3,7 @@ layout: post
 title:  "이진탐색의 확장 - 트리에서의 효율적인 탐색"
 author: ho94949
 date: 2019-07-20 15:00
-tags: [Tree, Binary Search, Dynamic Programming]
+tags: [tree, binary-search, dynamic-programming]
 ---
 
 # 서론

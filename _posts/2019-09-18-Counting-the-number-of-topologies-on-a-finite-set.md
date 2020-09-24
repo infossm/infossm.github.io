@@ -3,7 +3,7 @@ layout: post
 title:  "Counting the number of topologies on a finite set"
 date:   2019-09-17 23:30:00
 author: ainta
-tags: [algorithm, math, topology, problem solving]
+tags: [algorithm, mathematics, topology, problem-solving]
 
 
 

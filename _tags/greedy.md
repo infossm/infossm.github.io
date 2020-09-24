@@ -1,0 +1,4 @@
+---
+name: greedy
+title: 'greedy'
+---

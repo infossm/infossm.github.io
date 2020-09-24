@@ -3,7 +3,7 @@ layout: post
 title:  "최대 이분 매칭에 관한 몇 가지 정리"
 date:   2019-12-15 23:59:59
 author: Acka1357
-tags: BipartiteMatching, MinimumVertexCover, MaximumIndependetSet, MinimumPathCover, MaximumAntiChain
+tags: [bipartite-matching, minimum-vertex-cover, maximum-independent-set, minimum-path-cover, maximum-antichain]
 ---
 
 이분 그래프(Bipartite Graph)에서의 최대 매칭(Maximum Matching)은 최대 유량(Maximum Flow)과 같습니다. 이 글에서는 위와 같이 최대 유량과 최대 이분 매칭에 관한 기본적인 문제를 해결 할 수 있는 분들을 위해 최대 이분 매칭에 관한 대표적인 정리를 예제와 함께 다룹니다. 구성은 아래와 같습니다.

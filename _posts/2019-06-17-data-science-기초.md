@@ -3,7 +3,7 @@ layout: post
 title: data science 기초
 date: 2019-06-17 22:51:00
 author: cjmp1
-tags: data science
+tags: data-science
 ---
 
 # Data Science 의 기초

@@ -3,7 +3,7 @@ layout: post
 title:  "Singular Elliptic Curves"
 date:   2020-04-18 07:00
 author: RBTree
-tags: [cryptography, elliptic curve, ecc]
+tags: [cryptography, elliptic-curve, ECC]
 ---
 
 # 서론

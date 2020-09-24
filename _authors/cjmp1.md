@@ -1,4 +1,4 @@
 ---
-name: 최정민
-title: cjmp1
+name: cjmp1
+title: 최정민
 ---
