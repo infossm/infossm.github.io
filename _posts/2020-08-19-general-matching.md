@@ -27,7 +27,7 @@ tags: [graph theory]
 
 다른 알고리즘에 비해서 구현과 이해가 **압도적으로** 쉬운 알고리즘이 있는데, 바로 Tutte matrix를 사용하는 것이다. Blossom을 이해하지 않는 이상, 팀노트가 금지되었거나, 팀노트에 매칭 알고리즘이 없을 경우에도 쓸 수 있는 유일한 방법이다.
 
-그래프 $G = (V, E)$ 가 주어졌을 때, 랜덤한 소수 $p$를 고르고 (해싱하듯이 적당히 고르면 된다) 다음과 같은 $|V| \times |V|$ 행렬 $T$ 를 만들자.
+그래프 $G = (V, E)$ 가 주어졌을 때, 랜덤한 소수 $p$를 고르고 (해싱하듯이 적당히 고르면 된다) 다음과 같은 $V \times V$ 행렬 $T$ 를 만들자.
 
 $T_{i, j} = \begin{cases} r_{i, j} & \mbox{if } (i, j) \in E \mbox{ and } i < j \\ -r_{j, i} & \mbox{if } (i, j) \in E \mbox{ and } i > j \\ 0 & \mbox{otherwise}\end{cases}$
 
