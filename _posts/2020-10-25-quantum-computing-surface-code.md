@@ -21,21 +21,47 @@ Surface code는 물리적 큐빗(양자)을 프로그램으로 제어 가능한 
 
 양자 컴퓨터의 기본을 이루는 큐빗의 상태와 연산자입니다.
 
-- 기저 상태이자 $\hat{Z}$축
-  $$\left\vert{g}\right> = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$$
-- 들뜬 상태 $$\left\vert{e}\right> = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$$
-- $$\hat{Z} = \hat{\sigma_z} = \begin{bmatrix}
+기저 상태이자 $\hat{Z}$축인
+
+$$\left\vert{g}\right> = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$$
+
+들뜬 상태인
+
+$$\left\vert{e}\right> = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$$
+
+$\hat{Z}$ 연산자는 다음과 같이
+
+$$\hat{Z} = \hat{\sigma_z} = \begin{bmatrix}
 1 & 0 \\
 0 & -1
-\end{bmatrix}$$, 고윳값 $+1$, $-1$ 및 고유벡터 $\left\vert{g}\right>$, $\left\vert{e}\right>$
-- $$\hat{X} = \hat{\sigma_x} = \begin{bmatrix}
+\end{bmatrix}$$
+
+정의되며 고윳값은 $+1$, $-1$을 가지고 고유벡터 $\left\vert{g}\right>$, $\left\vert{e}\right>$를 가집니다.
+
+$\hat{X}$ 연산자는 다음과 같이
+
+$$\hat{X} = \hat{\sigma_x} = \begin{bmatrix}
 0 & 1 \\
 1 & 0
-\end{bmatrix}$$, 고윳값 $+1$ , $-1$ 및 고유벡터 $$\left\vert{+}\right> = \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ 1 \end{bmatrix} = \frac{1}{\sqrt{2}}(\left\vert{g}\right> + \left\vert{e}\right>)$$, $$\left\vert{-}\right> = \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ -1 \end{bmatrix} = \frac{1}{\sqrt{2}}(\left\vert{g}\right> - \left\vert{e}\right>)$$.
-- $$\hat{Y} = -i\hat{\sigma_y} = \hat{Z}\hat{X} = \begin{bmatrix}
+\end{bmatrix}$$
+
+정의되며 고윳값 $+1$ , $-1$ 및 고유벡터
+
+$$\begin{align*}
+\left\vert{+}\right> &= \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ 1 \end{bmatrix} = \frac{1}{\sqrt{2}}(\left\vert{g}\right> + \left\vert{e}\right>) \\
+\left\vert{-}\right> &= \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ -1 \end{bmatrix} = \frac{1}{\sqrt{2}}(\left\vert{g}\right> - \left\vert{e}\right>)
+\end{align*}$$
+
+를 가집니다.
+
+$\hat{Y}$ 연산자는 다음과 같이
+
+$$\hat{Y} = -i\hat{\sigma_y} = \hat{Z}\hat{X} = \begin{bmatrix}
 0 & 1 \\
 -1 & 0
-\end{bmatrix}$$. 허수가 들어가는 $\hat{\sigma}_y$랑은 다릅니다.
+\end{bmatrix}$$
+
+로 정의되며, 허수가 들어가는 $\hat{\sigma}_y$랑은 다릅니다.
 
 $\hat{X}$, $\hat{Y}$, $\hat{Z}$ 연산자는 다음을 만족합니다.
 
@@ -75,7 +101,10 @@ Surface code는 다음과 같이 생겼습니다.
 measurement qubit은 두 종류로 나뉩니다. measure-Z라고 불리는 노란색 공간의 큐빗과 measure-X라고 불리는 초록색 공간의 큐빗입니다. 각 data qubit은 2개의 measure-X 큐빗과 measure-Z 큐빗과 연결되어 있고, 각 measurement qubit은 4개의 data qubit과 연결되어 있습니다.
 
 measurement qubit은 $\hat{X}$/$\hat{Z}$ stabilizer인 $\hat{X}_a\hat{X}_b\hat{X}_c\hat{X}_d$/$\hat{Z}_a\hat{Z}_b\hat{Z}_c\hat{Z}_d$를 data qubit에 적용할 수 있습니다. 이 연산도 아까 전 큐빗 2개일 때의 $\hat{X}_a\hat{X}_b$/$\hat{Z}_a\hat{Z}_b$처럼 서로 교환법칙이 성립할 뿐더러, data qubit의 상태가 $\left\vert \psi \right>$일 때 
-$$\hat{X}_a\hat{X}_b\hat{X}_c\hat{X}_d \left\vert \psi \right> = X_{abcd}\left\vert {\psi} \right>$$가 성립합니다. $\hat{Z}$ stabilizer도 마찬가지입니다.
+
+$$\hat{X}_a\hat{X}_b\hat{X}_c\hat{X}_d \left\vert \psi \right> = X_{abcd}\left\vert {\psi} \right>$$
+
+가 성립합니다. $\hat{Z}$ stabilizer도 마찬가지입니다.
 
 각 stabilizer는 0개 또는 2개의 data qubit을 공유합니다. 공유하는 data qubit이 없으면 당연히 교환법칙이 성립하며, 2개를 공유할 때는 stabilizer의 타입이 같으면 자명하게 성립하고, 다를 땐 위에서 살펴보았던 계산방식에 의해 성립합니다.
 
