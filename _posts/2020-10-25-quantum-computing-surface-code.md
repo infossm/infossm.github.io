@@ -13,7 +13,7 @@ tags:
 
 # 배경 지식
 
-Shor's Algorithm이나 Grover's Algorithm 등의 양자 알고리즘이 개발되며 양자 컴퓨팅에 대한 관심이 커졌습니다. 2020년 현재 IBM Q Experience나 Amazon 뭐시기, Microsoft QDK 등으로 양자 컴퓨팅 프로그래밍 언어를 사용할 수도 있습니다. 그러나 이런 시스템이 물리적인 양자 체계와 연결되어 있는 경우는 매우 드뭅니다. Microsoft Q# 코드를 실행한다고 해서 이에 해당되는 qubit이 실제로 생성되지는 않기 때문입니다.
+Shor's Algorithm이나 Grover's Algorithm 등의 양자 알고리즘이 개발되며 양자 컴퓨팅에 대한 관심이 커졌습니다. 2020년 현재 IBM Q Experience나 Amazon Braket, Microsoft QDK 등으로 양자 컴퓨팅 프로그래밍 언어를 사용할 수도 있습니다. 그러나 이런 시스템이 물리적인 양자 체계와 연결되어 있는 경우는 매우 드뭅니다. Microsoft Q# 코드를 실행한다고 해서 이에 해당되는 qubit이 실제로 생성되지는 않기 때문입니다.
 
 Surface code는 물리적 큐빗(양자)을 프로그램으로 제어 가능한 논리적 큐빗으로 다루는 구조입니다. 각 연산에 대한 오류 가능성은 잘 모르겠지만 surface code가 상당히 허용 범위가 넓어 보입니다. 하지만 이 비율을 만족하기 위해 엄청나게 많은 물리적 큐빗이 필요합니다. 합리적인 수준의 오류가 나는 논리적 큐빗 1개를 만들기 위해 surface code로 $10^3$개에서 $10^4$개의 물리적 큐빗이 필요합니다. 어느 정도 기능이 하는 프로그램을 만드려면 못해도 $10^8$개의 큐빗이 필요합니다. 이에 대한 자세한 수학적 계산법은 잘 모르지만, 양자 컴퓨팅에서 큐빗 오류가 그리 자비롭지 않다는 지표로만 이해하면 되지 않을까 싶습니다.
 
@@ -25,11 +25,11 @@ Surface code는 물리적 큐빗(양자)을 프로그램으로 제어 가능한 
 
 $$\left\vert{g}\right> = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$$
 
-들뜬 상태인
+가 있으며, 들뜬 상태인
 
 $$\left\vert{e}\right> = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$$
 
-$\hat{Z}$ 연산자는 다음과 같이
+가 다른 축을 이룹니다. $\hat{Z}$ 연산자는 다음과 같이
 
 $$\hat{Z} = \hat{\sigma_z} = \begin{bmatrix}
 1 & 0 \\
@@ -121,7 +121,7 @@ surface code에 나타날 수 있는 오류는 다음과 같이 4가지가 있�
 
 이 오류들을 그림을 나타내면 다음과 같습니다. 세로로 시간별 surface code의 현황이 나옵니다.
 
-![(/assets/images/evenharder-post/quantum/surf-code-single-error.jpg)
+![](/assets/images/evenharder-post/quantum/surf-code-single-error.jpg)
 
 원래 큐빗의 상태가 $\left\vert \psi \right>$인데 $\hat{Z}_a$가 곱해져서 $\left\vert \psi' \right> = \hat{Z}_a \left\vert \psi \right>$가 되었다고 합시다. 그러면
 
