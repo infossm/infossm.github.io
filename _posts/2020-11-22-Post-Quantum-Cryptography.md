@@ -81,7 +81,7 @@ Lattice-based cryptography를 이해하기 위해서는 먼저 Lattice라는 개
 
 예를 들어 2차원 공간에서 basis가 $$\begin{bmatrix}-1 \\ 2 \end{bmatrix}, \begin{bmatrix}1 \\ 2 \end{bmatrix}$$ 일경우 Lattice를 2차원 공간의 점으로 표현하면 아래와 같습니다.
 
-![image](assets/images/Post-Quantum-Cryptography/1.png)
+![image](/assets/images/Post-Quantum-Cryptography/1.png)
 
 그림에서 확인할 수 있듯 $$\begin{bmatrix}-1 \\ 2 \end{bmatrix}, \begin{bmatrix}0 \\ 4 \end{bmatrix}, \begin{bmatrix}-2 \\ 0 \end{bmatrix}$$ 등은 Lattice에 포함되지만 $$\begin{bmatrix}0 \\ 3 \end{bmatrix}, \begin{bmatrix}1 \\ 0  \end{bmatrix}$$ 등은 그렇지 않습니다.
 
