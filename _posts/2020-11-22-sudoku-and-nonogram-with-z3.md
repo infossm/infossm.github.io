@@ -3,7 +3,7 @@ layout: post
 title:  "Sudoku and Nonogram with z3"
 date:   2020-11-22 12:40
 author: RBTree
-tags: [smt]
+tags: [SMT]
 ---
 
 # 서론
