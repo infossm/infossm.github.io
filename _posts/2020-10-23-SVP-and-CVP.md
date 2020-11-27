@@ -18,7 +18,7 @@ tags: [ctf, cryptography]
 
 Lattice는 서로 independent한 vector $\{v_1, v_2, \ldots v_n\}$이 있을 때 다음과 같은 집합을 의미합니다.
 
-$L = \{\sum_{i=1}^n a_iv_i | a_i \in \mathbb{Z}\}$
+$L = \{\sum_{i=1}^n a_iv_i \vert a_i \in \mathbb{Z}\}$
 
 즉, vector $v_i$의 정수배의 합으로 나타내어지는 vector의 집합인데요, vector $v_i$ 간격의 격자들로 이루어진 $n$차원 공간으로 이해할 수도 있겠습니다. 이 때 Lattice $L$ 을 이루는 vector $v_i$ 들을 $L$의 basis라고 합니다.
 
