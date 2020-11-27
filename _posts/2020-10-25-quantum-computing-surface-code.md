@@ -13,7 +13,7 @@ tags:
 
 # 배경 지식
 
-Shor's Algorithm이나 Grover's Algorithm 등의 양자 알고리즘이 개발되며 양자 컴퓨팅에 대한 관심이 커졌습니다. 2020년 현재 IBM Q Experience나 Amazon 뭐시기, Microsoft QDK 등으로 양자 컴퓨팅 프로그래밍 언어를 사용할 수도 있습니다. 그러나 이런 시스템이 물리적인 양자 체계와 연결되어 있는 경우는 매우 드뭅니다. Microsoft Q# 코드를 실행한다고 해서 이에 해당되는 qubit이 실제로 생성되지는 않기 때문입니다.
+Shor's Algorithm이나 Grover's Algorithm 등의 양자 알고리즘이 개발되며 양자 컴퓨팅에 대한 관심이 커졌습니다. 2020년 현재 IBM Q Experience나 Amazon Braket, Microsoft QDK 등으로 양자 컴퓨팅 프로그래밍 언어를 사용할 수도 있습니다. 그러나 이런 시스템이 물리적인 양자 체계와 연결되어 있는 경우는 매우 드뭅니다. Microsoft Q# 코드를 실행한다고 해서 이에 해당되는 qubit이 실제로 생성되지는 않기 때문입니다.
 
 Surface code는 물리적 큐빗(양자)을 프로그램으로 제어 가능한 논리적 큐빗으로 다루는 구조입니다. 각 연산에 대한 오류 가능성은 잘 모르겠지만 surface code가 상당히 허용 범위가 넓어 보입니다. 하지만 이 비율을 만족하기 위해 엄청나게 많은 물리적 큐빗이 필요합니다. 합리적인 수준의 오류가 나는 논리적 큐빗 1개를 만들기 위해 surface code로 $10^3$개에서 $10^4$개의 물리적 큐빗이 필요합니다. 어느 정도 기능이 하는 프로그램을 만드려면 못해도 $10^8$개의 큐빗이 필요합니다. 이에 대한 자세한 수학적 계산법은 잘 모르지만, 양자 컴퓨팅에서 큐빗 오류가 그리 자비롭지 않다는 지표로만 이해하면 되지 않을까 싶습니다.
 
@@ -21,21 +21,47 @@ Surface code는 물리적 큐빗(양자)을 프로그램으로 제어 가능한 
 
 양자 컴퓨터의 기본을 이루는 큐빗의 상태와 연산자입니다.
 
-- 기저 상태이자 $\hat{Z}$축
-  $$\left\vert{g}\right> = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$$
-- 들뜬 상태 $$\left\vert{e}\right> = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$$
-- $$\hat{Z} = \hat{\sigma_z} = \begin{bmatrix}
+기저 상태이자 $\hat{Z}$축인
+
+$$\left\vert{g}\right> = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$$
+
+가 있으며, 들뜬 상태인
+
+$$\left\vert{e}\right> = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$$
+
+가 다른 축을 이룹니다. $\hat{Z}$ 연산자는 다음과 같이
+
+$$\hat{Z} = \hat{\sigma_z} = \begin{bmatrix}
 1 & 0 \\
 0 & -1
-\end{bmatrix}$$, 고윳값 $+1$, $-1$ 및 고유벡터 $\left\vert{g}\right>$, $\left\vert{e}\right>$
-- $$\hat{X} = \hat{\sigma_x} = \begin{bmatrix}
+\end{bmatrix}$$
+
+정의되며 고윳값은 $+1$, $-1$을 가지고 고유벡터 $\left\vert{g}\right>$, $\left\vert{e}\right>$를 가집니다.
+
+$\hat{X}$ 연산자는 다음과 같이
+
+$$\hat{X} = \hat{\sigma_x} = \begin{bmatrix}
 0 & 1 \\
 1 & 0
-\end{bmatrix}$$, 고윳값 $+1$ , $-1$ 및 고유벡터 $$\left\vert{+}\right> = \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ 1 \end{bmatrix} = \frac{1}{\sqrt{2}}(\left\vert{g}\right> + \left\vert{e}\right>)$$, $$\left\vert{-}\right> = \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ -1 \end{bmatrix} = \frac{1}{\sqrt{2}}(\left\vert{g}\right> - \left\vert{e}\right>)$$.
-- $$\hat{Y} = -i\hat{\sigma_y} = \hat{Z}\hat{X} = \begin{bmatrix}
+\end{bmatrix}$$
+
+정의되며 고윳값 $+1$ , $-1$ 및 고유벡터
+
+$$\begin{align*}
+\left\vert{+}\right> &= \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ 1 \end{bmatrix} = \frac{1}{\sqrt{2}}(\left\vert{g}\right> + \left\vert{e}\right>) \\
+\left\vert{-}\right> &= \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ -1 \end{bmatrix} = \frac{1}{\sqrt{2}}(\left\vert{g}\right> - \left\vert{e}\right>)
+\end{align*}$$
+
+를 가집니다.
+
+$\hat{Y}$ 연산자는 다음과 같이
+
+$$\hat{Y} = -i\hat{\sigma_y} = \hat{Z}\hat{X} = \begin{bmatrix}
 0 & 1 \\
 -1 & 0
-\end{bmatrix}$$. 허수가 들어가는 $\hat{\sigma}_y$랑은 다릅니다.
+\end{bmatrix}$$
+
+로 정의되며, 허수가 들어가는 $\hat{\sigma}_y$랑은 다릅니다.
 
 $\hat{X}$, $\hat{Y}$, $\hat{Z}$ 연산자는 다음을 만족합니다.
 
@@ -75,7 +101,10 @@ Surface code는 다음과 같이 생겼습니다.
 measurement qubit은 두 종류로 나뉩니다. measure-Z라고 불리는 노란색 공간의 큐빗과 measure-X라고 불리는 초록색 공간의 큐빗입니다. 각 data qubit은 2개의 measure-X 큐빗과 measure-Z 큐빗과 연결되어 있고, 각 measurement qubit은 4개의 data qubit과 연결되어 있습니다.
 
 measurement qubit은 $\hat{X}$/$\hat{Z}$ stabilizer인 $\hat{X}_a\hat{X}_b\hat{X}_c\hat{X}_d$/$\hat{Z}_a\hat{Z}_b\hat{Z}_c\hat{Z}_d$를 data qubit에 적용할 수 있습니다. 이 연산도 아까 전 큐빗 2개일 때의 $\hat{X}_a\hat{X}_b$/$\hat{Z}_a\hat{Z}_b$처럼 서로 교환법칙이 성립할 뿐더러, data qubit의 상태가 $\left\vert \psi \right>$일 때 
-$$\hat{X}_a\hat{X}_b\hat{X}_c\hat{X}_d \left\vert \psi \right> = X_{abcd}\left\vert {\psi} \right>$$가 성립합니다. $\hat{Z}$ stabilizer도 마찬가지입니다.
+
+$$\hat{X}_a\hat{X}_b\hat{X}_c\hat{X}_d \left\vert \psi \right> = X_{abcd}\left\vert {\psi} \right>$$
+
+가 성립합니다. $\hat{Z}$ stabilizer도 마찬가지입니다.
 
 각 stabilizer는 0개 또는 2개의 data qubit을 공유합니다. 공유하는 data qubit이 없으면 당연히 교환법칙이 성립하며, 2개를 공유할 때는 stabilizer의 타입이 같으면 자명하게 성립하고, 다를 땐 위에서 살펴보았던 계산방식에 의해 성립합니다.
 
@@ -92,7 +121,7 @@ surface code에 나타날 수 있는 오류는 다음과 같이 4가지가 있�
 
 이 오류들을 그림을 나타내면 다음과 같습니다. 세로로 시간별 surface code의 현황이 나옵니다.
 
-![(/assets/images/evenharder-post/quantum/surf-code-single-error.jpg)
+![](/assets/images/evenharder-post/quantum/surf-code-single-error.jpg)
 
 원래 큐빗의 상태가 $\left\vert \psi \right>$인데 $\hat{Z}_a$가 곱해져서 $\left\vert \psi' \right> = \hat{Z}_a \left\vert \psi \right>$가 되었다고 합시다. 그러면
 
