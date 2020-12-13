@@ -1,3 +1,12 @@
+---
+layout: post
+title:  "IOI 2020 및 SNUPC 2020 출제후"
+date:   2020-12-13 17:30:00
+author: ainta
+tags: [algorithm, contest, IOI]
+---
+
+
 # SNUPC 2020 출제후기
 
 SNUPC 2020에는 Div.1의 총 9문제중 절반에 육박하는 4문제를 출제하였다. 여기서도 나름 마음에 드는 문제를 낼 수 있어서 만족스러웠다. 그리고 imeimi2000, TAMREF 등 여러 출제진 검수진들이 고생해 준 덕분에 문제 데이터와 지문의 퀄리티가 올라가서 성공적인 대회가 될 수 있었던 것 같다.
