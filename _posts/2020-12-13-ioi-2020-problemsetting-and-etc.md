@@ -93,9 +93,9 @@ plants 문제에 대한 풀이는 블로그의 다른 글에도 상세하게 나
 
 버전 2, 즉 ioi에 출제된 버전의 문제는 나중에 한국으로 돌아와서 생각한 것인데, 이것도 내 생각에는 아주 뻔한 풀이는 아니었기 때문에, 그리고 데이터가 보다 강할 수 있기 때문에 결과적으로 버전 2를 만든 것은 잘한 선택이었던 것 같다. 버전 1, 2를 모두 ioi committee에 제출했는데, 메일을 보낼때 RSA 키 (ECC였을 수도 있다)를 받아서 암호화하고 복호화하고 이런걸 해본건 처음이었어서 약간 헷갈렸다. 문제가 후보로 최종 선정되었다는 것은 3월에 알려주었고, 6월 말에는 private한 Git Repository를 받아서 거기에서 문제에 대한 작업을 진행하였다.. 사실 ioi committee분께서 subtask를 좀 많이 수정하셨고 거기에 대한 솔루션과 데이터도 아예 새로 만드셨다. 데이터를 만들어주신건 되게 편하고 좋았지만, 서브태스크에 대해서는 약간 의견이 맞지 않아서 수정 과정을 거치기도 했다. 결론적으로는 데이터를 만들지 않고 문제 출제를 할 수 있어서 아주 좋았다.
 
- ![statement](/assets/images/ioi-2020-ainta/plant1.png)
- ![statement](/assets/images/ioi-2020-ainta/plant2.png)
- ![solution](/assets/images/ioi-2020-ainta/sol1.png)
+ ![statement](../assets/images/ioi-2020-ainta/plant1.png)
+ ![statement](../assets/images/ioi-2020-ainta/plant2.png)
+ ![solution](../assets/images/ioi-2020-ainta/sol1.png)
 
 위는 문제를 제출할 때 실제로 냈던 파일들이다. 문제 설명과 간단한 풀이, 그리고 소스 코드 정도를 제출하면 된다. 데이터는 예제 이상으로 만들 필요는 없는 듯 하다. 즉 문제를 만들 때 스트레스의 절반 이상을 차지하는 데이터 강화를 하지 않아도 되는 셈이다.
 
