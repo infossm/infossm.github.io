@@ -61,7 +61,7 @@ MSF에 대한 다음과 같은 자명한 사실을 사용한다.
 
   * 중복 간선을 적절히 처리한 후 Frederickson이 제안한 $O(\sqrt m)$ worst-case Dynamic MST 알고리즘을 사용하면 된다.
 
-* **Fact 5**. $n$ 개의 정점과 $m$ 개의 간선이 있으며 간선 삭제를 지원하는 그래프 $G =(V, E)$, 그리고 정점 부분집합 $S \subseteq V$ 를 생각하자. 이 때, 임의의 순간에 non-tree edge들 $E(G) - MSF(G)$ 은 정확히 하나의 끝점이 $S$ 에 속한다는 조건을 만족하며, 모든 정점 $u \in V \setminus S$ 는 상수 차수를 가진다는 조건을 만족해야 한다. 이 때 $G, S$ 를 $\tilde{O}(m)$ 시간에 전처리하며 각 간선 삭제를 $\tilde{O}(|S|)$ 시간에 처리할 수 있는 Decremental MSF 알고리즘이 존재한다. [**(Wulff-Nilsen et. al. 2017)**](https://arxiv.org/pdf/1611.02864.pdf)
+* **Fact 5**. $n$ 개의 정점과 $m$ 개의 간선이 있으며 간선 삭제를 지원하는 그래프 $G =(V, E)$, 그리고 정점 부분집합 $S \subseteq V$ 를 생각하자. 이 때, 임의의 순간에 non-tree edge들 $E(G) - MSF(G)$ 은 정확히 하나의 끝점이 $S$ 에 속한다는 조건을 만족하며, 모든 정점 $u \in V \setminus S$ 는 상수 차수를 가진다는 조건을 만족해야 한다. 이 때 $G, S$ 를 $\tilde{O}(m)$ 시간에 전처리하며 각 간선 삭제를 $\tilde{O}(S)$ 시간에 처리할 수 있는 Decremental MSF 알고리즘이 존재한다. [**(Wulff-Nilsen et. al. 2017)**](https://arxiv.org/pdf/1611.02864.pdf)
 
 ## Chapter 1. The Extended Unit Flow Algorithm
 
@@ -84,16 +84,16 @@ MSF에 대한 다음과 같은 자명한 사실을 사용한다.
 
 모든 $v$ 에 대해 $ex_f(v) + ab_f(v) = T(v)$ 이며, preflow가 sink-feasible함과 $\forall v.  ex_f(v) = 0$ 임은 동치이다. 편의를 위해
 
-* $|\Delta(\cdot)| = \sum_v \Delta(v)$ 를 **총 공급량**
-* $|T(\cdot)| = \sum_v T(v)$ 를 **총 용량**
-* $|ex_f(\cdot)| = \sum_v ex_f(v)$ 를 **총 과잉량**
-* $|ab_f(\cdot)| = \sum_v ab_f(v)$ 를 **총 흡수량** 
+* $\Delta(\cdot) = \sum_v \Delta(v)$ 를 **총 공급량**
+* $T(\cdot) = \sum_v T(v)$ 를 **총 용량**
+* $ex_f(\cdot) = \sum_v ex_f(v)$ 를 **총 과잉량**
+* $ab_f(\cdot) = \sum_v ab_f(v)$ 를 **총 흡수량** 
 
 으로 정의한다.
 
-*Remark 1.1 (입출력)*. 그래프 $G$ 는 인접 리스트의 배열 형태로 주어지기 때문에 알고리즘의 매 호출마다 전부 복사할 필요가 없다. source, sink function은 $\{(v, \Delta(v))|\Delta(v) > 0\}, \{(v, T(v)) | T(v) < \deg(v)\}$ 인 집합 형태로 주어진다. 출력은, $\{((u, v), f(u, v)) | f(u, v) \neq 0\}$ 인 집합이다. 이 집합이 주어지면, $\{(v, ex_f(v)) | ex_f(v) > 0\}$ 인 집합과 $\{(v, ab_f(v)) | ab_f(v) > 0\}$ 인 집합 역시 자명하게 계산할 수 있다.
+*Remark 1.1 (입출력)*. 그래프 $G$ 는 인접 리스트의 배열 형태로 주어지기 때문에 알고리즘의 매 호출마다 전부 복사할 필요가 없다. source, sink function은 $\{(v, \Delta(v))\Delta(v) > 0\}, \{(v, T(v))  T(v) < \deg(v)\}$ 인 집합 형태로 주어진다. 출력은, $\{((u, v), f(u, v))  f(u, v) \neq 0\}$ 인 집합이다. 이 집합이 주어지면, $\{(v, ex_f(v))  ex_f(v) > 0\}$ 인 집합과 $\{(v, ab_f(v))  ab_f(v) > 0\}$ 인 집합 역시 자명하게 계산할 수 있다.
 
-*Remark 1.2*. Remark 1.1에서 유추 가능하지만 이 글에서는 $T$ 가 $\forall v.T(v) \le \deg(v)$ 를 만족한다고 가정한다. preflow를 계산할 때는 $\Delta(v), T(v)$ 모두에 *가짜 공급* $\overline{T}(v) = \deg (v) - T(v)$ 를 더해준다. 이렇게 되어도 문제는 여전히 동치고, $T(v) = \deg(v)$ 를 만족한다고 가정할 수 있게 된다. $|\overline{T}(\cdot)| = 2m - \sum_v T(v)$ 를 **총 가짜 공급량** 이라고 정의한다. 이 항은 소개할 알고리즘의 시간 복잡도에 등장할 것이다.
+*Remark 1.2*. Remark 1.1에서 유추 가능하지만 이 글에서는 $T$ 가 $\forall v.T(v) \le \deg(v)$ 를 만족한다고 가정한다. preflow를 계산할 때는 $\Delta(v), T(v)$ 모두에 *가짜 공급* $\overline{T}(v) = \deg (v) - T(v)$ 를 더해준다. 이렇게 되어도 문제는 여전히 동치고, $T(v) = \deg(v)$ 를 만족한다고 가정할 수 있게 된다. $\overline{T}(\cdot) = 2m - \sum_v T(v)$ 를 **총 가짜 공급량** 이라고 정의한다. 이 항은 소개할 알고리즘의 시간 복잡도에 등장할 것이다.
 
 마지막으로, 그래프 $G = (V, E)$ 에 대해
 
@@ -112,33 +112,33 @@ MSF에 대한 다음과 같은 자명한 사실을 사용한다.
 * $m$ 개의 간선을 가진 그래프 $G = (V, E)$ (다중 간선이 있을 수 있으나 루프는 없다.)
 * 양의 정수 $h \geq 1, F \geq 1$
 * $\forall v. \Delta(v) \le F \deg(v)$ 를 만족하는 *source function* $\Delta: V \rightarrow \mathbb{Z}_{\geq 0}$
-* $ |\Delta(\cdot)| \le |T(\cdot)|$ 와 $\forall v. T(v) \le \deg(v)$ 를 만족하는 *sink function* $T : V \rightarrow \mathbb{Z}_{\geq 0}$.
+* $ \Delta(\cdot) \le T(\cdot)$ 와 $\forall v. T(v) \le \deg(v)$ 를 만족하는 *sink function* $T : V \rightarrow \mathbb{Z}_{\geq 0}$.
 
-을 받으면, $O(hF(|\Delta(\cdot)| + |\overline{T}(\cdot)|) \log m)$ 시간에
+을 받으면, $O(hF(\Delta(\cdot) + \overline{T}(\cdot)) \log m)$ 시간에
 
 * $cong(f) \le 2hF$ 인  *source-feasible preflow* $f$ 
-* $|ex_f(\cdot)|$
-* 만약 $|ex_f(\cdot)| \neq 0$ 일 경우, 전도율 $\phi(S) < \frac{1}{h}$ 이며 volume $vol(S) \geq \frac{|ex_f(\cdot)|}{F}$ 인 집합 $S \subseteq V$ 가 추가로 반환된다 ($S$ 의 노드가 명시적으로 반환된다.)
+* $ex_f(\cdot)$
+* 만약 $ex_f(\cdot) \neq 0$ 일 경우, 전도율 $\phi(S) < \frac{1}{h}$ 이며 volume $vol(S) \geq \frac{ex_f(\cdot)}{F}$ 인 집합 $S \subseteq V$ 가 추가로 반환된다 ($S$ 의 노드가 명시적으로 반환된다.)
 
 를 반환하는 알고리즘이다. Extended Unit Flow Algorithm은 존재한다.
 
-**Theorem 1.3의 해설**. 정수 $h, F$ 는 지금 주어지는 입력이 얼마나 *좋은 입력인지* 를 나타내는 파라미터라고 생각할 수 있다. $F$ 가 작다는 것은 source function의 크기가 적당히 작다는 것이며, 그래프의 전도율 $\phi(G) \geq \frac{1}{h}$ 라는 것을 뜻한다. 이러한 *좋은 입력* 에서는 congestion이 $\tilde{O}(hF)$ 인 flow를 실제로 찾을 수 있다. 모든 집합 $S \subseteq V$ 에 대해서 공급량의 합은 $\sum_{v \in S} \Delta(v) \le F \times vol(S)$ 이하이고, $S$ 를 나가는 간선의 개수는 $\delta(S)$ 가 된다. $\frac{\delta(S)}{vol(S)} = \phi(S) \geq \phi(G) \geq \frac{1}{h}$ 이니 대략 각 간선마다 최대 $\frac{F \times vol(S)}{\frac{vol(S)}{h}} \le hF$ 의 공급이 주어진다. 우리의 알고리즘은 정확히 이러한 공급을 찾으려 할 것이다. 만약에 이것이 실패하면, 알고리즘은 입력이 나쁘다는 *certificate* 를 반환할 것이다. 이 *certificate* 는 low-conductance cut $S$ 와  에 해당된다. 또한 이 *certificate* 의 크기는 과잉량에 비례해서 커지게 되는데, 이 비례 관계는 이후 중요한 역할을 하게 될 것이다. 비례 관계를 만드는 방법을 간단히 설명하자면, $vol(S) \geq \frac{|ex_f(\cdot)|}{F}$ 일 경우 대략 $F \times vol(S) \ge |ex_f(\cdot)|$ 만큼의 공급을 $S$ 에 몰아줄 수 있고, $S$ 의 전도율이 낮다면, 예를 들어서 $\phi(G) \le \frac{1}{2h}$ 라면, 컷 밖으로 빠져나가는 유량의 합은 $\delta(S) \times cong(f) = F \times vol(S)$ 이하가 된다. 고로 $\phi(G)$ 가 충분히 낮다면 공급만큼 흡수가 되지 않을 수밖에 없고 과잉을 만들 수 있다.
+**Theorem 1.3의 해설**. 정수 $h, F$ 는 지금 주어지는 입력이 얼마나 *좋은 입력인지* 를 나타내는 파라미터라고 생각할 수 있다. $F$ 가 작다는 것은 source function의 크기가 적당히 작다는 것이며, 그래프의 전도율 $\phi(G) \geq \frac{1}{h}$ 라는 것을 뜻한다. 이러한 *좋은 입력* 에서는 congestion이 $\tilde{O}(hF)$ 인 flow를 실제로 찾을 수 있다. 모든 집합 $S \subseteq V$ 에 대해서 공급량의 합은 $\sum_{v \in S} \Delta(v) \le F \times vol(S)$ 이하이고, $S$ 를 나가는 간선의 개수는 $\delta(S)$ 가 된다. $\frac{\delta(S)}{vol(S)} = \phi(S) \geq \phi(G) \geq \frac{1}{h}$ 이니 대략 각 간선마다 최대 $\frac{F \times vol(S)}{\frac{vol(S)}{h}} \le hF$ 의 공급이 주어진다. 우리의 알고리즘은 정확히 이러한 공급을 찾으려 할 것이다. 만약에 이것이 실패하면, 알고리즘은 입력이 나쁘다는 *certificate* 를 반환할 것이다. 이 *certificate* 는 low-conductance cut $S$ 와  에 해당된다. 또한 이 *certificate* 의 크기는 과잉량에 비례해서 커지게 되는데, 이 비례 관계는 이후 중요한 역할을 하게 될 것이다. 비례 관계를 만드는 방법을 간단히 설명하자면, $vol(S) \geq \frac{ex_f(\cdot)}{F}$ 일 경우 대략 $F \times vol(S) \ge ex_f(\cdot)$ 만큼의 공급을 $S$ 에 몰아줄 수 있고, $S$ 의 전도율이 낮다면, 예를 들어서 $\phi(G) \le \frac{1}{2h}$ 라면, 컷 밖으로 빠져나가는 유량의 합은 $\delta(S) \times cong(f) = F \times vol(S)$ 이하가 된다. 고로 $\phi(G)$ 가 충분히 낮다면 공급만큼 흡수가 되지 않을 수밖에 없고 과잉을 만들 수 있다.
 
-마지막으로, 이 알고리즘의 시간 복잡도가 $G$ 의 크기보다 작으며, $(|\Delta(\cdot)| + |\overline{T}(\cdot)|)$ 에 *준 선형* 임을 관찰하자.
+마지막으로, 이 알고리즘의 시간 복잡도가 $G$ 의 크기보다 작으며, $(\Delta(\cdot) + \overline{T}(\cdot))$ 에 *준 선형* 임을 관찰하자.
 
 이제 Theorem 1.3을 증명한다. 아래 Lemma는 [[Henzinger, Rao, Wang 2017]](https://arxiv.org/pdf/1704.01254.pdf) 의 Theorem 3.1과 Lemma 3.1의 parameter를 적당히 조정함으로써 얻을 수 있다. 이 논문의 [**[Appendix B.1]**](https://arxiv.org/pdf/1708.03962.pdf)을 참조하라.
 
-**Lemma 1.4**. *Unit Flow* 라는 알고리즘은 Theorem 1.3과 동일한 ($G, h, F, \Delta, T$) 입력을 받으나, $\forall v. T(v) = \deg(v)$ 라는 조건을 추가적으로 가정한다. 이 알고리즘은 $O(Fh |\Delta(\cdot)| \log m)$ 시간에 
+**Lemma 1.4**. *Unit Flow* 라는 알고리즘은 Theorem 1.3과 동일한 ($G, h, F, \Delta, T$) 입력을 받으나, $\forall v. T(v) = \deg(v)$ 라는 조건을 추가적으로 가정한다. 이 알고리즘은 $O(Fh \Delta(\cdot) \log m)$ 시간에 
 
 * $cong(f) \le 2hF$ 인 *source-feasible preflow* $f$ 
-* $|ex_f(\cdot)|$
-* 만약 $|ex_f(\cdot)| \neq 0$ 일 경우, 전도율 $\phi(S) < \frac{1}{h}$ 이며, 모든 $v \in S$에 대해 $ex_f(v) \le (F - 1) \deg(v)$ 이고, 모든 $v \notin S$ 에 대해 $ex_f(v) = 0$ 인 집합 $S$ 가 반환된다.
+* $ex_f(\cdot)$
+* 만약 $ex_f(\cdot) \neq 0$ 일 경우, 전도율 $\phi(S) < \frac{1}{h}$ 이며, 모든 $v \in S$에 대해 $ex_f(v) \le (F - 1) \deg(v)$ 이고, 모든 $v \notin S$ 에 대해 $ex_f(v) = 0$ 인 집합 $S$ 가 반환된다.
 
 를 반환하는 알고리즘이다. Unit Flow Algorithm은 존재한다. 슬프게도 Unit Flow 알고리즘에 대한 설명은 생략하지만, 이 알고리즘은 push-relabel framework에 기반하여 있기 때문에 다음과 같은 사실이 성립한다.
 
 **Fact 1.5** Lemma 1.4에서 반환하는 preflow $f$ 는 모든 $v \in V$ 에 대해, $f(v) < T(v) \implies \sum_{u \in V} f(v, u) \le 0$ 이다.
 
-**Proof of Theorem 1.3**. 입력으로 ($G, h, F, \Delta, T$) 가 주어질 때, $\Delta^\prime$ 과 $T^\prime$ 을 새로운 source와 sink function으로 정의하자. 이 때 $\Delta^\prime(v) = \Delta(v) + \overline{T}(v)$, $T^\prime(v) = T(v) + \overline{T}(v) = \deg(v)$ 로 정의한다. 이 때 $|\Delta^\prime(\cdot)| = |\Delta(\cdot)| + |\overline{T}(\cdot)| \le |T(\cdot)| + |\overline{T}(\cdot)| = 2m$ 이며 $\forall v.\Delta^\prime(v) \le (F + 1) \deg(v)$ 이다. Remark 1.1에서 사용한 입출력 형식에 의해 이러한 표현은 $O(|\Delta(\cdot)| + |\overline{T}(\cdot)|)$ 시간에 구성 가능하다. 이제 Lemma 1.4의 Unit Flow 알고리즘을 $(G, h, F + 1, \Delta^\prime, T^\prime)$ 이라는 인자로 실행하자. 이 때 이 알고리즘은 $O((F + 1) h |\Delta^{\prime}(\cdot)| \log m) = O(Fh (|\Delta(\cdot)| + |\overline{T}(\cdot)|) \log m)$ 에 작동하여 출력을 반환한다. 
+**Proof of Theorem 1.3**. 입력으로 ($G, h, F, \Delta, T$) 가 주어질 때, $\Delta^\prime$ 과 $T^\prime$ 을 새로운 source와 sink function으로 정의하자. 이 때 $\Delta^\prime(v) = \Delta(v) + \overline{T}(v)$, $T^\prime(v) = T(v) + \overline{T}(v) = \deg(v)$ 로 정의한다. 이 때 $\Delta^\prime(\cdot) = \Delta(\cdot) + \overline{T}(\cdot) \le T(\cdot) + \overline{T}(\cdot) = 2m$ 이며 $\forall v.\Delta^\prime(v) \le (F + 1) \deg(v)$ 이다. Remark 1.1에서 사용한 입출력 형식에 의해 이러한 표현은 $O(\Delta(\cdot) + \overline{T}(\cdot))$ 시간에 구성 가능하다. 이제 Lemma 1.4의 Unit Flow 알고리즘을 $(G, h, F + 1, \Delta^\prime, T^\prime)$ 이라는 인자로 실행하자. 이 때 이 알고리즘은 $O((F + 1) h \Delta^{\prime}(\cdot) \log m) = O(Fh (\Delta(\cdot) + \overline{T}(\cdot)) \log m)$ 에 작동하여 출력을 반환한다. 
 
 이제 우리는 Unit Flow가 찾은 preflow $f$ 가 Extended Unit Flow가 찾을 source-feasible preflow라는 것을 증명한다. 
 
@@ -167,7 +167,7 @@ $cong(f) \le 2hF$ 임은 자명하니, 우리는 $\forall v. f^\prime(v) \geq 0$
 
 *Proof 1.3.3* $f^\prime(v) - f(v) = \Delta^\prime(v) - \Delta(v) = \overline{T}(v)$. $T^\prime(v) - T(v) = \overline{T}(v)$.
 
-이렇게 두 번째 꼭지가 증명된다. 마지막으로, $|ex_f(*)| \le (F - 1) vol(S) \le F vol(S)$ 이기 때문에, 세 번째 꼭지도 증명된다. $\blacksquare$
+이렇게 두 번째 꼭지가 증명된다. 마지막으로, $ex_f(*) \le (F - 1) vol(S) \le F vol(S)$ 이기 때문에, 세 번째 꼭지도 증명된다. $\blacksquare$
 
 ## Chapter 2. Locally Balanced Sparse Cut
 
@@ -221,20 +221,20 @@ $(O(1/\sigma^2), O(1/\sigma^2))$-approximate LBS cut 알고리즘이 존재한�
 
 * $F = \lceil 1/\sigma \rceil, h = \lceil 1/\alpha \rceil$
 * $\Delta(v) = F \deg(v)$ if $v \in A$, $0$ if $v \notin A$
-* $T(v) = 0$ if $v \in A$, $\deg(v)$ if $v \notin A$ ($ |\Delta(\cdot)| \le |T(\cdot)|$)
+* $T(v) = 0$ if $v \in A$, $\deg(v)$ if $v \notin A$ ($ \Delta(\cdot) \le T(\cdot)$)
 
-이 때, $|\Delta(\cdot)| = \lceil \frac{1}{\sigma} \rceil vol(A) \le \lceil \frac{vol(V - A)}{2vol(A)} \rceil vol(A) \le vol(V - A) = |T(\cdot)|$ 이다. 고로 $ |\Delta(\cdot)| \le |T(\cdot)|$  을 만족한다. 다른 조건들이 만족되는 것은 쉽게 증명된다. 
+이 때, $\Delta(\cdot) = \lceil \frac{1}{\sigma} \rceil vol(A) \le \lceil \frac{vol(V - A)}{2vol(A)} \rceil vol(A) \le vol(V - A) = T(\cdot)$ 이다. 고로 $ \Delta(\cdot) \le T(\cdot)$  을 만족한다. 다른 조건들이 만족되는 것은 쉽게 증명된다. 
 
-Extended Unit Flow 알고리즘은 $O(hF (|\Delta(\cdot)| + |\overline{T}(\cdot)|) \log m)$ 시간 복잡도에 작동하며, $|\overline{T}(\cdot)| = \sum_{v \in A} deg(v) = vol(A)$ 이니, 이를 계산하면 $\tilde{O}(\frac{vol(A)}{\alpha \sigma^2})$ 가 된다. 
+Extended Unit Flow 알고리즘은 $O(hF (\Delta(\cdot) + \overline{T}(\cdot)) \log m)$ 시간 복잡도에 작동하며, $\overline{T}(\cdot) = \sum_{v \in A} deg(v) = vol(A)$ 이니, 이를 계산하면 $\tilde{O}(\frac{vol(A)}{\alpha \sigma^2})$ 가 된다. 
 
 $cong(f) \le 2hF = O(\frac{1}{\alpha \sigma})$ 이다. $c_{size} = 2F/\sigma = O(1/\sigma^2)$, $c_{con} = (2\alpha \times cong(f)) / \sigma = O(1/\sigma^2)$ 로 정의하자. 다음과 같이 출력한다.
 
-* $|ex_f(\cdot)| = 0$ 이면, $OPT(G, \alpha / c_{con}, A, \sigma) = 0$ 이라고 보고한다.
+* $ex_f(\cdot) = 0$ 이면, $OPT(G, \alpha / c_{con}, A, \sigma) = 0$ 이라고 보고한다.
 * 아닐 경우, Extended Unit Flow에서 반환한 집합 $S$ 를 반환한다.
 
 이제 이를 증명하기 위해 다음 Lemma를 증명한다.
 
-**Lemma 2.7.** $vol(S^\prime) \leq vol(V - S^\prime)$ 을 만족하는 임의의 $(A, \sigma)$-overlapping cut $S^\prime$ 이 $vol(S^\prime) > 2\frac{|ex_f(\cdot)|}{\sigma}$ 이면, $\phi(S^\prime) \geq \frac{\sigma}{2 cong(f)}$ 를 만족한다.
+**Lemma 2.7.** $vol(S^\prime) \leq vol(V - S^\prime)$ 을 만족하는 임의의 $(A, \sigma)$-overlapping cut $S^\prime$ 이 $vol(S^\prime) > 2\frac{ex_f(\cdot)}{\sigma}$ 이면, $\phi(S^\prime) \geq \frac{\sigma}{2 cong(f)}$ 를 만족한다.
 
 **Proof.** $\Delta(S^\prime) = \sum_{v \in S^\prime} \Delta(v)$, $T(S^\prime) = \sum_{v \in S^\prime} T(v)$, $ex_f(S^\prime) = \sum_{v \in S^\prime} ex_f(v)$ ... 라고 하자. 
 
@@ -244,15 +244,15 @@ $cong(f) \le 2hF = O(\frac{1}{\alpha \sigma})$ 이다. $c_{size} = 2F/\sigma = O
 
 $cong(f) \times \delta(S^\prime) \geq \Delta(S^\prime) - T(S^\prime) = \Delta(S^\prime) - ex_f(S^\prime) - ab_f(S^\prime)$
 
-$\geq \frac{vol(A \cap S^\prime)}{\sigma} - |ex_f(\cdot)| - vol(S^\prime - A)$
+$\geq \frac{vol(A \cap S^\prime)}{\sigma} - ex_f(\cdot) - vol(S^\prime - A)$
 
 이는
 
-$cong(f) \times \phi(S^\prime) \geq \frac{1}{vol(S^\prime)} \times(\frac{vol(A \cap S^\prime)}{\sigma} - |ex_f(\cdot)| - vol(S^\prime - A))$
+$cong(f) \times \phi(S^\prime) \geq \frac{1}{vol(S^\prime)} \times(\frac{vol(A \cap S^\prime)}{\sigma} - ex_f(\cdot) - vol(S^\prime - A))$
 
-$=\frac{1}{vol(S^\prime)} \times(\frac{vol(A \cap S^\prime)}{\sigma} - |ex_f(\cdot)| - vol(S^\prime) + vol(S^\prime \cap A))$
+$=\frac{1}{vol(S^\prime)} \times(\frac{vol(A \cap S^\prime)}{\sigma} - ex_f(\cdot) - vol(S^\prime) + vol(S^\prime \cap A))$
 
-$=\frac{1}{vol(S^\prime)} \times((1 + \frac{1}{\sigma})vol(A \cap S^\prime) - |ex_f(\cdot)| - vol(S^\prime) )$
+$=\frac{1}{vol(S^\prime)} \times((1 + \frac{1}{\sigma})vol(A \cap S^\prime) - ex_f(\cdot) - vol(S^\prime) )$
 
 $\geq \frac{1}{vol(S^\prime)} \times((1 + \frac{1}{\sigma})vol(A \cap S^\prime) - \frac{\sigma}{2} vol(S^\prime) - vol(S^\prime) )$
 
@@ -260,7 +260,7 @@ $\geq \frac{1}{vol(S^\prime)} \times((1 + \frac{1}{\sigma})\sigma vol(S^\prime) 
 
 $= (1 + \frac{1}{\sigma})\sigma - \frac{\sigma}{2} - 1 = \frac{\sigma}{2}$. $\blacksquare$
 
-**Proof of The Theorem (cont).** 이제 $OPT(G, \frac{\sigma}{2cong(f)}, A, \sigma) \le 2\frac{|ex_f(\cdot)|}{\sigma}$ 임을 보일 수 있다. 이를 초과하는 집합이 정확히 Lemma 2.7의 조건에 의해서 걸러지기 때문이다. 고로 $|ex_f(\cdot)| = 0$ 일 경우 알고리즘의 정당성은 자명하다. 아닐 경우, Extended Unit Flow가 반환한 집합이 $S$ 라고 하면, Theorem 1.3에 의해 $\phi_G(S) < \frac{1}{h} \le \alpha$, $vol(S) \geq \frac{|ex_f(\cdot)|}{F}$ 를 만족한다. $c_{size} = \frac{2F}{\sigma}$ 이니, $vol(S) \times c_{size} \geq \frac{2 |ex_f(\cdot)|}{\sigma}$ 이다. Lemma 2.7과 조합하면 증명이 종료된다. $\blacksquare$
+**Proof of The Theorem (cont).** 이제 $OPT(G, \frac{\sigma}{2cong(f)}, A, \sigma) \le 2\frac{ex_f(\cdot)}{\sigma}$ 임을 보일 수 있다. 이를 초과하는 집합이 정확히 Lemma 2.7의 조건에 의해서 걸러지기 때문이다. 고로 $ex_f(\cdot) = 0$ 일 경우 알고리즘의 정당성은 자명하다. 아닐 경우, Extended Unit Flow가 반환한 집합이 $S$ 라고 하면, Theorem 1.3에 의해 $\phi_G(S) < \frac{1}{h} \le \alpha$, $vol(S) \geq \frac{ex_f(\cdot)}{F}$ 를 만족한다. $c_{size} = \frac{2F}{\sigma}$ 이니, $vol(S) \times c_{size} \geq \frac{2 ex_f(\cdot)}{\sigma}$ 이다. Lemma 2.7과 조합하면 증명이 종료된다. $\blacksquare$
 
 **Remark.** 위 증명에는 $vol(S) \le vol(V - S)$ 조건을 빠트렸다는 허점이 있다. 난 자명한 논리로 고치지 못하겠는데 별 것이 아니라면 알려주길 바란다.
 
@@ -279,7 +279,7 @@ $G_{\tau}, P_{\tau}$ 를 $\tau$ 번째 삭제 이후의 그래프 $G$ 와 집합
 
 Theorem 3.1에서 마지막 조건의 의미를 풀어 설명하면, 집합 $V \setminus P_{\tau}$ 이 $G_{\tau}$ 에서 하나의 연결 컴포넌트 안에 들어있다는 뜻이다. 우리는 이 집합 $P$ 를 *pruning set* 이라고 부른다. 이후 응용에서 이 개념은 $P$ 에 인접한 간선들은 그래프에서 관리하지 않는 식으로 사용될 것이다.
 
-관찰하면 좋을 것이 두 가지 있는데, 첫 번째는 맨 처음에 $P_1 = V$ 로 설정해 놓으면 문제가 자명하게 해결된다는 것이다. 이것이 불가능한 이유는, 시간 복잡도 조건에 따라 $|P_i - P_{i - 1}| \le n^{o(1)}$ 을 만족해야 하기 때문이다. 두 번째는, 만약에 두 큰 연결 컴포넌트가 절선 하나로 묶여져 있고, 첫번째 간선 제거에서 그 절선이 제거된다면, $|P_1| = |V| / 2$ 정도의 매우 큰 크기를 강요할 수 있다는 것이다. $\phi(G_0) \geq \alpha_0(n)$ 조건이 존재하는 것은 이를 위해서이다. 위와 같은 경우는 절선을 양옆으로 하는 컷의 conductance가 매우 낮기 때문에 그래프 전체의 conductance가 작다고 볼 수 있고, 위 조건에 위배된다.
+관찰하면 좋을 것이 두 가지 있는데, 첫 번째는 맨 처음에 $P_1 = V$ 로 설정해 놓으면 문제가 자명하게 해결된다는 것이다. 이것이 불가능한 이유는, 시간 복잡도 조건에 따라 $P_i - P_{i - 1} \le n^{o(1)}$ 을 만족해야 하기 때문이다. 두 번째는, 만약에 두 큰 연결 컴포넌트가 절선 하나로 묶여져 있고, 첫번째 간선 제거에서 그 절선이 제거된다면, $P_1 = V / 2$ 정도의 매우 큰 크기를 강요할 수 있다는 것이다. $\phi(G_0) \geq \alpha_0(n)$ 조건이 존재하는 것은 이를 위해서이다. 위와 같은 경우는 절선을 양옆으로 하는 컷의 conductance가 매우 낮기 때문에 그래프 전체의 conductance가 작다고 볼 수 있고, 위 조건에 위배된다.
 
 이 문제를 해결하기 위해 우리는 Expander Pruning을 조금 변형한 문제인 One-shot expander pruning을 해결할 것이고, 이 알고리즘을 토대로 전체 문제를 해결할 것이다.
 
@@ -290,19 +290,19 @@ One-shot expander pruning이 Dynamic expander pruning과 다른 점은 크게 �
 **Theorem 3.2 (One-shot Expander Pruning)**. 다음 작업을 하는 알고리즘이 존재한다.
 
 * 입력으로는 $(G, D, \alpha_b, \delta)$ 가 주어진다.
-  * $G = (V, E)$ 는 최대 차수가 $\Delta$ 인 그래프로 $|V| = n, |E| = m$ 이다. $G$ 는 **지워진 이후의 그래프** 를 나타낸다.
+  * $G = (V, E)$ 는 최대 차수가 $\Delta$ 인 그래프로 $V = n, E = m$ 이다. $G$ 는 **지워진 이후의 그래프** 를 나타낸다.
   * $\alpha_b$ 는 conductance parameter이다.
   * $\delta \in (0, 1)$ 역시 실수 parameter이다.
-  * $D$ 는 원래 그래프에서 지울 간선들을 나타내는 것으로, $D \cap E = \emptyset$ 이다. $|D| = O(\alpha^2_bm / \Delta)$를 만족한다. 그래프 $G_b = (V, E \cup D)$ 는 지우기 전의 그래프를 나타낸다.
-* 이후, 시간 $\overline{t} = \tilde{O}{\frac{\Delta|D|^{1 + \delta}}{\delta \alpha_b^{6 + \delta}}}$ 에 $A$ 는 $\phi(G_b) < \alpha_b$ 임을 반환하거나, Pruning set $P \subset V$ 를 출력한다. 또한, $\phi(G_b) \geq \alpha_b$ 이면 
-  * $vol_G(P) \le \frac{2|D|}{\alpha_b}$
+  * $D$ 는 원래 그래프에서 지울 간선들을 나타내는 것으로, $D \cap E = \emptyset$ 이다. $D = O(\alpha^2_bm / \Delta)$를 만족한다. 그래프 $G_b = (V, E \cup D)$ 는 지우기 전의 그래프를 나타낸다.
+* 이후, 시간 $\overline{t} = \tilde{O}{\frac{\DeltaD^{1 + \delta}}{\delta \alpha_b^{6 + \delta}}}$ 에 $A$ 는 $\phi(G_b) < \alpha_b$ 임을 반환하거나, Pruning set $P \subset V$ 를 출력한다. 또한, $\phi(G_b) \geq \alpha_b$ 이면 
+  * $vol_G(P) \le \frac{2D}{\alpha_b}$
   * *pruned graph* $H = G[V - P]$는 높은 전도율을 가지고 있다: $\phi(H) \geq \alpha = \Omega(\alpha_b^{2/\delta})$ 
 
 이 때 $\overline{t}$ 를 *time limit*, $\alpha$ 를 $A$ 의 *conductance guarantee* 라고 한다. 이 Theorem의 증명을 위해서는 다음 Lemma가 필요하다.
 
 **Lemma 5.3.** 시간 복잡도 $t_{LSB}(n, vol(A), \alpha, \sigma)$ 에 작동하는 $(c_{size}(\sigma), c_{con}(\sigma))$-approximate LBS cut 알고리즘이 존재한다면 ($(G, A, \sigma, \alpha)$ 는 입력 형식과 동일하다). 입력 $(G, D, \alpha_b, \delta)$ 에 대해 one-shot expander pruning algorithm이 존재하여, 
 
-* time limit $\overline{t} = O((\frac{|D|}{\alpha_b})^\delta \times \frac{c_{size}(\alpha_b/2)}{\delta} \times t_{LSB}(n, \frac{\Delta|D|}{\alpha_b}, \alpha_b, \alpha_b))$
+* time limit $\overline{t} = O((\frac{D}{\alpha_b})^\delta \times \frac{c_{size}(\alpha_b/2)}{\delta} \times t_{LSB}(n, \frac{\DeltaD}{\alpha_b}, \alpha_b, \alpha_b))$
 * conductance guarantee $\alpha = \frac{\alpha_b}{5c_{con} (\alpha_b / 2)^{1/\delta - 1}}$
 
 을 만족한다.
