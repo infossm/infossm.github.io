@@ -24,7 +24,7 @@ Indistinguishability는 달성하기가 굉장히 어려운 성질입니다. 현
 
 암호학에서 Advantage는 Adversary가 두 함수 $F, G$를 구분할 확률을 의미합니다. 아래와 같이 Adversary는 $F$인지 $G$인지 모를 Black box를 받아들고 여기에 원하는대로 질의를 해서 그 결과를 바탕으로 Black box가 $F$인지 $G$인지를 맞춰야 합니다.
 
-![gogo](/assets/images/Indistinguishability-in-Cryptography/1.png)
+![](/assets/images/Indistinguishability-in-Cryptography/1.png)
 
 만약 $F$라고 생각할 경우 1이라고 답변할 것이고 $G$라고 경우 0이라고 답변한다고 가정하겠습니다. 이 때 Advantage는 함수가 $F$일 때 이를 $F$라고 판단할 확률에서 $G$일 때 이를 $F$라고 판단할 확률을 뺀 값입다다. 기호로 표현하자면 Adversary $A$의 Advantage는 $Adv(A) = \|Pr[A(F) = 1] - PR[A(G) = 1] \|$ 입니다. 만약 Adversary가 매번 그냥 동전을 던져 앞면이 나오면 1, 뒷면이 나오면 0이라고 판단한다면 $Pr[A(F) = 1] = 0.5, Pr[A(G) = 1] = 0.5$이기 때문에 Advantage는 0이 됩니다. 반대로 Adversary가 적절한 $F$와 $G$의 특성을 잡아 완벽하게 둘을 구분할 수 있다고 하면 $Pr[A(F) = 1] = 1, Pr[A(G) = 1] = 0$이기 때문에 Advantage는 1이 됩니다. 즉 Advantage는 0에서 1 사이의 값을 가지고 크면 클수록 공격자가 $F$와 $G$를 잘 구분할 수 있음을 의미합니다.
 
@@ -52,7 +52,7 @@ $F, G$를 16비트 입력을 받아 16비트 출력을 하는 함수로 정의�
 
 일반적인 두 함수 $F, G$가 동일한 함수가 아니라면 결국 $2^n$번의 질의를 거쳤을 때 둘을 구분할 수 있음은 자명합니다. 그렇다면 Adversary의 입장에서는 질의를 덜 하고도 둘을 구분하고 싶어하고 실제로 PRF와 PRP는 $O(2^{n/2})$번의 질의를 통해 구분 가능합니다. 참고로 PRF와 PRP의 구분의 경우 $O(2^{n/2})$번의 질의가 하한임이 증명되어 있습니다.
 
-# 3. IND-CPA, LoR-CPA
+# 3. IND-CPA, RoR-CPA
 
 먼저 CPA는 Chosen-Plaintext Attack, 즉 Adversary가 자신이 원하는 메시지에 대한 암호문을 받을 수 있는 상황을 의미합니다. 이러한 환경에서 Adversary가 `의미있는 정보`를 획득할 수 있는지를 아래와 같은 방식으로 확인합니다.
 
@@ -78,7 +78,7 @@ RoR-CPA에서 RoR의 의미는 Real or Random입니다. 아래의 상황을 같�
 
 RoR-CPA에서도 마찬가지로 입력이 같으면 늘 동일한 출력을 내는 암호화 알고리즘은 안전하지 않습니다.
 
-## C. IND-CPA vs ROR-CPA
+## C. IND-CPA vs RoR-CPA
 
 마치 P vs NP에서 NP-Complete 문제들끼리 reduction을 하듯 IND-CPA, RoR-CPA 끼리도 서로간의 reduction이 존재합니다.
 
