@@ -3,7 +3,7 @@ layout: post
 title:  "Soft Actor-Critic"
 date:   2019-08-18 18:30
 author: wwiiiii
-tags: [deep learning, reinforcement learning, 딥러닝, 강화학습]
+tags: [deep-learning, reinforcement-learning]
 ---
 
 # **Goals**

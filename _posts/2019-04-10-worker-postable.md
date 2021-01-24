@@ -3,7 +3,7 @@ layout: post
 title:  "Web Worker-Postable 라이브러리 작성기"
 date:   2019-04-10 18:00:00
 author: orange4glace
-tags: [javascript, typescript, webworker]
+tags: [Javascript, Typescript, WebWorker]
 ---
 
 필자는 최근 [Electron](https://electronjs.org/) 플랫폼을 기반으로 한 오픈소스 영상 편집 프로그램을 만들고 있습니다. 프리미어 프로의 저질 짝퉁 버전이라고나 할까요. 웹 생태계의 특성상 새로운 기술들이 빠르게 적용되긴 힘들지만, 동시에 웹에 대한 많은 관심이 수년간 이어지면서 이에 대한 논의와 도입이 활발하게 이루어지고 있는것은 굉장히 즐거운 일이라고 생각합니다. 저같이 뭣도 모르는 녀석도 영상 편집 프로그램 같은걸 만들 생각도 할 수 있게 해주니까요.

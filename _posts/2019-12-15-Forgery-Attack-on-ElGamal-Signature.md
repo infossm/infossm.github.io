@@ -3,7 +3,7 @@ layout: post
 title:  "Forgery Attack on ElGamal Signatures"
 date:   2019-12-15 23:20
 author: RBTree
-tags: [cryptography, digital signature, number theory]
+tags: [cryptography, digital-signature, number-theory]
 ---
 
 # 서론

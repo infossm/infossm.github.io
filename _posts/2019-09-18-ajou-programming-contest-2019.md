@@ -3,7 +3,7 @@ layout: post
 title:  "2019 아주대학교 프로그래밍 경시대회(APC) 풀이"
 date:   2019-09-18 23:59:59
 author: Acka1357
-tags: Ajou Programming Contest, 2019 APC solutions
+tags: [Ajou-Programming-Contest, 2019-APC-solutions]
 ---
 
 ## 2019 아주대학교 프로그래밍 경시대회 (APC)

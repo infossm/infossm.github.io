@@ -3,7 +3,7 @@ layout: post
 title: "장애물을 포함하지 않는 가장 큰 직사각형 찾기"
 author: koosaga
 date: 2019-10-20
-tags: icpc, algorithm, computation-geometry
+tags: [ICPC, algorithm, computation-geometry]
 ---
 
 # 장애물을 포함하지 않는 가장 큰 직사각형 찾기

@@ -3,10 +3,12 @@ layout: post
 title: "Purely Functional Business Logic In Scala"
 date: 2019-08-18 01:25
 author: taeguk
-tags: [Fuctional Programming, scala, cats, rwst, monad, DDD, Software Design]
+tags: [functional-programming, Scala, Cats, RWST, monad, DDD, software-design]
 ---
 안녕하세요~ 오늘은 스칼라에서 비지니스 로직을 purely functional 하게 설계하는 방법에 대해서 소개해볼까 합니다. <br/>
 함수형 프로그래밍, 스칼라, cats, DDD 에 대해서 알고 계시면 이해가 수월하시겠지만 모르시는 분들을 위해서 기본적인 설명도 같이 첨부해두었습니다.
+
+**[>> 이 글을 좀 더 좋은 가독성으로 읽기 <<](https://taeguk2.blogspot.com/2019/08/purely-functional-business-logic-in.html)**
 
 ## 다루는 내용
 * cats 의 `RWST (ReaderWriterStateT)` 를 활용해서 핵심 비지니스 로직을 purely functional 하게 작성하는 방법
@@ -236,5 +238,3 @@ Failed to perform a logic: java.lang.Exception: Money is not enough to play dart
 오늘은 스칼라에서 비지니스 로직을 purely functional 하게 작성하고 DDD 설계시에 활용하는 방법에 대해 간단하게 살펴보았습니다. <br/>
 앞으로는 스칼라나 함수형쪽으로 포스팅을 자주 하게 될 것 같네요. <br/>
 다음에 또 만나요~
-
-**[이 포스팅을 taeguk 블로그에서 보기](https://taeguk2.blogspot.com/2019/08/purely-functional-business-logic-in.html)**

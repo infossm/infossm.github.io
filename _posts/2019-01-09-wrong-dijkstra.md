@@ -3,7 +3,7 @@ layout: post
 title:  "잘못 구현한 다익스트라 알고리즘 저격하기"
 date:   2019-01-09 11:00:00
 author: djm03178
-tags: 다익스트라 데이크스트라 Dijkstra 데이터
+tags: Dijkstra test-data
 ---
 ## 개요
 

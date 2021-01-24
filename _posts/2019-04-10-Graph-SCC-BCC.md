@@ -3,7 +3,7 @@ layout: post
 title:  "Graph, SCC and BCC"
 date:   2019-04-10 21:20:00
 author: shjgkwo
-tags: [algorithm, graph]
+tags: [algorithm, graph-theory]
 ---
 
 # 목차

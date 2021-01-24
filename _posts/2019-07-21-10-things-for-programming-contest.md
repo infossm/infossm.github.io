@@ -3,7 +3,7 @@ layout: post
 title:  "프로그래밍 대회를 개최하기 위한 10가지"
 date:   2019-07-21 23:59:59
 author: Acka1357
-tags: problem solving, competitive programming, programming contest, director, setter
+tags: [problem-solving, competitive-programming, programming-contest, director, setter]
 ---
 
 ## 프로그래밍 대회를 개최하기 위한 10가지

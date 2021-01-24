@@ -3,7 +3,7 @@ layout: post
 title:  "SMT Solver in CTF - z3 vs Boolector"
 date:   2020-06-19 23:50
 author: RBTree
-tags: [smt, ctf]
+tags: [SMT, CTF]
 ---
 
 # 서론

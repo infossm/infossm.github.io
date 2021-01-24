@@ -3,7 +3,7 @@ layout: post
 title:  "AntiVirus Oracle"
 date:   2020-03-19 20:30
 author: RBTree
-tags: [antivirus, ctf]
+tags: [antivirus, CTF]
 ---
 
 # 서론

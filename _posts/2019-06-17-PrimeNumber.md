@@ -3,7 +3,7 @@ layout: post
 title:  "Prime Number"
 date:   2019-06-17 23:55:00
 author: shjgkwo
-tags: [algorithm, Number-Theory]
+tags: [algorithm, number-theory]
 ---
 
 # 목차

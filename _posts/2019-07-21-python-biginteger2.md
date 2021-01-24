@@ -3,7 +3,7 @@ layout: post
 title:  "Python의 큰 정수 표현법 2 - 사칙연산"
 date:   2019-07-21-16:00
 author: djm03178
-tags: biginteger, python, 파이썬, 큰수
+tags: [big-integer, Python]
 ---
 ## 개요 ##
 [지난 글](http://www.secmem.org/blog/2019/06/16/python-biginteger/)에 이어, 이번 글에서는 Python의 `int`가 실제로 여러 가지 연산을 수행하는 방법에 대해 파헤쳐 보겠습니다. 이전에 살펴본 것처럼 Python은 큰 정수를 표현하기 위해 크기를 변화시킬 수 있는 배열을 사용하고, 배열의 각 원소는 4바이트의 크기를 가지며 $0$ 이상 $2^{30}-1$ 이하의 값을 가집니다. $i$번째 원소를 $i$제곱하여 더한 값이 그 `int`가 나타내는 실제 값이라고 했었습니다.

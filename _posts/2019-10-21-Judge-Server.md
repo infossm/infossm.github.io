@@ -3,7 +3,7 @@ layout: post
 title:  "Judger와 Express를 이용한 채점 서버 구현 후기"
 date:   2019-10-21 21:10:00
 author: shjgkwo
-tags: [C, Node.JS, Express, Docker]
+tags: [C, Node.js, Express, Docker]
 ---
 
 # 목차

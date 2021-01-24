@@ -3,7 +3,7 @@ layout: post
 title:  "2019 ACM-ICPC Seoul Regional 풀이"
 author: ho94949
 date: 2019-11-14 15:00
-tags: [ACMICPC, Regional]
+tags: [ICPC, Regional]
 ---
 
 # 서론

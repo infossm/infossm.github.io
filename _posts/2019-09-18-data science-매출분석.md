@@ -3,7 +3,7 @@ layout: post
 title: data science 매출분석
 date: 2019-09-18 21:58
 author: cjmp1
-tags: data science
+tags: data-science
 ---
 
 # DataScience - 2

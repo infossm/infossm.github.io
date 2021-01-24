@@ -3,7 +3,7 @@ layout: post
 title:  "알고 나면 유용한 TeX 팁들"
 date:   2019-03-10 20:30
 author: evenharder
-tags:   latex tips
+tags:   LaTeX tips
 ---
 
 TeX은 Donald Knuth가 만든 조판 언어이며, 수많은 분야에서 논문, 책자, 강의 자료 등을 만드는 데 사용됩니다. TeX에 대한 찬양을 하기에는 여백이 너무 부족하므로 생략하도록 하겠습니다. 이 포스트는 TeX 설치법이나 입문 또한 다루지 않습니다. 해당 내용은 Overleaf 같은 온라인 TeX 편집기 사이트에서 찾아보시길 바랍니다. 대신, 이 포스트는 어느 정도 TeX을 쓸 수 있는 분들에게 유용할 (혹은 이미 알고 있을) 팁을 다룹니다.

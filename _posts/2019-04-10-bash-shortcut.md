@@ -3,7 +3,7 @@ layout: post
 title:  "bash 단축키 뜯어보기"
 date:   2019-04-10 22:00
 author: evenharder
-tags:   unix linux bash
+tags:   unix Linux bash
 ---
 
 ![Don't do this.](/assets/images/evenharder-post/bash-shortcut/peek-20190410-rm-rf.gif)

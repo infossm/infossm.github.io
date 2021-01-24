@@ -3,7 +3,7 @@ layout: post
 title: "Google Test와 gcov 소개"
 date: 2019-07-21 21:00
 author: zych1751
-tags: [cpp, test coverage]
+tags: [C++, test-coverage]
 ---
 
 

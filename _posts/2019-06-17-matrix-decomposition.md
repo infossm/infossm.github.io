@@ -3,7 +3,7 @@ layout: post
 title:  "행렬 분해(Matrix Decomposition)"
 author: jihoon
 date: 2019-06-15 16:22
-tags: [matrix, linear algebra, decomposition]
+tags: [matrix, linear-algebra, decomposition]
 ---
 
 

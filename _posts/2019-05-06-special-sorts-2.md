@@ -3,7 +3,7 @@ layout: post
 title:  "특별한 정렬 알고리즘들 2"
 date:   2019-05-06 20:25:00
 author: djm03178
-tags: 정렬 알고리즘 sorting algorithm
+tags: sorting algorithm
 ---
 ## 개요 ##
 이번 글에서는 [지난 달 글](http://www.secmem.org/blog/2019/04/10/special-sorts/)에 이어서 조금 더 다양한 정렬 알고리즘을 소개해 보려고 합니다.

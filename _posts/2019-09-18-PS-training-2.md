@@ -3,7 +3,7 @@ layout: post
 title: "PS Training 2"
 date: 2019-09-17 23:00:00
 author: tataky
-tags: [PS]
+tags: [problem-solving]
 ---
 
 

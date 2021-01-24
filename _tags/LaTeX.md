@@ -1,0 +1,4 @@
+---
+name: LaTeX
+title: 'LaTeX'
+---

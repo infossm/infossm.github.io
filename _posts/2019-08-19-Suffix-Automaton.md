@@ -3,7 +3,7 @@ layout: post
 title:  "Suffix Automaton 구현과 그 응용"
 date:   2019-08-19 11:40:00
 author: shjgkwo
-tags: [algorithm, String, Automata]
+tags: [algorithm, string, automata]
 ---
 
 # 목차

@@ -3,7 +3,7 @@ layout: post
 title:  "Post-Quantum Cryptography"
 date:   2020-11-22 23:00:00
 author: blisstoner
-tags: [quantum, Cryptography]
+tags: [quantum, cryptography]
 ---
 
 # 1. Introduction

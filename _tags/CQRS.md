@@ -1,0 +1,4 @@
+---
+name: CQRS
+title: 'CQRS'
+---

@@ -3,11 +3,13 @@ layout: post
 title: "꼬리 재귀와 Trampoline In Scala"
 date: 2020-04-22 23:59
 author: taeguk
-tags: [Scala, Tail Recursion, Trampoline, Functional Programming, TailRec, Coroutine]
+tags: [Scala, tail-recursion, Trampoline, functional-programming, TailRec, coroutine]
 ---
 
 안녕하세요! 오늘은 스칼라 초심자를 대상으로 **Tail Recursion (꼬리 재귀)** 와 **Trampoline** 에 대해 포스팅하려고 합니다. <br/>
 함수형 프로그래밍이나 모나드를 몰라도 이해할 수 있도록 노력해봤습니다~~
+
+**[>> 이 글을 좀 더 좋은 가독성으로 읽기 <<](https://taeguk2.blogspot.com/2020/04/trampoline-in-scala.html)**
 
 간단하게 1부터 n 까지 더해주는 함수를 아래와 같이 작성한 뒤 실행 해봅시다. 스택오버플로우 에러가 뜨는 것을 확인할 수 있습니다.
 
@@ -222,5 +224,3 @@ println(sum(100000).result)
 Trampoline 에 대해 더 관심이 있으신 분은 [Stackless Scala With Free Monads](http://blog.higher-order.com/assets/trampolines.pdf) 를 읽어보시면 좋을 것 같습니다.
 
 앞으로는 오늘처럼 그나마 좀 덜 고인 포스팅들을 자주 써보도록 하겠습니다. (고인물 포스팅은 써도 아무도 안봐서..ㅜㅜ)
-
-**[이 포스팅을 taeguk 블로그에서 보기](https://taeguk2.blogspot.com/2020/04/trampoline-in-scala.html)**

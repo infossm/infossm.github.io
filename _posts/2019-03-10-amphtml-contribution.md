@@ -3,7 +3,7 @@ layout: post
 title: AMP(Accelerated Mobile Pages) 기여
 date: 2019-03-10 23:00
 author: KENNYSOFT
-tags: [AMP, mathml]
+tags: [AMP, MathML]
 ---
 
 ## 들어가며

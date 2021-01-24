@@ -3,7 +3,7 @@ layout: post
 title:  "N! mod P 의 빠른 계산"
 author: ho94949
 date: 2019-09-17 15:00
-tags: [Factorial, FFT, Lagrange Interpolation]
+tags: [factorial, FFT, Lagrange-interpolation]
 ---
 
 # 서론

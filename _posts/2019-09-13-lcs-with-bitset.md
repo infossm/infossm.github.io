@@ -3,7 +3,7 @@ layout: post
 title:  "비트 연산을 활용하여 두 문자열의 LCS 빠르게 구하기"
 date:   2019-09-12 16:00:00
 author: 박수찬
-tags: [lcs,bitset]
+tags: [LCS, bitset]
 ---
 
 <style type="text/css">

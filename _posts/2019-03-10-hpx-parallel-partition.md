@@ -8,6 +8,8 @@ tags: [C++, partition, parallel, HPC, HPX, C++17]
 
 안녕하세요. 오늘은 제가 예전에 [HPX](https://github.com/STEllAR-GROUP/hpx) 라는 오픈소스에 구현했던 parallel partition 알고리즘에 대해 간단히 소개하고 설명하는 시간을 가져보도록 하겠습니다.
 
+**[>> 이 글을 좀 더 좋은 가독성으로 읽기 <<](https://taeguk2.blogspot.com/2019/03/hpx-parallel-partition.html)**
+
 ## 출처
 먼저 이 포스팅에서 다루는 알고리즘/코드의 출처는 다음과 같습니다.
 * HPX : https://github.com/STEllAR-GROUP/hpx

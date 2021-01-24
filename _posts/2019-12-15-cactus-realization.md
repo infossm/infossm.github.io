@@ -3,7 +3,7 @@ layout: post
 title:  "Cactus graph realization of degree sequence"
 date:   2019-12-15 05:30:00
 author: ainta
-tags: [algorithm, graph theory, cactus, degree sequence, icpc]
+tags: [algorithm, graph-theory, cactus, degree-sequence, ICPC]
 ---
 
 

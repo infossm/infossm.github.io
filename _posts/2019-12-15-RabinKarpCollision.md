@@ -3,7 +3,7 @@ layout: post
 title:  "Rabin-Karp 해싱의 충돌쌍 찾기"
 date:   2019-12-15 23:50:00
 author: blisstoner
-tags: [Algorithm, Cryptography]
+tags: [algorithm, cryptography]
 ---
 
 안녕하세요, 이번 글에서는 Rabin-Karp 해싱의 충돌쌍을 찾는 다양한 방법에 대해 알아보겠습니다.

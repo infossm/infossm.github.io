@@ -3,7 +3,7 @@ layout: post
 title:  "Impartial Games"
 date:   2019-02-09 21:00:00
 author: klight1994
-tags: [algorithm ,game theory]
+tags: [algorithm, game-theory]
 
 ---
 

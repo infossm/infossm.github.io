@@ -3,7 +3,7 @@ layout: post
 title:  "Kotlin Basic"
 date:   2019-01-10 21:00:00
 author: klight1994
-tags: [android, kotlin]
+tags: [android, Kotlin]
 
 ---
 

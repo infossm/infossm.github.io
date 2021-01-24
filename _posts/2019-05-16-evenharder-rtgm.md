@@ -4,7 +4,7 @@ title:  그룹 road to grandmaster 둘러보기
 date:   2019-05-16 18:00
 author: evenharder
 image:  /assets/images/evenharder-post/rtgm-1905/chris-lawton-6931-unsplash.jpg
-tags:   problem-solving codeforces
+tags:   problem-solving Codeforces
 ---
 
 어느 ELO 레이팅이 안 그러겠냐만은, grandmaster라는 칭호는 세계적인 실력자에게 주어지는 칭호입니다. 가장 유명하고 세계적인 Competitive Programming(CP) 플랫폼인 [Codeforces](https://codeforces.com/)에서는 레이팅 2400 이상일 경우 grandmaster로 인정받으며, 닉네임이 붉은 색으로 변합니다. 한국 PS계에서는 이들을 <span style="color:rgb(255,0,0);">'<b>레드</b>'</span>라고 부르기도 합니다.

@@ -3,7 +3,7 @@ layout: post
 title:  "Anomalous Elliptic Curves"
 date:   2020-05-19 23:55
 author: RBTree
-tags: [cryptography, elliptic curve, ecc]
+tags: [cryptography, elliptic-curve, ECC]
 ---
 
 # 서론

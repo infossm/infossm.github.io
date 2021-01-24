@@ -3,10 +3,12 @@ layout: post
 title: "Akka typed 소개"
 date: 2019-09-18 23:55
 author: taeguk
-tags: [akka, akka typed, scala, actor, strongly typing, functional programming]
+tags: [Akka, Akka-Typed, Scala, Actor, strongly-typing, functional-programming]
 ---
 안녕하세요~ 오늘은 akka 의 새로운 인터페이스 (API) 인 akka typed 에 대해서 소개시켜드리는 시간을 가져볼까 합니다!<br/>
 Akka 및 액터 모델에 대한 기본적인 내용은 이미 알고 있다고 가정하며 scala 를 기반으로 설명하겠습니다.
+
+**[>> 이 글을 좀 더 좋은 가독성으로 읽기 <<](https://taeguk2.blogspot.com/2019/09/akka-typed_18.html)**
 
 ## 기존 akka 에서의 문제점
 akka 는 훌륭한 프레임워크이지만 인터페이스 (API) 상으로 아쉬운 부분들이 있습니다.
@@ -88,5 +90,3 @@ akka typed 의 특징들을 정리해봤는데요. akka typed 으로 한번 리�
 그러나 akka typed 가 몇 년이 넘는 오랜기간동안 개발되며 안정화가 된 만큼 API 가 수정되더라도 큰 변화는 없을 것이라고 생각합니다.<br/>
 기존 untyped API 와 typed API 를 모두 써봤고 untyped 에서 typed 로 리펙토링도 해봤었는데요. 확실히 akka typed 이 압도적으로 우월하다고 느꼈습니다. Akka typed 를 처음 들었을때는 단순히 강타입 이라고만 생각했지만 실제로 공부하고 사용해보니 API 가 상당히 함수형 스타일로 설계되있고 이를 통해 얻을 수 있는 이점들이 많았습니다. 한번 맛보고나니까 앞으로 기존 untyped API 로는 개발 못할 거 같네요 ㅋㅋㅋ<br/>
 아무튼 혹시 akka 를 사용하시는 다른 분께서 이 글을 보시면 akka typed 를 도입하는 걸 한번 고려해보시길 추천드립니다~
-
-**[이 포스팅을 taeguk 블로그에서 보기](https://taeguk2.blogspot.com/2019/09/akka-typed_18.html)**

@@ -3,10 +3,12 @@ layout: post
 title: "DDD Aggregate Pattern"
 date: 2020-02-19 23:59
 author: taeguk
-tags: [DDD, Aggregate, Actor, Event Sourcing, CQRS, Microservice, Design Pattern, Software Design]
+tags: [DDD, Aggregate, Actor, event-sourcing, CQRS, microservice, design-pattern, software-design]
 ---
 
 오늘은 제가 가장 좋아하는 소프트웨어 설계 기법인 **Aggregate Pattern** 에 대해서 소개해드리겠습니다!
+
+**[>> 이 글을 좀 더 좋은 가독성으로 읽기 <<](https://taeguk2.blogspot.com/2020/02/ddd-aggregate-pattern.html)**
 
 ## Aggregate Pattern 이란?
 
@@ -181,5 +183,3 @@ Aggregate Pattern 은 정말 최근 저의 최애 원픽 설계 기법인데요.
 * [Aggregates & Entities in Domain-Driven Design](http://thepaulrayner.com/blog/aggregates-and-entities-in-domain-driven-design/)
 * [Effective Aggregate Design](https://dddcommunity.org/library/vernon_2011/)
 * [Saga Pattern](https://microservices.io/patterns/data/saga.html)
-
-**[이 포스팅을 taeguk 블로그에서 보기](https://taeguk2.blogspot.com/2020/02/ddd-aggregate-pattern.html)**

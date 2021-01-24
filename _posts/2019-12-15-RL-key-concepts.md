@@ -3,7 +3,7 @@ layout: post
 title:  "강화학습 핵심 개념 정리 (1)"
 date:   2019-12-15 23:30
 author: wwiiiii
-tags: [deep learning, reinforcement learning, 딥러닝, 강화학습]
+tags: [deep-learning, reinforcement-learning]
 ---
 
 # 강화학습 핵심 개념 정리 (1)
