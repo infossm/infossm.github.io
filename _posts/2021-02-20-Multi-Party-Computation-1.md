@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Multi-Party Computation"
+title:  "Multi-Party Computation 1"
 date:   2021-02-20 02:00:00
 author: blisstoner
 tags: [Cryptography]
