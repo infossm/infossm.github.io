@@ -29,7 +29,7 @@ tags: [optimization, algorithm, matroid]
 
 1. $\varnothing \in \mathcal{I}$
 2. $A \subseteq B, B \in \mathcal{I} \implies A \in \mathcal{I}$ (hereditary property)
-3. $A, B \in \mathcal{I}, |A| < |B|  \implies \exists x \in B-A, A \cup \{x\} \in \mathcal{I}$ (exchange property)
+3. $A, B \in \mathcal{I}, \lvert A\rvert < \lvert B\rvert  \implies \exists x \in B-A, A \cup \{x\} \in \mathcal{I}$ (exchange property)
 
 **정의 4.** 매트로이드(혹은 independence system) $(\mathcal{N}, \mathcal{I})$ 와 $X \subseteq \mathcal{N}$ 에 대해 $X$ 의 base는 maximally independent subset으로 정의됩니다.
 
@@ -50,7 +50,7 @@ tags: [optimization, algorithm, matroid]
 먼저, 이 문제는 SNS를 모니터링 하는데 있어 응용될 수 있습니다. 각 사용자를 정점으로 하고, 간선 $(u, v)$ 의 가중치 $w(u, v)$ 를 $(u, v)$ 를 통해 전달될 수 있는 최대 정보량으로 하는 그래프로 SNS를 모델링 합시다. 사용자의 성향에 따른 정점집합 $V$ 의 분할 $V_1, V_2, \cdots, V_h$ 를 생각할 수 있습니다. 이 때, SNS를 모니터링 하는데 사용할 정점 집합 $S \subset V$ 를
 
 - 최대한 많은 양의 정보를 모니터링 할 수 있게 하되, (maximize $f(S) = \sum_{(u, v) \in E, u \in S, v \not\in S} w(u, v)$)
-- 특정 집단에 편향되지 않은/최대한 다양한 정보를 얻고자 하는 상황 (constraints: $|S \cap V_i| \le k$ for each $i$ and some constant $k$)
+- 특정 집단에 편향되지 않은/최대한 다양한 정보를 얻고자 하는 상황 (constraints: $\lvert S \cap V_i\rvert \le k$ for each $i$ and some constant $k$)
 
 을 생각해볼 수 있고, 이 상황이 matroid 상에서의 submodular maximization의 한 예시입니다.
 
