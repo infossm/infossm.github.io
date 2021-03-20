@@ -1,11 +1,9 @@
 ---
-layout:	post
-title:	"Queue Undo Trick"
-date:	2021-03-21
-author:	edenooo
-tags:
-	- algorithm
-	- data-structure
+layout: post
+title:  "Queue Undo Trick"
+date:   2021-03-21
+author: edenooo
+tags: [algorithm, data-structure]
 ---
 
 ## 개요
