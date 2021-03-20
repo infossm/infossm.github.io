@@ -1,12 +1,9 @@
 ---
-​---
 layout: post
 title:  "매트로이드에서의 Submodular Maximization에 대한 Deterministic algorithms"
 date:   2021-03-10 09:00:00
 author: leejseo
 tags: [optimization, algorithm, matroid]
-​---
-
 ---
 
 이 글에서는 매트로이드 상에서의 submodular maximization과 관련한 여러 연구의 결과들을 소개합니다. 보다 구체적으로는, 매트로이드와 submodular function 등 여러 개념의 정의를 소개하고, 매트로이드 상에서 submodular function을 최적화 하는 것이 실생활의 어떤 문제에 관련이 있는지 먼저 살펴봅니다. 그 후, 이 문제와 관련한 여러 연구 결과들을 살펴봅니다. 특히, 그 중에서도 (이 글에서는) 결정론적인 알고리즘들을 다룹니다.
