@@ -62,7 +62,7 @@ if (Find(a) == Find(b)) { ... }
 ```
 여기에서는 위 코드처럼 두 정점이 같은 집합에 속하는지만을 물어볼 것이기 때문에 Union 연산 간에 교환법칙이 성립합니다.
 
-![](/assets/images/edenooo/queue-like-undoing/dsuqueue.png)
+![](assets/images/edenooo/queue-like-undoing/dsuqueue.png)
 
 이제 dsu를 이용하는 새로운 자료구조 dsuqueue를 만들 것입니다. dsuqueue는 업데이트 연산들을 A타입과 B타입으로 분류하고 하나의 스택에 담아서 관리합니다. A타입들은 들어온 지 오래 지나서 바깥으로 빠져나가려는 연산들이고, B타입들은 들어간 지 얼마 되지 않아서 안쪽으로 들어가려는 연산들이라고 생각할 수 있습니다.
 
@@ -71,22 +71,22 @@ dsuqueue의 아이디어는 스택 순서를 Union 연산들이 들어온 순서
 이제 새로운 Union 연산과 Queue-Undo 연산의 동작을 살펴보겠습니다.
 
 ### Union
-![](/assets/images/edenooo/queue-like-undoing/union.png)
+![](assets/images/edenooo/queue-like-undoing/union.png)
 
 Union 연산의 동작은 간단합니다. 새로운 Union 연산이 들어오면, 이 연산을 B타입으로 분류해서 스택에 넣고 실제 dsu에서도 Union을 진행합니다.
 
 ### Queue-Undo
 Queue-Undo 연산이 호출되면 시간복잡도를 맞추기 위해 3가지 케이스로 분류합니다.
 
-![](/assets/images/edenooo/queue-like-undoing/undo_case1.png)
+![](assets/images/edenooo/queue-like-undoing/undo_case1.png)
 
 1. 스택의 입구에 A타입 연산이 있을 경우, 이 연산이 가장 오래된 연산이므로 바로 빼내면 됩니다.
 
-![](/assets/images/edenooo/queue-like-undoing/undo_case2.png)
+![](assets/images/edenooo/queue-like-undoing/undo_case2.png)
 
 2. 스택에 A타입 연산이 하나도 없고 B타입 연산만 남았을 경우, 모든 연산을 빼내고 A타입으로 바꾸어서 빼낸 순서대로 다시 삽입합니다. 이제 스택의 입구에 있는 A타입 연산을 빼내면 됩니다.
 
-![](/assets/images/edenooo/queue-like-undoing/undo_case3.png)
+![](assets/images/edenooo/queue-like-undoing/undo_case3.png)
 
 3. 스택에 A타입 연산은 있지만 입구에는 B타입 연산이 있는 경우, 스택의 입구에서 연산을 하나씩 빼내는데, 빼낸 A타입 연산의 개수와 B타입 연산의 개수가 같아지거나 A타입 연산을 모두 빼낼 때까지 계속합니다. 이후 B타입 연산들을 빼낸 역순으로 삽입한 뒤, A타입 연산들을 빼낸 역순으로 삽입합니다. 이제 스택의 입구에 있는 A타입 연산을 빼내면 됩니다.
 
@@ -210,7 +210,7 @@ $L_{2}[r]$을 $[l,r]$구간의 정점들만 남겼을 때 사이클이 없는 �
 
 $1 \leq r \leq N-1$에서 $L_{1}[r] \leq L_{1}[r+1]$과 $L_{2}[r] \leq L_{2}[r+1]$이 성립하므로 두 배열 모두 투 포인터로 채울 수 있습니다. 특히 $L_{1}$은 차수 배열만 관리하면 되므로 간단합니다. 그러나 $L_{2}$는 간선의 추가/제거가 아니라 정점의 추가/제거를 요구하기 때문에 dsuqueue를 바로 가져다 쓰기 어렵습니다. 이에 대한 해결책으로, 정점을 추가할 때마다 이 정점을 한쪽 끝으로 하는 모든 간선에 대해 Union을 호출하면서, 같은 간선에 대한 Union이 두 번째로 호출될 때에만 실제 병합을 수행하도록 dsu를 수정하는 방법이 있습니다.
 
-이제 3번 조건만이 남았습니다. $e_{r}[l]$을 $[l,r]$ 구간에 완전히 포함되는 간선의 개수라 하면, 각 $r$마다 $max(L_{1}[r],L_{2}[r]) \leq l \leq r$과 $e_{r}[l]+l=r$을 만족하는 $l$의 개수를 구해야 합니다.
+이제 3번 조건만이 남았습니다. $e_{r}[l]$을 $[l,r]$ 구간에 완전히 포함되는 간선의 개수라 하면, 각 $r$마다 $\max(L_{1}[r],L_{2}[r]) \leq l \leq r$과 $e_{r}[l]+l=r$을 만족하는 $l$의 개수를 구해야 합니다.
 
 여기서 두 가지 관찰이 필요합니다.
 
