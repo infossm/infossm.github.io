@@ -189,7 +189,7 @@ using namespace std;
 
 int main(){
 	cin.tie(0)->sync_with_stdio(0);
-	cin.exceptions(ios::badbit | ios::failbit);
+	cin.exceptions(ios::badbit \vert  ios::failbit);
 	int qn;
 	cin >> qn;
 	int m = 1;
@@ -297,11 +297,11 @@ $\blacksquare$
 
 > ***Theorem***
 >
-> $\mathcal{S}|_{CSB}:CSB\rightarrow\mathbb{Z}_{\ge0}$은 one-to-one correspondence이다.
+> $\mathcal{S}\vert _{CSB}:CSB\rightarrow\mathbb{Z}_{\ge0}$은 one-to-one correspondence이다.
 
 ***Proof***
 
-$a\mapsto\mathcal{S}(a):CSB_i\rightarrow\{n\in\mathbb{Z}:0\le n\le2^{i+1}-2\}$가 one-to-one correspondence임을 보이면 충분합니다. 그런데 $|CSB_i|=1+\sum_{j=1}^i2^j=2^{i+1}-1=|\{n\in\mathbb{Z}:0\le n\le2^{i+1}-2\}|<\infty$이므로 위 함수가 surjective함을 보이면 충분합니다. 이는 귀납법으로 쉽게 보일 수 있습니다.
+$a\mapsto\mathcal{S}(a):CSB_i\rightarrow\{n\in\mathbb{Z}:0\le n\le2^{i+1}-2\}$가 one-to-one correspondence임을 보이면 충분합니다. 그런데 $\vert CSB_i\vert =1+\sum_{j=1}^i2^j=2^{i+1}-1=\vert \{n\in\mathbb{Z}:0\le n\le2^{i+1}-2\}\vert <\infty$이므로 위 함수가 surjective함을 보이면 충분합니다. 이는 귀납법으로 쉽게 보일 수 있습니다.
 
 $i=0$일 땐 codomain의 크기가 1이므로 surjective합니다.
 
@@ -318,7 +318,7 @@ $\blacksquare$
 
 
 
-편의상 $\mathcal{S}|_{CSB}$를 $\mathcal{S}$라 쓰도록 하겠습니다. $\mathcal{S}$가 one-to-one correspondence이니 이제 inverse mapping $\mathcal{S}^{-1}:\mathbb{Z}_{\ge0}\rightarrow CSB$에 대해 얘기할 수 있습니다. 다음 표에는 각 음이 아닌 정수를 나타내는 canonical skew-binary number가 나와있습니다.
+편의상 $\mathcal{S}\vert_{CSB}$를 $\mathcal{S}$라 쓰도록 하겠습니다. $\mathcal{S}$가 one-to-one correspondence이니 이제 inverse mapping $\mathcal{S}^{-1}:\mathbb{Z}_{\ge0}\rightarrow CSB$에 대해 얘기할 수 있습니다. 다음 표에는 각 음이 아닌 정수를 나타내는 canonical skew-binary number가 나와있습니다.
 
 
 
@@ -442,18 +442,18 @@ $\blacksquare$
 
 <h2 id="benchmark">Benchmark</h2>
 
-다음은 $|V|=10^4,10^5,10^6,10^7$인 line graph에서 $Q=10^4,10^5,10^6,10^7$회 uniformly random한 $u$와 $k$를 잡아 $\textrm{Find_The_K-th_Ancestor}(u,k)$를 호출 할 때 binary lifting과 skew-binary lift의 실행시간을 비교한 표입니다.
+다음은 $\vert V\vert =10^4,10^5,10^6,10^7$인 line graph에서 $Q=10^4,10^5,10^6,10^7$회 uniformly random한 $u$와 $k$를 잡아 $\textrm{Find_The_K-th_Ancestor}(u,k)$를 호출 할 때 binary lifting과 skew-binary lift의 실행시간을 비교한 표입니다.
 
 
 
 ***(Binary Lifting) / (Skew-binary Lifting) runtimes (in seconds). Bolded indicates faster.***
 
-| $Q\,\,\,\backslash \,\,\,|V|$ | $10^4$                  | $10^5$                  | $10^6$                  | $10^7$                   |
-| ----------------------------- | ----------------------- | ----------------------- | ----------------------- | ------------------------ |
-| $10^4$                        | 0.00118 / ***0.00105*** | 0.02021 / ***0.00327*** | 0.19027 / ***0.01536*** | 2.09941 / ***0.09259***  |
-| $10^5$                        | ***0.00374*** / 0.03054 | ***0.01322*** / 0.02884 | 0.26477 / ***0.08301*** | 2.35131 / ***0.46748***  |
-| $10^6$                        | ***0.03564*** / 0.09584 | ***0.04277*** / 0.27755 | ***0.13318*** / 0.71671 | 2.21926 / ***2.19224***  |
-| $10^7$                        | ***0.31048*** / 0.94788 | ***0.31032*** / 2.31801 | ***0.40462*** / 6.84995 | ***2.46005*** / 22.15703 |
+| $Q\,\,\,\backslash \,\,\,\vert V\vert $ | $10^4$                  | $10^5$                  | $10^6$                  | $10^7$                   |
+| --------------------------------------- | ----------------------- | ----------------------- | ----------------------- | ------------------------ |
+| $10^4$                                  | 0.00118 / ***0.00105*** | 0.02021 / ***0.00327*** | 0.19027 / ***0.01536*** | 2.09941 / ***0.09259***  |
+| $10^5$                                  | ***0.00374*** / 0.03054 | ***0.01322*** / 0.02884 | 0.26477 / ***0.08301*** | 2.35131 / ***0.46748***  |
+| $10^6$                                  | ***0.03564*** / 0.09584 | ***0.04277*** / 0.27755 | ***0.13318*** / 0.71671 | 2.21926 / ***2.19224***  |
+| $10^7$                                  | ***0.31048*** / 0.94788 | ***0.31032*** / 2.31801 | ***0.40462*** / 6.84995 | ***2.46005*** / 22.15703 |
 
 
 
@@ -472,7 +472,7 @@ mt19937_64 rngll(high_resolution_clock::now().time_since_epoch().count());
 
 int main(){
 	cin.tie(0)->sync_with_stdio(0);
-	cin.exceptions(ios::badbit | ios::failbit);
+	cin.exceptions(ios::badbit \vert ios::failbit);
 	cout << fixed << setprecision(5);
 	for(int Q: {1e4, 1e5, 1e6, 1e7}){
 		for(int V: {1e4, 1e5, 1e6, 1e7}){
