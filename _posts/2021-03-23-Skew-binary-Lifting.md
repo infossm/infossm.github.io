@@ -189,7 +189,7 @@ using namespace std;
 
 int main(){
 	cin.tie(0)->sync_with_stdio(0);
-	cin.exceptions(ios::badbit \vert  ios::failbit);
+	cin.exceptions(ios::badbit | ios::failbit);
 	int qn;
 	cin >> qn;
 	int m = 1;
@@ -472,7 +472,7 @@ mt19937_64 rngll(high_resolution_clock::now().time_since_epoch().count());
 
 int main(){
 	cin.tie(0)->sync_with_stdio(0);
-	cin.exceptions(ios::badbit \vert ios::failbit);
+	cin.exceptions(ios::badbit | ios::failbit);
 	cout << fixed << setprecision(5);
 	for(int Q: {1e4, 1e5, 1e6, 1e7}){
 		for(int V: {1e4, 1e5, 1e6, 1e7}){
