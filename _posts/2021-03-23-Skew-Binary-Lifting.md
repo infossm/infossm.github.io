@@ -1,12 +1,9 @@
 ---
-layout:	post
-title:	"Skew-binary Lifting"
-date:	2021-03-23
-author:	Aeren
-tags:
-	- algorithm
-	- data-structure
-	- tree
+layout: post
+title:  "LiChao Tree (with Dynamic Segment Tree)"
+author: kjp4155
+date: 2019-01-03 15:00
+tags: [data-structure]
 ---
 
 <h2 id="table of contents">Table Of Contents</h2>
