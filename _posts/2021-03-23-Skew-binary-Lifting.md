@@ -91,7 +91,7 @@ tags: [data-structure, algorithm, tree]
 
 $\text{parent}$와 $\textrm{depth}$는 일반적인 rooted tree에서의 정의와 같고, $\textrm{lift}$는 ancestor에 대한 "큰 점프"라고 생각하시면 됩니다.
 
-![lift](https://github.com/FlowerOfSorrow/infossm.github.io/blob/master/Images_Aeren/lift.PNG)
+![lift](https://github.com/FlowerOfSorrow/SSM/blob/main/lift.PNG)
 
 위의 Figure에서 각 node에 적힌 숫자는 $\textrm{depth}$를, 파란색 arc는 $\textrm{parent}$를, 그리고 붉은색 arc는 $\textrm{lift}$를 나타냅니다. (root에 대한 정보는 생략하였습니다.)
 
