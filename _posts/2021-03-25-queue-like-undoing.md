@@ -62,7 +62,7 @@ if (Find(a) == Find(b)) { ... }
 ```
 여기에서는 위 코드처럼 두 정점이 같은 집합에 속하는지만을 물어볼 것이기 때문에 Union 연산 간에 교환법칙이 성립합니다.
 
-![](assets/images/edenooo/queue-like-undoing/dsuqueue.png)
+![](/assets/images/edenooo/queue-like-undoing/dsuqueue.png)
 
 이제 dsu를 이용하는 새로운 자료구조 dsuqueue를 만들 것입니다. dsuqueue는 업데이트 연산들을 A타입과 B타입으로 분류하고 하나의 스택에 담아서 관리합니다. A타입들은 들어온 지 오래 지나서 바깥으로 빠져나가려는 연산들이고, B타입들은 들어간 지 얼마 되지 않아서 안쪽으로 들어가려는 연산들이라고 생각할 수 있습니다.
 
@@ -71,22 +71,22 @@ dsuqueue의 아이디어는 스택 순서를 Union 연산들이 들어온 순서
 이제 새로운 Union 연산과 Queue-Undo 연산의 동작을 살펴보겠습니다.
 
 ### Union
-![](assets/images/edenooo/queue-like-undoing/union.png)
+![](/assets/images/edenooo/queue-like-undoing/union.png)
 
 Union 연산의 동작은 간단합니다. 새로운 Union 연산이 들어오면, 이 연산을 B타입으로 분류해서 스택에 넣고 실제 dsu에서도 Union을 진행합니다.
 
 ### Queue-Undo
 Queue-Undo 연산이 호출되면 시간복잡도를 맞추기 위해 3가지 케이스로 분류합니다.
 
-![](assets/images/edenooo/queue-like-undoing/undo_case1.png)
+![](/assets/images/edenooo/queue-like-undoing/undo_case1.png)
 
 1. 스택의 입구에 A타입 연산이 있을 경우, 이 연산이 가장 오래된 연산이므로 바로 빼내면 됩니다.
 
-![](assets/images/edenooo/queue-like-undoing/undo_case2.png)
+![](/assets/images/edenooo/queue-like-undoing/undo_case2.png)
 
 2. 스택에 A타입 연산이 하나도 없고 B타입 연산만 남았을 경우, 모든 연산을 빼내고 A타입으로 바꾸어서 빼낸 순서대로 다시 삽입합니다. 이제 스택의 입구에 있는 A타입 연산을 빼내면 됩니다.
 
-![](assets/images/edenooo/queue-like-undoing/undo_case3.png)
+![](/assets/images/edenooo/queue-like-undoing/undo_case3.png)
 
 3. 스택에 A타입 연산은 있지만 입구에는 B타입 연산이 있는 경우, 스택의 입구에서 연산을 하나씩 빼내는데, 빼낸 A타입 연산의 개수와 B타입 연산의 개수가 같아지거나 A타입 연산을 모두 빼낼 때까지 계속합니다. 이후 B타입 연산들을 빼낸 역순으로 삽입한 뒤, A타입 연산들을 빼낸 역순으로 삽입합니다. 이제 스택의 입구에 있는 A타입 연산을 빼내면 됩니다.
 
