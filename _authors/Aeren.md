@@ -1,4 +1,4 @@
 ---
 name: Aeren
-image: /assets/images/Aeren_images/_Pfp/Untitled.png
+image: /assets/images/authors/Aeren.png
 ---
