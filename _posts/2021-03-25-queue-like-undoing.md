@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Queue Undo Trick"
-date:   2021-03-21
+date:   2021-03-25
 author: edenooo
 tags: [algorithm, data-structure]
 ---
