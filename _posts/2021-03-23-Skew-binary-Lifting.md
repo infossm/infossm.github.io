@@ -262,10 +262,10 @@ $[\textrm{depth}[\textrm{parent}[u]]-\textrm{depth}[\textrm{lift}[\textrm{parent
    따라서 $\textrm{depth}[\textrm{lift}[u]]=0=J(1)=J(\textrm{depth}[u])$이므로 본 theorem은 성립합니다.
 2. $a$의 $0$이 아닌 항이 정확히 한 개이며, 그 값이 $1$일 경우, $p(u)=[n-0=0-0]=\textrm{False}$이므로 $\textrm{lift}[u]=\textrm{parent}[u]$입니다.
    따라서 $\textrm{depth}[\textrm{lift}[u]]=n=J(n+1)=J(\textrm{depth}[u])$이므로 본 theorem은 성립합니다.
-3. $a$의 $0$이 아닌 항이 두 개 이상이며, 그 값이 모두 $1$일 경우, $i$를 $LSD(a)$, $j$를 $i$보다 크면서 $a_j=1$이 성립하는 가장 작은 수라고 정의하면, $p(u)$$=[n-(n-(2^i-1))$$=(n-(2^i-1))-(n-(2^i-1)-(2^j-1))]$$=[2^i-1=2^j-1]$$=\textrm{False}$이므로 $\textrm{lift}[u]=\textrm{parent}[u]$입니다.
-   따라서 $\textrm{depth}[\textrm{lift}[u]]$$=n$$=J(n+1)$$=J(\textrm{depth}[u])$이므로 본 theorem은 성립합니다.
-4. 마지막으로, $a\ne\bar{0}$이며 $a_{LSD(a)}=2$인 경우, $i=LSD(a)$라 하면, $p(u)$$=[n-(n-(2^i-1))$$=(n-(2^i-1))-(n-2(2^i-1))]$$=[2^i-1=2^i-1]$$=\textrm{True}$이므로 $\textrm{lift}[u]=\textrm{lift}[\textrm{lift}[\textrm{parent}[u]]]$입니다.
-   따라서 $\textrm{depth}[\textrm{lift}[u]]$$=n-2(2^i-1)=J(n-2(2^i-1)+(2^{i+1}-1))$$=J(\textrm{depth}[u])$이므로 본 theorem은 성립합니다.
+3. $a$의 $0$이 아닌 항이 두 개 이상이며, 그 값이 모두 $1$일 경우, $i$를 $LSD(a)$, $j$를 $i$보다 크면서 $a_j=1$이 성립하는 가장 작은 수라고 정의하면, $p(u)$ $=[n-(n-(2^i-1))$ $=(n-(2^i-1))-(n-(2^i-1)-(2^j-1))]$ $=[2^i-1=2^j-1]$ $=\textrm{False}$이므로 $\textrm{lift}[u]=\textrm{parent}[u]$입니다.
+   따라서 $\textrm{depth}[\textrm{lift}[u]]$ $=n$ $=J(n+1)$ $=J(\textrm{depth}[u])$이므로 본 theorem은 성립합니다.
+4. 마지막으로, $a\ne\bar{0}$이며 $a_{LSD(a)}=2$인 경우, $i=LSD(a)$라 하면, $p(u)$ $=[n-(n-(2^i-1))$ $=(n-(2^i-1))-(n-2(2^i-1))]$ $=[2^i-1=2^i-1]$ $=\textrm{True}$이므로 $\textrm{lift}[u]=\textrm{lift}[\textrm{lift}[\textrm{parent}[u]]]$입니다.
+   따라서 $\textrm{depth}[\textrm{lift}[u]]$ $=n-2(2^i-1)=J(n-2(2^i-1)+(2^{i+1}-1))$ $=J(\textrm{depth}[u])$이므로 본 theorem은 성립합니다.
 
 따라서, 모든 $u$에 대해서 본 theorem이 성립합니다.
 
@@ -299,7 +299,7 @@ While문이 $t$번 반복 된 후의 $u$를 $u_t$라 정의하고, $n_t=\textrm{
    $\mathcal{S}^{-1}(n_{A_{U-1}+(A_U-B_U)-1})=(0,...,0,b_U+1,a_{U+1},...)=(0,...,0,b_U+1,b_{U+1},...)$이며
    $\mathcal{S}^{-1}(n_{A_{U-1}+(A_U-B_U)})=(0,...,0,2,b_U,b_{U+1},...)$가 얻어집니다.
 3. 다시 귀납법으로, 모든 $U\ge i>L$에 대해서, $\mathcal{S}^{-1}(n_{A_{U-1}+(A_U-B_U)+B_i})=(0,...,0,2,b_i,b_{U+1},...)$임을 보일 수 있습니다.
-4. 마지막으로, $\mathcal{S}^{-1}(n_{A_{U-1}+(A_U-B_U)+B_{L+1}})$$=(0,...,0,2,b_{L+1},b_{U+1},...)$로 부터 $\mathcal{S}^{-1}(n_{A_{U-1}+(A_U-B_U)+B_L})$$=(0,...,0,b_L,b_{L+1},b_{U+1},...)$$=(b_1,...,b_{L-1},b_L,b_{L+1},b_{U+1},...)$가 얻어지고 While문이 종료됩니다.
+4. 마지막으로, $\mathcal{S}^{-1}(n_{A_{U-1}+(A_U-B_U)+B_{L+1}})$ $=(0,...,0,2,b_{L+1},b_{U+1},...)$로 부터 $\mathcal{S}^{-1}(n_{A_{U-1}+(A_U-B_U)+B_L})$ $=(0,...,0,b_L,b_{L+1},b_{U+1},...)$ $=(b_1,...,b_{L-1},b_L,b_{L+1},b_{U+1},...)$가 얻어지고 While문이 종료됩니다.
 
 따라서, While문은 정확히 $\sum_{i=1}^{U-1}a_i+(a_U-b_U)+\sum_{i=L}^{U-1}(2-b_i)$번 시행됩니다.
 
