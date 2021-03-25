@@ -1,19 +1,10 @@
-
-
 ---
-
 layout: post 
-
 title: "Ray Casting Algorithm의 이분 탐색을 이용한 응용" 
-
 author: junis3
-
 date: 2021-03-21
-
 tags: [geometry, binary search]
-
 ---
-
 
 
 ## Ray Casting Algorithm
