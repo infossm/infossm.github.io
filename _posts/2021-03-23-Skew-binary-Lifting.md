@@ -4,8 +4,6 @@ title: "Skew-binary Lifting"
 author: Aeren
 date: 2021-03-23
 tags: [data-structure, algorithm, tree]
-header-includes:
-  \usepackage{algorithm2e}
 
 ---
 
