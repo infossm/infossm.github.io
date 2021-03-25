@@ -240,7 +240,7 @@ struct dsu {
         return Find(p[n]);
     }
     void Union(int a, int b) {
-        auto it = m.insert({{min(a,b),max(a,b)},0}).first;
+        auto it = m.insert({make_pair(min(a,b),max(a,b)),0}).first;
         int r = 0;
         if (++it->second == 2) { // 두 번째 Union일 때에만 실제로 병합
             a = Find(a); b = Find(b);
