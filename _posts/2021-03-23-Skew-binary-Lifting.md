@@ -168,9 +168,9 @@ $\textrm{lift}$값의 정의만 알고있다면 구현 자체는 매우 자명�
 
 **Skew-binary number**란 $0,1,2$로 이루어진 sequence중 0이 아닌 항이 유한개 있는 sequence를 뜻합니다. 모든 항이 0인 skew-binary number을 $\bar{0}$라 표기하겠습니다. $\bar{0}$이 아닌 skew-binary number $a$의 **least significant digit**을 $a_i\ne0$이 성립하는 가장 작은 $i$로 정의하고 $LSD(a)$라 표기하고, **most significant digit**을 $a_i\ne0$이 성립하는 가장 큰 $i$로 정의하고 $MSD(a)$라 표기하겠습니다.
 
-**Skew-binary number system**은 skew-binary number $a_n(n=1, 2, ...)$을 음이 아닌 정수 $\sum_{n=1}^\infty a_n(2^n-1)$로 보내는 mapping $\mathcal{S}:CSB\rightarrow\mathbb{Z}_{\ge0}$입니다. 이 number system의 문제점은 $7$$=\mathcal{S}(0,0,1,...)$$=\mathcal{S}(1,2,...)$처럼 하나의 음이 아닌 정수를 표현하는 skew-binary number가 여러개인 경우가 있다는 것입니다. 이 문제를 해결하는 것이 canonical skew-binary number입니다.
+**Skew-binary number system**은 skew-binary number $a_n(n=1, 2, ...)$을 음이 아닌 정수 $\sum_{n=1}^\infty a_n(2^n-1)$로 보내는 mapping $\mathcal{S}:CSB\rightarrow\mathbb{Z}_{\ge0}$입니다. 이 number system의 문제점은 $7$ $=\mathcal{S}(0,0,1,...)$ $=\mathcal{S}(1,2,...)$처럼 하나의 음이 아닌 정수를 표현하는 skew-binary number가 여러개인 경우가 있다는 것입니다. 이 문제를 해결하는 것이 canonical skew-binary number입니다.
 
-**Canonical skew-binary number**란 모든 항이 0이거나 $LSD(a)$를 제외한 모든 digit이 0 또는 1인 skew-binary number를 의미합니다. canonical skew-binary number의 집합을 $CSB$라고 표기하겠습니다. 또한 $CSB_i=\{a\in CSB:(a=\bar{0})\,\vee\,((a\ne\bar{0})\wedge(MSD(a)\le i))\}$라 정의하겠습니다.
+**Canonical skew-binary number**란 모든 항이 0이거나 $LSD(a)$를 제외한 모든 digit이 0 또는 1인 skew-binary number를 의미합니다. canonical skew-binary number의 집합을 $CSB$라고 표기하겠습니다. 또한 $CSB_i= \{ a\in CSB:(a=\bar{0})\,\vee\,((a\ne\bar{0})\wedge(MSD(a)\le i)) \} $라 정의하겠습니다.
 
 
 
