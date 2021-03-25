@@ -35,12 +35,12 @@ tags: [data-structure, algorithm, tree]
 
 ***(Time) / (Additional Space Required)***
 
-| Operation                  | Binary Lifting                                               | Skew-binary Lifting              |
-| -------------------------- | ------------------------------------------------------------ | -------------------------------- |
-| Add A Leaf                 | $O(\log(\textrm{depth}))$ / $O(\textrm{log}(\textrm{depth}))$ | $O(1)$ / $O(1)$                  |
-| Find The K-th Ancestor     | $O(\log(\textrm{depth}))$ / None                             | $O(\log(\textrm{depth}))$ / None |
-| Find The LCA               | $O(\log(\textrm{depth}))$ / None                             | $O(\log(\textrm{depth}))$ / None |
-| Binary Search On Ancestors | $O(\log(\textrm{depth}))$ / None                             | $O(\log(\textrm{depth}))$ / None |
+| Operation                  | Binary Lifting                                              | Skew-binary Lifting                       |
+| -------------------------- | ----------------------------------------------------------- | ----------------------------------------- |
+| Add A Leaf                 | $O(\log(\textrm{depth})) / O(\textrm{log}(\textrm{depth}))$ | $O(1) / O(1)$                             |
+| Find The K-th Ancestor     | $O(\log(\textrm{depth})) / \textrm{None}$                   | $O(\log(\textrm{depth})) / \textrm{None}$ |
+| Find The LCA               | $O(\log(\textrm{depth})) / \textrm{None}$                   | $O(\log(\textrm{depth})) / \textrm{None}$ |
+| Binary Search On Ancestors | $O(\log(\textrm{depth})) / \textrm{None}$                   | $O(\log(\textrm{depth})) / \textrm{None}$ |
 
 
 
@@ -92,7 +92,7 @@ tags: [data-structure, algorithm, tree]
 
 $\text{parent}$와 $\textrm{depth}$는 일반적인 rooted tree에서의 정의와 같고, $\textrm{lift}$는 ancestor에 대한 "큰 점프"라고 생각하시면 됩니다.
 
-![lift](/assets/images/Aeren_images/Skew-binary-Lifting/figure.PNG)
+![](/assets/images/Aeren_images/Skew-binary-Lifting/figure.PNG)
 
 위의 figure에서 각 node에 적힌 숫자는 $\textrm{depth}$를, 파란색 arc는 $\textrm{parent}$를, 그리고 붉은색 arc는 $\textrm{lift}$를 나타냅니다. (root에 대한 정보는 생략하였습니다.)
 
@@ -272,7 +272,7 @@ $\textrm{lift}$값의 정의만 알고있다면 구현 자체는 매우 자명�
 
 **Skew-binary number**란 $0,1,2$로 이루어진 sequence중 0이 아닌 항이 유한개 있는 sequence를 뜻합니다. 모든 항이 0인 skew-binary number을 $\bar{0}$라 표기하겠습니다. $\bar{0}$이 아닌 skew-binary number $a$의 **least significant digit**을 $a_i\ne0$이 성립하는 가장 작은 $i$로 정의하고 $LSD(a)$라 표기하고, **most significant digit**을 $a_i\ne0$이 성립하는 가장 큰 $i$로 정의하고 $MSD(a)$라 표기하겠습니다.
 
-**Skew-binary number system**은 skew-binary number $a_n(n=1, 2, ...)$을 음이 아닌 정수 $\sum_{n=1}^\infty a_n(2^n-1)$로 보내는 mapping $\mathcal{S}:CSB\rightarrow\mathbb{Z}_{\ge0}$입니다. 이 number system의 문제점은 $7=\mathcal{S}(0,0,1,...)=\mathcal{S}(1,2,...)$처럼 하나의 음이 아닌 정수를 표현하는 skew-binary number가 여러개인 경우가 있다는 것입니다. 이 문제를 해결하는 것이 canonical skew-binary number입니다.
+**Skew-binary number system**은 skew-binary number $a_n(n=1, 2, ...)$을 음이 아닌 정수 $\sum_{n=1}^\infty a_n(2^n-1)$로 보내는 mapping $\mathcal{S}:CSB\rightarrow\mathbb{Z}_{\ge0}$입니다. 이 number system의 문제점은 $7$$=\mathcal{S}(0,0,1,...)$$=\mathcal{S}(1,2,...)$처럼 하나의 음이 아닌 정수를 표현하는 skew-binary number가 여러개인 경우가 있다는 것입니다. 이 문제를 해결하는 것이 canonical skew-binary number입니다.
 
 **Canonical skew-binary number**란 모든 항이 0이거나 $LSD(a)$를 제외한 모든 digit이 0 또는 1인 skew-binary number를 의미합니다. canonical skew-binary number의 집합을 $CSB$라고 표기하겠습니다. 또한 $CSB_i=\{a\in CSB:(a=\bar{0})\,\vee\,((a\ne\bar{0})\wedge(MSD(a)\le i))\}$라 정의하겠습니다.
 
@@ -298,7 +298,7 @@ $\blacksquare$
 
 > ***Theorem***
 >
-> $\mathcal{S}\vert _{CSB}:CSB\rightarrow\mathbb{Z}_{\ge0}$은 one-to-one correspondence이다.
+> $\mathcal{S}\vert _ {CSB}:CSB\rightarrow\mathbb{Z} _ {\ge0}$은 one-to-one correspondence이다.
 
 ***Proof***
 
@@ -323,17 +323,17 @@ $\blacksquare$
 
 
 
-| $n$                   | 0    | 1    | 2    | 3    | 4    | 5    | 6    | 7    | 8    | 9    | 10   | 11   | 12   | 13   |
-| --------------------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
-| $\mathcal{S}^{-1}(n)$ | 0    | 1    | 2    | 01   | 11   | 21   | 02   | 001  | 101  | 201  | 011  | 111  | 211  | 021  |
+| $\mathbb{Z}_{\ge0}$ | 0    | 1    | 2    | 3    | 4    | 5    | 6    | 7    | 8    | 9    | 10   | 11   | 12   | 13   |
+| ------------------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| $CSB$               | 0    | 1    | 2    | 01   | 11   | 21   | 02   | 001  | 101  | 201  | 011  | 111  | 211  | 021  |
 
 
 
-함수 $J:\mathbb{Z}_{\ge0}\rightarrow\mathbb{Z}_{\ge0}$를 다음과 같이 정의하겠습니다.
+함수 $J:\mathbb{Z}_ {\ge0}\rightarrow\mathbb{Z}_ {\ge0}$를 다음과 같이 정의하겠습니다.
 
 * $J(0)=0$
 * Let $n\in\mathbb{Z}_{>0}$ and $a=\mathcal{S}^{-1}(n)$.
-  $J(n)=\mathcal{S}(0,0,...,0,a_{LSD(a)}-1,a_{LSD(a)+1},a_{LSD(a)+2},a_{LSD(a)+3},...)$
+  $J(n)=\mathcal{S}(0,0,...,0,a_ {LSD(a)}-1,a_ {LSD(a)+1},a_ {LSD(a)+2},a_ {LSD(a)+3},...)$
 
 즉, $J$는 양의 정수 $n$에 대하여, $n$의 canonical skew-binary representation의 $LSD$위치에서 1을 빼준 canonical skew-binary representation이 나타내는 정수를 찾아주는 함수입니다.
 
@@ -356,7 +356,7 @@ $u$가 root라면 자명하게 성립합니다.
 이제 어떤 $n\in\mathbb{Z}_{\ge0}$에 대하여 $\textrm{depth}[u]\le n$인 모든 $u$에 대하여 본 theorem이 참이라고 가정하겠습니다.
 
 $\textrm{depth}[u]=n+1$인 $u$를 고정하고, $a=\mathcal{S}^{-1}(n)$이라 합시다.
-또한 binary predicate $p(u)$를
+또한 predicate $p(u)$를
 
 $[\textrm{depth}[\textrm{parent}[u]]-\textrm{depth}[\textrm{lift}[\textrm{parent}[u]]]=\textrm{depth}[\textrm{lift}[\textrm{parent}[u]]]-\textrm{depth}[\textrm{lift}[\textrm{lift}[\textrm{parent}[u]]]]]$
 
@@ -366,10 +366,10 @@ $[\textrm{depth}[\textrm{parent}[u]]-\textrm{depth}[\textrm{lift}[\textrm{parent
    따라서 $\textrm{depth}[\textrm{lift}[u]]=0=J(1)=J(\textrm{depth}[u])$이므로 본 theorem은 성립합니다.
 2. $a$의 $0$이 아닌 항이 정확히 한 개이며, 그 값이 $1$일 경우, $p(u)=[n-0=0-0]=\textrm{False}$이므로 $\textrm{lift}[u]=\textrm{parent}[u]$입니다.
    따라서 $\textrm{depth}[\textrm{lift}[u]]=n=J(n+1)=J(\textrm{depth}[u])$이므로 본 theorem은 성립합니다.
-3. $a$의 $0$이 아닌 항이 두 개 이상이며, 그 값이 모두 $1$일 경우, $i$를 $LSD(a)$, $j$를 $i$보다 크면서 $a_j=1$이 성립하는 가장 작은 수라고 정의하면, $p(u)=[n-(n-(2^i-1))=(n-(2^i-1))-(n-(2^i-1)-(2^j-1))]=[2^i-1=2^j-1]=\textrm{False}$이므로 $\textrm{lift}[u]=\textrm{parent}[u]$입니다.
-   따라서 $\textrm{depth}[\textrm{lift}[u]]=n=J(n+1)=J(\textrm{depth}[u])$이므로 본 theorem은 성립합니다.
-4. 마지막으로, $a\ne\bar{0}$이며 $a_{LSD(a)}=2$인 경우, $i=LSD(a)$라 하면, $p(u)=[n-(n-(2^i-1))=(n-(2^i-1))-(n-2(2^i-1))]=[2^i-1=2^i-1]=\textrm{True}$이므로 $\textrm{lift}[u]=\textrm{lift}[\textrm{lift}[\textrm{parent}[u]]]$입니다.
-   따라서 $\textrm{depth}[\textrm{lift}[u]]=n-2(2^i-1)=J(n-2(2^i-1)+(2^{i+1}-1))=J(\textrm{depth}[u])$이므로 본 theorem은 성립합니다.
+3. $a$의 $0$이 아닌 항이 두 개 이상이며, 그 값이 모두 $1$일 경우, $i$를 $LSD(a)$, $j$를 $i$보다 크면서 $a_j=1$이 성립하는 가장 작은 수라고 정의하면, $p(u)$$=[n-(n-(2^i-1))$$=(n-(2^i-1))-(n-(2^i-1)-(2^j-1))]$$=[2^i-1=2^j-1]$$=\textrm{False}$이므로 $\textrm{lift}[u]=\textrm{parent}[u]$입니다.
+   따라서 $\textrm{depth}[\textrm{lift}[u]]$$=n$$=J(n+1)$$=J(\textrm{depth}[u])$이므로 본 theorem은 성립합니다.
+4. 마지막으로, $a\ne\bar{0}$이며 $a_{LSD(a)}=2$인 경우, $i=LSD(a)$라 하면, $p(u)$$=[n-(n-(2^i-1))$$=(n-(2^i-1))-(n-2(2^i-1))]$$=[2^i-1=2^i-1]$$=\textrm{True}$이므로 $\textrm{lift}[u]=\textrm{lift}[\textrm{lift}[\textrm{parent}[u]]]$입니다.
+   따라서 $\textrm{depth}[\textrm{lift}[u]]$$=n-2(2^i-1)=J(n-2(2^i-1)+(2^{i+1}-1))$$=J(\textrm{depth}[u])$이므로 본 theorem은 성립합니다.
 
 따라서, 모든 $u$에 대해서 본 theorem이 성립합니다.
 
@@ -425,9 +425,11 @@ $k=\textrm{depth}[u]$인 경우, While문이 정확히 $\mathcal{S}^{-1}(\textrm
 
 $0<k<\textrm{depth}[u]$인 경우, 위 Lemma에서,
 
-$\sum_{i=1}^{U-1}a_i+(a_U-b_U)+\sum_{i=L}^{U-1}(2-b_i)$
-$\le MSD(a)+1+2MSD(a)-3=3MSD(a)-2$
-$\le3\lfloor\log(\textrm{depth}[u]+1)\rfloor-2$
+$\sum_{i=1}^{U-1}a_i+(a_U-b_U)+\sum_{i=L}^{U-1}(2-b_i)$  
+
+$\le MSD(a)+1+2MSD(a)-3=3MSD(a)-2$  
+
+$\le3\lfloor\log(\textrm{depth}[u]+1)\rfloor-2$  
 
 이므로 마찬가지로 성립합니다.
 
@@ -449,12 +451,12 @@ $\blacksquare$
 
 ***(Binary Lifting) / (Skew-binary Lifting) runtimes (in seconds). Bolded indicates faster.***
 
-| $Q\,\,\,\backslash \,\,\,\vert V\vert $ | $10^4$                  | $10^5$                  | $10^6$                  | $10^7$                   |
-| --------------------------------------- | ----------------------- | ----------------------- | ----------------------- | ------------------------ |
-| $10^4$                                  | 0.00118 / ***0.00105*** | 0.02021 / ***0.00327*** | 0.19027 / ***0.01536*** | 2.09941 / ***0.09259***  |
-| $10^5$                                  | ***0.00374*** / 0.03054 | ***0.01322*** / 0.02884 | 0.26477 / ***0.08301*** | 2.35131 / ***0.46748***  |
-| $10^6$                                  | ***0.03564*** / 0.09584 | ***0.04277*** / 0.27755 | ***0.13318*** / 0.71671 | 2.21926 / ***2.19224***  |
-| $10^7$                                  | ***0.31048*** / 0.94788 | ***0.31032*** / 2.31801 | ***0.40462*** / 6.84995 | ***2.46005*** / 22.15703 |
+| $Q\,\backslash \,\vert V\vert $ | $10^4$                | $10^5$                | $10^6$                | $10^7$                 |
+| ------------------------------- | --------------------- | --------------------- | --------------------- | ---------------------- |
+| $10^4$                          | 0.00118/***0.00105*** | 0.02021/***0.00327*** | 0.19027/***0.01536*** | 2.09941/***0.09259***  |
+| $10^5$                          | ***0.00374***/0.03054 | ***0.01322***/0.02884 | 0.26477/***0.08301*** | 2.35131/***0.46748***  |
+| $10^6$                          | ***0.03564***/0.09584 | ***0.04277***/0.27755 | ***0.13318***/0.71671 | 2.21926/***2.19224***  |
+| $10^7$                          | ***0.31048***/0.94788 | ***0.31032***/2.31801 | ***0.40462***/6.84995 | ***2.46005***/22.15703 |
 
 
 
@@ -555,3 +557,4 @@ int main(){
 	return 0;
 }
 ```
+
