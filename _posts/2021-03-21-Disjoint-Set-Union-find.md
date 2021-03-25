@@ -146,7 +146,7 @@ Rank Compression을 사용하지 않을 경우, 랜덤한 데이터에서는 Pat
 
 ## Disjoint Set - Union & find
 
-``` C
+```cpp
 int parent[n + 1] = {0, 1, ..., n};
 
 int find(int a){
@@ -162,7 +162,7 @@ void union(int a, int b){
 
 ## path compression
 
-``` C
+```cpp
 int find(int a){
  if(a == parent[a]) return a;
  return parent[a] = find(parent[a]);
@@ -171,7 +171,7 @@ int find(int a){
 
 ## rank compression(by using size)
 
-``` C
+```cpp
 int rank[n + 1] = {1, 1, ..., 1};
 
 void union(int a, int b){
