@@ -60,35 +60,7 @@ tags: [data-structure, algorithm, tree]
 
 위 값들은 각 non-root node가 dfs순으로 생성될 때 다음과 같이 정의됩니다.
 
-
-
-> Assume every ancestor of $u$ has been processed
->
-> ***Operation*** Add_A_Leaf(New Tree Node $u$):	
->
-> ​	If $u$ is the root:
->
-> ​		$\textrm{parent}[u]\leftarrow u$
->
-> ​		$\textrm{depth}[u]\leftarrow0$
->
-> ​		$\textrm{lift}[u]\leftarrow u$
->
-> ​	Else:
->
-> ​		$\textrm{parent}[u]\leftarrow(\textrm{the parent node of $u$})$
->
-> ​		$\textrm{depth}[u]\leftarrow\textrm{depth}[\textrm{parent}[u]]+1$
->
-> ​		If $\textrm{depth}[\textrm{parent}[u]]-\textrm{depth}[\textrm{lift}[\textrm{parent}[u]]]=\textrm{depth}[\textrm{lift}[\textrm{parent}[u]]]-\textrm{depth}[\textrm{lift}[\textrm{lift}[\textrm{parent}[u]]]]$:
->
-> ​			$\textrm{lift}[u]\leftarrow\textrm{lift}[\textrm{lift}[\textrm{parent}[u]]]$
->
-> ​		Else:
->
-> ​			$\textrm{lift}[u]\leftarrow\textrm{parent}[u]$
-
-
+![](/assets/images/Aeren_images/Skew-binary-Lifting/Add_A_Leaf.PNG)
 
 $\text{parent}$와 $\textrm{depth}$는 일반적인 rooted tree에서의 정의와 같고, $\textrm{lift}$는 ancestor에 대한 "큰 점프"라고 생각하시면 됩니다.
 
@@ -98,89 +70,13 @@ $\text{parent}$와 $\textrm{depth}$는 일반적인 rooted tree에서의 정의�
 
 Find The K-th Ancestor, Find The LCA, 그리고 Binary Search On Ancestors의 구현은 매우 단순합니다. $\textrm{lift}$를 타고 갈 수 있다면 $\textrm{lift}$로, 아니라면 $\textrm{parent}$를 타고 올라가면 됩니다.
 
+![](/assets/images/Aeren_images/Skew-binary-Lifting/Find_The_K-th_Ancestor.PNG)
 
+![](/assets/images/Aeren_images/Skew-binary-Lifting/Find_The_LCA.PNG)
 
-> Assume $0\le k\le\textrm{depth}[u]$
->
-> ***Operation*** $\textrm{Find_The_K-th_Ancestor}$ (Tree Node $u$, Integer $k$):
->
-> ​	$k\leftarrow\textrm{depth}[u] - k$
->
-> ​	While $\textrm{True}$:
->
-> ​		If $\textrm{depth}[\textrm{lift}[u]]\ge k$:
->
-> ​			$u\leftarrow \textrm{lift}[u]$
->
-> ​		Else if $\textrm{depth}[\textrm{parent}[u]]\ge k$:
->
-> ​			$u\leftarrow \textrm{parent}[u]$
->
-> ​		Else:
->
-> ​			Break
->
-> ​	Report $u$ as the answer
-
-
-
-> ***Operation*** $\textrm{Find_The_LCA}$(Tree Node $u$, Tree Node $v$):
->
-> ​	If $\textrm{depth}[u]>\textrm{depth}[v]$:
->
-> ​		swap $u$ and $v$
->
-> ​	While $\textrm{depth}[u]<\textrm{depth}[v]$:
->
-> ​		If $\textrm{depth}[\textrm{lift}[u]]<\textrm{depth}[v]$:
->
-> ​			$u\leftarrow\textrm{lift}[u]$
->
-> ​		Else:
->
-> ​			$u\leftarrow\textrm{parent}[u]$
->
-> ​	While $u\ne v$:
->
-> ​		If $\textrm{lift}[u]\ne\textrm{lift}[v]$:
->
-> ​			$u,v\leftarrow \textrm{lift}[u],\textrm{lift}[v]$
->
-> ​		Else:
->
-> ​			$u,v\leftarrow \textrm{parent}[u],\textrm{parent}[v]$
->
-> ​	Report $u$ as the answer
-
-
-
-> Assume the ancestors of $u$ are sorted by $P$ in decreasing order
->
-> Assume $P(u)=\textrm{True}$
->
-> ***Operation*** $\textrm{Binary_Search_On_Ancestors}$(Tree Node $u$, Binary Predicate $P$):
->
-> ​	While $\textrm{True}$:
->
-> ​		If $P(\textrm{lift}[u])$:
->
-> ​			$u\leftarrow\textrm{lift}[u]$
->
-> ​		Else if $P(\textrm{parent}[u])$:
->
-> ​			$u\leftarrow\textrm{parent}[u]$
->
-> ​		Else:
->
-> ​			Break
->
-> ​	Report $u$ as the answer
-
-
+![](/assets/images/Aeren_images/Skew-binary-Lifting/Binary_Search_On_Ancestors.PNG)
 
 다음은 Skew-binary lifting을 활용한 [Baekjoon Online Judge 20931번 - 혹 떼러 갔다 혹 붙여 온다](https://www.acmicpc.net/problem/20931) 의 C++ 예시 코드입니다.
-
-
 
 ```cpp
 #include <bits/stdc++.h>
