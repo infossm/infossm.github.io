@@ -1,9 +1,12 @@
 ---
 layout: post
-title:  "Skew-binary Lifting"
+title: "Skew-binary Lifting"
 author: Aeren
 date: 2021-03-23
 tags: [data-structure, algorithm, tree]
+header-includes:
+  \usepackage{algorithm2e}
+
 ---
 
 <h2 id="table of contents">Table Of Contents</h2>
@@ -91,7 +94,7 @@ tags: [data-structure, algorithm, tree]
 
 $\text{parent}$와 $\textrm{depth}$는 일반적인 rooted tree에서의 정의와 같고, $\textrm{lift}$는 ancestor에 대한 "큰 점프"라고 생각하시면 됩니다.
 
-![lift](https://github.com/FlowerOfSorrow/SSM/blob/main/lift.PNG)
+![lift](/assets/images/Aeren_images/Skew-binary-Lifting/figure.PNG)
 
 위의 figure에서 각 node에 적힌 숫자는 $\textrm{depth}$를, 파란색 arc는 $\textrm{parent}$를, 그리고 붉은색 arc는 $\textrm{lift}$를 나타냅니다. (root에 대한 정보는 생략하였습니다.)
 
@@ -273,7 +276,7 @@ $\textrm{lift}$값의 정의만 알고있다면 구현 자체는 매우 자명�
 
 **Skew-binary number system**은 skew-binary number $a_n(n=1, 2, ...)$을 음이 아닌 정수 $\sum_{n=1}^\infty a_n(2^n-1)$로 보내는 mapping $\mathcal{S}:CSB\rightarrow\mathbb{Z}_{\ge0}$입니다. 이 number system의 문제점은 $7=\mathcal{S}(0,0,1,...)=\mathcal{S}(1,2,...)$처럼 하나의 음이 아닌 정수를 표현하는 skew-binary number가 여러개인 경우가 있다는 것입니다. 이 문제를 해결하는 것이 canonical skew-binary number입니다.
 
-**Canonical skew-binary number**란 모든 항이 0이거나 $LSD(a)$를 제외한 모든 digit이 0 또는 1인 skew-binary number를 의미합니다. canonical skew-binary number의 집합을 $CSB$라고 표기하겠습니다. 또한 $CSB_i=\{a\in CSB:(a=\bar{0})\,\or\,((a\ne\bar{0})\and (MSD(a)\le i))\}$라 정의하겠습니다.
+**Canonical skew-binary number**란 모든 항이 0이거나 $LSD(a)$를 제외한 모든 digit이 0 또는 1인 skew-binary number를 의미합니다. canonical skew-binary number의 집합을 $CSB$라고 표기하겠습니다. 또한 $CSB_i=\{a\in CSB:(a=\bar{0})\,\vee\,((a\ne\bar{0})\wedge(MSD(a)\le i))\}$라 정의하겠습니다.
 
 
 
