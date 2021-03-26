@@ -275,8 +275,6 @@ $\blacksquare$
 
 이제 main theorem을 증명하겠습니다.
 
-
-
 > ***Lemma***
 >
 > $0<k<\textrm{depth}[u]$, $a=\mathcal{S}^{-1}(\textrm{depth}[u])$, $b=\mathcal{S}^{-1}(\textrm{depth}[u]-k)$라고 하자.
