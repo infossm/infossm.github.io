@@ -229,7 +229,7 @@ $\blacksquare$
 
 * $J(0)=0$
 * Let $n\in\mathbb{Z}_{>0}$ and $a=\mathcal{S}^{-1}(n)$.
-  $J(n)=\mathcal{S}(0,0,...,0,a_ {LSD(a)}-1,a_ {LSD(a)+1},a_ {LSD(a)+2},a_ {LSD(a)+3},...)$
+  $J(n)=\mathcal{S}(0,0,...,0,a _ {LSD(a)}-1,a _ {LSD(a)+1},a _ {LSD(a)+2},a _ {LSD(a)+3},...)$
 
 즉, $J$는 양의 정수 $n$에 대하여, $n$의 canonical skew-binary representation의 $LSD$위치에서 1을 빼준 canonical skew-binary representation이 나타내는 정수를 찾아주는 함수입니다.
 
