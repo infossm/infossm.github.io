@@ -170,7 +170,7 @@ $\textrm{lift}$값의 정의만 알고있다면 구현 자체는 매우 자명�
 
 **Skew-binary number system**은 skew-binary number $a_n(n=1, 2, ...)$을 음이 아닌 정수 $\sum_{n=1}^\infty a_n(2^n-1)$로 보내는 mapping $\mathcal{S}:CSB\rightarrow\mathbb{Z}_{\ge0}$입니다. 이 number system의 문제점은 $7$ $=\mathcal{S}(0,0,1,...)$ $=\mathcal{S}(1,2,...)$처럼 하나의 음이 아닌 정수를 표현하는 skew-binary number가 여러개인 경우가 있다는 것입니다. 이 문제를 해결하는 것이 canonical skew-binary number입니다.
 
-**Canonical skew-binary number**란 모든 항이 0이거나 $LSD(a)$를 제외한 모든 digit이 0 또는 1인 skew-binary number를 의미합니다. canonical skew-binary number의 집합을 $CSB$라고 표기하겠습니다. 또한 $CSB_i= \{ a\in CSB:(a=\bar{0})\,\vee\,((a\ne\bar{0})\wedge(MSD(a)\le i)) \} $라 정의하겠습니다.
+**Canonical skew-binary number**란 모든 항이 0이거나 $LSD(a)$를 제외한 모든 digit이 0 또는 1인 skew-binary number를 의미합니다. canonical skew-binary number의 집합을 $CSB$라고 표기하겠습니다. 또한 $CSB_i= \lbrace a\in CSB:(a=\bar{0})\,\vee\,((a\ne\bar{0})\wedge(MSD(a)\le i)) \rbrace $라 정의하겠습니다.
 
 
 
@@ -188,7 +188,7 @@ $\blacksquare$
 
 
 
-위 Lemma에 의해 함수 $a\mapsto\mathcal{S}(a):CSB_i\rightarrow\{n\in\mathbb{Z}:0\le n\le2^{i+1}-2\}$에 대하여 논할 수 있습니다.
+위 Lemma에 의해 함수 $a\mapsto\mathcal{S}(a):CSB_i\rightarrow\lbrace n\in\mathbb{Z}:0\le n\le2^{i+1}-2\rbrace$에 대하여 논할 수 있습니다.
 
 
 
@@ -198,10 +198,10 @@ $\blacksquare$
 
 ***Proof***
 
-$a\mapsto\mathcal{S}(a):CSB_i\rightarrow\{n\in\mathbb{Z}:0\le n\le2^{i+1}-2\}$가 one-to-one correspondence임을 보이면 충분합니다. 그런데 $\vert CSB_i\vert =1+\sum_{j=1}^i2^j=2^{i+1}-1=\vert \{n\in\mathbb{Z}:0\le n\le2^{i+1}-2\}\vert <\infty$이므로 위 함수가 surjective함을 보이면 충분합니다. 이는 귀납법으로 쉽게 보일 수 있습니다.  
+$a\mapsto\mathcal{S}(a):CSB_i\rightarrow\lbrace n\in\mathbb{Z}:0\le n\le2^{i+1}-2\rbrace$가 one-to-one correspondence임을 보이면 충분합니다. 그런데 $\vert CSB_i\vert =1+\sum_{j=1}^i2^j=2^{i+1}-1=\vert \lbrace n\in\mathbb{Z}:0\le n\le2^{i+1}-2\rbrace\vert <\infty$이므로 위 함수가 surjective함을 보이면 충분합니다. 이는 귀납법으로 쉽게 보일 수 있습니다.  
 $i=0$일 땐 codomain의 크기가 1이므로 surjective합니다.  
 어떤 $k$에 대하여 위 명제가 참이라고 가정합시다.  
-$\{n\in\mathbb{Z}:0\le n\le2^{k+2}-2\}$에 속하는 원소들 중 $\{n\in\mathbb{Z}:0\le n\le2^{k+1}-2\}$에 속하는 원소들은 가정에 의해 어떤 $a\in CSB_k\subseteq CSB_{k+1}$의 image로서 나타납니다.  
+$\lbrace n\in\mathbb{Z}:0\le n\le2^{k+2}-2\rbrace$에 속하는 원소들 중 $\lbrace n\in\mathbb{Z}:0\le n\le2^{k+1}-2\rbrace$에 속하는 원소들은 가정에 의해 어떤 $a\in CSB_k\subseteq CSB_{k+1}$의 image로서 나타납니다.  
 그렇지 않은 원소들 중 구간 $[2^{k+1}-1,2^{k+2}-3]$에 속하는 원소들은 가정에 의해 $k+1$ 자리가 $1$인 어떤 $a\in CSB_{k+1}$의 image로서 나타납니다.  
 마지막으로 $2^{k+2}-2$는 $k+1$자리가 $2$, 나머지 자리가 $0$인 $a$의 함수값으로서 나타납니다.  
 따라서 위 함수는 one-to-one correspondence입니다.
@@ -271,7 +271,7 @@ $\blacksquare$
 >
 > $0<k<\textrm{depth}[u]$, $a=\mathcal{S}^{-1}(\textrm{depth}[u])$, $b=\mathcal{S}^{-1}(\textrm{depth}[u]-k)$라고 하자.
 >
-> $L=LSD(b),\,U= \max\{ i:a_i\ne b_i\}$
+> $L=LSD(b),\,U= \max\lbrace i:a_i\ne b_i\rbrace$
 >
 > 일 때, $\textrm{Find_The_K-th_Ancestor}(u,k)$의 While문은 정확히
 >
