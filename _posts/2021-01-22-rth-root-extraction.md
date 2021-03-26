@@ -28,7 +28,7 @@ Adlemann-Manders-Miller Root Extraction은 위와 같은 문제에서 일반적�
 
 이제 어떤 수 $y$가 있고 $y$가 위의 방법을 통해 $r$th residue인 것을 안다고 합시다. 그리고 이 $y$에 대해서 $x^r = y$인 $r$th root $x$를 찾고 싶다고 합시다.
 
-우리는 $(y^s)^{r^{t-1}} = 1$임을 알고 있기 때문에, 만약 $s | r\alpha - 1$인 $\alpha$를 구하면 $(y^{r\alpha - 1})^{r^{t-1}} = 1$ 또한 성립함을 알 수 있습니다. $\alpha$는 Euclidean algorithm을 통해 쉽게 구할 수 있습니다.
+우리는 $(y^s)^{r^{t-1}} = 1$임을 알고 있기 때문에, 만약 $s \vert r\alpha - 1$인 $\alpha$를 구하면 $(y^{r\alpha - 1})^{r^{t-1}} = 1$ 또한 성립함을 알 수 있습니다. $\alpha$는 Euclidean algorithm을 통해 쉽게 구할 수 있습니다.
 
 만약 $t = 1$이라면 자동으로 $y^\alpha$가 $y$의 $r$th root임을 알 수 있습니다. 지금부터는 $t \geq 2$라고 합시다.
 
