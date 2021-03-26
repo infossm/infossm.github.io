@@ -281,7 +281,7 @@ $\blacksquare$
 >
 > $0<k<\textrm{depth}[u]$, $a=\mathcal{S}^{-1}(\textrm{depth}[u])$, $b=\mathcal{S}^{-1}(\textrm{depth}[u]-k)$라고 하자.
 >
-> $L=LSD(b),\,U=\max\{i:a_i\ne b_i\}$
+> $L=LSD(b),\,U=\max\left\{i:a_i\ne b_i\right\}$
 >
 > 일 때, $\textrm{Find_The_K-th_Ancestor}(u,k)$의 While문은 정확히
 >
