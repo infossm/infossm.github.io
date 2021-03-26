@@ -246,11 +246,8 @@ $\blacksquare$
 ***Proof***
 
 $\textrm{depth}$에 대한 귀납법으로 보이겠습니다.
-
 $u$가 root라면 자명하게 성립합니다.
-
 이제 어떤 $n\in\mathbb{Z}_{\ge0}$에 대하여 $\textrm{depth}[u]\le n$인 모든 $u$에 대하여 본 theorem이 참이라고 가정하겠습니다.
-
 $\textrm{depth}[u]=n+1$인 $u$를 고정하고, $a=\mathcal{S}^{-1}(n)$이라 합시다.
 또한 predicate $p(u)$를
 
