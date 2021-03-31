@@ -19,10 +19,10 @@ Expander Decomposition을 설명하기 전에 몇 가지 정의를 짚고 넘어
 * $G = (V, E)$ 의 *컷* 은 비지 않고, 전체 집합이 아닌 정점 부분집합을 뜻한다. $S \neq \emptyset, S \subsetneq V$
 * 정점 부분집합 $S \subseteq V$ 에 대해 $G[S]$ 는 $S$ 의 induced subgraph이다.
 * 두 서로소 집합 $A, B \subseteq V$ 에 대해서, $E(A, B)$ 는 $A$ 와 $B$ 에 각 끝점이 있는 간선의 집합을 뜻한다.
-* 컷의 **값** 은 $\delta(S) = |E(S, V - S)|$ 이다.
+* 컷의 **값** 은 $\delta(S) = E(S, V - S)$ 이다.
 * 컷의 **볼륨 (volume)** 은 $vol_G(S) = \sum_{v \in S} deg(v)$ 이다.
 * 컷의 **전도율 (conductance)** 는 $\Phi_G(S) = \frac{\delta(S)}{min(vol_G(S), vol_G(V - S))}$ 이다. 편의를 위해 $vol_G(S) \le vol_G(V - S)$ 라고 가정하라.
-* 그래프의 **전도율 (conductance)** 는 $\Phi_G = min_{S\text{ 는 } G \text{ 의 컷 }} \Phi_G(S)$ 이다. 컷이 존재하지 않는다면 ($|V| = 1$) $\Phi_G = 1$ 이다.
+* 그래프의 **전도율 (conductance)** 는 $\Phi_G = min_{S\text{ 는 } G \text{ 의 컷 }} \Phi_G(S)$ 이다. 컷이 존재하지 않는다면 ($V = 1$) $\Phi_G = 1$ 이다.
 * $\Phi_G \geq \phi$ 이면 $G$ 는 $\phi$-expander 이다.
 
 Expander에서는 왜 문제가 쉬울까? Expander는 잘 연결된 그래프라는 성질을 활용한다. 
@@ -39,7 +39,7 @@ Expander에서는 왜 문제가 쉬울까? Expander는 잘 연결된 그래프�
 그래프 $G$ 와 두 실수 인자 $\epsilon, \phi$ 가 주어졌을 때, $(\epsilon, \phi)$-expander decomposition은 정점 집합 $V$ 의 분할 $V_1 \cup V_2 \cup \ldots \cup V_k$ 로,
 
 * $G[V_i]$ 가 $\phi$-expander이며 (쉬움)
-* 서로 다른 집합을 잇는 간선의 개수가 최대 $\epsilon |E|$ 개임 (합칠 수 있음)
+* 서로 다른 집합을 잇는 간선의 개수가 최대 $\epsilon E$ 개임 (합칠 수 있음)
 
 아주 좋은 퀄리티의 Expander Decomposition을 구하는 알고리즘이 있다. 심지어, 매우 쉬운 알고리즘이다.
 
@@ -78,7 +78,7 @@ Expander Decomposition을 다항 시간에 해결한 첫 알고리즘 (Kannan, V
 **Theorem.** $G$ 를 간선이 $m$ 개인 $\phi$-expander 라고 하자. 최대 $q \le \phi m / 10$ 개의 간선 삭제 쿼리를 처리할 수 있는 결정론적 알고리즘이 존재한다. $i$ 번째 삭제 이후, 알고리즘은 다음 조건을 만족하는 집합 $P_i$ 를 관리한다.
 
 * $P_0 = \emptyset, P_i \subseteq P_{i+1}$
-* $vol(P_i) \le \frac{8i}{\phi}$ and $|\delta(P_i)| \le 4i$
+* $vol(P_i) \le \frac{8i}{\phi}$ and $\delta(P_i) \le 4i$
 * $G_i[V - P_i]$ 가 $\phi / 6$ expander이다. 이 때 $G_i$ 는 $i$ 개의 간선을 지운 그래프를 뜻한다.
 
 업데이트에 사용되는 총 시간은 $O(q \log m / \phi^2)$ 이다.
@@ -93,7 +93,7 @@ SW19 역시 Sparse cut을 근사하는 것은 ST04와 동일하지만, 만약 cu
 
 **Cut-Matching Game** 은 $(G, \phi)$ 가 주어졌을 때 $\Phi_G \geq \phi$ 임을 확인하거나 전도율이 $O(\phi \log^2 m)$ 임이 보장되는 sparse cut을 반환한다. 이 때 컷은 $min(vol(A), vol(V - A)) \geq \Omega(m / \log^2 m)$ 을 만족하거나, 큰 쪽의 컷이 *nearly $\phi$-expander* 임을 보장한다. 시간 복잡도는 $O((m \log m) / \phi)$ 이다.
 
-**Trimming** 은 nearly-$\phi$ expander $A$ 를 받아서, $A^\prime \subseteq A$ 인 subgraph를 반환한다. 이 때 $G[A^\prime]$ 은 $\phi/6$ expander이다. $A^\prime$ 이 갑자기 너무 작아져서, 원래 매우 작은 쪽이었던 컷이 역전되어 매우 큰 컷이 되는 일은 일어나지 않고, 고로 near-linear time이 보장된다. 시간 복잡도는 $O(|E(A, \overline{A})| \log m / \phi^2) \le O((m \log m) / \phi)$ 이다.
+**Trimming** 은 nearly-$\phi$ expander $A$ 를 받아서, $A^\prime \subseteq A$ 인 subgraph를 반환한다. 이 때 $G[A^\prime]$ 은 $\phi/6$ expander이다. $A^\prime$ 이 갑자기 너무 작아져서, 원래 매우 작은 쪽이었던 컷이 역전되어 매우 큰 컷이 되는 일은 일어나지 않고, 고로 near-linear time이 보장된다. 시간 복잡도는 $O(E(A, \overline{A}) \log m / \phi^2) \le O((m \log m) / \phi)$ 이다.
 
 이 두 부분문제가 풀린다고 가정하면 **Expander Decomposition 알고리즘** 을 설명할 준비가 끝났다. 그래프 $(G, \phi)$ 에 대해 Expander Decomposition은 다음과 같이 작동하는 재귀적 알고리즘이다.
 
@@ -122,15 +122,15 @@ Cut-Matching Game은 sparsest cut에 대한 근사 알고리즘 전략 중 하�
 
 Trimming은 Expander decomposition에서의 불균형을 해소하는 단계로, 이 논문의 주요한 기여이다. 여기서부터, $vol(S)$ 는 $S$ 가 무슨 induced subgraph에 속해있는지와 상관 없이, 항상 원래 그래프 $G$ 의 차수 합으로 정의하자.
 
-**Definition (Nearly Expander).** $A \subset V$ 가 $G$ 의 nearly $\phi$-expander 라는 것은, $\forall S \subseteq A, vol(S) \le vol(A) / 2 \rightarrow |E(S, V - S)| \geq \phi vol(S)$ 임을 뜻한다.
+**Definition (Nearly Expander).** $A \subset V$ 가 $G$ 의 nearly $\phi$-expander 라는 것은, $\forall S \subseteq A, vol(S) \le vol(A) / 2 \rightarrow E(S, V - S) \geq \phi vol(S)$ 임을 뜻한다.
 
-여기서, $A$ 가 $\phi$-expander 라는 것은 $|E(S, A - S)| \geq \phi vol(S)$ 임을 기억하자.
+여기서, $A$ 가 $\phi$-expander 라는 것은 $E(S, A - S) \geq \phi vol(S)$ 임을 기억하자.
 
 Nearly expander는 Expander의 정의를 relax한 것으로, induced subgraph 밖으로 나가는 간선을 추가로 세어주는 차이가 있다.
 
-**Definition (Trimming).** Trimming은 다음 조건을 만족하는 $A^\prime \subseteq A$ 를 찾는다: $\forall S \subseteq A^\prime, vol(S) \le vol(A^\prime) / 2 \rightarrow|E(S, A^\prime - S)| \geq \phi vol(S) / 6$.
+**Definition (Trimming).** Trimming은 다음 조건을 만족하는 $A^\prime \subseteq A$ 를 찾는다: $\forall S \subseteq A^\prime, vol(S) \le vol(A^\prime) / 2 \rightarrowE(S, A^\prime - S) \geq \phi vol(S) / 6$.
 
-가장 깔끔한 상황은, Trimming을 전혀 하지 않아도 $A$ 가 그냥 $\phi/6$-expander 가 되는 상황이다. 이 경우에는 바로 문제가 해결된다. 이렇지 않은 경우를 상상해 보자. $A$ 는 $\phi$-near expander 지만 $\phi/6$ expander가 아니니, nearly expander의 relax가 굉장히 큰 효과를 발휘했음을 뜻한다. 수식으로 적으면, 다음과 같은 $S$ 가 존재한다: $|E(S, V - A)| \geq 5|E(S, A - S)|$.
+가장 깔끔한 상황은, Trimming을 전혀 하지 않아도 $A$ 가 그냥 $\phi/6$-expander 가 되는 상황이다. 이 경우에는 바로 문제가 해결된다. 이렇지 않은 경우를 상상해 보자. $A$ 는 $\phi$-near expander 지만 $\phi/6$ expander가 아니니, nearly expander의 relax가 굉장히 큰 효과를 발휘했음을 뜻한다. 수식으로 적으면, 다음과 같은 $S$ 가 존재한다: $E(S, V - A) \geq 5E(S, A - S)$.
 
 ![flow](http://www.secmem.org/assets/images/toptree/flow.png)
 
@@ -140,13 +140,13 @@ Nearly expander는 Expander의 정의를 relax한 것으로, induced subgraph �
 * 각 정점은 $deg_G(v)$ 용량의 간선으로 sink로 연결된다.
 * 각 내부 간선은 $2/\phi$ 용량을 가진다.
 
-이 경우, 공급량의 합은 $\frac{2}{\phi}|E(A, V - A)|$ 이다. 이제 다음을 보인다.
+이 경우, 공급량의 합은 $\frac{2}{\phi}E(A, V - A)$ 이다. 이제 다음을 보인다.
 
 **Claim.** $A$ 가 $\phi/6$ expander가 아니면, 최대 유량이 공급량 합 이하이다.
 
-**Proof.**  $|E(S, A - S)| \le \frac{|E(S, V - A)|}{5}$ 를 만족하는 집합 $S$ 가 존재한다. 이 때
+**Proof.**  $E(S, A - S) \le \frac{E(S, V - A)}{5}$ 를 만족하는 집합 $S$ 가 존재한다. 이 때
 
-* $S$ 로 들어오는 유량 $\geq  \frac{2}{\phi} |E(S, V - A)| \geq \frac{1}{\phi} |E(S, V - A)| + \frac{5}{\phi} |E(S, A - S)|$
+* $S$ 로 들어오는 유량 $\geq  \frac{2}{\phi} E(S, V - A) \geq \frac{1}{\phi} E(S, V - A) + \frac{5}{\phi} E(S, A - S)$
 * $S$ 에서 나가는 유량 $\le vol(S) + \frac{2}{\phi} E(S, A- S) \le \frac{1}{\phi} (E(S, V - A) + E(S, A - S)) + \frac{2}{\phi} E(S, A - S)$
 
 
