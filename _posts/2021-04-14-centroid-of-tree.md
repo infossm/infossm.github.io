@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Disjoint Set & Union-find"
-date:   2021-03-21 08:00:00
+date:   2021-04-14 05:00:00
 author: juney
 tags: [algorithm, tree]
 ---
@@ -60,9 +60,9 @@ int centroid(int cur, int par, int sz) {
 
 이제 centroid는 항상 존재하다는 것은 확인했습니다. 그렇다면 centroid는 최대 몇 개까지 존재할 수 있을까요?
 
-**Theroem 1.2.** 임의의 트리 $T$에서 centroid는 최대 2개 까지 은재할 수 있다.
+**Theroem 1.2.** 임의의 트리 $T$에서 centroid는 최대 2개 까지 존재할 수 있다.
 
-**Proof.** 크기 $n$짜리 임의의 트리 $T$에서 centroid가 3개 이상 존재한다고 가정해 봅시다. 첫 번째 centroid를 $x$라고 했을때, $x$를 기준으로 한 subtree들이 모두 $n/2$보다 작으면 $x$를 제외한 모든 정점은 $x$를 포함하는 서브트리가 $n/2$보다 클 것이므로 centroid가 될 수 없고 이는 가정에 모순입니다. 따라서 정확히 $n/2$인 subtree는 항상 하나 존재할 것입니다. 그 subtree의 루트를 y라고 합시다. 이때, $y$를 기준으로 x를 루트로하는 서브트리는 크기가 $n/2$일 것이고, 나머지 subtree는 $n/2$ 보다 작을 것입니다. 따라서 $y$는 두 번째 centroid 입니다. 하지만, 방금 언급한 것 처럼 나머지 subtree는 $n/2$ 보다 작을 것이므로, 그 subtree들에서는 위에 말한 이유에서 centroid인 정점이 존재할 수 없습니다. 따라서 $x$와 $y$가 유일한 centroid가 될 수 밖에 없고 이는 가정에 모순이므로, Theorem 1.2가 증명됩니다.
+**Proof.** 크기 $n$짜리 임의의 트리 $T$에서 centroid가 3개 이상 존재한다고 가정해 봅시다. 첫 번째 centroid를 $x$라고 했을때, $x$를 기준으로 한 subtree들이 모두 $n/2$보다 작으면 $x$를 제외한 모든 존점은 $x$를 포함하는 서브트리가 $n/2$보다 클 것이므로 centroid가 될 수 없고 이는 가정에 모순입니다. 따라서 정확히 $n/2$인 subtree는 항상 하나 존재할 것입니다. 그 subtree의 루트를 y라고 합시다. 이때, $y$를 기준으로 x를 루트로하는 서브트리는 크기가 $n/2$일 것이고, 나머지 subtree는 $n/2$ 보다 작을 것입니다. 따라서 $y$는 두 번째 centroid 입니다. 하지만, 방금 언급한 것 처럼 나머지 subtree는 $n/2$ 보다 작을 것이므로, 그 subtree들에서는 위에 말한 이유에서 centroid인 정점이 존재할 수 없습니다. 따라서 $x$와 $y$가 유일한 centroid가 될 수 밖에 없고 이는 가정에 모순이므로, Theorem 1.2가 증명됩니다.
 
 Theorem 1.2를 증명하면서 우리는 자동적으로 한 가지 사실을 알게 되었습니다. 바로 centroid가 2개 존재한다면 그 centroid들은 서로 하나의 간선으로 이어져 있다는 사실입니다.
 
