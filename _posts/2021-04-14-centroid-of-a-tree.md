@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Disjoint Set & Union-find"
+title:  "Centroid of a Tree"
 date:   2021-04-14 05:00:00
 author: juney
 tags: [algorithm, tree]
