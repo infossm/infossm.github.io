@@ -97,7 +97,7 @@ int del[MAXN]; // del[x]: 이미 한번 decompse에서 centroid로 지목된 경
 // init(cur, par): S 배열의 값을 계산해주는 함수
 int init(int cur, int par) {
     S[cur] = 1;
-    for(int nxt : G[cur]) if(nxt != par $$ !del[nxt]) {
+    for(int nxt : G[cur]) if(nxt != par && !del[nxt]) {
         S[cur] += init(nxt, cur);
     }
     return S[cur];
@@ -169,7 +169,7 @@ int P[MAXN]: // P[x]: centroid 트리 상에서 x의 부모
 // init(cur, par): S 배열의 값을 계산해주는 함수
 int init(int cur, int par) {
     S[cur] = 1;
-    for(int nxt : G[cur]) if(nxt != par $$ !del[nxt]) {
+    for(int nxt : G[cur]) if(nxt != par && !del[nxt]) {
         S[cur] += init(nxt, cur);
     }
     return S[cur];
