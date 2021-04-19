@@ -53,9 +53,9 @@ Segment tree는 주어진 구간을 balanced binary tree로 쪼개어 구간 연
 
 아래 예시에서 (이미지 출처는 [여기](https://www.luogu.com.cn/blog/Atalod/an-ta-di-quan-ju-ping-heng-er-cha-shu-xue-xi-bi-ji#)입니다.) 위 이미지는 heavy-light decomposition에서 locally balanced binary tree를 만들었을 때, 아래는 globally balanced binary tree를 만들었을 때를 보여줍니다. (점선으로 된 edge들은 시간복잡도 분석을 위해 첨가되었습니다.)
 
-![](/assets/images/Aeren_images/Heavy-light_Decomposition_With_Globally_Balanced_Binary_Trees/locally_balanced.PNG)
+![](/assets/images/Aeren_images/Heavy_light_decomposition_with_globally_balanced_binary_trees/locally_balanced.PNG)
 
-![](/assets/images/Aeren_images/Heavy-light_Decomposition_With_Globally_Balanced_Binary_Trees/globally_balanced.PNG)
+![](/assets/images/Aeren_images/Heavy_light_decomposition_with_globally_balanced_binary_trees/globally_balanced.PNG)
 
 Globally balanced binary tree들을 만들었을 때 전체 자료구조가 더 balanced해짐을 눈으로 확인할 수 있습니다.
 
@@ -65,7 +65,7 @@ Globally balanced binary tree들을 만들었을 때 전체 자료구조가 더 
 
 Dfs ordering과 $\textrm{weight}$배열이 주어졌을 때 globally balanced binary tree는 다음과 같이 구현할 수 있습니다.
 
-![](/assets/images/Aeren_images/Heavy-light_Decomposition_With_Globally_Balanced_Binary_Trees/Build.PNG)
+![](/assets/images/Aeren_images/Heavy_light_decomposition_with_globally_balanced_binary_trees/Build.PNG)
 
 각 long chain에 대해 dfs ordering이 [low, high)의 구간을 갖는다면 $\textrm{build}(\textrm{order}, \textrm{weight}, u, \textrm{low}, \textrm{high})$를 호출하면 $u$를 root로 하는 globally balanced segment tree가 생성됩니다.
 
