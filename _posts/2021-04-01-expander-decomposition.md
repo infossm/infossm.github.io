@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title:  "Expander Decomposition and Pruning: Faster, Stronger, and Simpler"
