@@ -1,17 +1,9 @@
-
-
 ---
-
 layout: post 
-
 title: "Union Find의 시간 복잡도 증명" 
-
 author: junis3
-
 date: 2021-04-19
-
 tags: []
-
 ---
 
 
