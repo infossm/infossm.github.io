@@ -45,7 +45,7 @@ tags: [data-structure, algorithm]
 
 <h2 id="main_idea">Main Idea</h2>
 
-일단 heavy-light decomposition + segment tree풀이를 살펴보겠습니다. Heavy-light decomposition은 $G$를 long chain들의 disjoint union으로 분할하며 임의의 node $u$와 $v$에 대해서 $u-v$ path는 각각의 long chain들과의 intersection으로 부터 $O(\log |V|)$개의 non-empty chain으로 쪼개집니다. 이제 $G$에 대한 dfs ordering 위에서 segment tree를 만들면 각각의 long chain들은 연속된 구간으로 나타나므로 각각의 chain들은 $O(\log\vert V\vert)$시간에 update / query 할 수 있게 되고 총 시간복잡도는 $O(\log^2\vert V\vert)$입니다.
+일단 heavy-light decomposition + segment tree풀이를 살펴보겠습니다. Heavy-light decomposition은 $G$를 long chain들의 disjoint union으로 분할하며 임의의 node $u$와 $v$에 대해서 $u-v$ path는 각각의 long chain들과의 intersection으로 부터 $O(\log\vert V\vert)$개의 non-empty chain으로 쪼개집니다. 이제 $G$에 대한 dfs ordering 위에서 segment tree를 만들면 각각의 long chain들은 연속된 구간으로 나타나므로 각각의 chain들은 $O(\log\vert V\vert)$시간에 update / query 할 수 있게 되고 총 시간복잡도는 $O(\log^2\vert V\vert)$입니다.
 
 Segment tree는 주어진 구간을 balanced binary tree로 쪼개어 구간 연산을 빠르게 처리하게 해주는 자료구조입니다. 즉, 잘 생각해보면, link-cut tree가 amortized $O(\log\vert V\vert)$에 지원하는 연산이 이 방법으로는 하나의 $\log$가 더 붙는 이유는 segment tree가 주어진 dfs ordering의 "local balancing"만 고려하기 때문입니다. 핵심 아이디어는 이 "local balancing"을 "global balancing"으로 바꿔주는 것입니다.
 
