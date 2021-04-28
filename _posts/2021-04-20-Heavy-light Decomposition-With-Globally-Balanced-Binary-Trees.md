@@ -4,6 +4,7 @@ title: "Heavy-light Decomposition With Globally Balanced Binary Trees"
 author: Aeren
 date: 2021-04-20
 tags: [data-structure, algorithm]
+
 ---
 
 <h2 id="table of contents">Table Of Contents</h2>
@@ -45,11 +46,11 @@ tags: [data-structure, algorithm]
 
 <h2 id="main_idea">Main Idea</h2>
 
-일단 heavy-light decomposition + segment tree풀이를 살펴보겠습니다. Heavy-light decomposition은 $G$를 long chain들의 disjoint union으로 분할하며 임의의 node $u$와 $v$에 대해서 $u-v$ path는 각각의 long chain들과의 intersection으로 부터 $O(\log |V|)$개의 non-empty chain으로 쪼개집니다. 이제 $G$에 대한 dfs ordering 위에서 segment tree를 만들면 각각의 long chain들은 연속된 구간으로 나타나므로 각각의 chain들은 $O(\log\vert V\vert)$시간에 update / query 할 수 있게 되고 총 시간복잡도는 $O(\log^2\vert V\vert)$입니다.
+일단 heavy-light decomposition + segment tree풀이를 살펴보겠습니다. Heavy-light decomposition은 $G$를 long chain들의 disjoint union으로 분할하며 임의의 node $u$와 $v$에 대해서 $u-v$ path는 각각의 long chain들과의 intersection으로 부터 $ O(  \log \vert V \vert) $개의 non-empty chain으로 쪼개집니다. 이제 $ G $에 대한 dfs ordering 위에서 segment tree를 만들면 각각의 long chain들은 연속된 구간으로 나타나므로 각각의 chain들은 $O(\log\vert V\vert)$시간에 update / query 할 수 있게 되고 총 시간복잡도는 $O(\log^2\vert V\vert)$입니다.
 
 Segment tree는 주어진 구간을 balanced binary tree로 쪼개어 구간 연산을 빠르게 처리하게 해주는 자료구조입니다. 즉, 잘 생각해보면, link-cut tree가 amortized $O(\log\vert V\vert)$에 지원하는 연산이 이 방법으로는 하나의 $\log$가 더 붙는 이유는 segment tree가 주어진 dfs ordering의 "local balancing"만 고려하기 때문입니다. 핵심 아이디어는 이 "local balancing"을 "global balancing"으로 바꿔주는 것입니다.
 
-주어진 dfs ordering $\textrm{order}$에 대해서 $\textrm{weight}$배열을 $\textrm{weight}[i]=1+\sum_{u\in \textrm{light_child}[\textrm{order}[i]]}\textrm{subtree_size}[u]$이라 정의합시다. 그리고 long chain위에서 binary tree를 만들 때 구간 $[l,r)$을 쪼개는 지점을 $(l+r)/2$가 아닌 $\textrm{argmin}_{l<m<r}(\textrm{abs}(\sum_{i=l}^{m-1}\textrm{weight}[i]-\sum_{i=m}^{r-1}\textrm{weight}[i]))$으로 두겠습니다. 이제 각 update / query에서 고려되는 node들은 높이가 감소하는 순서대로 볼 때, 1. $\textrm{weight}[u]$가 절반으로 줄던지, 혹은 2. light edge를 타고 내려오게 됩니다. 즉, 전체 시간복잡도가 $O(\log\vert V\vert)$임을 얻을 수 있습니다. (이 방법은 link-cut tree에서 같은 시간복잡도를 얻어내는 방법과 매우 유사합니다.)
+주어진 dfs ordering $\textrm{order}$에 대해서 $\textrm{weight}$배열을 $\textrm{weight}[i]=1+\sum_{u\in \textrm{light_child}[\textrm{order}[i]]}\textrm{subtree_size}[u]$이라 정의합시다. 그리고 long chain위에서 binary tree를 만들 때 구간 $[l,r)$을 쪼개는 지점을 $(l+r)/2$가 아닌 $ \textrm{argmin} _ {l<m<r}( \textrm{abs}( \sum _ {i=l}^{m-1} \textrm{weight}[i]- \sum _ {i=m}^{r-1} \textrm{weight}[i])) $으로 두겠습니다. 이제 각 update / query에서 고려되는 node들은 높이가 감소하는 순서대로 볼 때, 1. $\textrm{weight}[u]$가 절반으로 줄던지, 혹은 2. light edge를 타고 내려오게 됩니다. 즉, 전체 시간복잡도가 $O(\log\vert V\vert)$임을 얻을 수 있습니다. (이 방법은 link-cut tree에서 같은 시간복잡도를 얻어내는 방법과 매우 유사합니다.)
 
 아래 예시에서 (이미지 출처는 [여기](https://www.luogu.com.cn/blog/Atalod/an-ta-di-quan-ju-ping-heng-er-cha-shu-xue-xi-bi-ji#)입니다.) 위 이미지는 heavy-light decomposition에서 locally balanced binary tree를 만들었을 때, 아래는 globally balanced binary tree를 만들었을 때를 보여줍니다. (점선으로 된 edge들은 시간복잡도 분석을 위해 첨가되었습니다.)
 
@@ -660,4 +661,3 @@ int main(){
 	return 0;
 }
 ```
-
