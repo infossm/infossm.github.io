@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title:  "Incremental Topological Ordering and Strong Component Maintenance"
