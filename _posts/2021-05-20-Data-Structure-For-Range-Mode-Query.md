@@ -4,6 +4,7 @@ title: "Data Structure For Range Mode Query"
 author: Aeren
 date: 2021-05-20
 tags: [data-structure, algorithm]
+
 ---
 
 <h2 id="table of contents">Table Of Contents</h2>
@@ -30,9 +31,7 @@ Array 혹은 multiset $A$가 주어져 있을 때 $A$의 **mode**란 $A$내에�
 이 글의 개요는 다음과 같습니다.
 
 - 먼저, $\sqrt{n}\times\sqrt{n}$ boolean matrix multiplication으로 부터의 reduction을 통해 range mode query가 대략 얼마나 어려운지 알아 볼 것입니다.
-
 - 그 다음으로 $O(n)$ 의 공간을 요구하는 preprocessing을 통해 query 당 $O(\sqrt{n})$시간 안에 위 문제를 해결하는 법을 알아볼 것입니다.
-
 - 그 후 $m\le\sqrt{nw}$가 성립할 때 $O(n)$의 공간을 요구하는 preprocessing을 통해 query당 $O(\sqrt{n/w})$시간 안에 위 문제를 해결하는 법을 알아볼 것입니다.
 - 그리고 나서  $O(n)$ 의 공간을 요구하는 preprocessing을 통해 query당 $O(\Delta)$시간 안에 위 문제를 해결하는 방법을 알아볼 것입니다.
 - 마지막으로 위 방법들을 종합하여 $O(n)$의 공간을 요구하는 preprocessing을 통해 query당 $O(\sqrt{n/w})$시간 안에 위 문제를 해결하는 법을 알아볼 것입니다.
