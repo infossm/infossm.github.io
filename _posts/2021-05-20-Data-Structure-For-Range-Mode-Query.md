@@ -40,10 +40,10 @@ Array 혹은 multiset $A$가 주어져 있을 때 $A$의 **mode**란 $A$내에�
 
 <h2 id="hardness_result">Hardness Result</h2>
 
-Commutative semiring $S=(\lbrace0,1\rbrace, OR, AND)$ 에 대하여 두 matrix $M,N\in\mathbb{M}_{\sqrt{n}\times\sqrt{n}}(S)$ 의 곱을 구하는 문제를 생각해봅시다.
-$P=M\cdot N$  이라면 $P_{ij}$ 의 값이 1이 될 필요충분조건은 $M_{ik}=N_{kj}=1$ 인 $0\le k\lt\sqrt{n}$ 가 존재하는 것입니다. 다시말해서, $M_i=\lbrace j:M_{ij}=1\rbrace$, $N_j=\lbrace i:N_{ij}=1\rbrace$ 라고 정의하면, $P_{ij}=1$ 이 성립할 필요충분조건은 $M_i$와 $N_j$의 multiset union의 mode가 2인 것입니다.
-길이 $n$짜리 배열 $L$과 $R$을 준비하겠습니다. 각 배열은 $\sqrt{n}$ 짜리 block $\sqrt{n}$개로 이루어져 있으며 각 block은 $\lbrace 1,2,\cdots,\sqrt{n}\rbrace$의 permutation입니다. 또한 임의의 $i$에 대하여 $0\le i\lt\sqrt{n}$에 대하여 $L[\sqrt{n}i, \sqrt{n}(i+1)-\vert M_i\vert)$은 $\lbrace 1,2,...,\sqrt{n}\rbrace-M_i$의 임의의 permutation, $L[\sqrt{n}(i+1)-\vert M_i\vert, \sqrt{n}(i+1))$은 $M_i$의 임의의 permutation, 비슷하게 $R[\sqrt{n}i,\sqrt{n}i+\vert N_i\vert)$은 $N_i$의 임의의 permutation, $R[\sqrt{n}i+\vert N_i\vert,\sqrt{n}(i+1))$은 $\lbrace 1,2,\cdots,\sqrt{n}\rbrace-N_i$의 임의의 permutation입니다. 풀어서 설명하자면, 각 $i$에 대하여 $M_i$의 원소들은 $L$의 $i$번째 block의 suffix에, $N_i$의 원소들은 $R$의 $i$번째 block의 prefix에 배치되어 있습니다.
-이제 배열 $A$를 $L$과 $R$의 concatenation이라고 정의하면 $M_i$와 $N_j$의 multiset union의 mode가 2일 필요충분조건은 $A[\sqrt{n}(i+1)-\vert M_i\vert,n+\sqrt{n}j+\vert N_j\vert)$의 mode가 $n+1-i+j$인 것입니다. 따라서 $A$에서 $n$번의 range mode query를 통해 $P$의 모든 entry를 알아낼 수 있습니다. 즉, 다음 theorem이 성립합니다.
+Commutative semiring $S=(\lbrace0,1\rbrace, OR, AND)$ 에 대하여 두 matrix $M, N  \in \mathbb{M} _ {\sqrt{n} \times \sqrt{n} }(S)$ 의 곱을 구하는 문제를 생각해봅시다.
+$P = M \cdot N$  이라면 $P _ {ij}$ 의 값이 1이 될 필요충분조건은 $M _ {ik} = N _ {kj} = 1$ 인 $0 \le k \lt \sqrt{n}$ 가 존재하는 것입니다. 다시말해서, $M _ i = \lbrace j : M _ {ij} = 1 \rbrace$, $N _ j = \lbrace i : N _ {ij} = 1 \rbrace$ 라고 정의하면, $P _ {ij} = 1$ 이 성립할 필요충분조건은 $M _ i$와 $N _ j$의 multiset union의 mode가 2인 것입니다.
+길이 $n$짜리 배열 $L$과 $R$을 준비하겠습니다. 각 배열은 $\sqrt{n}$ 짜리 block $\sqrt{n}$개로 이루어져 있으며 각 block은 $\lbrace 1,2,\cdots,\sqrt{n}\rbrace$의 permutation입니다. 또한 임의의 $i$에 대하여 $0\le i\lt\sqrt{n}$에 대하여 $L[\sqrt{n} \cdot i, \sqrt{n} \cdot (i+1)-\vert M_i\vert)$은 $\lbrace 1,2,...,\sqrt{n}\rbrace-M_i$의 임의의 permutation, $L[\sqrt{n} \cdot (i+1) - \vert M _ i \vert, \sqrt{n} \cdot (i+1))$은 $M_i$의 임의의 permutation, 비슷하게 $R[ \sqrt{n} \cdot  i,\sqrt{n} \cdot i + \vert N _ i \vert)$은 $N_i$의 임의의 permutation, $R[\sqrt{n} \cdot i + \vert N _ i \cdot \vert,\sqrt{n} \cdot  (i+1))$은 $\lbrace 1,2,\cdots,\sqrt{n}\rbrace-N_i$의 임의의 permutation입니다. 풀어서 설명하자면, 각 $i$에 대하여 $M_i$의 원소들은 $L$의 $i$번째 block의 suffix에, $N_i$의 원소들은 $R$의 $i$번째 block의 prefix에 배치되어 있습니다.
+이제 배열 $A$를 $L$과 $R$의 concatenation이라고 정의하면 $M_i$와 $N_j$의 multiset union의 mode가 2일 필요충분조건은 $A[\sqrt{n} \cdot (i+1) - \vert M _ i \vert , n + \sqrt{n} \cdot j + \vert N _ j\vert)$의 mode가 $n+1-i+j$인 것입니다. 따라서 $A$에서 $n$번의 range mode query를 통해 $P$의 모든 entry를 알아낼 수 있습니다. 즉, 다음 theorem이 성립합니다.
 
 >***THEOREM***
 >
@@ -171,7 +171,7 @@ mode를 찾기 위해서 일단 mode가 포함된 마지막 block의 index를 $i
 **Precomputation**
 
 이번엔 block size $\Delta$가 되도록 $A$를 분할하겠습니다.
-각 $0\le i\le \lfloor n/\Delta\rfloor$와 $0\le x\lt \Delta$에 대하여 $C_x[i]$를 $A[0,\Delta\cdot i)$의 mode라 정의합시다. $C$는 $A$를 한 번 스캔함으로써 linear 시간 안에 계산 할 수 있으며 $\lfloor n/\Delta\rfloor\times\Delta\in O(n)$의 공간을 필요로 합니다.
+각 $0\le i\le \lfloor n/\Delta\rfloor$와 $0\le x\lt \Delta$에 대하여 $C _ x[i]$를 $A[0,\Delta\cdot i)$의 mode라 정의합시다. $C$는 $A$를 한 번 스캔함으로써 linear 시간 안에 계산 할 수 있으며 $\lfloor n/\Delta\rfloor\times\Delta\in O(n)$의 공간을 필요로 합니다.
 
 
 
@@ -193,12 +193,13 @@ $s=\sqrt{nw}$으로 놓으면 linear space를 필요로 하면서 $O(\sqrt{n/w})
 
 > ***LEMMA***
 >
-> 크기 $n$인 배열 $A$와 multiset intersection이 비어있는 $A$의 두 ordered partition $B_1$과 $B_2$가 주어질 때 각각 $s_1(n)$과 $s_2(n)$의 공간을 필요로 하며 $t_1(n)$과 $t_2(n)$시간에 $B_1$과 $B_2$에서 range mode query를 답하는 data structure가 존재한다면, $O(n+s_1(n)+s_2(n))$의 공간을 필요로 하며 $O(t_1(n)+t_2(n))$시간에 $A$에서 range mode query를 답하는 data structure가 존재한다.
+> 크기 $n$인 배열 $A$와 multiset intersection이 비어있는 $A$의 두 ordered partition $B_1$과 $B_2$가 주어질 때 각각 $s _ 1(n)$과 $s _ 2(n)$의 공간을 필요로 하며 $t _ 1(n)$과 $t _ 2(n)$시간에 $B _ 1$과 $B _ 2$에서 range mode query를 답하는 data structure가 존재한다면, $O(n + s _ 1 (n) + s _ 2 (n))$의 공간을 필요로 하며 $O(t _ 1 (n) + t _ 2 (n))$시간에 $A$에서 range mode query를 답하는 data structure가 존재한다.
 
 ***PROOF***
 
-각 $id\in\lbrace1,2\rbrace$와 $0\le i\lt n$에 대하여 $B_{id}$에 속하는 최소 $j \ge i$를 나타내는 $I_{id}[i]$를 linear 시간에 계산할 수 있습니다. $B_1$과 $B_2$의 intersection이 비어있으므로 mode는 단순히 $B_1[I_1[i],I_1[j])$와 $B_2[I_2[i],I_2[j])$를 비교함으로서 구할 수 있습니다. Precomputation에서 $I_{id}[i]$를 저장하는데 $O(n)$, 각각의 data structure를 계산하는데 $s_1(n)$과 $s_2(n)$의 시간이 걸리므로 총 $O(n+s_1(n)+s_2(n))$의 공간을 필요로 하며 각 쿼리당 $O(t_1(n)+t_2(n))$의 시간이 필요합니다.
+각 $id\in\lbrace1,2\rbrace$와 $0\le i\lt n$에 대하여 $B_{id}$에 속하는 최소 $j \ge i$를 나타내는 $I_{id}[i]$를 linear 시간에 계산할 수 있습니다. $B _ 1$과 $B _ 2$의 intersection이 비어있으므로 mode는 단순히 $B _ 1 [I _ 1 [i],I _ 1 [j])$와 $B _ 2 [I _ 2 [i],I _ 2 [j])$를 비교함으로서 구할 수 있습니다. Precomputation에서 $I _ {id}[i]$를 저장하는데 $O(n)$, 각각의 data structure를 계산하는데 $s _ 1 (n)$과 $s _ 2 (n)$의 시간이 걸리므로 총 $O(n + s _ 1 (n) + s _ 2(n))$의 공간을 필요로 하며 각 쿼리당 $O(t _ 1 (n) + t _ 2 (n))$의 시간이 필요합니다.
 
 $\blacksquare$
 
 이제 $A$를 $s$보다 작거나 같은 frequency를 갖는 원소들의 배열 $B_1$과 $s$보다 큰 frequency를 갖는 원소들의 배열 $B_2$로 분할합니다. $B_1$에서는 second method를 쓰면 $O(n+s^2/w)$의 공간을 통해 각 range mode query를 $O(n/s)$시간에 해결할 수 있습니다. $B_2$에서는 third method를 쓰면 $O(n)$공간을 통해 각 range mode query를 $O(\Delta)\subseteq O(n/s)$시간에 해결할 수 있습니다. 따라서 위 lemma에 의해 main theorem이 증명됩니다.
+
