@@ -119,6 +119,8 @@ $L_{n} \left\[\frac{1}{2};\frac{3}{\sqrt{2}}\right\]$ 정도로 늘어날 수 �
 
 factor base를 활용한 문제가 BOJ에 내기에는 수행 시간이 너무 오래 걸린다고 생각했는데, [이산로그가 장난이냐?](https://www.acmicpc.net/problem/21864)라는 문제가 나와서 BOJ에서도 factor base speedup을 연습해 볼 수 있게 되었습니다. 아이디어는 2,000,000부터 거꾸로 계산하는 것은 쉽다는 것입니다: 2,000,000일 때의 답을 계산해서 코드에 넣고 주어진 값을 2,000,000에서 빼서 거꾸로 계산하면 됩니다. 이산로그를 실제로 구하는 것은 위에서 논의한 내용을 적용하면 됩니다. 사용된 $N = 10^{18} + 31$이 충분히 작기 때문에 $B^{3}$ inverse 알고리즘으로도 빠른 시간에 돌아갑니다.
 
+[expand 167줄의 코드 보기]
+
 ```cpp
 #ifdef BOJ
 #pragma GCC optimize ("Ofast")
@@ -288,6 +290,8 @@ int main() {
 }
 ```
 
+[/expand]
+
 ```
 3177 / 3178
 100.00%
@@ -408,13 +412,12 @@ Quadratic Sieve는 여기에서 기민한 최적화 몇 개를 시행한 것입�
 
 아래는 quadratic sieve를 C++로 구현한 코드입니다. $\mod p$에서 제곱근을 구하는 함수는 Tonelli-Shanks, 행렬을 적용했을 때 $0$이 되는 $0$이 아닌 vector를 구하는 알고리즘은 [Wiedemann algorithm](https://en.wikipedia.org/wiki/Block_Wiedemann_algorithm)을 이용했습니다. 이 알고리즘 대신 Block Wiedemann algorithm을 사용하거나, [Block Lanczos algorithm](https://en.wikipedia.org/wiki/Block_Lanczos_algorithm)을 사용하면 속도 향상을 더욱 꾀할 수 있을 것입니다. 이 글의 주제는 factor base이기 때문에 이 부분을 성능에 신경써서 작성했고, 선형대수를 사용하는 부분은 구현만 간단하게 해 놓았습니다.
 
-[expand 634줄의 코드 보기]
+[expand 632줄의 코드 보기]
 
 ```cpp
 #include <algorithm>
 #include <bitset>
 #include <chrono>
-#include <cassert> // to be removed
 #include <cstdio>
 #include <cmath>
 #include <cstring>
@@ -1023,7 +1026,6 @@ int main() {
                 }
                 for (const auto &[p, tc]: counts) {
                     bigint temp;
-                    assert(!(tc & 1));
                     modpow(p, tc >> 1, x, xinv, u, temp);
                     modmul(right_side, temp, x, xinv, u, right_side);
                 }
