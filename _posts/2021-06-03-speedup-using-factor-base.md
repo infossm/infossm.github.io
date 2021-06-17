@@ -322,3 +322,792 @@ sys     0m0.260s
 
 ## Quadratic Sieve
 
+Quadratic Sieve는 여기에서 기민한 최적화 몇 개를 시행한 것입니다. 먼저, $N$이 충분히 큰 경우를 다룬다고 해 봅시다. 단순히 아무 수나 해 보는 것보다, $i = \left\lceil \sqrt{N} \right\rceil$ 근처부터 해 보는 게 좋지 않을까요? 왜냐하면 $\sqrt{N} \leq i \sqrt{N} + 1$이므로, $N \leq i^{2} \leq N + 2\sqrt{N} + 1$이 되어 $i^{2} \mod N = i^{2} - N$이 $\mathcal{O}(\sqrt{N})$ 수준이기 때문입니다. 즉, $\sqrt{N}$보다는 크지만 충분히 가까운 수들만 보아도 원하는 값을 얻을 수 있을 것 같습니다. 수 자체가 작기 때문에 smooth한 수를 얻을 확률도 올라갑니다.
+
+그런데, $x^{2} \mod N$이 $x^{2} - 2N$이 되려면 적어도 $x \geq \sqrt{2N}$이어야 합니다. $\sqrt{N}$부터 $\sqrt{2N}$까지는 대강 $(\sqrt{2} - 1)\sqrt{N} = \mathcal{O}(\sqrt{N})$개의 수가 있고, 이걸 다 볼 바에야 trial division을 하면 되지 않을까요? 따라서 우리는 지금부터 $\sqrt{N} \leq x \leq \sqrt{2N}$인 정수에 대해서만 smoothness를 계산하겠습니다.
+
+그러면 나눗셈을 할 필요 없이 $x^{2} - N$을 계산하여 모든 소수로 나누어보면 됩니다. 그런데, 이 값이 소수 $p$로 나누어떨어지려면 $x^{2} \equiv N \mod p$가 되어야 합니다. 이는 [Tonelli-Shanks](https://en.wikipedia.org/wiki/Tonelli%E2%80%93Shanks_algorithm) 등을 통해 굉장히 빨리 계산할 수 있으며 한 번만 하면 됩니다. 이것의 해가 존재하지 않는다면 어떤 수에 대해서도 나누어떨어지지 않는다는 것입니다. 즉, 수의 범위를 이런 식으로 제한하면 **smoothness bound의 영향 없이** 소수의 개수를 유의미하게 줄일 수 있으며, 에라토스테네스의 체처럼 하여 **적어도 한 번 이상 나누어떨어지는 소수만을 나눌 수 있습니다!**
+
+예를 들어 봅시다. $N = 10001$로 두면, 우리는 $101 \leq x \leq 141$의 범위에서만 신경쓰면 됩니다. $x^{2} - N$이 $p = 2$로 나누어떨어지려면, $x \equiv 1 \mod 2$여야 합니다. 이러한 $x$들에 $2$로 나누어떨어진다는 정보를 줍니다. (?는 아직 계산되지 않은 부분입니다.)
+
+|$x$|$x^{2} - N$|possible $p$'s|
+|:-:|:---------:|--------------|
+|$101$|?|$2$, ?|
+|$102$|?|?|
+|$103$|?|$2$, ?|
+|$104$|?|?|
+|$105$|?|$2$, ?|
+|$106$|?|?|
+|$107$|?|$2$, ?|
+|$108$|?|?|
+|$109$|?|$2$, ?|
+
+마찬가지로 $x^{2} - N$이 $p = 3$으로 나누어떨어지려면, $x^{2} \equiv 2 \mod 3$이 되어야 하는데 $2$는 $p = 3$에서의 **quadratic** residue가 아니므로 $3$으로 나누어떨어지는 것은 하나도 없습니다. QS에서는 Dixon에서 이런 부분이 최적화되는 것입니다! $x^{2} - N$이 $p = 5$로 나누어떨어지려면, $x^{2} \equiv \pm 1 \mod 5$가 되어야 하므로, $5$로 나누었을 때 나머지가 $1$ 혹은 $4$인 것들에 $5$를 추가해 줍니다.
+
+|$x$|$x^{2} - N$|possible $p$'s|
+|:-:|:---------:|--------------|
+|$101$|?|$2$, $5$, ?|
+|$102$|?|?|
+|$103$|?|$2$, ?|
+|$104$|?|$5$, ?|
+|$105$|?|$2$, ?|
+|$106$|?|$5$, ?|
+|$107$|?|$2$, ?|
+|$108$|?|?|
+|$109$|?|$2$, $5$, ?|
+
+마찬가지 방법으로 $p \leq 20$인 소수 $p$에 대해 모두 해 줍시다. $p = 7$, $p = 11$, $p = 17$의 경우는 계산을 해 보면 이차잉여가 아니게 됩니다. 따라서 실제로 추가되는 것은 $p = 13$일 때 $x \equiv \pm 2 \mod 13$과 $p = 19$일 때 $x \equiv \pm 8 \mod 19$뿐입니다.
+
+|$x$|$x^{2} - N$|possible $p$'s|
+|:-:|:---------:|--------------|
+|$101$|?|$2$, $5$|
+|$102$|?|$13$|
+|$103$|?|$2$, $19$|
+|$104$|?|$5$|
+|$105$|?|$2$|
+|$106$|?|$5$, $13$, $19$|
+|$107$|?|$2$|
+|$108$|?|*없음*|
+|$109$|?|$2$, $5$|
+
+지금은 $N = 10001$이라서 전부 계산할 수 있지만, $N$이 충분히 커지면 전체 구간에서 앞 $X$개씩만 먼저 처리해야 할 것입니다. 이 과정이 이차잉여에 대해 에라토스테네스의 체를 계산하는 과정과 유사하다고 해서 *quadratic sieve*라는 이름이 붙었습니다.
+
+이렇게 possible $p$를 계산하는 과정에서, 모든 수를 돌면서 나머지를 확인하면 **안 됩니다!** 에라토스테네스의 체처럼, $p$의 배수에 계산된 제곱근을 더하고 빼서 그 수에만 직접 더해야 합니다. 그렇게 하면 이 과정을 하는데 $X \sum_{p \leq B} \frac{1}{p} \sim X \log \log B$ 시간이 소요됩니다.
+
+이제 실제로 $x^{2} - N$을 계산하면 되는데, 만일 $x^{2} - N$을 알고 있을 경우 $(x + 1)^{2} - N = (x^{2} - N) + (x + x + 1)$로 표현할 수 있으므로, 곱셈 없이 덧셈 세 번으로 다음 수를 알 수 있습니다. 수가 크면 곱셈보다는 덧셈이 빠르므로 의미있는 최적화입니다. 각 수를 구한 다음, 예전처럼 8개의 소수 $p$로 전부 나누어 볼 필요 없이 possible $p$'s에 대해서만 나누어 보면 됩니다.
+
+|$x$|$x^{2} - N$|possible $p$'s|
+|:-:|:---------:|--------------|
+|$101$|$200 = 2^{3} \cdot 5^{2} \cdot \color{blue}{1}$|$2$, $5$|
+|$102$|$403 = 13 \cdot \color{red}{31}$|$13$|
+|$103$|$608 = 2^{5} \cdot 19 \cdot \color{blue}{1}$|$2$, $19$|
+|$104$|$815 = 5 \cdot \color{red}{163}$|$5$|
+|$105$|$1024 = 2^{10} \cdot \color{blue}{1}$|$2$|
+|$106$|$1235 = 5 \cdot 13 \cdot 19 \cdot \color{blue}{1}$|$5$, $13$, $19$|
+|$107$|$1448 = 2^{3} \cdot \color{red}{181}$|$2$|
+|$108$|$1663 = \color{red}{1663}$|*없음*|
+|$109$|$1880 = 2^{3} \cdot 5 \cdot \color{red}{47}$|$2$, $5$|
+
+이후의 과정은 Dixon's factorization algorithm과 동일합니다. 충분히 많은 relation을 계산한 다음, 선형대수를 이용해서 제곱을 맞춥니다.
+
+이렇게 하면 나누는 횟수가 많이 줄어서, 놀랍게도\\\[B = \exp \left(\frac{1}{2}\cdot \sqrt{\log N \cdot W(2e^{2} \log N)}\right)\\\] 정도의 $B$가 가장 빠르고, 알고리즘의 전체 수행 시간은 $L_{n}\left[\frac{1}{2}; 1\right]$이 된다고 합니다.
+
+## cutoff
+
+위에서 "선형대수를 이용해 제곱을 맞춘다"라고 설명한 부분은, 사실 여기서 다루고자 하는 범위와는 많이 벗어나는 선형대수 내용이기 때문에 일부러 조금 얼버무린 감이 있습니다. 정확하게 알아보는 것은 선형대수와 현대대수에 맡기고, 선형대수의 힘을 빌리기 전에 우리가 할 수 있는 간단한 것들을 알아봅시다.
+
+### count 1 cutoff
+
+어떤 소수 $p_{i}$의 홀수 제곱이 relation에서 **단 한 번만** 나타나면, 그 relation은 쓰이지 않기 때문에 제거할 수 있습니다. 왜냐하면 이 relation이 쓰이면, 다른 relation에는 $p_{i}$의 홀수 제곱이 전혀 나타나지 않기 때문에 우변의 모든 지수를 짝수로 맞출 수 없기 때문입니다. 상대적으로 간단한 최적화이고, $\frac{1}{10}$ ~ $\frac{1}{100}$ 정도의 relation을 줄여 주기 때문에 애용됩니다.
+
+### count 2 cutoff
+
+어떤 소수 $p_{i}$의 홀수 제곱이 relation에서 **단 두 번** 나타나면, 그 relation들은 둘 다 쓰이거나 둘 다 쓰이지 않습니다. 따라서 두 relation을 합칠 수 있습니다. 이유는 count 1 cutoff와 비슷합니다. 간단한 최적화이지만, sparsity를 해치기 때문에 그렇게 자주 사용되지는 않습니다.
+
+## Quadratic Sieve 코드
+
+아래는 quadratic sieve를 C++로 구현한 코드입니다. $\mod p$에서 제곱근을 구하는 함수는 Tonelli-Shanks, 행렬을 적용했을 때 $0$이 되는 $0$이 아닌 vector를 구하는 알고리즘은 [Wiedemann algorithm](https://en.wikipedia.org/wiki/Block_Wiedemann_algorithm)을 이용했습니다. 이 알고리즘 대신 Block Wiedemann algorithm을 사용하거나, [Block Lanczos algorithm](https://en.wikipedia.org/wiki/Block_Lanczos_algorithm)을 사용하면 속도 향상을 더욱 꾀할 수 있을 것입니다. 이 글의 주제는 factor base이기 때문에 이 부분을 성능에 신경써서 작성했고, 선형대수를 사용하는 부분은 구현만 간단하게 해 놓았습니다.
+
+[expand 634줄의 코드 보기]
+
+```cpp
+#include <algorithm>
+#include <bitset>
+#include <chrono>
+#include <cassert> // to be removed
+#include <cstdio>
+#include <cmath>
+#include <cstring>
+#include <map>
+#include <random>
+#include <string>
+#include <vector>
+using namespace std;
+
+int modpow(int a, int b, int p) {
+    int r;
+    for (r=1; b; b>>=1) {
+        if (b & 1) r = 1LL * r * a % p;
+        a = 1LL * a * a % p;
+    }
+    return r;
+}
+
+int berlecamp_massey(const vector<int> &inst, vector<int> &result, int p) {
+    int L = 0, m = 1;
+    const int N = (int)inst.size();
+    int b = 1;
+
+    vector<int> B, C;
+    B.push_back(1);
+    C.push_back(1);
+
+    for (int n = 0; n < N; ++n) {
+        long long int d = inst[n];
+        for (int i = 1; i <= L; ++i) {
+            d += 1LL * C[i] * inst[n - i] % p;
+        }
+        d %= p;
+        if (d == 0) {
+            ++m;
+        } else if (2 * L <= n) {
+            vector<int> T(C);
+            const int coeff = 1LL * (p - d) * modpow(b, p-2, p) % p;
+            const int min_C_size = (int)B.size() + m;
+            if (C.size() < min_C_size) {
+                C.resize(min_C_size);
+            }
+            for (int i=0; i<B.size(); ++i) {
+                auto &now = C[i + m];
+                now = (now + 1LL * coeff * B[i]) % p;
+            }
+            L = n + 1 - L;
+            B.resize(T.size());
+            copy(T.begin(), T.end(), B.begin());
+            b = d;
+            m = 1;
+        } else {
+            const int coeff = 1LL * (p - d) * modpow(b, p-2, p) % p;
+            const int min_C_size = (int)B.size() + m;
+            if (C.size() < min_C_size) {
+                C.resize(min_C_size);
+            }
+            for (int i=0; i<B.size(); ++i) {
+                auto &now = C[i + m];
+                now = (now + 1LL * coeff * B[i]) % p;
+            }
+            ++m;
+        }
+    }
+    result.resize(C.size());
+    copy(C.begin(), C.end(), result.begin());
+    return L;
+}
+
+void mat_apply(const vector<pair<int, int> > &spmat, bool *x, bool *y) {
+    for (const auto &[cy, cx]: spmat) {
+        if (x[cx]) {
+            y[cy] = !y[cy];
+        }
+    }
+}
+
+mt19937 mt((unsigned long long)chrono::high_resolution_clock::now().time_since_epoch().count());
+bool wiedemann(int sz, const vector<pair<int, int> > &spmat, bool *res) {
+    uniform_int_distribution bit(0, 1);
+    bool *xbase = new bool[sz];
+    bool *now = new bool[sz];
+    bool *y = new bool[sz];
+    for (int i=0; i<sz; ++i) {
+        xbase[i] = bit(mt) ? true : false;
+        y[i] = bit(mt) ? true : false;
+    }
+    memset(now, 0, sizeof(bool) * sz);
+    mat_apply(spmat, xbase, now);
+    bool *temp = new bool[sz];
+    vector<int> bm_inst;
+    for (int i=0; i<3*sz+3; ++i) {
+        int bmv = 0;
+        for (int j=0; j<sz; ++j) {
+            if (now[j] && y[j]) {
+                ++bmv;
+            }
+        }
+        bmv &= 1;
+        bm_inst.push_back(bmv);
+        memset(temp, 0, sizeof(bool) * sz);
+        mat_apply(spmat, now, temp);
+        memcpy(now, temp, sizeof(bool) * sz);
+    }
+    memcpy(now, xbase, sizeof(bool) * sz);
+    vector<int> rel;
+    berlecamp_massey(bm_inst, rel, 2);
+    reverse(rel.begin(), rel.end());
+    for (const auto &coeff: rel) {
+        if (coeff) {
+            for (int i=0; i<sz; ++i) {
+                if (now[i]) {
+                    res[i] = !res[i];
+                }
+            }
+        }
+        memset(temp, 0, sizeof(bool) * sz);
+        mat_apply(spmat, now, temp);
+        memcpy(now, temp, sizeof(bool) * sz);
+    }
+    delete[] xbase;
+    delete[] now;
+    delete[] y;
+    {
+        int i;
+        for (i=0; i<sz; ++i) {
+            if (res[i]) {
+                break;
+            }
+        }
+        if (i >= sz) {
+            delete[] temp;
+            return false;
+        }
+    }    
+    memset(temp, 0, sizeof(bool) * sz);
+    mat_apply(spmat, res, temp);
+    for (int i=0; i<sz; ++i) {
+        if (temp[i]) {
+            delete[] temp;
+            return false;
+        }
+    }
+    delete[] temp;
+    return true;
+}
+
+class bigint {
+public:
+    vector<unsigned int> v;
+    bigint(unsigned long long x = 0) {
+        if (x) {
+            v.push_back(x & 0x7FFFFFFFU);
+            v.push_back((x >> 31) & 0x7FFFFFFFU);
+            v.push_back((x >> 62) & 0x7FFFFFFFU);
+            while (!this->v.empty() && !this->v.back()) this->v.pop_back();
+        }
+    }
+    bigint(initializer_list<unsigned int> il) {
+        v = il;
+        while (!this->v.empty() && !this->v.back()) this->v.pop_back();
+    }
+    bigint(const bigint &x) {
+        *this = x;
+    }
+    unsigned int size() const {
+        return this->v.size();
+    }
+    bigint &operator=(const bigint &other) {
+        if (this == &other) return *this;
+        this->v.resize(other.size());
+        copy(other.v.begin(), other.v.end(), this->v.begin());
+        return *this;
+    }
+    bigint &operator+=(const bigint &other) {
+        if (other.size() > this->size()) {
+            this->v.resize(other.size());
+        }
+        unsigned int carry = 0U, i;
+        for (i=0; i<other.size(); ++i) {
+            carry = (this->v[i] += other.v[i] + carry) >> 31;
+            this->v[i] &= 0x7fff'ffffU;
+        }
+        for (; carry && i<this->size(); ++i) {
+            carry = (this->v[i] += carry) >> 31;
+            this->v[i] &= 0x7fff'ffffU;
+        }
+        if (carry) {
+            this->v.push_back(carry);
+        }
+        return *this;
+    }
+    bigint &operator-=(const bigint &other) {
+        if (other.size() > this->size()) {
+            this->v.resize(other.size());
+        }
+        unsigned int carry = 0U, i;
+        for (i=0; i<other.size(); ++i) {
+            carry = (this->v[i] -= other.v[i] + carry) >> 31;
+            this->v[i] &= 0x7fff'ffffU;
+        }
+        for (; carry && i<this->size(); ++i) {
+            carry = (this->v[i] -= carry) >> 31;
+            this->v[i] &= 0x7fff'ffffU;
+        }
+        while (!this->v.empty() && !this->v.back()) this->v.pop_back();
+        return *this;
+    }
+    bigint &operator*=(const bigint &other) {
+        vector<unsigned long long> res;
+        res.resize(this->size() + other.size());
+        for (int i=0; i<this->size(); ++i) {
+            for (int j=0; j<other.size(); ++j) {
+                unsigned long long x = (unsigned long long)this->v[i] * other.v[j];
+                res[i+j] += x & 0x7fff'ffffU;
+                res[i+j+1] += x >> 31;
+            }
+        }
+        this->v.resize(this->size() + other.size());
+        unsigned long long carry = 0;
+        for (int i=0; i<res.size(); ++i) {
+            this->v[i] = (res[i] += carry) & 0x7fff'ffff;
+            carry = res[i] >> 31;
+        }
+        while (!this->v.empty() && !this->v.back()) this->v.pop_back();
+        return *this;
+    }
+    bigint &operator<<=(unsigned int x) {
+        if (x) {
+            this->v.insert(this->v.begin(), x, 0U);
+        }
+        return *this;
+    }
+    bigint &operator>>=(unsigned int x) {
+        if (x) {
+            if (this->size() <= x) {
+                this->v.clear();
+            } else {
+                this->v.erase(this->v.begin(), this->v.begin() + x);
+            }
+        }
+        return *this;
+    }
+    bigint &operator/=(const unsigned int x) {
+        unsigned long long now = 0;
+        for (auto it = this->v.rbegin(); it != this->v.rend(); ++it) {
+            auto &v = *it;
+            (now <<= 31) |= v;
+            v = now / x;
+            now %= x;
+        }
+        while (!this->v.empty() && !this->v.back()) this->v.pop_back();
+        return *this;
+    }
+    unsigned int operator%(unsigned int x) const {
+        unsigned now = 0;
+        for (auto it = this->v.rbegin(); it != this->v.rend(); ++it) {
+            now = (((unsigned long long)now << 31) | *it) % x;
+        }
+        return now;
+    }
+    bool operator==(const bigint &other) const {
+        return this->v == other.v;
+    }
+    void invert(const unsigned int u) {
+        if (this->size() > u) {
+            this->v.clear();
+            return;
+        }
+        unsigned int fr = min(0x8000'0000U / this->v.back() + 1, 0x7fff'ffffU);
+        bigint res(fr);
+        res <<= u - this->size();
+        int ed = 2 * (int)log2(u) + 5;
+        for (int i=0; i<ed; ++i) {
+            bigint temp(res);
+            res *= 2U;
+            ((temp *= temp) *=* this) >>= u;
+            res -= temp;
+        }
+        *this = res;
+    }
+    double log() const { // rough log
+        if (!this->size()) {
+            return -INFINITY;
+        }
+        if (this->size() <= 2) {
+            unsigned long long res = this->v.back();
+            if (this->size() == 2) {
+                (res <<= 31) |= this->v.front();
+            }
+            return (double)logl(res);
+        }
+        const auto rev_it = this->v.rbegin();
+        long double now = rev_it[2];
+        (now /= 0x100'000'000ULL) += rev_it[1];
+        (now /= 0x100'000'000ULL) += rev_it[0];
+        return (double)(logl(now) + logl(2ULL) * (this->size() - 1) * 31);
+    }
+    void input() {
+        this->v.clear();
+        char c;
+        while ('0' <= (c = getchar()) && c <= '9') {
+            ((*this) *= 10U) += c & 15;
+        }
+    }
+    void print() const {
+        if (this->v.empty()) {
+            printf("0");
+            return;
+        }
+        char *wf = new char[this->size() * 10 + 5];
+        char *ptr = wf + (this->size() * 10 + 3);
+        *ptr = 0;
+        bigint temp(*this);
+        while (!temp.v.empty()) {
+            unsigned int r = temp % 1'000'000'000U;
+            char last = *ptr;
+            sprintf(ptr - 9, "%09u", r);
+            *ptr = last;
+            ptr -= 9;
+            temp /= 1'000'000'000U;
+        }
+        while (*ptr == '0') ++ptr;
+        printf("%s", ptr);
+        delete[] wf;
+    }
+};
+
+void modmul(const bigint &a, const bigint &b, const bigint &n, const bigint &ninv, const int u, bigint &res) {
+    (res = a) *= b;
+    bigint temp(res);
+    res -= (((temp *= ninv) >>= u) *= n);
+}
+
+void modpow(const bigint &a, int b, const bigint &n, const bigint &ninv, const int u, bigint &res) {
+    bigint temp(a);
+    for (res=1U; b; b>>=1) {
+        if (b & 1) modmul(res, temp, n, ninv, u, res);
+        modmul(temp, temp, n, ninv, u, temp);
+    }
+}
+
+void mod(const bigint &a, const bigint &b, bigint &res) {
+    bigint binv(b);
+    int u = max(a.size(), b.size()) * 3 + 2;
+    binv.invert(u);
+    bigint temp(a);
+    (res = a) -= (((temp *= binv) >>= u) *= b);
+}
+
+void gcd(const bigint &a, const bigint &b, bigint &c) {
+    int u = max(a.size(), b.size()) * 5 + 4;
+    bigint A(a), B(b);
+    bigint C;
+    mod(A, B, C);
+    while (!C.v.empty()) {
+        A = B;
+        B = C;
+        mod(A, B, C);
+    }
+    c = B;
+}
+
+void isqrt(const bigint &c, bigint &x) {
+    x.v.clear();
+    unsigned long long est = c.v.back();
+    if (!(c.size() & 1)) {
+        (est <<= 31) |= c.v[c.size() - 2];
+    }
+    x.v.push_back((unsigned int)sqrtl(est) + 1);
+    x <<= (c.size() - 1) >> 1;
+    int ed = 2 * (int)log2(c.size()) + 5;
+    for (int i=0; i<ed; ++i) {
+        bigint u(x);
+        u *= 2U;
+        const unsigned int invert_val = max(c.size(), x.size() * 2) + 3;
+        u.invert(invert_val);
+        (x *= x) += c;
+        (x *= u) >>= invert_val;
+    }
+}
+
+int tonelli_shanks(int x, int p) {
+    if (p <= 1) {
+        return -1;
+    }
+    if (p == 2) {
+        return x & 1;
+    }
+    if (modpow(x, p >> 1, p) != 1) {
+        return -1;
+    }
+    int z;
+    for (z=2; z<p-1; ++z) {
+        if (modpow(z, p >> 1, p) != 1) {
+            break;
+        }
+    }
+    int Q = p - 1, S = 0;
+    while (!(Q & 1)) {
+        ++S;
+        Q >>= 1;
+    }
+    int R = modpow(x, (Q + 1) >> 1, p), t = modpow(x, Q, p);
+    const int zQ = modpow(z, Q, p);
+    int w = zQ;
+    for (int M = S - 2; M >= 0; --M) {
+        if (modpow(t, 1 << M, p) != 1) {
+            t = 1LL * t * (1LL * w * w % p) % p;
+            R = 1LL * R * w % p;
+        }
+        w = 1LL * w * w % p;
+    }
+    return min(R, p - R);
+}
+
+void init(int B, const bigint &n, vector<pair<int, int> > &res) {
+    bool *is_not_prime = new bool[B + 1];
+    memset(is_not_prime, 0, sizeof(bool) * (B + 1));
+    for (int i=2; i<=B; ++i) {
+        if (!is_not_prime[i]) {
+            for (int j=2*i; j<=B; j+=i) {
+                is_not_prime[j] = true;
+            }
+            int x = tonelli_shanks(n % i, i);
+            if (x >= 0) {
+                res.emplace_back(i, x);
+            }
+        }
+    }
+    delete[] is_not_prime;
+}
+
+const int BULK = 3e6;
+
+int guess_B(const bigint &n) {
+    double x = n.log();
+    double Wx = 2 * x * exp(2);
+    double Wy = log(Wx) - log(log(Wx));
+    return (int)exp(sqrt(Wy * x) / 2.) + 20;
+}
+
+int main() {
+    bigint x;
+    x.input();
+
+    bigint now;
+    isqrt(x, now);
+    {
+        bigint temp(now);
+        temp *= temp;
+        if (temp == x) {
+            now.print();
+            return 0;
+        }
+    }
+    now += 1U;
+    bigint now_value(now);
+    (now_value *= now_value) -= x;
+    vector<pair<int, int> > base;
+    int B = guess_B(x);
+    init(B, x, base);
+    for (const auto &[p, x]: base) {
+        if (x == 0) {
+            bigint(p).print();
+            return 0;
+        }
+    }
+    printf("B = %d, prime # = %lu\n", B, base.size());
+    bigint started(now);
+
+    // step 1: find relations
+    vector<int> *possible_factors = new vector<int>[BULK];
+    vector<pair<unsigned long long, vector<pair<int, unsigned int> > * > > relation_pointers;
+    int cnt = 0;
+    const int object = max((int)(base.size() * 1.15), 100);
+    unsigned long long dist_from_start = 0;
+    while (cnt <= object) {
+        for (int i=0; i<BULK; ++i) {
+            possible_factors[i].clear();
+        }
+        for (const auto &[p, x]: base) {
+            int start = now % p;
+            for (int i = x >= start ? x - start : p + x - start; i <= BULK; i += p) {
+                possible_factors[i].push_back(p);
+            }
+            if (2 * x != p) {
+                for (int i = (p - x) >= start ? p - x - start : 2 * p - x - start; i <= BULK; i += p) {
+                    possible_factors[i].push_back(p);
+                }
+            }
+        }
+        vector<pair<int, unsigned int> > *factorization = new vector<pair<int, unsigned int> >;
+        bool changed = false;
+        for (int i=0; i<BULK; ++i) {
+            bigint temp(now_value);
+            for (const auto &p: possible_factors[i]) {
+                unsigned int c = 0;
+                while (temp % p == 0) {
+                    temp /= p;
+                    ++c;
+                }
+                factorization->emplace_back(p, c);
+            }
+            if (temp == 1U) {
+                relation_pointers.emplace_back(dist_from_start, factorization);
+                factorization = new vector<pair<int, unsigned int> >;
+                ++cnt;
+                changed = true;
+            } else {
+                factorization->clear();
+            }
+            ((now_value += now) += now) += 1U;
+            now += 1U;
+            ++dist_from_start;
+        }
+        if (changed) {
+            printf("\r%6.2lf%%, found %d", min(cnt, object) * 100ULL / (double)object, cnt);
+            fflush(stdout);
+        }
+        delete factorization;
+    }
+    delete[] possible_factors;
+    printf("\n");
+    fflush(stdout);
+    // step 2-a: trivial cutoff
+    size_t last_count;
+    do {
+        last_count = relation_pointers.size();
+        map<int, unsigned int> count_map;
+        for (int i=0; i<cnt; ++i) {
+            const auto &now_vector = *relation_pointers[i].second;
+            for (const auto &[p, c]: now_vector) {
+                if (c & 1) {
+                    ++count_map[p];
+                }
+            }
+        }
+        const auto lowest = [] (const vector<pair<int, unsigned int> > &relation, const map<int, unsigned int> &counts) {
+            unsigned int res = -1U;
+            for (const auto &[p, c]: relation) {
+                if (c & 1) {
+                    res = min(res, counts.find(p)->second);
+                }
+            }
+            return res;
+        };
+        sort(relation_pointers.begin(), relation_pointers.end(), [=] (const auto &u, const auto &v) {
+            const unsigned int uval = lowest(*u.second, count_map);
+            const unsigned int vval = lowest(*v.second, count_map);
+            return uval > vval;
+        });
+        while (!relation_pointers.empty() && lowest(*relation_pointers.back().second, count_map) == 1) {
+            relation_pointers.pop_back();
+        }
+    } while (last_count != relation_pointers.size());
+    printf("trivial cutoff: %lu\n", relation_pointers.size());
+    // step 2-b: matrix construction and wiedemann
+    vector<int> reduced_primes;
+    for (int i=0; i<cnt; ++i) {
+        const auto &now_vector = *(relation_pointers[i].second);
+        for (const auto &[p, c]: now_vector) {
+            if (c & 1) {
+                reduced_primes.push_back(p);
+            }
+        }
+    }
+    sort(reduced_primes.begin(), reduced_primes.end());
+    reduced_primes.erase(unique(reduced_primes.begin(), reduced_primes.end()), reduced_primes.end());
+    printf("# of reduced primes: %lu\n", reduced_primes.size());
+    if (reduced_primes.size() >= relation_pointers.size()) {
+        fprintf(stderr, "ERROR: # of reduced primes is bigger than or equal to # of relation\n");
+        fprintf(stderr, "try again with more relations\n");
+        return -1;
+    }
+    while (true) {
+        vector<pair<int, int> > matrix;
+        for (int i=0; i<reduced_primes.size(); ++i) {
+            const auto &v = *relation_pointers[i].second;
+            for (const auto &[p, c]: v) {
+                if (c & 1) {
+                    const int j = distance(reduced_primes.begin(), lower_bound(reduced_primes.begin(), reduced_primes.end(), p));
+                    matrix.emplace_back(j, i);
+                }
+            }
+        }
+        sort(matrix.begin(), matrix.end()); // for cache hit
+        bool *result = new bool[reduced_primes.size()];
+        memset(result, 0, sizeof(bool) * reduced_primes.size());
+        for (int j=0; j<10; ++j) {
+            bigint xinv(x);
+            int u = (int)x.size() * 5 + 4;
+            xinv.invert(u);
+            if (wiedemann((int)reduced_primes.size(), matrix, result)) {
+                bigint left_side(1), right_side(1);
+                map<int, unsigned int> counts;
+                for (int i=0; i<reduced_primes.size(); ++i) {
+                    if (result[i]) {
+                        bigint temp(relation_pointers[i].first);
+                        temp += started;
+                        modmul(left_side, temp, x, xinv, u, left_side);
+                        for (const auto &[p, c]: *relation_pointers[i].second) {
+                            counts[p] += c;
+                        }
+                    }
+                }
+                for (const auto &[p, tc]: counts) {
+                    bigint temp;
+                    assert(!(tc & 1));
+                    modpow(p, tc >> 1, x, xinv, u, temp);
+                    modmul(right_side, temp, x, xinv, u, right_side);
+                }
+                bigint temp(left_side);
+                temp += right_side;
+                if (!(temp == x) && !(left_side == right_side)) {
+                    bigint temp2;
+                    gcd(temp, x, temp2);
+                    temp2.print();
+                    puts("");
+                    return 0;
+                }
+            }
+        }
+        delete[] result;
+        printf("attempt failed, shuffling...\n");
+        shuffle(relation_pointers.begin(), relation_pointers.end(), mt);
+    }
+    return 0;
+}
+```
+
+[/expand]
+
+### 테스트
+
+몇 가지 테스트 결과를 봅시다.
+
+```
+$ time echo 340282366920938463463374607431768211457 | ./main
+B = 46530, prime # = 2394
+100.00%, found 2771
+trivial cutoff: 2539
+# of reduced primes: 2313
+59649589127497217
+
+real    0m36.290s
+user    0m36.232s
+sys     0m0.051s
+```
+
+입력으로 주어진 수는 일곱 번째 페르마 수 $2^{2^{7}} + 1$이고, 실제로\\\[
+    2^{2^{7}} + 1 = \color{blue}{59649589127497217} \cdot 5704689200685129054721
+\\\]이기 때문에 약수를 잘 구했다고 할 수 있습니다. 전체 시간 중 대부분의 시간을 relation을 구하는 데 사용했습니다.
+
+```
+$ time echo 10315820593624901285660301591780405139431637 | ./main
+B = 94691, prime # = 4522
+100.00%, found 5221
+trivial cutoff: 4785
+# of reduced primes: 4314
+attempt failed, shuffling...
+attempt failed, shuffling...
+4587948617830910535641
+
+real    2m56.709s
+user    2m56.578s
+sys     0m0.130s
+```
+
+입력으로 주어진 $N = 10315820593624901285660301591780405139431637$은 제가 만들어낸 수이고, 2019년 Number Theoretic Algorithms 스터디를 진행할 때 만들었습니다. 원문이 궁금하신 분들은 [이곳](https://site.thekipa.com/nta-2019/week6.pdf)을 보시면 됩니다. 만들 당시만 해도 WolframAlpha가 소인수분해를 굉장히 힘겹게 했었는데, 이제 캐시되었는지 성능이 좋아졌는지 곧바로 하더라구요. 무서운 놈들...
+
+원문의 문제는 이것으로 RSA 암호를 푸는 것이었지만, 여기에서는 소인수분해 결과를 위주로 살펴봅시다. 일단 결과는\\\[
+    N = 2248460358412211896157 \cdot \color{blue}{4587948617830910535641}
+\\\]이기 때문에 맞습니다.
+
+전체 시간 중 절반 정도를 relation 찾는 데에, 절반 정도를 실제로 푸는 데에 사용했는데, Wiedemann algorithm이 random algorithm이다 보니 좋은 해를 곧바로 찾으면 빨리 끝나고 그렇지 않으면 벡터들을 섞으면서 다른 결론을 노리도록 코드를 작성했습니다. Block Wiedemann algorithm을 사용하면 같은 시간에 더 많은 결과를 볼 수 있기 때문에, 더욱 안정적이고 빠르게 찾을 수 있을 것으로 기대됩니다.
+
+```
+$ time echo 157513841666999107978961658317028523253878748139938874167 | ./main
+B = 638663, prime # = 25970
+100.00%, found 29866 
+trivial cutoff: 27053
+# of reduced primes: 24817
+29601658021629044173527313547
+
+real    85m53.319s
+user    85m53.032s
+sys     0m0.271s
+```
+
+입력으로 주어진 $N = 157513841666999107978961658317028523253878748139938874167$은 [이 사이트](https://asecuritysite.com/encryption/random3?val=96)에서 96-bit 소수 두 개를 곱해서 만들었습니다. 결과는\\\[
+    N = 5321115511567239427157507461 \cdot \color{blue}{29601658021629044173527313547}
+\\\]이기 때문에 맞습니다. 특히 이 경우는 [Pollard's rho](https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm)가 사이클 위를 1초에 $10^{9}$개 돌아다닌다고 해도 소요 시간의 중앙값이 14시간 2분 42초이기 때문에, QS의 강력함을 잘 보여줍니다.
+
+80분 정도 관계를 찾았고, Wiedemann algorithm은 5분 정도 돌았습니다. 이 글의 주제와는 크게 관련이 없지만, 둘 모두 병렬화할 수 있기에 병렬화하면 또 얼마나 빨라질지도 기대됩니다.
+
