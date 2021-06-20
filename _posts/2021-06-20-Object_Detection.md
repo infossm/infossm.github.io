@@ -104,8 +104,11 @@ object detection을 비롯한 AI tasks들에 대한 trend를 확인하면, 현�
 # 참고 문헌
 
 ['Object Detection in 20 Years: A Survey'](https://arxiv.org/abs/1905.05055)
+
 ['Objects365: A Large-Scale, High-Quality Dataset for Object Detection'](https://ieeexplore.ieee.org/document/9009553)
+
 ['Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks'](https://arxiv.org/abs/1506.01497)
+
 ['You Only Look Once: Unified, Real-Time Object Detection'](https://arxiv.org/abs/1506.02640)
 
 
