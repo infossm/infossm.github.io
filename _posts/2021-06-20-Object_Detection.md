@@ -42,7 +42,7 @@ neural approach method의 경우, CNN, YOLO, Retina-Net, FCOS 등 여러가지 �
 
 2-stage detector의 경우, regional proposal과 classification이 순차적으로 이루어지는 모델입니다. Regional Proposal 과정이 먼저 이루어지며, 이 과정에서 image 내에 object가 있을 법한 영역인 RoI(Region of Interest)를 찾아냅니다. 이러한 영역들을 발견하고 나면 그 이후에 RoI들에 대하여 object classification을 진행하게 됩니다.
 
-대표적으로 CNN 계열 모델(R-CNN, Faster R-CNN, DenseNet)들이 해당됩니다. RoI를 먼저 찾아내고나서 classification을 순차적으로 진행하게 되므로, 비교적 느리다는 단점이 있지만, RoI를 먼저 찾아내기 때문에 classification 과정에서의 noise가 적어 정확도는 비교적 높다는 장정이 있습니다.
+대표적으로 CNN 계열 모델(R-CNN, Faster R-CNN, DenseNet)들이 해당됩니다. RoI를 먼저 찾아내고나서 classification을 순차적으로 진행하게 되므로, 비교적 느리다는 단점이 있지만, RoI를 먼저 찾아내기 때문에 classification 과정에서의 noise가 적어 정확도는 비교적 높다는 장점이 있습니다.
 
 ![Faster R-CNN](/assets/images/VennTum/Object_Detection/object_detection3.png)
 
