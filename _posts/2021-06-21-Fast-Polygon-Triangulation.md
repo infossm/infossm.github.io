@@ -318,7 +318,7 @@ void triangulate(const vector<point<T>> &a, auto process_triangle){
 		if(a[i] < a[pi] && a[i] < a[ni]){
 			if(doubled_signed_area(a[pi], a[i], a[ni]) > 0){ // Start
 				int u = new_node(i), v = new_node(i);
-				events.insert({{a[i], a[pi]}, {{u, v}, {u, -1}}});
+				events.insert({ {a[i], a[pi]}, { {u, v}, {u, -1} } });
 				roots.insert(roots.end(), {u, v});
 			}
 			else{ // Split
@@ -337,8 +337,8 @@ void triangulate(const vector<point<T>> &a, auto process_triangle){
 					roots.push_back({w1, w2});
 					next[w2] = u;
 					next[it->second.endpoint[0]] = v;
-					events.insert(it, {{a[i], a[pi]}, {{w1, u}, {-1, u}}});
-					it->second = {{v, it->second.endpoint[1]}, {v, -1}};
+					events.insert(it, { {a[i], a[pi]}, { {w1, u}, {-1, u} } });
+					it->second = { {v, it->second.endpoint[1]}, {v, -1} };
 				}
 				else{
 					int j = it->second.helper[1];
@@ -347,9 +347,9 @@ void triangulate(const vector<point<T>> &a, auto process_triangle){
 					roots.push_back({w1, w2});
 					next[w1] = v;
 					next[it->second.endpoint[1]] = u;
-					events.insert(it, {{a[i], a[pi]}, {{it->second.endpoint[0], u}, {-1, u}}});
+					events.insert(it, { {a[i], a[pi]}, { {it->second.endpoint[0], u}, {-1, u} } });
 					it->first.p = a[id[j]], it->first.q = a[(id[j] + n - 1) % n];
-					it->second = {{v, w2}, {v, -1}};
+					it->second = { {v, w2}, {v, -1} };
 				}
 			}
 		}
@@ -378,7 +378,7 @@ void triangulate(const vector<point<T>> &a, auto process_triangle){
 					next[r->second.helper[1]] = v;
 				}
 				else next[r->second.endpoint[0]] = v;
-				r->second = {{l->second.endpoint[0], r->second.endpoint[1]}, {u, v}};
+				r->second = { {l->second.endpoint[0], r->second.endpoint[1]}, {u, v} };
 				events.erase(l);
 			}
 		}
@@ -395,7 +395,7 @@ void triangulate(const vector<point<T>> &a, auto process_triangle){
 				else{
 					next[it->second.endpoint[0]] = u;
 				}
-				it->second = {{u, it->second.endpoint[1]}, {u, -1}};
+				it->second = { {u, it->second.endpoint[1]}, {u, -1} };
 			}
 			else{ // Right
 				if(~it->second.helper[0] && ~it->second.helper[1]){
@@ -408,7 +408,7 @@ void triangulate(const vector<point<T>> &a, auto process_triangle){
 					next[it->second.endpoint[1]] = u;
 				}
 				it->first.p = a[i], it->first.q = a[pi];
-				it->second = {{it->second.endpoint[0], u}, {-1, u}};
+				it->second = { {it->second.endpoint[0], u}, {-1, u} };
 			}
 		}
 	}
