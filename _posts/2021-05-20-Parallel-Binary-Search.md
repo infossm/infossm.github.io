@@ -6,7 +6,6 @@ author: rdd6584
 tags: [algorithm]
 ---
 
-
 이 게시글은 이분 탐색에 대한 지식을 필요로 합니다.
 그리고 union-find, segment tree 자료구조에 대해 알고 있으면 좋습니다.
 
