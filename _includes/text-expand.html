@@ -1,0 +1,53 @@
+<script>
+  var elements = document.querySelectorAll('p');
+  var checkRegex = /^\[expand(?:\s+(.*))?\]$/;
+  Array.prototype.forEach.call(elements, function(el, i) {
+    var regexRes;
+    if ((regexRes = checkRegex.exec(el.innerHTML))) {
+      var text = regexRes[1] === undefined ? '더 보기...' : regexRes[1];
+      var newElem = document.createElement('div');
+      var innerElem = el.nextElementSibling;
+      var i = 0;
+      while (innerElem !== null && (innerElem.tagName.toLowerCase() !== 'p' || innerElem.innerHTML !== '[/expand]')) {
+        var nextElem = innerElem.nextElementSibling;
+        innerElem.parentNode.removeChild(innerElem);
+        newElem.appendChild(innerElem);
+        innerElem = nextElem;
+        if (++i > 10) {
+          break;
+        }
+      }
+      if (innerElem !== null) {
+        innerElem.parentNode.removeChild(innerElem);
+      }
+      el.after(newElem);
+      el.innerHTML = '➤&nbsp;<a href="javascript:;" onclick="expand(this);">' + text + '</a>';
+
+      var lastClose = document.createElement('p');
+      lastClose.innerHTML = '➤&nbsp;<a href="javascript:;" onclick="expandLast(this);">접기</a>';
+      newElem.appendChild(lastClose);
+      newElem.style.display = 'none';
+    }
+  });
+
+  function toggle(element) {
+    if (element.style.display === 'none') {
+      element.style.display = 'block';
+    } else {
+      element.style.display = 'none';
+    }
+  }
+
+  function expand(element) {
+    element = element.parentNode;
+    while (element.tagName.toLowerCase() !== 'div') {
+      element = element.nextElementSibling;
+    }
+    toggle(element);
+  }
+
+  function expandLast(element) {
+    element = element.parentNode.parentNode;
+    toggle(element);
+  }
+</script>
