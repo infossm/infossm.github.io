@@ -127,43 +127,27 @@ Monotone polygon에는 split vertex와 merge vertex가 존재하지 않습니다
 <h3 id="sweepline">Sweepline Events</h3>
 
 자세한 알고리즘은 다음과 같습니다.
-
 1. Polygon의 각 점을 오름차순으로 스캔합니다.
-
 2. 교차하지 않는 선분들을 sweepline과의 교점을 기준으로 정렬된 상태로 저장하는 data structure $D$를 준비합니다. 각 선분은 현재 sweepline과 교차하는 monotone component의 위쪽 직선을 나타냅니다. 또한, 각 component마다 가장 최근에 스캔된 vertex를 저장합니다. (이 vertex를 helper라고 부르겠습니다.)
-
 3. Sweepline이 vertex $u$에 도달했을때, $u$의 type에 따라 다음과 같이 $D$를 업데이트 해줍니다.
-
    1. Start Vertex
-
       - $u$를 포함하는 새로운 component $C$를 $D$에 삽입하고 $\mathrm{helper}(C)$를 $u$로 놓습니다.
-
    2. Split Vertex
-
       - $u$를 포함하는 component $C$를 찾습니다.
-
       - 대각선 $\mathrm{helper}(C)-u$를 추가합니다.
-
       - $C$를 $D$에서 삭제한 후, $u$를 기준으로 위쪽 component $U$와 아래쪽 component $L$로 분할하여 $D$에 삽입합니다.
       - $\mathrm{helper}(U)$와 $\mathrm{helper}(L)$을 $u$로 놓습니다.
-
    3. End Vertex
-
       - $u$를 포함하는 component $C$를 찾습니다.
       - $\mathrm{helper}(C)$가 merge vertex라면 대각선 $\mathrm{helper}(C)-u$를 추가합니다.
       - $C$를 $D$에서 삭제합니다.
-
    4. Merge Vertex
-
       - $u$를 포함하는 두개의 component $U, L$을 $D$에서 찾습니다. 여기서, $U$는 $L$보다 위쪽에 위치합니다.
-
       - $\mathrm{helper}(U)$가 merge vertex라면 대각선 $u-\mathrm{helper}(U)$를 추가합니다.
       - $\mathrm{helper}(L)$가 merge vertex라면 대각선 $u-\mathrm{helper}(L)$를 추가합니다.
       - $U$와 $L$을 $D$에서 삭제하고, 둘을 합친 component $C$를 $D$에 삽입합니다.
       - $\mathrm{helper}(C)$를 $u$로 놓습니다.
-
    5. Regular Vertex
-
       - $u$를 포함하는 component $C$를 찾습니다.
       - $\mathrm{helper}(C)$가 merge vertex라면 대각선 $\mathrm{helper}(C)-u$를 추가합니다.
       - $\mathrm{helper}(C)$를 $u$로 놓습니다.
