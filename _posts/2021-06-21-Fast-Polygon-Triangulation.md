@@ -110,10 +110,10 @@ Monotone polygon들로 분할하기에 앞서 boundary의 vertex들을 5가지�
 
 Vertex $u$의 이웃한 두 vertex들을 $v,w$라고 하고, $u$의 내각을 $\theta$라고 할 때, $u$의 vertex type은 다음과 같이 정의됩니다.
 
-1. Start Vertex: $u < \min(u,v)$ and $\theta < \pi$
-2. Split Vertex: $u < \min(u,v)$ and $\theta > \pi$
-3. End Vertex: $u > \max(u,v)$ and $\theta < \pi$
-4. Merge Vertex: $u > \max(u,v)$ and $\theta > \pi$
+1. Start Vertex: $u < \min(v,w)$ and $\theta < \pi$
+2. Split Vertex: $u < \min(v,w)$ and $\theta > \pi$
+3. End Vertex: $u > \max(v,w)$ and $\theta < \pi$
+4. Merge Vertex: $u > \max(v,w)$ and $\theta > \pi$
 5. Regular Vertex: None of the above
 
 ![](/assets/images/Aeren_images/Fast-Polygon-Triangulation/classification.png)
