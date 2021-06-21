@@ -14,8 +14,7 @@ tags: [computational-geometry, triangulation, algorithm]
   - [Strict Total Order](#strict_total_order)
   - [Monotone Polygon](#monotone_polygon)
 * [Montone Polygon Triangulation](#monotone_polygon_triangulation)
-  - [Example][#example]
-
+  - [Example](#example)
 * [Polygon Triangulation](#polygon_triangulation)
   - [Boundary Vertex Classification](#classification)
   - [Sweepline Events](#sweepline)
