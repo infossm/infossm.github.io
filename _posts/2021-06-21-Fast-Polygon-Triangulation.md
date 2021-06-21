@@ -228,7 +228,7 @@ struct point{
 	bool operator||(const point &otr) const{ return !(*this ^ otr); }
 };
 template<class T> istream &operator>>(istream &in, point<T> &p){ return in >> p.x >> p.y; }
-template<class T> ostream &operator<<(ostream &out, const point<T> &p){ return out << "(" << p.x << ", " << p.y << ")"; }
+template<class T> ostream &operator<<(ostream &out, const point<T> &p){ return out << "{" << p.x << ", " << p.y << "}"; }
 template<class T>
 double distance(const point<T> &p, const point<T> &q){
 	return (p - q).norm();
@@ -314,7 +314,7 @@ void triangulate(const vector<point<T>> &a, auto process_triangle){
 				if(~it->second.helper[0] && ~it->second.helper[1]){
 					next[it->second.helper[0]] = u;
 					next[it->second.helper[1]] = v;
-					events.insert({ {a[i], a[ni]}, { {it->second.endpoint[0], u}, {-1, u} } });
+					events.insert({ {a[i], a[pi]}, { {it->second.endpoint[0], u}, {-1, u} } });
 					it->second = { {v, it->second.endpoint[1]}, {v, -1} };
 				}
 				else if(~it->second.helper[0]){
