@@ -61,8 +61,11 @@ Monotone polygon의 경우 매우 간단한 linear time triangulation 알고리�
 
 3. $S$와 새로운 vertex의 configuration에 따라 두 가지 경우가 있습니다.
    1. $S$의 configuration과 새로운 vertex $u$의 configuration이 다를 경우, 현재 $S$의 vertex들을 $v _ 1, \cdots, v_k$라고 할 때 각 $1 \le i < k$에 대하여 삼각형 $u, v _ i, v _ {i+1}$를 추가해준 후 $S:=\lbrace v_k,u \rbrace$로 놓습니다. (즉, $S$를 비워 준 후 $S$에 비우기 전 마지막 vertex와 새로운 vertex를 차례로 push합니다.)
+   
       ![](/assets/images/Aeren_images/Fast-Polygon-Triangulation/Different_Side.png)
+   
    2. $S$의 configuration과 새로운 vertex $u$의 configuration이 같을 경우, 현재 $S$의 vertex들을 $v _ 1, ... , v _ k$라 하고, $p$를 $u, v _ {i-1}, v _ i$이 polygon 안에 놓이지 않는 가장 큰 $i$라 할 때, (그러한 $i$가 존재하지 않으면 $p=1$) 각 $p \le i < k$에 대하여 삼각형 $u, v _ i, v _ {i+1}$을 추가해 준 후, $S := \lbrace v _ 1, ..., v _ p, u \rbrace$로 놓습니다.
+   
       ![](/assets/images/Aeren_images/Fast-Polygon-Triangulation/Same_Side.png)
 
 
@@ -327,8 +330,8 @@ void triangulate(const vector<point<T>> &a, auto process_triangle){
 				if(~it->second.helper[0] && ~it->second.helper[1]){
 					next[it->second.helper[0]] = u;
 					next[it->second.helper[1]] = v;
-					events.insert({{a[i], a[ni]}, {{it->second.endpoint[0], u}, {-1, u}}});
-					it->second = {{v, it->second.endpoint[1]}, {v, -1}};
+					events.insert({ {a[i], a[ni]}, { {it->second.endpoint[0], u}, {-1, u} } });
+					it->second = { {v, it->second.endpoint[1]}, {v, -1} };
 				}
 				else if(~it->second.helper[0]){
 					int j = it->second.helper[0];
