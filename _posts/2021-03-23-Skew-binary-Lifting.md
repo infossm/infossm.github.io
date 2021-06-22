@@ -5,6 +5,7 @@ author: Aeren
 date: 2021-03-23
 tags: [data-structure, algorithm, tree]
 
+
 ---
 
 <h2 id="table of contents">Table Of Contents</h2>
@@ -331,22 +332,22 @@ $\blacksquare$
 
 <h2 id="benchmark">Benchmark</h2>
 
-다음은 $\vert V\vert =10^4,10^5,10^6,10^7$인 line graph에서 $Q=10^4,10^5,10^6,10^7$회 uniformly random한 $u$와 $k$를 잡아 $\textrm{Find_The_K-th_Ancestor}(u,k)$를 호출 할 때 binary lifting과 skew-binary lift의 실행시간을 비교한 표입니다.
+다음은 $\vert V\vert= 2^{12},2^{16},2^{20},2^{24}$인 line graph에서 $Q=2^{12},2^{16},2^{20},2^{24}$회 uniformly random한 $u$와 $k$를 잡아 $\textrm{Find_The_K-th_Ancestor}(u,k)$를 호출 할 때 binary lifting과 skew-binary lift의 실행시간을 비교한 표입니다.
 
 
 
 ***(Binary Lifting) / (Skew-binary Lifting) runtimes (in seconds). Bolded indicates faster.***
 
-| $Q\,\backslash \,\vert V\vert $ | $10^4$              | $10^5$              | $10^6$              | $10^7$               |
-| ------------------------------- | ------------------- | ------------------- | ------------------- | -------------------- |
-| $10^4$                          | 0.00118/**0.00105** | 0.02021/**0.00327** | 0.19027/**0.01536** | 2.09941/**0.09259**  |
-| $10^5$                          | **0.00374**/0.03054 | **0.01322**/0.02884 | 0.26477/**0.08301** | 2.35131/**0.46748**  |
-| $10^6$                          | **0.03564**/0.09584 | **0.04277**/0.27755 | **0.13318**/0.71671 | 2.21926/**2.19224**  |
-| $10^7$                          | **0.31048**/0.94788 | **0.31032**/2.31801 | **0.40462**/6.84995 | **2.46005**/22.15703 |
+| $Q\,\backslash \,\vert V\vert $ | $2^{12}$              | $2^{16}$              | $2^{20}$              | $2^{24}$              |
+| ------------------------------- | --------------------- | --------------------- | --------------------- | --------------------- |
+| $2^{12}$                        | 0.00034 / **0.00025** | 0.00463 / **0.00106** | 0.09345 / **0.00944** | 2.57266 / **0.12640** |
+| $2^{16}$                        | **0.00322** / 0.00386 | **0.00866** / 0.01263 | 0.11218 / **0.03328** | 2.61941 / **0.20821** |
+| $2^{20}$                        | **0.04909** / 0.05888 | **0.06521** / 0.17173 | 0.41015 / **0.36055** | 3.07262 / **1.52213** |
+| $2^{24}$                        | **0.78310** / 1.01736 | **0.98250** / 2.97253 | **5.22829** / 5.87499 | **10.4711** / 22.5529 |
 
 
 
-다음은 위 데이터를 얻는데 사용한 C++ 코드입니다.
+다음은 위 데이터를 얻는데 사용한 C++ 코드입니다. (Edit: 컴파일러가 쿼리함수를 optimize하여 함수가 호출되지 않았던 문제를 수정했습니다. 지적해주신 cgiosy님 감사드립니다!)
 
 
 
@@ -357,19 +358,19 @@ using namespace chrono;
 mt19937 rng(high_resolution_clock::now().time_since_epoch().count());
 mt19937_64 rngll(high_resolution_clock::now().time_since_epoch().count());
 
-
+long long global_variable = 0;
 
 int main(){
 	cin.tie(0)->sync_with_stdio(0);
 	cin.exceptions(ios::badbit | ios::failbit);
 	cout << fixed << setprecision(5);
-	for(int Q: {1e4, 1e5, 1e6, 1e7}){
-		for(int V: {1e4, 1e5, 1e6, 1e7}){
-			auto pivot = high_resolution_clock::now();
+	for(auto Q: {1, 1 << 12, 1 << 16, 1 << 20, 1 << 24}){
+		for(auto V: {1, 1 << 12, 1 << 16, 1 << 20, 1 << 24}){
 			vector<array<int, 2>> queries(Q);
 			for(auto &[u, k]: queries){
 				u = rng() % V, k = rng() % (u + 1);
 			}
+			auto pivot = high_resolution_clock::now();
 			{ // Binary Lifting
 
 				// Construction
@@ -396,7 +397,7 @@ int main(){
 					return u;
 				};
 				for(auto [u, k]: queries){
-					int res = Find_The_K_th_Ancestor(u, k);
+					global_variable += Find_The_K_th_Ancestor(u, k);
 				}
 
 			}
@@ -432,7 +433,7 @@ int main(){
 					return u;
 				};
 				for(auto [u, k]: queries){
-					int res = Find_The_K_th_Ancestor(u, k);
+					global_variable += Find_The_K_th_Ancestor(u, k);
 				}
 
 			}
@@ -443,4 +444,3 @@ int main(){
 	return 0;
 }
 ```
-
