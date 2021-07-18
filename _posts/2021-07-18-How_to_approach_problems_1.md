@@ -54,7 +54,7 @@ tags: [data-structure, algorithm]
 
 ![](/assets/images/VennTum/How_to_approach/How_to_approach_problems_1_2.PNG)
 
-즉, 우리는 모든 n, m 쌍에 대해 계산하는 것이 아니라, 1~n까지의 i에 대해서 |ai - h| * m을, 1~m까지의 j에 대해서 |h - bj| * n을 계산해주면 되므로, 합을 계산하는데 총 O(n+m)이 걸리고, 우리는 시간복잡도를 O(nmw)에서 O(w * (n + m))으로 개선시킬 수 있습니다.
+즉, 우리는 모든 n, m 쌍에 대해 계산하는 것이 아니라, 1 ~ n까지의 i에 대해서 |ai - h| * m을, 1 ~ m까지의 j에 대해서 |h - bj| * n을 계산해주면 되므로, 합을 계산하는데 총 O(n+m)이 걸리고, 우리는 시간복잡도를 O(nmw)에서 O(w * (n + m))으로 개선시킬 수 있습니다.
 
 ### 풀이
 
