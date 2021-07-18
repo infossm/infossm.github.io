@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "XOR 관련 문제를 푸는 다양한 접근법"
+title:  "XOR 관련 문제를 푸는 접근법들"
 date:   2021-07-17-18:00
 author: cs71107
 tags: [algorithm,linear-algebra]
@@ -490,17 +490,9 @@ int main()
 
 알아본 문제와 거의 비슷하나, 이번에는 부분집합의 크기가 **짝수**라는 제한 조건이 있습니다. 위의 방법을 바로 적용하기는 힘들어 보입니다. 어떻게 해야 할까요?
 
-의외로 간단하게 해결할 수 있습니다. 원래 수열이 $X_{0}, X_{1}, \dots ,X_{n-1}$라고 합시다. 그렇다면 $X_{0} \oplus X_{0}, X_{1} \oplus X_{0}, \dots ,X_{n-1} \oplus X_{0}$에 대해서 위의 알고리즘을 적용시키면 됩니다. 왜 이 사실이 성립하는지 다음과 같이 증명할 수 있습니다.
+의외로 간단하게 해결할 수 있습니다. 원래 수열이 $X_{0}, X_{1}, \dots ,X_{n-1}$라고 합시다. 그렇다면 $(X_{0} \oplus X_{0}), (X_{1} \oplus X_{0}), \dots ,(X_{n-1} \oplus X_{0})$에 대해서 위의 알고리즘을 적용시키면 됩니다. 왜 이 사실이 성립하는지 다음과 같이 증명할 수 있습니다.
 
-- proof : $n$개의 음이 아닌 정수 $X_{0}, X_{1}, \dots ,X_{n-1}$ 들에 대해서, 집합 $S = \lbrace 0, 1, \dots , n-1 \rbrace$의 부분집합 $T_{0}(T \subset S \ ,\  \left\lvert T_{0} \right\rvert = 2k(k \in (\lbrace 0 \rbrace \cup \mathbb{Z^{+}})))$에 대해, $X_{0}, X_{1}, \dots , X_{n-1}$에 대한 $T_{0}$의 XOR 합들의 집합을 $A$라고 하자. 그리고 $Y_{i}=X_{i} \oplus X_{0}\ (0 \leq i < n)$이라고 뒀을 때, $S = \lbrace 0, 1, \dots , n-1 \rbrace$의 부분집합 $T(T \subset S)$에 대해, $Y_{0}, Y_{1}, \dots , Y_{n-1}$에 대한 $T$의 XOR 합들의 집합을 $B$라고 하자.
-
-이제 $A \subset B$임을 증명하자. $A$의 각 원소는 $X_{t_{0}} \oplus X_{t_{1}} \oplus \dots \oplus X_{t_{2k-1}}$와 같이 표현된다. ($\lbrace t_{0},t_{1},\dots,t_{2k-1} \rbrace \subset T_{0}$) $X_{t_{0}} \oplus X_{t_{1}} \oplus \dots \oplus X_{t_{2k-1}} = (X_{t_{0}} \oplus X_{0}) \oplus (X_{t_{1}} \oplus X_{0}) \oplus \dots \oplus (X_{t_{2k-1}} \oplus X_{0}) = Y_{t_{0}} \oplus Y_{t_{1}} \oplus \dots \oplus Y_{t_{2k-1}}$가 되므로, $A \subset B$임이 증명된다.
-
-이제 $B \subset A$임을 증명하자. $B$의 각 원소는 $Y_{t_{0}} \oplus Y_{t_{1}} \oplus \dots \oplus Y_{t_{k-1}}$와 같이 표현된다. ($\lbrace t_{0},t_{1},\dots,t_{k-1} \rbrace \subset T$) 이때, $k$가 홀수일 때, $0 \in \lbrace t_{0},t_{1},\dots,t_{k-1} \rbrace$인 경우, 일반성을 잃지 않고  $t_{0} = 0$라고 했을 때, $Y_{0} = X_{0} \oplus X_{0} = 0$이므로, $Y_{t_{0}} \oplus Y_{t_{1}} \oplus \dots \oplus Y_{t_{k-1}} = Y_{t_{1}} \oplus \dots \oplus Y_{t_{k-1}}$가 성립한다.
-
-$0 \notin \lbrace t_{0},t_{1},\dots,t_{k-1} \rbrace$인 경우에도 $Y_{t_{0}} \oplus Y_{t_{1}} \oplus \dots \oplus Y_{t_{k-1}} = Y_{0} \oplus Y_{t_{0}} \oplus \dots \oplus Y_{t_{k-1}}$가 되므로, $k$가 짝수인 경우와 표현할 수 있는 수의 집합이 같다는 것을 알 수 있다. 이제 $k$가 짝수인 경우만 본다면, $Y_{t_{0}} \oplus Y_{t_{1}} \oplus \dots \oplus Y_{t_{k-1}} = (X_{t_{0}} \oplus X_{0}) \oplus (X_{t_{1}} \oplus X_{0}) \oplus \dots \oplus (X_{t_{k-1}} \oplus X_{0}) = X_{t_{0}} \oplus X_{t_{1}} \oplus \dots \oplus X_{t_{k-1}}$가 된다. $k$가 짝수이므로, $B \subset A$임이 증명된다.
-
-$A \subset B$이고, $B \subset A$이므로, $A = B$이다. 따라서 $A$의 최대원소는 $B$의 최대원소와 같고, $X_{0}, X_{1}, \dots ,X_{n-1}$대신 $X_{0} \oplus X_{0}, X_{1} \oplus X_{0}, \dots ,X_{n-1} \oplus X_{0}$에 대해서 풀면 원하는 결과를 얻는다. 증명 끝.
+- proof : $n$개의 음이 아닌 정수 $X_{0}, X_{1}, \dots ,X_{n-1}$ 들에 대해서, 집합 $S = \lbrace 0, 1, \dots , n-1 \rbrace$의 부분집합 $T_{0}(T \subset S \ ,\  \left\lvert T_{0} \right\rvert = 2k(k \in (\lbrace 0 \rbrace \cup \mathbb{Z^{+}})))$에 대해, $X_{0}, X_{1}, \dots , X_{n-1}$에 대한 $T_{0}$의 XOR 합들의 집합을 $A$라고 하자. 그리고 $Y_{i}=X_{i} \oplus X_{0}\ (0 \leq i < n)$이라고 뒀을 때, $S = \lbrace 0, 1, \dots , n-1 \rbrace$의 부분집합 $T(T \subset S)$에 대해, $Y_{0}, Y_{1}, \dots , Y_{n-1}$에 대한 $T$의 XOR 합들의 집합을 $B$라고 하자. 이제 $A \subset B$임을 증명하자. $A$의 각 원소는 $X_{t_{0}} \oplus X_{t_{1}} \oplus \dots \oplus X_{t_{2k-1}}$와 같이 표현된다. ($\lbrace t_{0},t_{1},\dots,t_{2k-1} \rbrace \subset T_{0}$) $X_{t_{0}} \oplus X_{t_{1}} \oplus \dots \oplus X_{t_{2k-1}} = (X_{t_{0}} \oplus X_{0}) \oplus (X_{t_{1}} \oplus X_{0}) \oplus \dots \oplus (X_{t_{2k-1}} \oplus X_{0}) = Y_{t_{0}} \oplus Y_{t_{1}} \oplus \dots \oplus Y_{t_{2k-1}}$가 되므로, $A \subset B$임이 증명된다. 이제 $B \subset A$임을 증명하자. $B$의 각 원소는 $Y_{t_{0}} \oplus Y_{t_{1}} \oplus \dots \oplus Y_{t_{k-1}}$와 같이 표현된다. ($\lbrace t_{0},t_{1},\dots,t_{k-1} \rbrace \subset T$) 이때, $k$가 홀수일 때, $0 \in \lbrace t_{0},t_{1},\dots,t_{k-1} \rbrace$인 경우, 일반성을 잃지 않고  $t_{0} = 0$라고 했을 때, $Y_{0} = X_{0} \oplus X_{0} = 0$이므로, $Y_{t_{0}} \oplus Y_{t_{1}} \oplus \dots \oplus Y_{t_{k-1}} = Y_{t_{1}} \oplus \dots \oplus Y_{t_{k-1}}$가 성립한다. $0 \notin \lbrace t_{0},t_{1},\dots,t_{k-1} \rbrace$인 경우에도 $Y_{t_{0}} \oplus Y_{t_{1}} \oplus \dots \oplus Y_{t_{k-1}} = Y_{0} \oplus Y_{t_{0}} \oplus \dots \oplus Y_{t_{k-1}}$가 되므로, $k$가 짝수인 경우와 표현할 수 있는 수의 집합이 같다는 것을 알 수 있다. 이제 $k$가 짝수인 경우만 본다면, $Y_{t_{0}} \oplus Y_{t_{1}} \oplus \dots \oplus Y_{t_{k-1}} = (X_{t_{0}} \oplus X_{0}) \oplus (X_{t_{1}} \oplus X_{0}) \oplus \dots \oplus (X_{t_{k-1}} \oplus X_{0}) = X_{t_{0}} \oplus X_{t_{1}} \oplus \dots \oplus X_{t_{k-1}}$가 된다. $k$가 짝수이므로, $B \subset A$임이 증명된다. $A \subset B$이고, $B \subset A$이므로, $A = B$이다. 따라서 $A$의 최대원소는 $B$의 최대원소와 같고, $X_{0}, X_{1}, \dots ,X_{n-1}$대신 $(X_{0} \oplus X_{0}), (X_{1} \oplus X_{0}), \dots ,(X_{n-1} \oplus X_{0})$에 대해서 풀면 원하는 결과를 얻는다. 증명 끝.
 
 위의 문제에서는 $\emptyset$을 제외하고 XOR 합 중 최댓값을 찾는다고 돼있긴 합니다만, 어차피 $\emptyset$에 대해선 XOR합이 0이므로, 최댓값을 구할 경우 무시해도 상관없습니다.
 
@@ -545,6 +537,10 @@ $A \subset B$이고, $B \subset A$이므로, $A = B$이다. 따라서 $A$의 최
 위 연습 문제를 풀고 더 많은 문제를 풀어보고 싶으시다면, 연습 문제들을 정할 때 한국의 강력한 osu mania 국가대표 cheetose님의 [문제집](https://www.acmicpc.net/workbook/view/1613)을 많이 참고 했습니다. cheetose님께 감사를 전합니다. 그 외에 Codeforces나 Atcoder에서도 심심하면 관련 문제가 출제되니 찾아보시면 되겠습니다.
 
 전 다음 글에서 돌아오겠습니다. 감사합니다.
+
+![](/assets/images/cs71107_image/cheetose.png)
+
+여담) 위에서 cheetose님의 수식어는 cheetose님이 정해주셨습니다.
 
 ## 참고 자료 ##
 
