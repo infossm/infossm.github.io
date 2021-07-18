@@ -122,8 +122,12 @@ tags: [data-structure, algorithm]
 
 집들의 위치를 내림차순으로 정렬하는데 O((n+m)lg(n+m)), 좌표를 하나씩 내리는, 총 O(n + m)의 시간복잡도로, 최종적으로 정렬하는데 걸리는 시간복잡도로 문제를 해결할 수 있습니다.
 
+동일한 거리를 가지는 위치들 중 가장 낮은 위치에 다리를 놓기로 한다는 점에 유의하여 구현하면 만점을 받을 수 있습니다.
+
 ps. 입력이 정렬되어 들어온다면 우리는 조건을 만족하는 위치를 이분탐색으로 찾을 수 있습니다.
 또한 입력이 정렬되지 않은 상태로 들어온다면 우리는 삼분탐색을 이용한 O((n + m)lgw)에 문제를 해결할 수도 있습니다.
+
+
 
 # [통학버스 - KOI 2012 초등부 3번](https://www.acmicpc.net/problem/2513)
 
@@ -177,71 +181,92 @@ ps. 입력이 정렬되어 들어온다면 우리는 조건을 만족하는 위�
 
 각 아파트들은 최대 한 번만 확인하게 되므로, 가장 시간이 오래 걸리는 때는 아파트들을 좌표 순서대로 정렬해주는 과정이 되므로, 우리는 O(NlgN)에 문제를 해결할 수 있습니다.
 
+이 때, 구현에서 주의해야 할 점은, 버스의 수용인원이 학생들의 수에 비해 너무 적을 때가 됩니다. 만약 인원이 굉장히 많은데 버스의 수용인원이 적다면 우리는 같은 위치에서 학생들을 여러번 반복하여 태워야할 수도 있습니다. 이러한 경우를 하나하나 모두 시뮬레이션 하게 되면 실제로 NlgN의 시간복잡도를 만족하지 못할 수 있습니다.
+
+이를 해결하기 위해서, 어떠한 위치에 버스가 여러번 가야하는지 여부를 학생의 수를 버스의 수용인원으로 나눈 몫 만큼은 한 번에 반복할 수 있도록 구현해주어 여러번 같은 위치를 가지 않을 수 있도록 만들어줄 필요가 있습니다.
+
 # 코드
 
 ## 다리
 
 ```cpp
 #include <bits/stdc++.h>
+#define ll long long
 using namespace std;
 
-int n;
-stack <int> st;
+struct data{ int x, flag; };
 
-int main(){
-  int i, a;
-  scanf("%d", &n);
-  for(i = 0; i < n; i++){
-    scanf("%d", &a);
-    while(!st.empty() && st.top() <= a) st.pop();
-    st.push(a);
-  }
-  printf("%d", st.size());
-  return 0;
+int T;
+ll n, m;
+data arr[2000010];
+
+bool compare(data d1, data d2){
+	return d1.x > d2.x;
 }
-```
-
-## 막대기_번외풀이
-
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-int n, res, max1;
-int arr[100010];
-
 int main(){
-	int i;
-	scanf("%d", &n);
-	for(i = 0; i < n; i++) scanf("%d", &arr[i]);
-	for(i = n - 1; i >= 0; i--) if(arr[i] > max1) max1 = arr[i], res++;
-	printf("%d", res);
+	int p, i;
+	ll np, nq;
+	scanf("%d", &T);
+	for(p = 0; p < T; p++){
+		scanf("%lld %lld", &n, &m);
+		for(i = 0; i < n; i++) scanf("%d", &arr[i].x), arr[i].flag = 1;
+		for(i = n; i < n + m; i++) scanf("%d", &arr[i].x), arr[i].flag = 0;
+		sort(arr, arr + n + m, compare); np = n; nq = m;
+		for(i = 0; i <= n + m; i++){
+			if((n - 2 * np) * m + (m - 2 * nq) * n > 0){ i--; break; }
+			if(arr[i].flag) np--;
+			else nq--;
+		}
+		printf("%d.0\n", arr[i].x);
+	}
 	return 0;
 }
 ```
 
-## 쇠막대기_열린 괄호의 수만 유지
+## 통학버스
 
 ```cpp
 #include <bits/stdc++.h>
+#define ll long long
 using namespace std;
 
-int res,cnt,n;
-char arr[100010];
+struct data{ int x, v; };
+int N, K, S;
+ll res;
+vector <data> arr[2];
 
+bool compare(data d1, data d2){
+	return abs(d1.x - S) < abs(d2.x - S);
+}
 int main(){
-    int i;
-    scanf("%s",arr);
-    n=strlen(arr);
-    for(i=0;i<n-1;i++){
-        if(arr[i]!=arr[i+1] && arr[i]=='('){
-            res+=cnt; i++;
-        }
-        else if(arr[i]=='(')cnt++;
-        else{
-            res++; cnt--;
-        }
-    }res+=cnt;
-    printf("%d",res);
+	int i, j, a, s, now;
+	scanf("%d %d %d", &N, &K, &S);
+	for(i = 0; i < N; i++){
+		scanf("%d %d", &a, &s);
+		if(a < S) arr[0].push_back((data){a, s});
+		else arr[1].push_back((data){a, s});
+	}
+	sort(arr[0].begin(), arr[0].end(), compare);
+	sort(arr[1].begin(), arr[1].end(), compare);
+	for(i = 0; i < 2; i++){
+		while(arr[i].size()){
+			now = 0;
+			while(arr[i].size()){
+				res += abs(arr[i].back().x - S) * 2 * (arr[i].back().v / K);
+				arr[i].back().v %= K;
+				if(!arr[i].back().v) arr[i].pop_back();
+				else break;
+			}
+			if(!arr[i].size()) break;
+			res += abs(arr[i].back().x - S) * 2;
+			while(now < K && arr[i].size()){
+				now += arr[i].back().v;
+				if(now > K) arr[i].back().v = now - K;
+				else arr[i].pop_back();
+			}
+		}
+	}
+	printf("%lld", res);
+	return 0;
 }
 ```
