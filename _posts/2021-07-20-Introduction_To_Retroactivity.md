@@ -162,10 +162,10 @@ $\blacksquare$
 Deque(doubly-ended queue)는 다음 연산들을 지원하는 abstract data type입니다.
 
 - updates
-  - $\mathrm{push \_ front}(x)$: $x$를 deque의 앞쪽에 삽입합니다.
-  - $\mathrm{pop \_ front}()$: deque의 가장 앞쪽 원소를 제거합니다.
-  - $\mathrm{push \_ back}(x)$: $x$를 deque의 뒤쪽에 삽입합니다.
-  - $\mathrm{pop \_ back}()$: deque의 가장 뒤쪽 원소를 제거합니다.
+  - $\mathrm{pushfront}(x)$: $x$를 deque의 앞쪽에 삽입합니다.
+  - $\mathrm{popfront}()$: deque의 가장 앞쪽 원소를 제거합니다.
+  - $\mathrm{pushback}(x)$: $x$를 deque의 뒤쪽에 삽입합니다.
+  - $\mathrm{popback}()$: deque의 가장 뒤쪽 원소를 제거합니다.
 - queries
   - $\mathrm{front}()$: 맨 앞쪽 원소를 return합니다. (deque가 비어있지 않다고 가정합니다.)
   - $\mathrm{back}()$: 맨 뒤쪽 원소를 return합니다. (deque가 비어있지 않다고 가정합니다.)
@@ -178,12 +178,12 @@ Deque(doubly-ended queue)는 다음 연산들을 지원하는 abstract data type
 
 일반적인 deque의 구현은 다음과 같습니다. 변수 $L=1$과 $R=0$, 그리고 array $A$를 준비합니다.
 
-1. $\mathrm{push \_ front}(x)$연산이 들어오면 $L$을 감소시키고 $A[L]=x$으로 update시킵니다.
-2. $\mathrm{pop \_ front}()$연산이 들어오면 $L$을 증가시킵니다.
-3. $\mathrm{push \_ back}(x)$연산이 들어오면 $R$을 증가시키고 $A[R]=x$으로 update시킵니다.
-4. $\mathrm{pop \_ back}()$연산이 들어오면 $R$을 감소시킵니다.
+1. $\mathrm{pushfront}(x)$연산이 들어오면 $L$을 감소시키고 $A[L]=x$으로 update시킵니다.
+2. $\mathrm{popfront}()$연산이 들어오면 $L$을 증가시킵니다.
+3. $\mathrm{pushback}(x)$연산이 들어오면 $R$을 증가시키고 $A[R]=x$으로 update시킵니다.
+4. $\mathrm{popback}()$연산이 들어오면 $R$을 감소시킵니다.
 
-같은 아이디어로 retroactive deque를 구현할 수 있습니다. Segment sum, 그리고 segment minimum / maximum prefix / suffix를 지원하는 balanced binary search tree $U _ F$와 $U _ B$을 준비합니다. 여기서 $U_F$는 $\mathrm{push \_ front}$와 $\mathrm{pop \_ front}$들을 $t$로 정렬된 상태이며 각각 가중치 1과 -1을 갖습니다. 이제 시간 $t$에서 $L$값은 $U _ F$의 $t$이하의 key를 갖는 부분의 가중치의 합이 됩니다. 이제 $A[L]$값은, 마지막으로 index가 $L$이 됬던 위치를 root에서 타고내려오면서 찾아줌으로서 알아낼 수 있습니다. $U _ B$도 마찬가지입니다. 위 연산들은 모두 $O(\log m)$에 수행가능합니다.
+같은 아이디어로 retroactive deque를 구현할 수 있습니다. Segment sum, 그리고 segment minimum / maximum prefix / suffix를 지원하는 balanced binary search tree $U _ F$와 $U _ B$을 준비합니다. 여기서 $U_F$는 $\mathrm{pushfront}$와 $\mathrm{popfront}$들을 $t$로 정렬된 상태이며 각각 가중치 1과 -1을 갖습니다. 이제 시간 $t$에서 $L$값은 $U _ F$의 $t$이하의 key를 갖는 부분의 가중치의 합이 됩니다. 이제 $A[L]$값은, 마지막으로 index가 $L$이 됬던 위치를 root에서 타고내려오면서 찾아줌으로서 알아낼 수 있습니다. $U _ B$도 마찬가지입니다. 위 연산들은 모두 $O(\log m)$에 수행가능합니다.
 
 $\blacksquare$
 
@@ -199,15 +199,15 @@ Union-find는 서로다른 원소들의 집합 $S$에서 equivalence relation에
 
 각 equivalence class의 representative는 매 연산 이후 바뀔 수 있기 때문에, $\mathrm{find}(x)$연산의 용도는 임의의 두 원소의 equivalence를 판별하는 것으로 한정됩니다. 따라서, $\mathrm{find}(x)$를 다음의 연산으로 대체하겠습니다.
 
-- $\mathrm{same \_ set}(x,y)$: $x$와 $y$가 equivalent한지의 여부를 return합니다.
+- $\mathrm{sameset}(x,y)$: $x$와 $y$가 equivalent한지의 여부를 return합니다.
 
 > ***THEOREM***
 >
-> 모든 연산을 $O(\log m)$에 수행하는 fully retroactive union-same_set data structure가 존재한다.
+> 모든 연산을 $O(\log m)$에 수행하는 fully retroactive union-sameset data structure가 존재한다.
 
 ***PROOF***
 
-$S$의 각 원소에 대응되는 vertex들을 생성해주고, 각 $\mathrm{union}(x,y)$마다 $x$와 $y$를 잇는 edge를 생성해주면, forest $F$가 얻어지고, $\mathrm{same \_ set}(x,y)$는 $x$와 $y$가 $F$에서 같은 component에 속하는지 판별하는 연산이 됩니다. 이는 link-cut tree를 이용해 $O(\log m)$에 처리할 수 있습니다. Retroactive한 연산을 위해서, 각 edge에 관련 $\mathrm{union}$연산의 $t$값을 저장합니다. 이제 $\mathrm{Query}(t,\mathrm{same \_ set}(x,y))$는 ($x$와 $y$가 같은 component에 속할 경우) $x$와 $y$의 경로상의 값의 최댓값이 $t$ 이하인지의 여부와 같아집니다. 이 연산 역시 link-cut tree로 $O(\log m)$에 처리할 수 있습니다.
+$S$의 각 원소에 대응되는 vertex들을 생성해주고, 각 $\mathrm{union}(x,y)$마다 $x$와 $y$를 잇는 edge를 생성해주면, forest $F$가 얻어지고, $\mathrm{sameset}(x,y)$는 $x$와 $y$가 $F$에서 같은 component에 속하는지 판별하는 연산이 됩니다. 이는 link-cut tree를 이용해 $O(\log m)$에 처리할 수 있습니다. Retroactive한 연산을 위해서, 각 edge에 관련 $\mathrm{union}$연산의 $t$값을 저장합니다. 이제 $\mathrm{Query}(t,\mathrm{sameset}(x,y))$는 ($x$와 $y$가 같은 component에 속할 경우) $x$와 $y$의 경로상의 값의 최댓값이 $t$ 이하인지의 여부와 같아집니다. 이 연산 역시 link-cut tree로 $O(\log m)$에 처리할 수 있습니다.
 
 $\blacksquare$
 
