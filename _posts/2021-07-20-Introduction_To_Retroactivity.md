@@ -279,8 +279,8 @@ $\mathrm{Insert}(t,\mathrm{push}(x))$연산 이후, 단조증가하는 rectiline
 $Q _ t$를 추적하는 것이 매우 어렵기 때문에, 모든 연산은 $Q _ \mathrm{now}$와 update들에 대한 정보를 통해 $\max _ {x' \in D _ {\ge t}} x' = \max _ {x' \in I _ {\ge t'} - Q _ \mathrm{now}} x'$와 $I _ {\le t'} \cap Q _ \mathrm{now}$를 이용하여 이루어질 것입니다.
 제시할 자료구조는 모든 update들을 시간으로 정렬된 상태로 doubly linked list에 저장하고, $Q _ \mathrm{now}$를 balanced binary search tree에 저장합니다. 그리고 $Q _ \mathrm{now}$의 각 원소들은 그 원소를 생성한 insert연산으로의 doubly linked list의 pointer를 저장합니다. 이제 각 연산마다, 위 lemma들에 따라 $Q _ \mathrm{now}$가 update될 것입니다. 이 과정을 효율적으로 하기 위해서는 두가지 연산을 처리해야 합니다.
 
-1. $t$가 주어질 때, $t$ 이전의 마지막 bridge 탐색 혹은 $t$ 이후의 최초의 bridge 탐색
-2. bridge $t'$이 주어질 때, $I _ {\ge t'} - Q _ \mathrm{now}$의 최대원소 혹은 $I _ {\le t'} \cap Q _ \mathrm{now}$의 최소원소 탐색
+1. $t$가 주어질 때, $t$ 이전의 마지막 bridge와 $t$ 이후의 최초의 bridge 탐색
+2. bridge $t'$이 주어질 때, $I _ {\ge t'} - Q _ \mathrm{now}$의 최대원소와 $I _ {\le t'} \cap Q _ \mathrm{now}$의 최소원소 탐색
 
 만약 $x \in Q _ \mathrm{now}$에 대해 $\mathrm{push}(x)$에 가중치 0을 주고, $x \notin Q _ \mathrm{now}$에 대해 $\mathrm{push}(x)$에 가중치 1을 주며, $\mathrm{pop}()$에 가중치 -1을 주면, bridge는 prefix sum이 정확히 0인 지점이 됩니다. 그리고 이는 retroactive deque에서 썼던 방법과 동일하게 처리해 줄 수 있습니다. 또한, $\mathrm{push}$연산들을 또 하나의 balanced binary search tree에 저장하면서 각 노드에, subtree의 $Q _ \mathrm{now}$에 존재하지 않는 key중 최댓값을 추적해주면 $I _ {\ge t'} - Q _ \mathrm{now}$의 최대 원소를 $O(\log m)$에 구할 수 있고, 추가적으로 subtree의 $Q _ \mathrm{now}$에 존재하는 key중 최솟값을 추적해주면 $I _ {\le t'} \cap Q _ \mathrm{now}$의 최소 원소도 $O(\log m)$에 구할 수 있습니다. 매 연산마다 $Q _ \mathrm{now}$는 최대 하나의 원소가 바뀌기 때문에, 위 모든 과정은 $O(\log m)$안에 수행할 수 있습니다.
 
