@@ -8,7 +8,7 @@ tags: [communication]
 
 ## 서론
 
-지난 글에서 아주 기본적인 (noise가 없는) Binary modulation / demodulation에 대해서 알아보고, 현재 통신 시스템에서 가장 쉽게 볼 수 있는 AWGN 채널에 대해서 간략하게 알아보았습니다.
+[지난 글](http://www.secmem.org/blog/2021/05/19/Wireless-Digital-Communication-1/)에서 아주 기본적인 (noise가 없는) Binary modulation / demodulation에 대해서 알아보고, 현재 통신 시스템에서 가장 쉽게 볼 수 있는 AWGN 채널에 대해서 간략하게 알아보았습니다.
 
 이번 글에서는 지난 글에서 짧게 언급한 AWGN 채널에 대해 좀 더 자세히 다룰 예정입니다. 또한 AWGN 채널에서의 Binary modulation / demodulation에 대해서 데이터가 잘못 전송될 확률을 구하고, 기존 Binary에서 이를  M개의 bit로 확장시킨 M-ary modulation / demodulation에 대해서 알아보도록 하겠습니다.
 
