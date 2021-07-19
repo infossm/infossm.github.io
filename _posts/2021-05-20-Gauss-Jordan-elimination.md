@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Gauss-Jordan elimination"
+title: "Gauss-Jordan Elimination"
 date: 2021-05-20
 author: gumgood
 tags: [algorithm]
@@ -8,7 +8,7 @@ tags: [algorithm]
 
 # 개요
 
-Gauss-Jordan elimination(가우스 조던 소거법)은 미지수 $x_1$, $x_2$, $...$, $x_m$에 대한 $n$개의 일차방정식으로 구성된 연립일차방정식을 푸는 방법입니다. 해가 존재하는지, 존재한다면 유일한지 판단하고 그 중 하나의 해를 구할 수 있습니다.
+Gauss-Jordan Elimination(가우스 조던 소거법)은 미지수 $x_1$, $x_2$, $...$, $x_m$에 대한 $n$개의 일차방정식으로 구성된 연립일차방정식을 푸는 방법입니다. 해가 존재하는지, 존재한다면 유일한지 판단하고 그 중 하나의 해를 구할 수 있습니다.
 
 # 연립일차방정식과 행렬
 
@@ -76,9 +76,9 @@ a_{n1} & a_{n2} & \cdots & a_{nm} & b_n
 \end{bmatrix}
 $$
 
-# Gauss-Jordan elimination
+# Gauss-Jordan Elimination
 
-Gauss-Jordan elimination을 직관적으로 이해하기 위해  $n = m$이고 답이 유일한 경우부터 보겠습니다. 주어진 일차방정식을 적절히 더하고 빼서 다음과 같은 형태로 만드는 것이 목표입니다.
+Gauss-Jordan Elimination을 직관적으로 이해하기 위해  $n = m$이고 답이 유일한 경우부터 보겠습니다. 주어진 일차방정식을 적절히 더하고 빼서 다음과 같은 형태로 만드는 것이 목표입니다.
 
 $$
 x_1 = b_1' \\
@@ -110,7 +110,7 @@ $$
 
 즉, 첨가행렬에 적절한 **행 연산**을 통해 행렬 $A$ 부분을 단위행렬 $I$로 만들면, 그 과정에서 행렬 $B$ 부분이 연립일차방정식의 해를 나타내는 $B'$로 바뀌게 됩니다.
 
-### Elementary row operation
+### Elementary Row Operation
 
 행렬에 적용할 수 있는 기본 행 연산(elementary row operation)은 세 가지가 있습니다.
 
@@ -122,7 +122,7 @@ $$
 
 이 연산들은 방정식의 순서를 바꾸거나 더하고 빼는 과정을 나타낸 것으로 determinant가 $0$이 아닌 $ n \times n$ 행렬로 나타낼 수 있습니다.
 
-다음 예시와 함께 Gauss-Jordan elimination을 진행해보겠습니다.
+다음 예시와 함께 Gauss-Jordan Elimination을 진행해보겠습니다.
 
 $$
 \begin{bmatrix}
@@ -265,7 +265,7 @@ $n$개의 행과 $m$개의 열을 $O(n+m)$에 순회하면서 pivot을 찾습니
 
 ### Inverse Matrix
 
-Gauss-Jordan elimination을 이용하면 역행렬도 쉽게 계산할 수 있습니다. 역행렬을 구하려는 행렬 $A$에 단위 행렬 $I$를 붙인 첨가행렬을 만들어줍니다.
+Gauss-Jordan Elimination을 이용하면 역행렬도 쉽게 계산할 수 있습니다. 역행렬을 구하려는 행렬 $A$에 단위 행렬 $I$를 붙인 첨가행렬을 만들어줍니다.
 
 $$
 \begin{bmatrix}
@@ -275,7 +275,7 @@ A & I
 \end{bmatrix}
 $$
 
-여기에 Gauss-Jordan elimination를 적용하면 결과는 다음과 같이 됩니다.
+여기에 Gauss-Jordan Elimination를 적용하면 결과는 다음과 같이 됩니다.
 
 $$
 \begin{bmatrix}
@@ -323,7 +323,7 @@ void inverse_matrix(vector<vector<double>> &a){
 }
 ```
 
-### Gauss-Jordan elimination modulo p
+### Gauss-Jordan Elimination modulo p
 
 연립일차방정식의 해는 실수가 될 수 있기 때문에 소수 p에 대한 모듈러 연산을 쓰는 문제들도 자주 등장합니다. 모듈러 곱셈의 역원을 전처리 해두면 실수로 계산하는 것과 동일하게 구현할 수 있습니다. 이를 코드로 구현하면 다음과 같습니다.
 
@@ -331,8 +331,8 @@ void inverse_matrix(vector<vector<double>> &a){
 vector<int> gauss_mod(vector<vector<int>> &a,int mod){
     vector<int> inv(mod); // modulo inverse 전처리
     inv[1] = 1;
-    for(int i = 2; i < m; ++i)
-        inv[i] = m - (m/i) * inv[mod%i] % mod;
+    for(int i = 2; i < mod; ++i)
+        inv[i] = mod - (mod/i) * inv[mod%i] % mod;
 
     int n = a.size();
     int m = a[0].size();
@@ -372,7 +372,7 @@ vector<int> gauss_mod(vector<vector<int>> &a,int mod){
 }
 ```
 
-### Gauss-Jordan elimination modulo 2
+### Gauss-Jordan Elimination modulo 2
 
 모듈러 연산 중에서도 p = 2인 경우 bitwise 연산으로 구현할 수 있습니다. 모든 성분이 0 또는 1이기 때문에 나누거나 곱하는 연산을 생략할 수 있고, 덧셈과 뺄셈은 XOR 연산으로 대체할 수 있습니다. C++의 bitset 자료구조를 이용하면 시간복잡도 $O(n^3 / 64)$에 더 효율적인 구현이 가능합니다.
 
