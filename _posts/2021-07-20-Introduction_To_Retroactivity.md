@@ -237,7 +237,7 @@ $\mathrm{Insert}(t,\mathrm{push}(x))$연산 이후, 단조증가하는 rectiline
 
 > ***LEMMA***
 >
-> $\mathrm{Insert}(t,\mathrm{push}(x))$연산 이후, $Q _ \mathrm{now}$에는 $$\max(x, \max _ {x' \in D _ {\ge t}}x')$$이 삽입된다.
+> $\mathrm{Insert}(t,\mathrm{push}(x))$연산 이후, $Q _ \mathrm{now}$에는 $\max(x, \max _ {x' \in D _ {\ge t} }x')$이 삽입된다.
 
 시간 $t$에 $\mathrm{pop}()$연산이 있을 때, $\mathrm{Delete}(t)$는 pop될 원소를 재삽입하는 것과 동치이므로, 아래 lemma도 자연스럽게 얻어집니다.
 
