@@ -46,10 +46,10 @@ Nash-Williams Theorem에 의해서, 최소 컷이 $2k$ 이상인 그래프에서
 
 * 간선의 *Load* $L^T(e)$ 는 $e \in T_i$ 를 만족하는 $i$ 의 개수이다. Load는 2 이상일 수 있다. 즉, 한 간선이 두 개 이상의 스패닝 트리에 속할 수 있다. 
 
-* 간선의 *Relative load* $l^T(e)$ 는 $\frac{L^T(e)}{|T|}$ 이다.
+* 간선의 *Relative load* $l^T(e)$ 는 $\frac{L^T(e)}{T}$ 이다.
 * Tree packing의 가중치 $packVal(T)$ 는 $1 / max_{e \in E(G)} l^T(e)$ 이다. 
   * 그래프 $G$ 에서 가능한 $packVal(T)$ 의 최댓값을 $\tau$ 라고 한다.
-* $V(G)$ 의 파티션 $P$ 에 대해서, 이의 *cut value* 를 $cutVal(P) = \frac{|E(G\setminus P)|}{|P| - 1}$ 이라 정의한다. 
+* $V(G)$ 의 파티션 $P$ 에 대해서, 이의 *cut value* 를 $cutVal(P) = \frac{E(G\setminus P)}{P - 1}$ 이라 정의한다. 
 * 그래프의 최소 컷의 크기를 $\lambda$ 라고 한다.
 * 그래프 $G$ 와 스패닝 트리 $T$ 가 주어졌을 때, $G \cup T$ 의 컷 중 $T$ 의 간선을 $k$ 개만 사용하는 컷을 $k$-Respecting Cut이라고 부른다. 
 
@@ -66,7 +66,7 @@ Nash-Williams Theorem (1961) 에 의해서 다음 두 사실이 성립한다.
 
 들어가기 앞서 Karger의 Greedy Tree Packing을 사용한 Minimum Cut 알고리즘을 복습하자.
 
-**Lemma 3.** $|T|\geq 3 \lambda \ln m / \epsilon^2$ 를 만족하는 Greedy Tree Packing은 $packVal(T) \geq (1 - \epsilon)\tau$ 를 만족한다.
+**Lemma 3.** $T\geq 3 \lambda \ln m / \epsilon^2$ 를 만족하는 Greedy Tree Packing은 $packVal(T) \geq (1 - \epsilon)\tau$ 를 만족한다.
 
 Tree packing의 성질은 우리 글의 Scope가 아니기 때문에 증명은 생략한다.
 
@@ -74,7 +74,7 @@ Tree packing의 성질은 우리 글의 Scope가 아니기 때문에 증명은 �
 
 이 논문에서도 비슷한 Approach를 사용할 것이다. 하지만 사용하기 앞서, 우리는 Dynamic한 그래프에서 Greedy Tree Packing을 관리할 수 있어야 한다.
 
-**Theorem 4.** Dynamic Graph에서, 크기 $|T|$ 의 Greedy Tree Packing은 간선 추가/제거마다 $O(|T|^2 \log^4 n)$ 시간에 관리할 수 있다.
+**Theorem 4.** Dynamic Graph에서, 크기 $T$ 의 Greedy Tree Packing은 간선 추가/제거마다 $O(T^2 \log^4 n)$ 시간에 관리할 수 있다.
 
 **Proof.** 일반성을 잃지 않고 $e$ 를 지운 경우만 고려할 수 있다. 갱신 전 $T_i$ 의 Load를 $l_i(e)$, 갱신 후 $T_i$ 인 $T_i^\prime$ 의 Load를 $l^\prime_i(e)$ 라고 하자. 핵심 관찰은, 간선 추가/제거시 각 $T_i$ 에 대해서 $l_i(e) \neq l_i^\prime(e)$인 간선이 최대 $i$ 개라는 것이다. 이유는:
 
@@ -85,11 +85,11 @@ Tree packing의 성질은 우리 글의 Scope가 아니기 때문에 증명은 �
   * 고로 수학적 귀납법에 의해 증명이 완료된다.
 * 지워진 간선에서 감소한 Load의 양은 최대 $i$ 이니 남은 간선에서 증가한 양의 합도 최대 $i$ 다. 고로 값이 증가한 간선의 수는 최대 $i$ 개이다.
 
-각 간선 추가/제거 마다 $|T|^2$ 개의 간선이 바뀌고, 이 과정에서 Dynamic MST를 관리해야 한다. 이는 각 간선 갱신마다 $O(\log^4 n)$ 시간에 관리할 수 있음이 잘 알려져 있다 (HdLT01). Theorem 4가 증명된다. $\blacksquare$ 
+각 간선 추가/제거 마다 $T^2$ 개의 간선이 바뀌고, 이 과정에서 Dynamic MST를 관리해야 한다. 이는 각 간선 갱신마다 $O(\log^4 n)$ 시간에 관리할 수 있음이 잘 알려져 있다 (HdLT01). Theorem 4가 증명된다. $\blacksquare$ 
 
 마지막으로, 이 부분의 Main Theorem을 설명한다.
 
-**Theorem 5.** $|T| = \omega(\lambda^7 \log^3 m)$ 를 만족하는 Greedy Tree Packing과 1-Respecting하는 Minimum Cut이 존재한다.
+**Theorem 5.** $T = \omega(\lambda^7 \log^3 m)$ 를 만족하는 Greedy Tree Packing과 1-Respecting하는 Minimum Cut이 존재한다.
 
 Theorem 5의 증명은 우리 글의 scope가 아니며, 생략한다. 이 Theorem의 의외는 2-Respecting Cut이 아니라 1-Respecting Cut만 찾아도 된다는 것이다. 교집합이 1인 트리를 찾는 것은 2보다 어렵다. 훨씬 더 큰 Tree packing을 요구하며, constant fraction이 아니라 existance만 보장한다. 하지만, 이 논문에서는 Polylogarithmic factor를 자유롭게 사용할 수 있으며, Dynamic 2-Respecting Cut이 아니라 1-Respecting Cut을 구함으로써 훨씬 더 많은 시간상 이점을 얻어가기 때문에 의미가 있다.
 
