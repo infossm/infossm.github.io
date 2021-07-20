@@ -20,7 +20,7 @@ tags: [cryptography]
 
 Cantor–Zassenhaus algorithm의 메인 아이디어는 equal-degree factorization, 즉 같은 차수를 갖는 여러 개의 distinct한 irreiducible polynomial의 곱으로 구성되어 있을 때 이를 확률적으로 인수분해하는 것에 있습니다.
 
-만약 어떤 polynomial $P$가 degree $d$를 갖는 서로 다른 Irreducible polynomial $P_1, P_2, \dots, P_k$의 곱으로 구성된다고 합시다. 그러면 직관적으로 $\text{F}_q[X]/(P)$는$\text{F}_q[X]/(P_1) \times \text{F}_q[X]/(P_2) \times \ldots \times \text{F}_q[X]/(P_k)$와 isomorphic할 것입니다. (중국인의 나머지 정리 비슷한 느낌으로) 그러면 이 집합은 또 $\text{F}_{q^d} \times \ldots \times \text{F}_{q^d}$와 isomorphic할 것이므로, 우리는 $\text{F}_q[X]/(P)$ 의 원소 $x$에 대해서 $x^{q^d} - x = 0$이 성립한다는 것을 알 수 있습니다. $x^{q^d} - x = 0$은 $x^{q^d} - x = x (x^{(q^d - 1) / 2} - 1)(x^{(q^d - 1) / 2} + 1) = 0$ 으로 다시 나타낼 수 있으므로 이러한 결론을 내릴 수 있습니다: $x$에 대해서 $\gcd(x^{(q^d - 1) / 2} - 1, P)$를 계산하면 $\gcd(x^{(q^d - 1) / 2} - 1, P_k)$가 자명하지 않은 식이 나오지 않는 $k$들에 대해서 곱한 결과를 얻을 수 있으며, 이는 확률적으로 $P$를 절반 정도로 나누게 될 것입니다.
+만약 어떤 polynomial $P$가 degree $d$를 갖는 서로 다른 Irreducible polynomial $P_1, P_2, \dots, P_k$의 곱으로 구성된다고 합시다. 그러면 직관적으로 $\text{F}_q[X]/(P)$ 는 $\text{F}_q[X]/(P_1) \times \text{F}_q[X]/(P_2) \times \ldots \times \text{F}_q[X]/(P_k)$ 와 isomorphic할 것입니다. (중국인의 나머지 정리 비슷한 느낌으로) 그러면 이 집합은 또 $\text{F}_{q^d} \times \ldots \times \text{F}_{q^d}$ 와 isomorphic할 것이므로, 우리는 $\text{F}_q[X]/(P)$ 의 원소 $x$에 대해서 $x^{q^d} - x = 0$이 성립한다는 것을 알 수 있습니다. $x^{q^d} - x = 0$은 $x^{q^d} - x = x (x^{(q^d - 1) / 2} - 1)(x^{(q^d - 1) / 2} + 1) = 0$ 으로 다시 나타낼 수 있으므로 이러한 결론을 내릴 수 있습니다: $x$에 대해서 $\gcd(x^{(q^d - 1) / 2} - 1, P)$를 계산하면 $\gcd(x^{(q^d - 1) / 2} - 1, P_k)$가 자명하지 않은 식이 나오지 않는 $k$들에 대해서 곱한 결과를 얻을 수 있으며, 이는 확률적으로 $P$를 절반 정도로 나누게 될 것입니다.
 
 그러므로 무작위로 계속 $x$를 고르면서 $\gcd(x^{(q^d - 1) / 2} - 1, P)$를 계산하면서 degree $d$인 식으로 구성될 때까지 진행하게 되면, 언젠가는 인수분해가 끝나게 될 것입니다.
 
