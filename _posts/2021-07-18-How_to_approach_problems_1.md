@@ -1,5 +1,3 @@
-
-
 ---
 layout: post
 title:  "알고리즘 문제 접근 과정"
