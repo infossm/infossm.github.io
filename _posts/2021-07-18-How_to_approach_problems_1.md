@@ -54,7 +54,7 @@ tags: [data-structure, algorithm]
 
 하나의 ai에 대해서, |ai - h|는 j에 상관없이 항상 똑같은 값을 가집니다. 즉, 우리는 특별한 i에 대해 |ai - h|가 m번 더해질 것이란 사실을 알 수 있고, 마찬가지로 |h - bj| 또한 i에 상관없이 똑같은 값을 가지므로, n번 더해질 것이란 것을 알 수 있습니다.
 
-즉, 이를 이용하여 2는 i, j 상관없이 총 n * m번, |ai - h|는 m번, |h - bj|는 n번 더해지게 되므로, 우리는 주어진 식을 다음과 같이 바꿀 수 있습니다.
+즉, 이를 이용하여 2는 i, j 상관없이 총 n * m번, |\lvertai - h|\rvert는 m번, |h - bj|는 n번 더해지게 되므로, 우리는 주어진 식을 다음과 같이 바꿀 수 있습니다.
 
 ![](/assets/images/VennTum/How_to_approach/How_to_approach_problems_1_2.PNG)
 
