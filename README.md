@@ -1,9 +1,10 @@
 # infossm.github.io
 
-#
-
-# Install On Ubuntu
+## Install On Ubuntu
 1. You must install Ruby
+```bash
+$ sudo apt install ruby ruby-dev
+```
 2. Check whether you have Ruby
 ```bash
 $ ruby --version

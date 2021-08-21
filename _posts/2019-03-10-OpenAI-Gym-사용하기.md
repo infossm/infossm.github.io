@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  " OpenAI Gym 사용하기"
+title:  "OpenAI Gym 사용하기"
 author: ho94949
 date: 2019-03-09 15:00
 tags: [OpenAI]
@@ -155,7 +155,7 @@ if __name__ == '__main__':
     return np.random.choice([0, 1], p=model.predict(s.reshape(-1, 4))[0] )
     
   data_preparation(100, 100, predictor, True)
-```  
+```
 
 # self-play
 
@@ -179,7 +179,7 @@ if __name__ == '__main__':
     train_model(model, training_data)
   
   data_preparation(100, 100, predictor, True)
-```  
+```
 
 여기서 우리는 적당히 상위 K개를 고를 때의 K를 늘리고, 학습된 데이터로 다시 플레이를 해보며 상위 K개의 데이터를 가져오는 것을 반복합니다. 
 
