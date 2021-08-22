@@ -399,7 +399,7 @@ $O \left( \lg^2 N + Q \right)$의 시간 복잡도로 처리할 수 있다.
 
 좌표 압축은 오직 한 번만 수행해도 된다는 점에 유의하여, 단순한 사칙연산을 적용하면
 
-$$ O \left( N \lg N + \frac{Q}{D} \times \left( N + D \lg^2 N + D^2 \right) \right) = O \left( N \lg N + \frac{QN}{D} + Q \lg^2 N + QD \right) $$
+$ O \left( N \lg N + \frac{Q}{D} \times \left( N + D \lg^2 N + D^2 \right) \right) = O \left( N \lg N + \frac{QN}{D} + Q \lg^2 N + QD \right) $
 
 가 총 시간 복잡도가 됨을 알 수 있다.
 

@@ -73,11 +73,11 @@ n개의 node와 E개의 edge를 가진 그래프가 있다고 가정했을 때, 
 
 edge를 고르는 과정에 node 2개가 남을 때까지 반복되므로, 알고리즘이 종료될 때까지 진행하였을 때 모든 edge가 mincut에 포함되지 않을 확률은 다음과 같이 계산됩니다.
 
-$$(1 - \frac{2}{n}) \times (1 - \frac{2}{n - 1}) \times ... \times (1 - \frac{2}{4}) \times (1 - \frac{2}{3})$$
+$(1 - \frac{2}{n}) \times (1 - \frac{2}{n - 1}) \times ... \times (1 - \frac{2}{4}) \times (1 - \frac{2}{3})$
 
-$$= \frac{n - 2}{n} \times \frac{n - 3}{n - 1} \times ... \times \frac{2}{4} \times \frac{1}{3}$$
+$= \frac{n - 2}{n} \times \frac{n - 3}{n - 1} \times ... \times \frac{2}{4} \times \frac{1}{3}$
 
-$$= \frac{2}{n(n - 1)}$$
+$= \frac{2}{n(n - 1)}$
 
 즉, 2개의 node가 남을 때까지 contraction을 진행했을 때 올바른 minimum cut이 찾아질 확률은 $\frac{2}{n(n - 1)}$입니다. 굉장히 작은 확률이지요.
 
@@ -85,13 +85,13 @@ $$= \frac{2}{n(n - 1)}$$
 
 알고리즘을 T번 반복한다고 가정했을 때, 올바른 minimum cut을 찾지 **못할** 확률은 다음과 같이 계산할 수 있습니다.
 
-$$(1 - \frac{2}{n(n - 1)})^T$$
+$(1 - \frac{2}{n(n - 1)})^T$
 
 이 때 $T = n^2 \ln{n}$으로 잡으면, 올바른 minimum cut을 찾지 못할 확률이 $\frac{1}{n}$ 미만이 됨을 보일 수 있습니다.
 
 이는 $1 - x \le e^{-x}$라는 식을 이용하면 쉽게 계산 가능합니다.
 $$(1 - \frac{2}{n(n - 1)})^{n^2 \ln{n}} < (1 - \frac{1}{n^2})^{n^2 \ln{n}}\\
-\le (e^{- \frac{1}{n^2}})^{n^2 \ln{n}} = \frac{1}{e^{\ln{n}}} = \frac{1}{n}$$
+\le (e^{- \frac{1}{n^2}})^{n^2 \ln{n}} = \frac{1}{e^{\ln{n}}} = \frac{1}{n}$
 
 이 때의 시간 복잡도는 $O(En^2 \log{n})$이 됩니다.
 
@@ -210,15 +210,15 @@ contraction을 통해 더 작은 크기의 그래프 2개가 만들어지면, �
 
 이러한 과정이 2회 반복되므로, 알고리즘이 정확한 mincut을 구할 확률은 다음과 같은 점화식으로 나타내집니다.
 
-$$P(n) = 1 - (1 - \frac{1}{2} P(1 + \frac{n}{\sqrt{2}}))^2$$
+$P(n) = 1 - (1 - \frac{1}{2} P(1 + \frac{n}{\sqrt{2}}))^2$
 
-위 점화식을 풀면 $$P(n) = \Omega  (\frac{1}{\log{n}})$$라는 값을 얻게 됩니다. 이 값이 fastmincut 함수를 한 번 실행시킬 때의 정확도입니다.<br/>
+위 점화식을 풀면 $P(n) = \Omega  (\frac{1}{\log{n}})$라는 값을 얻게 됩니다. 이 값이 fastmincut 함수를 한 번 실행시킬 때의 정확도입니다.<br/>
 
 시간복잡도도 한 번 살펴보겠습니다.
 
 fastmincut 함수를 한 번 실행할 때, 재귀적으로 실행되는 점화식은
 
-$$T(n) = 2 T(1 + \frac{n}{\sqrt{2}}) + O(n^{2})$$
+$T(n) = 2 T(1 + \frac{n}{\sqrt{2}}) + O(n^{2})$
 
 로 나타낼 수 있습니다.
 

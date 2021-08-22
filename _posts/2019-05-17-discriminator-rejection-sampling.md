@@ -22,7 +22,7 @@ tags: [generative-adversarial-networks, rejection-sampling, discriminator-reject
 
 &nbsp;&nbsp;&nbsp;&nbsp;그래서 $D$는 $D(x)$에서 $x$가 실제 데이터이면 높은 값을, 가짜 데이터이면 낮은 값을 부여하도록 학습하게 됩니다. 반대로 $G$는 이를 방해하는 방향으로 학습이 진행됩니다. 이를 간단히 수식으로 표현하면, 학습은 다음과 같은 식 $V(D,G)$를 두고 $D$와 $G$가 minmax 게임을 진행하는 것과 같다고 할 수 있습니다.
 
-<!--$$\min_G\max_DV(D,G)=\mathbb{E}_{x\sim p_d(x)}[\log D(x)]+\mathbb{E}_{z\sim p_z(z)}[\log (1-D(G(z)))]$$-->
+<!--$\min_G\max_DV(D,G)=\mathbb{E}_{x\sim p_d(x)}[\log D(x)]+\mathbb{E}_{z\sim p_z(z)}[\log (1-D(G(z)))]$-->
 
 ![](/assets/images/discriminator-rejection-sampling/GANs_objective_function.PNG)
 

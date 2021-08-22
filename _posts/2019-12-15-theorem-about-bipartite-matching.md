@@ -21,11 +21,11 @@ tags: [bipartite-matching, minimum-vertex-cover, maximum-independent-set, minimu
 
 ![Vertex Cover](/assets/images/bipartite-theorem/vertexcover.png)
 
-일반적인 그래프의 Minimum Vertex Cover는 다항시간 안에 풀 수 없지만 [**쾨닉의 정리(Konig's Theorem)**](https://en.wikipedia.org/wiki/K%C5%91nig%27s_theorem_%28graph_theory%29)를 보면 이분 그래프에서의 $$\|Minimum Vertex Cover\|$$는 $$\|Maximum Matching\|$$과 같다고 증명되어 있습니다.
+일반적인 그래프의 Minimum Vertex Cover는 다항시간 안에 풀 수 없지만 [**쾨닉의 정리(Konig's Theorem)**](https://en.wikipedia.org/wiki/K%C5%91nig%27s_theorem_%28graph_theory%29)를 보면 이분 그래프에서의 $\|Minimum Vertex Cover\|$는 $\|Maximum Matching\|$과 같다고 증명되어 있습니다.
 
-관련 문제로 제법 유명한 [BOJ 1867 - 돌멩이 제거](https://www.acmicpc.net/problem/1867) 문제를 봅시다. $$N \times N$$ 격자 위에 K개의 돌멩이가 있을 때, 최소한의 행과 열을 선택해 모든 돌멩이를 제거하는 문제입니다. 여기에서 우리가 할 수 있는 일은 행이나 열을 선택하는 일이고, 이 선택을 최소화 해야 합니다. 
+관련 문제로 제법 유명한 [BOJ 1867 - 돌멩이 제거](https://www.acmicpc.net/problem/1867) 문제를 봅시다. $N \times N$ 격자 위에 K개의 돌멩이가 있을 때, 최소한의 행과 열을 선택해 모든 돌멩이를 제거하는 문제입니다. 여기에서 우리가 할 수 있는 일은 행이나 열을 선택하는 일이고, 이 선택을 최소화 해야 합니다. 
 
-하나의 돌멩이를 제거하기 위해서는 돌멩이가 있는 행이나 열 중 하나만 선택해도 됩니다. 문제를 풀기 위해 관점을 바꿔봅시다. 각 행과 열을 정점으로, 돌멩이를 간선으로 보고 돌멩이가 위치한 좌표 $$(r, c)$$에 대해 $$r->c$$ 간선을 추가합니다. 이렇게 되면 모든 행이 왼쪽에 있고 모든 열이 오른쪽에 있는 이분 그래프가 만들어집니다.
+하나의 돌멩이를 제거하기 위해서는 돌멩이가 있는 행이나 열 중 하나만 선택해도 됩니다. 문제를 풀기 위해 관점을 바꿔봅시다. 각 행과 열을 정점으로, 돌멩이를 간선으로 보고 돌멩이가 위치한 좌표 $(r, c)$에 대해 $r->c$ 간선을 추가합니다. 이렇게 되면 모든 행이 왼쪽에 있고 모든 열이 오른쪽에 있는 이분 그래프가 만들어집니다.
 
 ![Vertex Cover](/assets/images/bipartite-theorem/stone_ex.png)
 
@@ -33,11 +33,11 @@ tags: [bipartite-matching, minimum-vertex-cover, maximum-independent-set, minimu
 
 +) 만약 Minimum Vertex Cover의 개수와 함께 집합을 구성하는 정점을 구해야한다면 Bipartite Matching을 구한 뒤 아래의 정의에 따라 구할 수 있습니다.
 
-- $$L$$ : 왼쪽에 배치된 정점 집합
-- $$R$$: 오른쪽에 배치된 정점 집합
-- $$X$$: $$L$$에서 출발하여 alternating path를 통해 방문할 수 있는 정점 집합
-- $$Y$$: $$R$$에서 출발하여 alternating path를 통해 방문할 수 있는 정점 집합
-- Minimum Vertex Cover: $$(L∩Y)∪(R∩X)$$
+- $L$ : 왼쪽에 배치된 정점 집합
+- $R$: 오른쪽에 배치된 정점 집합
+- $X$: $L$에서 출발하여 alternating path를 통해 방문할 수 있는 정점 집합
+- $Y$: $R$에서 출발하여 alternating path를 통해 방문할 수 있는 정점 집합
+- Minimum Vertex Cover: $(L∩Y)∪(R∩X)$
 
 
 
@@ -49,8 +49,8 @@ tags: [bipartite-matching, minimum-vertex-cover, maximum-independent-set, minimu
 
 역시 일반적인 그래프에서 Maximum Independent Set을 구하는 것은 다항시간 안에 풀 수 없지만, 이분 그래프에서 Minimum Vertex Cover를 생각해보면 집합에 포함된 정점쌍을 연결하는 간선이 없어야하는 Maximum Independent Set은 Minimum Vertex Cover의 여집합이 되는 것을 알 수 있습니다.
 
-따라서 이분 그래프의 정점 개수를 $$V$$라고 할 때, 다음과 같은 식이 성립합니다.
-$$V = \|Minimum Vertex Cover\| + \|Maximum Independent Set\|$$
+따라서 이분 그래프의 정점 개수를 $V$라고 할 때, 다음과 같은 식이 성립합니다.
+$V = \|Minimum Vertex Cover\| + \|Maximum Independent Set\|$
 
 [BOJ 11014 - 컨닝 2](https://www.acmicpc.net/problem/11014) 문제를 봅시다. NxM 장애물이 포함된 격자에 다른 사람을 컨닝하지 못하도록 하며 최대한 많은 사람을 배치하는 문제입니다. 이 문제를 어떻게 Maximum Independent Set에 적용할 수 있을까요?
 
@@ -58,7 +58,7 @@ $$V = \|Minimum Vertex Cover\| + \|Maximum Independent Set\|$$
 
 ![컨닝 그래프 모델](/assets/images/bipartite-theorem/conning_model.png)
 
-와 신기해라, 홀수열 사이와 짝수열 사이에는 연결이 없기 때문에 이분 그래프로 표현 된다는 걸 알 수 있습니다. 따라서 홀수열을 왼쪽으로, 짝수열을 오른쪽으로 하고 컨닝 관계를 간선으로 하는 이분 그래프가 있을 때 우리가 원하는 답은 컨닝 관계인 간선을 공유하는 두 정점을 동시에 선택하지 않으면서 최대한 많은 정점을 선택하는 Maximum Independent Set이 되며 이는 $$(V - \|Minimum Vertex Cover\|)$$이므로 정점 수에서 최대 매칭을 빼면 구할 수 있습니다.
+와 신기해라, 홀수열 사이와 짝수열 사이에는 연결이 없기 때문에 이분 그래프로 표현 된다는 걸 알 수 있습니다. 따라서 홀수열을 왼쪽으로, 짝수열을 오른쪽으로 하고 컨닝 관계를 간선으로 하는 이분 그래프가 있을 때 우리가 원하는 답은 컨닝 관계인 간선을 공유하는 두 정점을 동시에 선택하지 않으면서 최대한 많은 정점을 선택하는 Maximum Independent Set이 되며 이는 $(V - \|Minimum Vertex Cover\|)$이므로 정점 수에서 최대 매칭을 빼면 구할 수 있습니다.
 
 ![컨닝 모델 - 이분 그래프](/assets/images/bipartite-theorem/conning_ans.png)
 
@@ -79,13 +79,13 @@ $$V = \|Minimum Vertex Cover\| + \|Maximum Independent Set\|$$
 
 모든 먹이사슬(Path) 겹치는 정점이 없어야 합니다. 따라서 모든 정점은 indegree가 1 이하이고 outdegree가 1이하이며, indegree가 0인 정점은 Path의 시작이고 outdgree가 0인 정점은 Path의 끝이며 다른 모든 degree는 1이 됩니다.
 
-이를 이용해 우리는 DAG를 이분 그래프로 바꿀 수 있습니다. 모든 정점을 두 개로 나눠봅시다. 어떤 정점 $$v$$에 대해 $$v1$$은 $$v$$의 outdegree를, $$v2$$는 $$v$$의 indegree를 뜻하도록 하고 $$v1$$을 이분 그래프의 왼쪽, $$v2$$를 이분 그래프의 오른쪽에 배치합니다. 이때 $$u->v$$ 간선이 존재하면 $$u1->v2$$ 간선을 연결합니다.
+이를 이용해 우리는 DAG를 이분 그래프로 바꿀 수 있습니다. 모든 정점을 두 개로 나눠봅시다. 어떤 정점 $v$에 대해 $v1$은 $v$의 outdegree를, $v2$는 $v$의 indegree를 뜻하도록 하고 $v1$을 이분 그래프의 왼쪽, $v2$를 이분 그래프의 오른쪽에 배치합니다. 이때 $u->v$ 간선이 존재하면 $u1->v2$ 간선을 연결합니다.
 
 ![상어의 저녁식사 그래프 모델](/assets/images/bipartite-theorem/shark_model.png)
 
-해당 이분 그래프에서 구한 최대 이분 매칭을 $$M$$개라고 하면 이는 모든 Path에 속하는 간선을 총 개수입니다. 기존 정점의 개수가 $$V$$개라고 할 때 Path에 속하는 간선이 $$M$$이라는 것은 Path의 개수가 $$(V - M)$$개라는 것과 같습니다. Path의 마지막 정점은 살아남은 상어를 뜻하고, 해당 상어를 제외한 상어들은 모두 outdegree를 하나씩 가지니까요. 이때 $$M$$은 최대 매칭이기 때문에 $$(V - M)$$은 Minimum Path Cover가 됩니다.
+해당 이분 그래프에서 구한 최대 이분 매칭을 $M$개라고 하면 이는 모든 Path에 속하는 간선을 총 개수입니다. 기존 정점의 개수가 $V$개라고 할 때 Path에 속하는 간선이 $M$이라는 것은 Path의 개수가 $(V - M)$개라는 것과 같습니다. Path의 마지막 정점은 살아남은 상어를 뜻하고, 해당 상어를 제외한 상어들은 모두 outdegree를 하나씩 가지니까요. 이때 $M$은 최대 매칭이기 때문에 $(V - M)$은 Minimum Path Cover가 됩니다.
 
-여기서 원래 문제로 돌아갑시다. 원래 문제에서는 한 상어는 최대 두 상어를 먹을 수 있습니다. 이 말은 패스에 속한 상어는 최대 2의 indegree를 가질 수 있다는 의미입니다. 따라서 우리는 indegree를 뜻하는 오른쪽 정점을 두 배 해주면 문제의 요구와 같은 그래프를 만들 수 있고, 답은 $$(N - M)$$이 됩니다.
+여기서 원래 문제로 돌아갑시다. 원래 문제에서는 한 상어는 최대 두 상어를 먹을 수 있습니다. 이 말은 패스에 속한 상어는 최대 2의 indegree를 가질 수 있다는 의미입니다. 따라서 우리는 indegree를 뜻하는 오른쪽 정점을 두 배 해주면 문제의 요구와 같은 그래프를 만들 수 있고, 답은 $(N - M)$이 됩니다.
 
 
 
@@ -102,7 +102,7 @@ $$V = \|Minimum Vertex Cover\| + \|Maximum Independent Set\|$$
 
 마법의 나무지만 보호받지 못하는 나무의 수를 최대화하기 위해서 마법의 나무로 바꿀 나무들의 집합을 생각해봅시다. 하나를 마법의 나무로 바꾸면 그에 관련된 모든 나무는 같은 집합에 들어올 수 없습니다. 따라서 우리는 서로 위상 관계가 없는 나무만을 정답으로 포함할 수 있으며 이를 최대화하는 곧 최대 반사슬을 의미합니다. 이는 Minimum Path Cover로 구할 수 있습니다.
 
-Minimum Path Cover를 구하기 위해 각 정점을 이번에도 둘로 쪼갭니다. 어떤 정점 $$v$$에 대해 $$v1$$은 자신이 보호받게 되었을 때 보호할 나무들을 향해 outdegree를, $$v2$$는 보호받았을 때 자신을 보호해주는 나무에서 오는 indegree를 연결합니다. 여기서 구한 최대 매칭을 $$M$$이라고 하면 마법의 나무이면서 보호받지 못하는 나무의 최댓값은 $$(N - M)$$이 됩니다.
+Minimum Path Cover를 구하기 위해 각 정점을 이번에도 둘로 쪼갭니다. 어떤 정점 $v$에 대해 $v1$은 자신이 보호받게 되었을 때 보호할 나무들을 향해 outdegree를, $v2$는 보호받았을 때 자신을 보호해주는 나무에서 오는 indegree를 연결합니다. 여기서 구한 최대 매칭을 $M$이라고 하면 마법의 나무이면서 보호받지 못하는 나무의 최댓값은 $(N - M)$이 됩니다.
 
 
 

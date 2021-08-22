@@ -19,7 +19,7 @@ Grover's Algorithm은 이 시간복잡도를 $O(\sqrt{N})$으로 낮추는데 �
 
 $n$개의 qubit $\left\vert \psi \right>$가 $\left\vert 0 \right>^{\otimes n}$의 상태로 있고, 함수 $f$가 다음과 같이 정의되어 있다고 합시다.
 
-$$f(\psi) = \begin{cases} 1 & \text{if } \left\vert \psi \right> \in A \subset \{\left\vert 0 \right>,\left\vert 1 \right>\}^{\otimes n} \\ 0 & \text{otherwise}\end{cases}$$
+$f(\psi) = \begin{cases} 1 & \text{if } \left\vert \psi \right> \in A \subset \{\left\vert 0 \right>,\left\vert 1 \right>\}^{\otimes n} \\ 0 & \text{otherwise}\end{cases}$
 
 즉 $\psi$가 특정 기저 상태면 (달리 표현해 $A$에 속하면) 1이고, 아니면 0인 함수입니다. 이런 $A$의 예시로는 데이터베이스에서 특정 쿼리의 조건을 만족하는 항목들이나, 암호화 과정에서 후보가 될 수 있는 key의 집합이 있습니다.
 
@@ -40,15 +40,15 @@ $A$의 크기가 $M$이고 $N = 2^n$이라 할 때, Grover's Algorithm은 $f(\ps
 
 $f$는 다음과 같은 quantum oracle $\mathcal{O}$로 해석할 수 있습니다.
 
-$$\mathcal{O}\left\vert x \right> \left\vert y \right> = \left\vert x \right> \left\vert y \oplus f(x) \right>$$
+$\mathcal{O}\left\vert x \right> \left\vert y \right> = \left\vert x \right> \left\vert y \oplus f(x) \right>$
 
 $\oplus$로 표기할 수 있는 이유는, 양자 컴퓨팅의 CNOT이 고전 컴퓨팅의 XOR에 대응되기 때문입니다. 그럼 Grover's Algorithm에 필요한 quantum oracle인
 
-$$\mathcal{O}\left\vert x \right>\left\vert y \right> \to  (-1)^{f(x)} \left\vert x \right>\left\vert y\right>$$
+$\mathcal{O}\left\vert x \right>\left\vert y \right> \to  (-1)^{f(x)} \left\vert x \right>\left\vert y\right>$
 
 은 어떻게 구상해야 할까요? 다양한 방법이 있겠지만 가장 간편하고 널리 알려진 방법 중 하나인 phase kickback trick을 이용할 수 있습니다. $\left\vert y \right> = \left\vert - \right> = \dfrac{\left\vert 0 \right> - \left\vert 1 \right>}{\sqrt{2}}$로 하고 $\mathcal{O}$를 적용하면 놀라운 일이 벌어집니다.
 
-$$\begin{aligned} \mathcal{O}\left\vert x \right>  \left\vert - \right> &= \dfrac{1}{\sqrt{2}} (\mathcal{O}\left\vert x \right>\left\vert 0 \right> - \mathcal{O}\left\vert x \right>\left\vert 1 \right>) \\ &= \dfrac{1}{\sqrt{2}} (\left\vert x \right>\left\vert f(x) \right> - \left\vert x \right>\left\vert 1 \oplus f(x)\right>) \\ &= \begin{cases} \frac{1}{\sqrt{2}}(\left\vert x \right>\left\vert 0 \right> - \left\vert x \right>\left\vert 1 \right>) = \left\vert x \right>\left\vert - \right> & f(x) = 0 \\ \frac{1}{\sqrt{2}}(\left\vert x \right>\left\vert 1 \right> - \left\vert x \right>\left\vert 0 \right>) = -\left\vert x \right>\left\vert - \right> & f(x) = 1 \end{cases} \\ &=(-1)^{f(x)}\left\vert x \right>\left\vert - \right>\end{aligned}$$
+$\begin{aligned} \mathcal{O}\left\vert x \right>  \left\vert - \right> &= \dfrac{1}{\sqrt{2}} (\mathcal{O}\left\vert x \right>\left\vert 0 \right> - \mathcal{O}\left\vert x \right>\left\vert 1 \right>) \\ &= \dfrac{1}{\sqrt{2}} (\left\vert x \right>\left\vert f(x) \right> - \left\vert x \right>\left\vert 1 \oplus f(x)\right>) \\ &= \begin{cases} \frac{1}{\sqrt{2}}(\left\vert x \right>\left\vert 0 \right> - \left\vert x \right>\left\vert 1 \right>) = \left\vert x \right>\left\vert - \right> & f(x) = 0 \\ \frac{1}{\sqrt{2}}(\left\vert x \right>\left\vert 1 \right> - \left\vert x \right>\left\vert 0 \right>) = -\left\vert x \right>\left\vert - \right> & f(x) = 1 \end{cases} \\ &=(-1)^{f(x)}\left\vert x \right>\left\vert - \right>\end{aligned}$
 
 분명히 $\mathcal{O}\left\vert x \right> \left\vert y \right> = \left\vert x \right> \left\vert y \oplus f(x) \right>$인데도 불구하고 $y$쪽은 그대로인채, $x$만 변한 것을 알 수 있습니다.
 
@@ -66,11 +66,11 @@ $(2 \left\vert \psi \right> \left<\psi\right\vert - I)$는 diffusion transform�
 
 비록 계산결과를 직접 쓰진 않았지만,  Grover Iteration은 $k^2 + l^2(N-1) = 1$을 만족하는 실수쌍 $(k, l)$을 $(\frac{N-2}{N}k + \frac{2(N-1)}{N}l, \frac{N-2}{N}l - \frac{2}{N}k)$로 변환합니다. 이를 점화식 꼴로 쓰면
 
-$$\begin{aligned} k_0 &= l_0 = \frac{1}{\sqrt{N}} \\ (k_{j+1}, l_{j+1}) &= \left(\frac{N-2}{N}k_j + \frac{2(N-1)}{N}l_j, \frac{N-2}{N}l_j - \frac{2}{N}k_j\right) \end{aligned}$$
+$\begin{aligned} k_0 &= l_0 = \frac{1}{\sqrt{N}} \\ (k_{j+1}, l_{j+1}) &= \left(\frac{N-2}{N}k_j + \frac{2(N-1)}{N}l_j, \frac{N-2}{N}l_j - \frac{2}{N}k_j\right) \end{aligned}$
 
 가 됩니다. 놀랍게도 일반항이 기하학적인 꼴로 나옵니다. $\sin^2 \theta = \frac{1}{N}$인 $\theta$를 잡으면
 
-$$\begin{aligned} k_j &= \sin((2j+1)\theta) \\ l_j &= \frac{1}{\sqrt{N-1}} \cos((2j+1)\theta)  \end{aligned}$$
+$\begin{aligned} k_j &= \sin((2j+1)\theta) \\ l_j &= \frac{1}{\sqrt{N-1}} \cos((2j+1)\theta)  \end{aligned}$
 
 와 같이 나오게 됩니다. $k$가 우리가 원하는 특정 성질이 있는 기저의 확률이므로, $(2m+1)\theta = \pi/2 \implies m = \dfrac{\pi - 2\theta}{4\theta}$가 될 때 관찰 확률이 1이 됩니다. 때문에 $M = \lfloor \pi/{4\theta}\rfloor \approx \lfloor \frac{\pi}{4} \sqrt{N}\rfloor$ 정도 돌리면 충분해보임을 알 수 있고, 논문에 의하면 그렇습니다.
 
@@ -82,7 +82,7 @@ $\left\vert - \right> = HX\left\vert 0 \right>$이기 때문에, 위에서 살�
 
 $(2 \left\vert \psi \right> \left<\psi\right\vert - I) = H^{\otimes n} (2 \left\vert 0 \right>^{\otimes n} \left<0\right\vert^{\otimes n} - I) H^{\otimes n}$인지라, $(2 \left\vert 0 \right>^{\otimes n} \left<0\right\vert^{\otimes n} - I)$를 해석해보아야 합니다. 살펴보면 이는 $\left\vert 0 \right>^{\otimes n}$을 제외하고 전부 진폭의 부호를 뒤집는 연산입니다.
 
-$$(2 \left\vert 0 \right>^{\otimes n} \left<0\right\vert^{\otimes n} - I)\left\vert x \right> = \begin{cases} 2 \left\vert 0 \right>^{\otimes n} \left<0\right\vert^{\otimes n}\left\vert x \right> - \left\vert x \right> = - \left\vert x \right> & \text{if }\left\vert x \right> \neq \left\vert 0 \right>^{\otimes n} \\ 2 \left\vert 0 \right>^{\otimes n} \left<0\right\vert^{\otimes n}\left\vert x \right> - \left\vert x \right> = \left\vert x \right> & \text{if }\left\vert x \right> = \left\vert 0 \right>^{\otimes n}\end{cases} $$
+$(2 \left\vert 0 \right>^{\otimes n} \left<0\right\vert^{\otimes n} - I)\left\vert x \right> = \begin{cases} 2 \left\vert 0 \right>^{\otimes n} \left<0\right\vert^{\otimes n}\left\vert x \right> - \left\vert x \right> = - \left\vert x \right> & \text{if }\left\vert x \right> \neq \left\vert 0 \right>^{\otimes n} \\ 2 \left\vert 0 \right>^{\otimes n} \left<0\right\vert^{\otimes n}\left\vert x \right> - \left\vert x \right> = \left\vert x \right> & \text{if }\left\vert x \right> = \left\vert 0 \right>^{\otimes n}\end{cases} $
 
 $\left<0\right\vert^{\otimes n}\left\vert x \right>$ 가 $\left\vert x \right> \neq \left\vert 0\right>^{\otimes n}$이면 서로 다른 두 기저벡터의 내적이기 때문에 $0$이 됨을 이용합니다. 때문에 부호를 거꾸로 한 $(I - 2\left\vert 0 \right>^{\otimes n} \left<0\right\vert^{\otimes n})$는 $\left\vert 0 \right>^{\otimes n}$의 진폭만 부호를 뒤집는 연산입니다.
 

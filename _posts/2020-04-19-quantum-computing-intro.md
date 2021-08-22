@@ -28,7 +28,7 @@ tags:
 
 **벡터(vector)**, 엄밀히 말하면 열벡터(column vector)는 힐베르트 공간($\mathbb{C}^n)$의 원소인 크기 $n \times 1$의 행렬로 볼 수 있으며 다음과 같이 표기합니다.
 
-$$\mathbf{v} = \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n\end{bmatrix},\ v_i \in \mathbb{C}$$
+$\mathbf{v} = \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n\end{bmatrix},\ v_i \in \mathbb{C}$
 
 여기서 $\mathbb{C}$는 복소수의 집합을 의미합니다.
 
@@ -36,7 +36,7 @@ $$\mathbf{v} = \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n\end{bmatrix},\ v_i \i
 
 벡터 $\mathbf{v}$ 의 **adjoint (conjugate transpose, Hermitian transpose)**는 $\mathbf{v}^{\dagger}$로 표기되며, 다음과 같습니다.
 
-$$ \mathbf{v}^{\dagger} = (\mathbf{v}^T)^{*} = \begin{bmatrix} v_1^{*} & v_2^{*} & \cdots & v_n^{*}\end{bmatrix} $$
+$ \mathbf{v}^{\dagger} = (\mathbf{v}^T)^{*} = \begin{bmatrix} v_1^{*} & v_2^{*} & \cdots & v_n^{*}\end{bmatrix} $
 
 이 때 $v_i^{*}$는 $v_i$의 켤레복소수(conjugate)입니다.
 
@@ -44,11 +44,11 @@ $$ \mathbf{v}^{\dagger} = (\mathbf{v}^T)^{*} = \begin{bmatrix} v_1^{*} & v_2^{*}
 
 벡터 간의 연산을 보다 정의하기 앞서, 양자 역학에서 널리 쓰이는 Dirac notation에 대해 알아보도록 하겠습니다. 앞서 표기한 열벡터는 다음과 같이 쓸 수도 있습니다.
 
-$$ \mathbf{v} = \left\vert \mathbf{v} \right> $$
+$ \mathbf{v} = \left\vert \mathbf{v} \right> $
 
 이 열벡터는 "ket-$v$"라 불립니다. 이의 adjoint는 다음과 같습니다.
 
-$$ \left< \mathbf{v} \right\vert = \mathbf{v}^{\dagger}$$
+$ \left< \mathbf{v} \right\vert = \mathbf{v}^{\dagger}$
 
 이 벡터는 "bra-$v$"라 불립니다. 합쳐서 말하면 "bra-ket"으로, 괄호를 의미하는 bracket과 흡사합니다. 실제로 LaTeX에서 `\bra`, `\ket` 등으로 해당 표기법을 사용할 수 있습니다. 이 표기법은 양자 역학 관련하여 많이 사용됩니다.
 
@@ -56,7 +56,7 @@ $$ \left< \mathbf{v} \right\vert = \mathbf{v}^{\dagger}$$
 
 $\mathbb{C}^n$의 두 벡터 $\mathbf{u}$와 $\mathbf{v}$의 **내적(inner product)**은 $\left< \mathbf{u} \vert \mathbf{v} \right>$으로 표기하며, 다음과 같이 정의됩니다.
 
-$$ \left< \mathbf{u} \vert \mathbf{v} \right> = \mathbf{u}^{\dagger}\mathbf{v} = \begin{bmatrix} u_1^{*} & u_2^{*} & \cdots & u_n^{*}\end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n\end{bmatrix} = u_1^{*}v_1 + u_2^{*}v_2 + \cdots u_n^{*}v_n $$
+$ \left< \mathbf{u} \vert \mathbf{v} \right> = \mathbf{u}^{\dagger}\mathbf{v} = \begin{bmatrix} u_1^{*} & u_2^{*} & \cdots & u_n^{*}\end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n\end{bmatrix} = u_1^{*}v_1 + u_2^{*}v_2 + \cdots u_n^{*}v_n $
 
 inner product는 임의의 $\mathbf{u}, \mathbf{v},\mathbf{w} \in \mathbb{C}^n$에 대해 다음 세 성질을 만족합니다.
 
@@ -70,7 +70,7 @@ inner product는 임의의 $\mathbf{u}, \mathbf{v},\mathbf{w} \in \mathbb{C}^n$�
 
 $\mathbb{C}^n$의 두 벡터 $\mathbf{u}$와 $\mathbf{v}$의 **외적(outer product)**은 $\left\vert \mathbf{v} \right> \left< \mathbf{u} \right\vert$으로 표기하며, 다음과 같이 정의됩니다.
 
-$$ \left\vert \mathbf{v} \right> \left< \mathbf{u} \right\vert = \mathbf{v}\mathbf{u}^{\dagger} = \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n\end{bmatrix} \begin{bmatrix} u_1^{*} & u_2^{*} & \cdots & u_n^{*}\end{bmatrix} = \begin{bmatrix} v_1 u_1^* & v_1 u_2^* & \cdots & v_1 u_n^* \\ v_2 u_1^* & v_2 u_2^* & \cdots & v_2 u_n^* \\ \vdots & \vdots & \ddots & \vdots \\ v_n u_1^* & v_n u_2^* & \cdots & v_n u_n^* \end{bmatrix}$$
+$ \left\vert \mathbf{v} \right> \left< \mathbf{u} \right\vert = \mathbf{v}\mathbf{u}^{\dagger} = \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n\end{bmatrix} \begin{bmatrix} u_1^{*} & u_2^{*} & \cdots & u_n^{*}\end{bmatrix} = \begin{bmatrix} v_1 u_1^* & v_1 u_2^* & \cdots & v_1 u_n^* \\ v_2 u_1^* & v_2 u_2^* & \cdots & v_2 u_n^* \\ \vdots & \vdots & \ddots & \vdots \\ v_n u_1^* & v_n u_2^* & \cdots & v_n u_n^* \end{bmatrix}$
 
 결과가 크기 $n \times n$의 행렬이 되었습니다.
 
@@ -80,7 +80,7 @@ $$ \left\vert \mathbf{v} \right> \left< \mathbf{u} \right\vert = \mathbf{v}\math
 
 크기 $ m \times n $의 **행렬(matrix)**은 $m$개의 행에 각각 $n$개의 복소수가 있는 구조입니다.
 
-$$ M = \begin{bmatrix} a_{11} & a_{12} & \cdots & a_{1n} \\ a_{21} & a_{22} & \cdots & a_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ a_{m1} & a_{m2} & \cdots & a_{mn} \end{bmatrix}$$
+$ M = \begin{bmatrix} a_{11} & a_{12} & \cdots & a_{1n} \\ a_{21} & a_{22} & \cdots & a_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ a_{m1} & a_{m2} & \cdots & a_{mn} \end{bmatrix}$
 
 행렬의 합과 행렬의 곱, 그리고 항등행렬 $I$에 대한 설명은 생략하겠습니다.
 
@@ -95,7 +95,7 @@ $$ M = \begin{bmatrix} a_{11} & a_{12} & \cdots & a_{1n} \\ a_{21} & a_{22} & \c
 
 크기 $m \times n$ 의 배열 $M$과 $p \times q$의 배열 $N$의 **텐서곱(tensor product)**은 $M \otimes N$으로 표기하며, 다음과 같은 $mp \times nq$의 행렬로 정의됩니다.
 
-$$\begin{align*} M \otimes N &=  \begin{bmatrix} M_{11}  & \cdots & M_{1n} \\ \vdots & \ddots & \vdots \\ M_{m1}  & \cdots & M_{mn} \end{bmatrix} \otimes \begin{bmatrix} N_{11}  & \cdots & N_{1q} \\ \vdots & \ddots & \vdots \\ N_{p1}  & \cdots & N_{pq} \end{bmatrix}\\ &= \begin{bmatrix} M_{11} \begin{bmatrix} N_{11}  & \cdots & N_{1q} \\ \vdots & \ddots & \vdots \\ N_{p1}  & \cdots & N_{pq} \end{bmatrix}  & \cdots & M_{1n} \begin{bmatrix} N_{11}  & \cdots & N_{1q} \\ \vdots & \ddots & \vdots \\ N_{p1}  & \cdots & N_{pq} \end{bmatrix}\\ \vdots & \ddots & \vdots \\ M_{m1} \begin{bmatrix} N_{11}  & \cdots & N_{1q} \\ \vdots & \ddots & \vdots \\ N_{p1}  & \cdots & N_{pq} \end{bmatrix} & \cdots & M_{mn} \begin{bmatrix} N_{11}  & \cdots & N_{1q} \\ \vdots & \ddots & \vdots \\ N_{p1}  & \cdots & N_{pq} \end{bmatrix}\end{bmatrix} \end{align*} $$
+$\begin{align*} M \otimes N &=  \begin{bmatrix} M_{11}  & \cdots & M_{1n} \\ \vdots & \ddots & \vdots \\ M_{m1}  & \cdots & M_{mn} \end{bmatrix} \otimes \begin{bmatrix} N_{11}  & \cdots & N_{1q} \\ \vdots & \ddots & \vdots \\ N_{p1}  & \cdots & N_{pq} \end{bmatrix}\\ &= \begin{bmatrix} M_{11} \begin{bmatrix} N_{11}  & \cdots & N_{1q} \\ \vdots & \ddots & \vdots \\ N_{p1}  & \cdots & N_{pq} \end{bmatrix}  & \cdots & M_{1n} \begin{bmatrix} N_{11}  & \cdots & N_{1q} \\ \vdots & \ddots & \vdots \\ N_{p1}  & \cdots & N_{pq} \end{bmatrix}\\ \vdots & \ddots & \vdots \\ M_{m1} \begin{bmatrix} N_{11}  & \cdots & N_{1q} \\ \vdots & \ddots & \vdots \\ N_{p1}  & \cdots & N_{pq} \end{bmatrix} & \cdots & M_{mn} \begin{bmatrix} N_{11}  & \cdots & N_{1q} \\ \vdots & \ddots & \vdots \\ N_{p1}  & \cdots & N_{pq} \end{bmatrix}\end{bmatrix} \end{align*} $
 
 
 $\left\vert \mathbf{v} \right>$에 자기 자신의 텐서곱을 $n$번 한 것을 $\left\vert \mathbf{v} \right> ^{\otimes n}$로 표기합니다. $\left\vert \mathbf{v} \right> \in \mathbb{C}^2$라면, $\left\vert \mathbf{v} \right> ^{\otimes n} \in \mathbb{C}^{2^n}$입니다.
@@ -104,13 +104,13 @@ $\left\vert \mathbf{v} \right>$에 자기 자신의 텐서곱을 $n$번 한 것�
 
 고전 체계에서 정보를 담는 단위는 비트(bit)는 0 또는 1의 두 가지 상태에 있을 수 있습니다. 양자 체계에서 정보를 담는 단위는 큐빗(qubit)인데, 0과 1의 상태가 **중첩(superposition)**되어 있습니다. 0이라는 상태와, 1이라는 상태가 말 그대로 겹쳐있음을 의미한다. 이 상태는 단위 벡터 $\begin{bmatrix} \alpha \\ \beta \end{bmatrix} \in \mathbb{C}^2$로 표현이 됩니다. 예를 들면 다음과 같은 벡터들이 올바른 상태의 예시입니다.
 
-$$ \begin{bmatrix} 1 \\ 0 \end{bmatrix},\begin{bmatrix} 0 \\ 1 \end{bmatrix}, \begin{bmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix}, \begin{bmatrix} \frac{1}{\sqrt{2}} \\ \frac{-1}{\sqrt{2}} \end{bmatrix}, \begin{bmatrix} \frac{-1}{\sqrt{2}} \\ \frac{i}{\sqrt{2}} \end{bmatrix}$$
+$ \begin{bmatrix} 1 \\ 0 \end{bmatrix},\begin{bmatrix} 0 \\ 1 \end{bmatrix}, \begin{bmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix}, \begin{bmatrix} \frac{1}{\sqrt{2}} \\ \frac{-1}{\sqrt{2}} \end{bmatrix}, \begin{bmatrix} \frac{-1}{\sqrt{2}} \\ \frac{i}{\sqrt{2}} \end{bmatrix}$
 
 이 중 $\begin{bmatrix} 1 \\ 0 \end{bmatrix}$과 $\begin{bmatrix} 0 \\ 1 \end{bmatrix}$는 이 상태의 **기저(basis)**가 될 수 있습니다. 기저에 대한 상세한 논의는 하지 않을 것이나, 임의의 단위 벡터를 이 두 벡터의 선형결합으로 표현할 수 있다는 성질은 알아두시면 좋습니다. 무한히 많은 벡터쌍이 기저가 될 수 있지만 계산의 편의상  이 두 벡터를 선택하는 경우가 많으며, 때문에 **computational basis**라고 불립니다. 이 두 벡터들은 각각 $\left\vert 0 \right>$, $\left\vert 1 \right>$로 표기합니다. 특히 이 기저는 orthonormal하기 때문에 $\left<0 \vert 1 \right> = \left<1 \vert 0 \right> = 0$이랑 $\left<0 \vert 0 \right> = 1, \left<1 \vert 1 \right>=1$이 성립합니다.
 
 그러므로 임의의 큐빗의 중첩 상태는 다음과 같이 표현할 수 있습니다.
 
-$$ \left\vert \psi \right> = \alpha \left\vert 0 \right> + \beta \left\vert 1 \right> = \begin{bmatrix} \alpha \\ \beta \end{bmatrix} $$
+$ \left\vert \psi \right> = \alpha \left\vert 0 \right> + \beta \left\vert 1 \right> = \begin{bmatrix} \alpha \\ \beta \end{bmatrix} $
 
 ### Measurement
 
@@ -122,7 +122,7 @@ computational basis의 특성상, $\vert \alpha \vert ^2 + \vert \beta \vert ^2 
 
 양자의 상태는 Bloch Sphere라는 구 위에 표현할 수 있습니다.
 
-$$ \begin{align*} \left\vert \psi \right> &= a_0 \left\vert 0 \right> + a_1 \left\vert 1 \right> \\ &= \cos\frac{\theta}{2} \left\vert 0 \right> + e^{i\phi} \sin\frac{\theta}{2} \left\vert 1 \right> \\ &= cos\frac{\theta}{2} \left\vert 0 \right> + (\cos\phi + i\sin\phi) \sin\frac{\theta}{2} \left\vert 1 \right> \end{align*} $$
+$ \begin{align*} \left\vert \psi \right> &= a_0 \left\vert 0 \right> + a_1 \left\vert 1 \right> \\ &= \cos\frac{\theta}{2} \left\vert 0 \right> + e^{i\phi} \sin\frac{\theta}{2} \left\vert 1 \right> \\ &= cos\frac{\theta}{2} \left\vert 0 \right> + (\cos\phi + i\sin\phi) \sin\frac{\theta}{2} \left\vert 1 \right> \end{align*} $
 
 ![Bloch sphere](/assets/images/evenharder-post/quantum/basic-bloch.png)
 
@@ -132,17 +132,17 @@ $$ \begin{align*} \left\vert \psi \right> &= a_0 \left\vert 0 \right> + a_1 \lef
 
 큐빗이 한 개 있는 것보다는 여러 개 있는 게 아무래도 더 좋지 않을까요? 큐빗이 $n$개가 있으면 관측 가능한 상태가 $2^n$개 생깁니다. 즉, 기저 벡터가 $2^n$개 있는 상태입니다.
 
-$$ \left\vert \psi \right> = \sum_{i=0}^{2^n-1} a_i \left\vert i \right> $$
+$ \left\vert \psi \right> = \sum_{i=0}^{2^n-1} a_i \left\vert i \right> $
 
 예를 들어 $n = 2$이면 $ \left\vert \psi_2 \right> = a_0 \left\vert 00 \right> + a_1 \left\vert 01 \right> + a_2 \left\vert 10 \right> + a_3 \left\vert 11 \right>  $로 쓸 수 있습니다. 풀어서 쓰면
 
-$$ \left\vert \psi_2 \right> = a_0 \begin{bmatrix} 1 \\ 0 \\ 0 \\ 0 \end{bmatrix} + a_1 \begin{bmatrix} 0 \\ 1 \\ 0 \\ 0 \end{bmatrix} + a_2 \begin{bmatrix} 0 \\ 0 \\ 1 \\ 0 \end{bmatrix} + a_3 \begin{bmatrix} 0 \\ 0 \\ 0 \\ 1 \end{bmatrix}  $$
+$ \left\vert \psi_2 \right> = a_0 \begin{bmatrix} 1 \\ 0 \\ 0 \\ 0 \end{bmatrix} + a_1 \begin{bmatrix} 0 \\ 1 \\ 0 \\ 0 \end{bmatrix} + a_2 \begin{bmatrix} 0 \\ 0 \\ 1 \\ 0 \end{bmatrix} + a_3 \begin{bmatrix} 0 \\ 0 \\ 0 \\ 1 \end{bmatrix}  $
 
 입니다. 그리고 각 상태를 관측할 확률의 합이 1이 되어야 하므로 $ \sum_{i=0}^{2^n-1} \vert a_i \vert^2 = 1$이 성립합니다.
 
 매번 $2^n$개나 되는 값을 쓸 수 없으므로, 텐서곱으로 줄여서 표기하는 경우가 많습니다. 예를 들어
 
-$$\left\vert 0 \right> \otimes \left\vert 1 \right> = \left\vert 01 \right> = \begin{bmatrix} 0 & 1 & 0 & 0 \end{bmatrix}^T $$
+$\left\vert 0 \right> \otimes \left\vert 1 \right> = \left\vert 01 \right> = \begin{bmatrix} 0 & 1 & 0 & 0 \end{bmatrix}^T $
 
 와 같이 표기합니다.
 
@@ -154,11 +154,11 @@ XOR과 AND같은 logical gate가 종종 논리 회로에서 사용되는 것처�
 
 Hadamard operation $H$는 다음과 같습니다.
 
-$$ H = \dfrac{1}{\sqrt{2}}\begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix} = \dfrac{\left\vert 0 \right> + \left\vert 1 \right>}{\sqrt{2}} \left< 0 \right\vert + \dfrac{\left\vert 0 \right> - \left\vert 1 \right>}{\sqrt{2}} \left< 1 \right\vert$$
+$ H = \dfrac{1}{\sqrt{2}}\begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix} = \dfrac{\left\vert 0 \right> + \left\vert 1 \right>}{\sqrt{2}} \left< 0 \right\vert + \dfrac{\left\vert 0 \right> - \left\vert 1 \right>}{\sqrt{2}} \left< 1 \right\vert$
 
 수학적으로는 $y$축으로 (시계 방향으로) $\pi/2$만큼 돌리고 $x$축으로 $\pi$만큼 돌리는 과정입니다. 이 회로가 $\left\vert 0 \right>$과 $\left\vert 1 \right>$에 사용되면 어떻게 될까요?
 
-$$\begin{align*} H \left\vert 0 \right> &= \dfrac{\left\vert 0 \right> + \left\vert 1 \right>}{\sqrt{2}} \left< 0 \vert 0 \right> + \dfrac{\left\vert 0 \right> - \left\vert 1 \right>}{\sqrt{2}} \left< 1 \vert 0 \right> =  \dfrac{\left\vert 0 \right> + \left\vert 1 \right>}{\sqrt{2}} \\ H \left\vert 1 \right> &= \dfrac{\left\vert 0 \right> + \left\vert 1 \right>}{\sqrt{2}} \left< 0 \vert 1 \right> + \dfrac{\left\vert 0 \right> - \left\vert 1 \right>}{\sqrt{2}} \left< 1 \vert 1 \right> =  \dfrac{\left\vert 0 \right> - \left\vert 1 \right>}{\sqrt{2}}\end{align*}$$
+$\begin{align*} H \left\vert 0 \right> &= \dfrac{\left\vert 0 \right> + \left\vert 1 \right>}{\sqrt{2}} \left< 0 \vert 0 \right> + \dfrac{\left\vert 0 \right> - \left\vert 1 \right>}{\sqrt{2}} \left< 1 \vert 0 \right> =  \dfrac{\left\vert 0 \right> + \left\vert 1 \right>}{\sqrt{2}} \\ H \left\vert 1 \right> &= \dfrac{\left\vert 0 \right> + \left\vert 1 \right>}{\sqrt{2}} \left< 0 \vert 1 \right> + \dfrac{\left\vert 0 \right> - \left\vert 1 \right>}{\sqrt{2}} \left< 1 \vert 1 \right> =  \dfrac{\left\vert 0 \right> - \left\vert 1 \right>}{\sqrt{2}}\end{align*}$
 
 computational basis가 균일한 확률분포의 중첩으로 변환됩니다. 즉, $H \left\vert 0 \right>$과 $H \left\vert 1 \right>$ 모두 $\left\vert 0 \right>$과 $\left\vert 1 \right>$의 관측 확률이 $1/2$로 같아집니다. $H$는 Hermitian이기 때문에 역연산이 자기 자신입니다. 때문에, $H^2 \left\vert 0 \right> = \left\vert 0 \right>$이고 $H^2 \left\vert 1 \right> = \left\vert 1 \right>$입니다.
 
@@ -166,31 +166,31 @@ computational basis가 균일한 확률분포의 중첩으로 변환됩니다. �
 
 Pauli-X gate는 X-gate라는 이름에 걸맞게 기하학적으로는 $x$축 기준으로 $\pi$만큼 돌립니다. $\left\vert 0 \right>$과 $\left\vert 1 \right> $의 진폭이 바뀌기 때문에 0이면 1, 1이면 0인 고전적 NOT gate와 흡사하여 NOT gate라 불리기도 합니다. 수학적으로는 다음과 같습니다.
 
-$$X = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}$$
+$X = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}$
 
 #### Pauli-Y Gate
 
 Pauli-Y gate는 기하학적으로는 $y$축 기준으로 $\pi$만큼 돌립니다. $\left\vert 0 \right>$을 $-i\left\vert 1 \right>$로, $\left\vert 1 \right>$을 $i\left\vert 0 \right>$로 변환합니다.
 
-$$Y = \begin{bmatrix} 0 & -i \\ i & 0 \end{bmatrix}$$
+$Y = \begin{bmatrix} 0 & -i \\ i & 0 \end{bmatrix}$
 
 #### Pauli-Z Gate
 
 Pauli-Z gate는 기하학적으로는 $z$축 기준으로 $\pi$만큼 돌립니다. $\left\vert 0 \right> $은 그대로, $\left\vert 1 \right>$을 $-\left\vert 1 \right>$로 변환합니다.
 
-$$Z = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}$$
+$Z = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}$
 
 #### Phase Gate
 
 Z-gate는 진폭의 위상만 건드리는데, 이 특성은 Z-gate의 일반화인 phase gate에도 적용됩니다.
 
-$$R_\phi  = \begin{bmatrix} 1 & 0 \\ 0 & e^{i\phi} \end{bmatrix}$$
+$R_\phi  = \begin{bmatrix} 1 & 0 \\ 0 & e^{i\phi} \end{bmatrix}$
 
 Z-gate는 $\phi = \pi$인 경우로 볼 수 있습니다. 그 외에 자주 사용되는 gate는 $\phi = \pi/2$인 S-gate나 $\phi = \pi/4$인 T-gate 등이 있습니다.
 
-$$S = \begin{bmatrix} 1 & 0 \\ 0 & i \end{bmatrix}$$
+$S = \begin{bmatrix} 1 & 0 \\ 0 & i \end{bmatrix}$
 
-$$T = \begin{bmatrix} 1 & 0 \\ 0 & e^{i\pi/4} \end{bmatrix}$$
+$T = \begin{bmatrix} 1 & 0 \\ 0 & e^{i\pi/4} \end{bmatrix}$
 
 #### universal quantum gates
 
@@ -204,11 +204,11 @@ $$T = \begin{bmatrix} 1 & 0 \\ 0 & e^{i\pi/4} \end{bmatrix}$$
 
 대표적인 예시로 controlled not이 있습니다. control qubit을 $\left\vert c \right>$, target qubit을 $\left\vert t \right>$라고 할 때 $\left\vert t \right> \mapsto \left\vert t \oplus c \right>$라 할 수 있습니다. 행렬로 표현하면 다음과 같습니다.
 
-$$CNOT = \begin{bmatrix}1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0  \end{bmatrix}$$
+$CNOT = \begin{bmatrix}1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0  \end{bmatrix}$
 
 NOT 뿐만 아니라 임의의 unitary operation $U$을 controlled처럼 적용할 수 있습니다.
 
-$$U_{control} = \begin{bmatrix}I & O \\ O & U\end{bmatrix}$$
+$U_{control} = \begin{bmatrix}I & O \\ O & U\end{bmatrix}$
 
 qubit이 $n$개 있어도 비슷하게 적용할 수 있습니다.
 
@@ -237,7 +237,7 @@ qubit이 $n$개 있어도 비슷하게 적용할 수 있습니다.
 
 두 qubit $\psi$, $\phi$가 $\left\vert 00 \right>$ 상태에 있다고 합시다. $\psi$에 Hadamard gate를 적용하고, 이 qubit을 control qubit으로 삼아 $\phi$와 같이 controlled NOT gate을 거치면 양자 상태를 다음과 같이 만들 수 있습니다.
 
-$$\psi \otimes \phi = \begin{bmatrix} 1/\sqrt{2} \\ 0 \\ 0 \\ 1/\sqrt{2}\end{bmatrix} = \dfrac{\left\vert 00 \right> + \left\vert 11 \right>}{\sqrt{2}}$$
+$\psi \otimes \phi = \begin{bmatrix} 1/\sqrt{2} \\ 0 \\ 0 \\ 1/\sqrt{2}\end{bmatrix} = \dfrac{\left\vert 00 \right> + \left\vert 11 \right>}{\sqrt{2}}$
 
 이 상태는 특이하게도, 두 양자의 텐서곱으로 표현할 수 없습니다. 즉, 이 상태는 두 양자를 쪼개서 따로 설명할 수가 없습니다. 이런 상태를 '양자 얽힘(quantum entanglement)'이라고 합니다. 두 양자가 이렇게 얽혀 있을 때 관측을 하면 가능한 상태가 $\left\vert 00 \right>$이나 $\left\vert 11 \right>$밖에 없기 때문에 두 양자가 같은 상태로 붕괴하게 됩니다. 이론상 물리적 거리에 제약이 없고, $2^n$개의 상태를 $n$개의 양자에 담을 수 있는 이유이기도 하기에 물리적으로도, 컴퓨터 공학적으로도 대단히 흥미로운 성질입니다. 연구에 의하면 entanglement가 없는 양자 컴퓨터는 고전 컴퓨터에 비해 나을 게 없다고 합니다 [5].
 

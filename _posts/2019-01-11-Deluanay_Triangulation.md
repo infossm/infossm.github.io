@@ -50,9 +50,9 @@ Deluanay Triangulation, 한국어로 들로네 삼각분할은 간단히 말하�
 ![사진3](/assets/images/delaunay-triangulation/3.png)
 ![사진4](/assets/images/delaunay-triangulation/4.png)
 
-시간복잡도는 최악의 경우 $$O(N^2)$$ 의 시간복잡도를 가진다.
-생각해보면 원리는 간단하다. i번째 좌표가 추가될 때 $$O(i)$$ 개의 삼각형이 추가될 수 있기 때문이다.
-이것은 1부터 N까지의 합과 같고, 결국엔 $$O(N^2)$$ 의 시간복잡도를 가지게 되는것이다.
+시간복잡도는 최악의 경우 $O(N^2)$ 의 시간복잡도를 가진다.
+생각해보면 원리는 간단하다. i번째 좌표가 추가될 때 $O(i)$ 개의 삼각형이 추가될 수 있기 때문이다.
+이것은 1부터 N까지의 합과 같고, 결국엔 $O(N^2)$ 의 시간복잡도를 가지게 되는것이다.
 
 아래는 pseudo code 이다.
 
@@ -81,7 +81,7 @@ delete super_triangle from triangle_list
 
 ![사진5](/assets/images/delaunay-triangulation/5.png)
 
-원리는 $$(x, y) -> (x, y, x^2 + y^2)$$ 으로 2차원 평면 상의 좌표를 3차원 곡면 상의 좌표로 옮긴다고 해보자.
+원리는 $(x, y) -> (x, y, x^2 + y^2)$ 으로 2차원 평면 상의 좌표를 3차원 곡면 상의 좌표로 옮긴다고 해보자.
 이때 삼각형의 세 좌표가 이루는 2차원 plane 보다 위에 있다면 determinant 가 양수, 아래에 있다면 음수, 정확히 같은 평면상에 위치한다면 0 이다.
 
 ![사진6](/assets/images/delaunay-triangulation/6.png)
@@ -277,7 +277,7 @@ int main() {
 
 위 코드를 사용하여 추출한 데이터를 파이썬의 pyplot으로 그린 그래프들이다.
 이번 블로그 포스트를 통하여 Deluanay Triangulation 에 대한 개괄적인 이해도와 앞으로 진행할 간단한 응용등에 도움이 되었으면 좋겠다. 
-이제 방학도 본격적으로 시작되었으니 $$O(N log N)$$의 시간복잡도로 구축하는 방법과 그 이외에 다양한 응용 및 PS에 적용하는것을 한번 연구해보고 싶다.
+이제 방학도 본격적으로 시작되었으니 $O(N log N)$의 시간복잡도로 구축하는 방법과 그 이외에 다양한 응용 및 PS에 적용하는것을 한번 연구해보고 싶다.
 
 ![사진7](/assets/images/delaunay-triangulation/7.png)
 ![사진8](/assets/images/delaunay-triangulation/8.png)

@@ -97,17 +97,17 @@ $$
 ## 방법
 
 &nbsp;&nbsp;&nbsp;&nbsp;여태까지 논문들이 이미지를 수정할 때 사용한 공통적인 방식을 살펴봅시다. latent space에서 처음 이미지의 latent code가 $z$이고 특정 방향 $n$과 해당 방향으로 변화시킬 강도 $\alpha$가 주어졌을 때 이미지 수정은 다음과 같이 이루어집니다.
-$$\text{edit}(G(z)) = G(z') = G(z+\alpha n)$$
+$\text{edit}(G(z)) = G(z') = G(z+\alpha n)$
 
 &nbsp;&nbsp;&nbsp;&nbsp;GANs의 생성 모델은 latent space에서 image space까지 반복적으로 projection을 하는 형태로 볼 수 있는데요. 첫 번째 projection을 아핀 변환으로 근사해서 식을 정리해봅시다.
 
-$$y'=G_1(z')=G_1(z+\alpha n)=Az+b+\alpha An = y + \alpha An$$
+$y'=G_1(z')=G_1(z+\alpha n)=Az+b+\alpha An = y + \alpha An$
 
 &nbsp;&nbsp;&nbsp;&nbsp;이 식 형태에서 알 수 있는 점은 이미지의 변화가 latent code $z$와는 상관없고 $\alpha An$값에 의존한다는 점입니다. 또한, 그래서 $A$의 가중치가 이미지 변화에 필수적인 정보를 가지고 있다고 예상할 수 있습니다. 직관적으로 $\lVert A{n_i}\rVert=0$인경우 $y'=y$가 되므로 이미지가 변하지 않게 되니까 반대로 $\lVert A{n_i}\rVert$를 크게 만들어주는 $n_i$을 찾으면 되지 않을까 생각할 수 있습니다.
 
 &nbsp;&nbsp;&nbsp;&nbsp;이를 바탕으로 저자는 다음과 같은 문제를 풀 것을 제안합니다.
 
-$$N^\ast = \argmax_{N\in\mathbb{R}^{d\times k}: n_i^Tn_i=1 \forall i = 1,\cdots,k} \sum_{i=1}^k \lVert A{n_i}\rVert_2^2$$
+$N^\ast = \argmax_{N\in\mathbb{R}^{d\times k}: n_i^Tn_i=1 \forall i = 1,\cdots,k} \sum_{i=1}^k \lVert A{n_i}\rVert_2^2$
 
 &nbsp;&nbsp;&nbsp;&nbsp;저자는 라그랑지안을 사용해서 $A^TA$에서 가장 큰 $k$개의 eigenvalue 각각에 대응되는 eigenvector가 $n_1,\cdots,n_k$의 해가 됨을 보였습니다. 저자는 PGGAN, StyleGAN, BigGAN에 대해 일부 projection을 분해하고 앞의 방식대로 latent code를 수정하여 이미지를 생성했습니다.
 

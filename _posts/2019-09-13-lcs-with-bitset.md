@@ -146,9 +146,9 @@ $x = S[A[i]] \vee D[i-1]$라고 합시다. 이제 $D[i-1]$으로 정의된 각 �
 
 정리하면, 
 
-$$x = S[A[i]] \vee D[i-1]$$
+$x = S[A[i]] \vee D[i-1]$
 
-$$D[i] = x \wedge \bigg( x \oplus \Big( x - \big(\left(D[i-1] << 1\right) | 1\big) \Big) \bigg)$$
+$D[i] = x \wedge \bigg( x \oplus \Big( x - \big(\left(D[i-1] << 1\right) | 1\big) \Big) \bigg)$
 
 입니다.
 

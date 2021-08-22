@@ -121,7 +121,7 @@ $\space \space$**return** $((T_G, T_E), W_c^0)$
 
 Garbled circuit은 아래와 같은 advantage를 가진다는 뜻은 공격자의 입장에서 해당 Garbled circuit에서 의미있는 정보를 알아낼 확률이 $\epsilon$ 이하라는 의미입니다.
 
-$$\epsilon = \frac{\mu \cdot p + (\mu -1) \cdot C}{2^{k-2}} +  \frac{q^{\mu+1}}{(\mu+1)! \cdot 2^{\mu L}}$$
+$\epsilon = \frac{\mu \cdot p + (\mu -1) \cdot C}{2^{k-2}} +  \frac{q^{\mu+1}}{(\mu+1)! \cdot 2^{\mu L}}$
 
 식이 복잡한 관계로 실제 수를 대입한 상황을 보면
 

@@ -38,33 +38,33 @@ tags:
 
 이변수 함수 $f(n, k)$의 OGF $F(x, y)$는 다음과 같이 정의하는 것이 자연스러울 것이다:
 
-$$ F(x, y) = \sum _{n = 0}^{\infty} \sum _{k = 0}^{\infty} f(n, k) x^n y^k $$
+$ F(x, y) = \sum _{n = 0}^{\infty} \sum _{k = 0}^{\infty} f(n, k) x^n y^k $
 
 위의 식에서 점화식 $f(n, k) = f(n-1, k) + f(n-1, k-1)$를 적용하면, 다음과 같은 식을 얻는다:
 
-$$ \sum _{n = 1}^{\infty} \sum _{k = 1}^{\infty} f(n, k) x^n y^k = x \sum _{n = 1}^{\infty} \sum _{k = 1}^{\infty} f(n-1, k) x^{n-1} y^k + xy \sum _{n = 1}^{\infty} f(n-1, k-1) x^{n-1} y^{k-1} $$
+$ \sum _{n = 1}^{\infty} \sum _{k = 1}^{\infty} f(n, k) x^n y^k = x \sum _{n = 1}^{\infty} \sum _{k = 1}^{\infty} f(n-1, k) x^{n-1} y^k + xy \sum _{n = 1}^{\infty} f(n-1, k-1) x^{n-1} y^{k-1} $
 
 이를 $F(x, y)$ 정의에 대입하자.
 
-$$ \sum _{n = 1}^{\infty} \sum _{k = 1}^{\infty} f(n, k) x^n y^k = F(x, y) - \sum _{n = 1}^{\infty} f(n, 0) x^n - \sum _{k = 1}^{\infty} f(0, k) y^k - f(0, 0) = F(x, y) - \sum _{n = 0}^{\infty} x^n $$
+$ \sum _{n = 1}^{\infty} \sum _{k = 1}^{\infty} f(n, k) x^n y^k = F(x, y) - \sum _{n = 1}^{\infty} f(n, 0) x^n - \sum _{k = 1}^{\infty} f(0, k) y^k - f(0, 0) = F(x, y) - \sum _{n = 0}^{\infty} x^n $
 
-$$ x \sum _{n = 1}^{\infty} \sum _{k = 1}^{\infty} f(n-1, k) x^{n-1} y^k + xy \sum _{n = 1}^{\infty} f(n-1, k-1) x^{n-1} y^{k-1}$$
+$ x \sum _{n = 1}^{\infty} \sum _{k = 1}^{\infty} f(n-1, k) x^{n-1} y^k + xy \sum _{n = 1}^{\infty} f(n-1, k-1) x^{n-1} y^{k-1}$
 
-$$ = x \left( F(x, y) - \sum _{n = 0}^{\infty} f(n, 0) x^n \right) + xy F(x, y) = x \left( F(x, y) - \sum _{n = 0}^{\infty} x^n \right) + xy F(x, y) $$
+$ = x \left( F(x, y) - \sum _{n = 0}^{\infty} f(n, 0) x^n \right) + xy F(x, y) = x \left( F(x, y) - \sum _{n = 0}^{\infty} x^n \right) + xy F(x, y) $
 
 따라서, $F(x, y)$에 관한 중요한 식 하나를 알아낼 수 있다:
 
-$$ F(x, y) - \sum _{n = 0}^{\infty} x^n = x \left( F(x, y) - \sum _{n = 0}^{\infty} x^n \right) + xy F(x, y) $$
+$ F(x, y) - \sum _{n = 0}^{\infty} x^n = x \left( F(x, y) - \sum _{n = 0}^{\infty} x^n \right) + xy F(x, y) $
 
-$$ F(x, y) - \frac{1}{1-x} = x \left( F(x, y) - \frac{1}{1-x} \right) + xy F(x, y) $$
+$ F(x, y) - \frac{1}{1-x} = x \left( F(x, y) - \frac{1}{1-x} \right) + xy F(x, y) $
 
-$$ F(x, y) = \frac{ 1 }{ 1 - x - xy } $$
+$ F(x, y) = \frac{ 1 }{ 1 - x - xy } $
 
 ​	정리하면, 이항계수 $\displaystyle \binom{n}{k}$의 OGF는 $\displaystyle \frac{1}{1-x-xy}$이다.
 
 여기서, 식을 약간 조작하면 어렵지 않게 $F(x, y)$를 무한 급수 형태로 표현할 수 있다.
 
-$$ F(x, y) = \frac{1}{1-x-xy} = \frac{1}{1 - \left( x (y+1) \right)} = \sum _{n = 0}^{\infty} \left( x (y+1) \right)^n = \sum _{n = 0}^{\infty} x^n (y+1)^n $$
+$ F(x, y) = \frac{1}{1-x-xy} = \frac{1}{1 - \left( x (y+1) \right)} = \sum _{n = 0}^{\infty} \left( x (y+1) \right)^n = \sum _{n = 0}^{\infty} x^n (y+1)^n $
 
 ​	이로부터 다음과 같은 정리를 증명할 수 있다. 이항 정리를 증명하는 새로운 방법을 찾았다고 말할 수 있다.
 
@@ -72,7 +72,7 @@ $$ F(x, y) = \frac{1}{1-x-xy} = \frac{1}{1 - \left( x (y+1) \right)} = \sum _{n 
 
 > 모든 양의 정수 $n$에 대하여, 다음은 일변수 실수 항등식이다.
 >
-> $$ (y + 1)^n = \sum _{k = 0}^{n} \binom{n}{k} y^k = \binom{n}{0} y^0 + \binom{n}{1} y^1 + \cdots + \binom{n}{n-1} y^{n-1} + \binom{n}{n} y^n $$
+> $ (y + 1)^n = \sum _{k = 0}^{n} \binom{n}{k} y^k = \binom{n}{0} y^0 + \binom{n}{1} y^1 + \cdots + \binom{n}{n-1} y^{n-1} + \binom{n}{n} y^n $
 
 ​	$F(x, y)$에서 $x^n$의 계수를 살펴보자.
 
@@ -84,9 +84,9 @@ $\displaystyle F(x, y) = \sum _{k = 0}^{\infty} (y+1)^k x^k$ 이므로, $x^n$의
 
 ​	이제, $F(x, y)$를 다음과 같이 변형해보자:
 
-$$ F(x, y) = \frac{1}{1-x-xy} = \frac{1}{(1-x)-xy} = \frac{ \frac{1}{1-x} }{ 1 - \frac{x}{1-x} \cdot y } $$
+$ F(x, y) = \frac{1}{1-x-xy} = \frac{1}{(1-x)-xy} = \frac{ \frac{1}{1-x} }{ 1 - \frac{x}{1-x} \cdot y } $
 
-$$ = \frac{1}{1-x} \left( 1 + \frac{x}{1-x} \cdot y + \left( \frac{x}{1-x} \right)^2 \cdot y^2 + \cdots \right) = \frac{1}{1-x} \sum _{n = 0}^{\infty} \left( \frac{x}{1-x} \right)^n y^n $$
+$ = \frac{1}{1-x} \left( 1 + \frac{x}{1-x} \cdot y + \left( \frac{x}{1-x} \right)^2 \cdot y^2 + \cdots \right) = \frac{1}{1-x} \sum _{n = 0}^{\infty} \left( \frac{x}{1-x} \right)^n y^n $
 
 ​	여기서, $F(x, y)$의 $y^n$의 계수가 $\displaystyle \frac{x ^n}{(1-x) ^{n+1}}$이라는 사실로부터 다음 정리를 증명할 수 있다.
 
@@ -94,7 +94,7 @@ $$ = \frac{1}{1-x} \left( 1 + \frac{x}{1-x} \cdot y + \left( \frac{x}{1-x} \righ
 
 > 임의의 $x \in \mathbb{R}$와 $k \in \mathbb{Z}_{\ge 0}$에 대하여 다음이 성립한다.
 >
-> $$ \sum _{n = 0}^{\infty} \binom{n}{k} x^n = \frac{ x^k }{ (1 - x)^{k+1} } $$
+> $ \sum _{n = 0}^{\infty} \binom{n}{k} x^n = \frac{ x^k }{ (1 - x)^{k+1} } $
 
 ​	이 정리는 다음과 같이 해석할 수 있다. $\displaystyle \frac{1}{(1-x)^{k+1}}$을 다항식의 형태로 전개하면 $x^{n-k}$의 계수가 $\displaystyle \binom{n}{k}$와 일치한다는 사실을 함의한다.
 
@@ -104,7 +104,7 @@ $$ = \frac{1}{1-x} \left( 1 + \frac{x}{1-x} \cdot y + \left( \frac{x}{1-x} \righ
 
 ​	이전 포스트에서 카탈랑 수열 $\displaystyle \left\\{ c_n \right\\} _{n \in \mathbb{Z} _{\ge 0}}$의 OGF $C(x)$가 다음과 같음을 보였다:
 
-$$ C(x) = \frac{ 1 - \sqrt{ 1 - 4x } }{ 2x } $$
+$ C(x) = \frac{ 1 - \sqrt{ 1 - 4x } }{ 2x } $
 
 하지만, $C(x)$는 카탈랑 수 $c_n$의 닫힌 형태(Closed form expression)를 직접적으로 알려주지는 않는다. 이번에는 카탈랑 수의 닫힌 형태를 유도하고자 한다.
 
@@ -114,7 +114,7 @@ $$ C(x) = \frac{ 1 - \sqrt{ 1 - 4x } }{ 2x } $$
 
 > 복소수 $r \in \mathbb{C}$와 음이 아닌 정수 $n \in \mathbb{Z} _{\ge 0}$에 대하여, (확장)이항계수 $\displaystyle \binom{r}{n}$을 다음과 같이 정의한다:
 >
-> $$ \binom{r}{n} = \frac{ r (r-1) \cdots (r - (n-1)) }{ n! } $$
+> $ \binom{r}{n} = \frac{ r (r-1) \cdots (r - (n-1)) }{ n! } $
 
 ​	이제부터 언급하는 이항계수는 모두 일반화된 이항계수를 의미한다. 따라서, $\displaystyle \binom{n}{k}$에서 $n$가 음이 아닌 정수일 필요성이 사라졌음에 유의하자.
 
@@ -122,35 +122,35 @@ $$ C(x) = \frac{ 1 - \sqrt{ 1 - 4x } }{ 2x } $$
 
 > 임의의 복소수 $r \in \mathbb{C}$에 대하여 다음이 성립한다.
 >
-> $$ (1+x)^r = \sum _{n = 0}^{\infty} \binom{r}{n} x^n $$
+> $ (1+x)^r = \sum _{n = 0}^{\infty} \binom{r}{n} x^n $
 
 ​	엄밀하지는 않지만 가장 직관적인 증명은 이러하다. $(1+x)^r$의 다항 전개가 존재한다고 가정할 때, 양변의 $x^n$의 계수가 서로 같은지 살펴보자.
 
 먼저, 좌변을 $n$번 미분한 식의 상수항은 다음과 같다:
 
-$$ \left. \frac{ \mathrm{d}^n }{ \mathrm{d} x^n } (1+x)^r \right\rvert _{x = 0} = r (r-1) \cdots (r - (n-1)) = n! \binom{r}{n} $$
+$ \left. \frac{ \mathrm{d}^n }{ \mathrm{d} x^n } (1+x)^r \right\rvert _{x = 0} = r (r-1) \cdots (r - (n-1)) = n! \binom{r}{n} $
 
 우변을 $n$번 미분한 식의 상수항은 다음과 같다:
 
-$$ \left. \frac{ \mathrm{d}^n }{ \mathrm{d} x^n } \sum _{n = 0}^{\infty} \binom{r}{n} x^n \right\rvert _{x = 0} = n! \binom{r}{n} $$
+$ \left. \frac{ \mathrm{d}^n }{ \mathrm{d} x^n } \sum _{n = 0}^{\infty} \binom{r}{n} x^n \right\rvert _{x = 0} = n! \binom{r}{n} $
 
 따라서, 주어진 식은 항등식이다.
 
 ​	이제, 보조정리를 이용하면, $\displaystyle \sqrt{1 - 4x}$를 다음과 같이 표현할 수 있다:
 
-$$ \sqrt{1-4x} = \left( 1 - 4x \right)^\frac{1}{2} = \sum _{n = 0}^{\infty} \binom{ \frac{1}{2} }{ n } \left( -4x \right)^n $$
+$ \sqrt{1-4x} = \left( 1 - 4x \right)^\frac{1}{2} = \sum _{n = 0}^{\infty} \binom{ \frac{1}{2} }{ n } \left( -4x \right)^n $
 
-$$ = \sum _{n = 0}^{\infty} \left( \frac{1}{2} \times \frac{-1}{2} \times \frac{-3}{2} \times \cdots \times \frac{-(2n - 3)}{2} \right) \cdot \frac{1}{n!} \times (-4)^n x^n $$
+$ = \sum _{n = 0}^{\infty} \left( \frac{1}{2} \times \frac{-1}{2} \times \frac{-3}{2} \times \cdots \times \frac{-(2n - 3)}{2} \right) \cdot \frac{1}{n!} \times (-4)^n x^n $
 
-$$ = 1 + \sum _{n = 1}^{\infty} \frac{ (-1)^{n-1} \left( 1 \times 3 \times \cdots \times (2n-3) \right) }{ 2^n } \cdot \frac{(-4)^n}{n!} x^n $$
+$ = 1 + \sum _{n = 1}^{\infty} \frac{ (-1)^{n-1} \left( 1 \times 3 \times \cdots \times (2n-3) \right) }{ 2^n } \cdot \frac{(-4)^n}{n!} x^n $
 
-$$ = 1 + \sum _{n = 1}^{\infty} \frac{ -2^n \cdot (2n-2)! }{ 2^{n-1} \cdot (n-1)! } \cdot \frac{1}{n!} x^n $$
+$ = 1 + \sum _{n = 1}^{\infty} \frac{ -2^n \cdot (2n-2)! }{ 2^{n-1} \cdot (n-1)! } \cdot \frac{1}{n!} x^n $
 
-$$ = 1 + \sum _{n = 1}^{\infty} -\frac{2}{n} \cdot \frac{(2n-2)!}{(n-1)!(n-1)!} x^n = 1 + \sum _{n = 1}^{\infty} - \frac{2}{n} \binom{2n-2}{n-1} x^n $$
+$ = 1 + \sum _{n = 1}^{\infty} -\frac{2}{n} \cdot \frac{(2n-2)!}{(n-1)!(n-1)!} x^n = 1 + \sum _{n = 1}^{\infty} - \frac{2}{n} \binom{2n-2}{n-1} x^n $
 
 즉, $C(x)$는 다음과 같이 무한 급수 형태로 나타낼 수 있다:
 
-$$ C(x) = \frac{ 1 - \sqrt{ 1 - 4x } }{ 2x } = \frac{1}{2x} \left( 1 - \left( 1 + \sum _{n = 1}^{\infty} -\frac{2}{n} \binom{2n-2}{n-1} x^n \right) \right) = \sum _{n = 1}^{\infty} \frac{ \binom{2n-2}{n-1} }{n} x^{n-1} = \sum _{n = 0}^{\infty} \frac{1}{n+1} \binom{2n}{n} x^n $$
+$ C(x) = \frac{ 1 - \sqrt{ 1 - 4x } }{ 2x } = \frac{1}{2x} \left( 1 - \left( 1 + \sum _{n = 1}^{\infty} -\frac{2}{n} \binom{2n-2}{n-1} x^n \right) \right) = \sum _{n = 1}^{\infty} \frac{ \binom{2n-2}{n-1} }{n} x^{n-1} = \sum _{n = 0}^{\infty} \frac{1}{n+1} \binom{2n}{n} x^n $
 
 ​	정리하면, 아주 긴 여정 끝에 우리는 카탈랑 수의 닫힌 형태가 $\displaystyle c _n = \frac{1}{n+1} \binom{2n}{n}$임을 알아내었다. 생성함수로 수열의 새로운 성질을 알아낼 수 있다니, 놀랍지 않은가!
 
@@ -174,7 +174,7 @@ $$ C(x) = \frac{ 1 - \sqrt{ 1 - 4x } }{ 2x } = \frac{1}{2x} \left( 1 - \left( 1 
 
 이제, 수열 $\displaystyle \left\\{ c _n \right\\} _{n \in \mathbb{Z} _{\ge 0}}$의 EGF를 $C(x)$라고 하자. 정의에 의하여 다음이 성립함에 유의하자:
 
-$$ C(x) = \sum _{n = 0}^{\infty} \frac{ c _n }{ n! } x^n $$
+$ C(x) = \sum _{n = 0}^{\infty} \frac{ c _n }{ n! } x^n $
 
 ​	다시 원래 문제로 돌아오자. $k$를 고정하고, $n$가 주어졌을 때 그러한 순열의 개수를 $f _n$라고 하자. $n < k$에 대해서는 필요에 따라 무시해도 좋고, $f _n = 0$으로 생각해도 무방하다.
 
@@ -186,7 +186,7 @@ $a _i$개의 정점으로 하나의 사이클을 만드는 방법은 총 $\displ
 
 따라서, 다음 식을 얻는다:
 
-$$ f _n = \frac{ n! }{ k! } \sum _{ a _1 + a _2 + \cdots + a _k = n } \frac{ c _{a _1} c _{a _2} \cdots c _{a _k} }{ a _1 ! a _2 ! \cdots a _k ! } $$
+$ f _n = \frac{ n! }{ k! } \sum _{ a _1 + a _2 + \cdots + a _k = n } \frac{ c _{a _1} c _{a _2} \cdots c _{a _k} }{ a _1 ! a _2 ! \cdots a _k ! } $
 
 원래 문제에서는 사이클의 순서가 중요하지 않으므로, $k!$로 나누어주어야 함에 유의한다.
 
@@ -219,13 +219,13 @@ $F(x)$는 EGF이므로, 정리하면 $\displaystyle F(x) = \frac{1}{k!} C(x)^k$�
 
 수열 $g$의 EGF를 $G(x)$라고 하자. 편의를 위하여, 다항 전개가 가능한 식 $f(x)$에 대하여, $f(x)$의 $x^n$의 계수를 $\displaystyle \left[ x^n \right] f(x)$라고 표기하자. 이전과 동일한 논리를 사용하면, 다음 등식을 얻는다:
 
-$$ \left[ x^n \right] G(x) = \left[ x^n \right] \sum _{k = 1}^{n} k \cdot \frac{ C(x)^k }{ k! } = \left[ x^n \right] \sum _{k = 1}^{\infty} \frac{1}{(k-1)!} C(x)^k $$
+$ \left[ x^n \right] G(x) = \left[ x^n \right] \sum _{k = 1}^{n} k \cdot \frac{ C(x)^k }{ k! } = \left[ x^n \right] \sum _{k = 1}^{\infty} \frac{1}{(k-1)!} C(x)^k $
 
-$$ = \left[ x^n \right] C(x) \left( \sum _{k = 0}^{\infty} \frac{ C(x)^k }{ k! } \right) = \left[ x^n \right] C(x) e^{ C(x) } $$
+$ = \left[ x^n \right] C(x) \left( \sum _{k = 0}^{\infty} \frac{ C(x)^k }{ k! } \right) = \left[ x^n \right] C(x) e^{ C(x) } $
 
 $c _n = (n-1)!$라는 사실로부터, 다음을 알 수 있다:
 
-$$ C(x) = \sum _{k = 1}^{\infty} \frac{ c _k }{ k! } x^k = \sum _{k = 1}^{\infty} \frac{ (k-1)! }{k!} x^k = \sum _{k = 1}^{\infty} \frac{ x^k }{k} = - \ln \left( 1 - x \right) $$
+$ C(x) = \sum _{k = 1}^{\infty} \frac{ c _k }{ k! } x^k = \sum _{k = 1}^{\infty} \frac{ (k-1)! }{k!} x^k = \sum _{k = 1}^{\infty} \frac{ x^k }{k} = - \ln \left( 1 - x \right) $
 
 따라서, $\displaystyle C(x) e^{ C(x) } = - \frac{ \ln (1-x) }{ 1-x }$이다.
 
@@ -233,7 +233,7 @@ $\ln (1+x)$의 매클로린 급수는 $\displaystyle x - \frac{x^2}{2} + \frac{x
 
 고로, "8. 구간 합" 성질을 적용하면 다음을 알 수 있다:
 
-$$ \left[ x^n \right] \frac{ - \ln(1-x) }{ 1-x } = 1 + \frac{1}{2} + \cdots + \frac{1}{n} = \sum _{k=1}^{n} \frac{1}{k} $$
+$ \left[ x^n \right] \frac{ - \ln(1-x) }{ 1-x } = 1 + \frac{1}{2} + \cdots + \frac{1}{n} = \sum _{k=1}^{n} \frac{1}{k} $
 
 따라서, $\displaystyle \frac{g _n}{n!} = \left[ x^n \right] G(x) = \left[ x^n \right] \frac{ - \ln (1-x) }{ 1-x } = \sum _{k = 1}^{n} \frac{1}{k}$이다.
 

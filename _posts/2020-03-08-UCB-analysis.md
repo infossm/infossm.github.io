@@ -17,11 +17,11 @@ tags: [machine-learning, multi-armed-bandit, upper-confidence-bound]
 
 &nbsp;&nbsp;&nbsp;&nbsp;에이전트의 목표는 다음과 같이 정의되는 유사 후회를 최소화하는 것입니다.
 
-$$\overline{R}_n=\max_{i=1,...,K}\mathbb{E}\left[\sum_{t=1}^n X_{i,t} - \sum_{t=1}^n X_{I_t,t} \right]$$
+$\overline{R}_n=\max_{i=1,...,K}\mathbb{E}\left[\sum_{t=1}^n X_{i,t} - \sum_{t=1}^n X_{I_t,t} \right]$
 
 &nbsp;&nbsp;&nbsp;&nbsp;$i=1,2,...,K$에 대해 $\nu_i$의 평균을 $\mu_i$라고 하고 $\mu^{\ast}=\max_{i=1,...,K}\mu_i$라고 하면 유사 후회를 다음과 같이 표현할 수 있습니다.
 
-$$\overline{R}_n=n\mu^{\ast}-\sum_{t=1}^n \mathbb{E}\left[\mu_{I_t}\right]$$
+$\overline{R}_n=n\mu^{\ast}-\sum_{t=1}^n \mathbb{E}\left[\mu_{I_t}\right]$
 
 &nbsp;&nbsp;&nbsp;&nbsp;또한, $\Delta_i=\mu^\ast-\mu_i$로 놓고 시점 $1,2,...,t$에서 $i$번 팔을 선택한 총 횟수를 $T_i(t)$라고 하면 유사 후회를 $\overline R_n=\sum_{i: \mu_i < \mu^\ast} \Delta_i \mathbb{E}\left[T_i(n) \right]$으로 표현할 수 있습니다. $\overline{R}_n$은 항상 0 이상의 값을 가지며, 에이전트가 최적의 팔을 많이 선택할수록 유사 후회의 값이 작아집니다. 따라서 이 값을 줄이기 위해서는 에이전트가 최적의 팔을 빠르게 찾을 수 있는 방법을 찾아야 합니다.
 
@@ -48,11 +48,11 @@ $t > K$인 경우, $\hat{\mu}_{i, T_i(t-1)} + \sqrt{2 \ln t \over {T_i(t-1)}}$�
 
 &nbsp;&nbsp;&nbsp;&nbsp;다음과 같이 지시 함수(indicator function)을 사용해서 부등식을 세워봅시다.
 
-$$X \ge t \mathsf{1} \left\{X \ge t\right\}$$
+$X \ge t \mathsf{1} \left\{X \ge t\right\}$
 
 &nbsp;&nbsp;&nbsp;&nbsp;이 식은 $X \ge t$인 경우에 지시 함수 값이 $1$이 되고 $ X < t $인 경우에 우항이 $0$이 되기 때문에 실제로 성립함을 알 수 있습니다. 이제 식의 양변에 기댓값을 취해봅시다.
 
-$$\mathbb{E}\left[ X \right] \ge t \mathbb{E}\left[ \mathsf{1} \left\{X \ge t\right\} \right] = t\mathbb{P}(X\ge t)$$
+$\mathbb{E}\left[ X \right] \ge t \mathbb{E}\left[ \mathsf{1} \left\{X \ge t\right\} \right] = t\mathbb{P}(X\ge t)$
 
 &nbsp;&nbsp;&nbsp;&nbsp;그러면 Markov’s Inequality인 ${\mathbb{E}\left[ X \right] \over t} \ge \mathbb{P}(X\ge t)$을 얻을 수 있습니다. $\blacksquare$
 
@@ -73,7 +73,7 @@ $\blacksquare$
 
 &nbsp;&nbsp;&nbsp;&nbsp;$e^{sx}$는 $x$에 관한 볼록 함수이므로
 
-$$e^{sX} \le {b-X \over b-a}e^{sa}+{X-a \over b-a}e^{sb}$$
+$e^{sX} \le {b-X \over b-a}e^{sa}+{X-a \over b-a}e^{sb}$
 
 &nbsp;&nbsp;&nbsp;&nbsp;양변에 기댓값을 취하고 $\alpha={-a\over b-a}, t=(b-a)s$로 놓아 스케일링 해줍니다.
 
@@ -88,7 +88,7 @@ $$
 
 &nbsp;&nbsp;&nbsp;&nbsp;부등식의 우변에 로그를 취한 값을 $f(t)$로 놓습니다. Taylor's theorem에 의해 임의의 실수 $u$에 대해 다음 식을 만족하는 $0$과 $u$ 사이의 값 $v$가 존재합니다.
 
-$$f(u)=f(0)+uf'(0)+{1\over 2}u^2 f''(v)$$
+$f(u)=f(0)+uf'(0)+{1\over 2}u^2 f''(v)$
 
 &nbsp;&nbsp;&nbsp;&nbsp;$f(0), f'(0), f''(x)$는 다음과 같습니다. 
 
@@ -143,7 +143,7 @@ $$
 &nbsp;&nbsp;&nbsp;&nbsp;이제 본 글의 메인 주제인 UCB1의 유사 후회와 관련된 정리를 증명해보겠습니다.
 
 > (P Auer 2002) $K>1$개의 팔이 있고 각 팔의 보상 분포가 $[0, 1]$에서 정의되어 있습니다. UCB1 정책의 유사 후회 $\overline{R}_n$은 다음을 만족합니다.  
-$$\overline R_n \le 8\sum_{i:\mu_i<\mu^\ast}{\ln n \over \Delta_i} + \left(1+{\pi^2 \over 3}\right)\sum_{i=1}^K \Delta_i$$
+$\overline R_n \le 8\sum_{i:\mu_i<\mu^\ast}{\ln n \over \Delta_i} + \left(1+{\pi^2 \over 3}\right)\sum_{i=1}^K \Delta_i$
 
 &nbsp;&nbsp;&nbsp;&nbsp;유사 후회를 $\overline R_n = \sum_{\mu_i<\mu^\ast} \Delta_i\mathbb{E}\left[T_i(n) \right]$로 나타낼 수 있다는 점을 상기합시다. 시점 $t$에 최적의 팔이 아닌 $i$번 팔을 선택하는 경우는 $\hat \mu_{T^\ast(t-1)}^\ast + \sqrt{2 \ln{t} \over {T^\ast(t-1)}} \le \hat{\mu}_{i, T_i(t-1)} + \sqrt{2 \ln{t} \over {T_i(t-1)}}$입니다. 이 경우가 발생하는 횟수의 기댓값의 상한을 가지고 유사 후회의 상한을 구할 것입니다.
 
@@ -165,15 +165,15 @@ $$
 
 &nbsp;&nbsp;&nbsp;&nbsp;Hoeffding’s Inequality에 의해
 
-$$\mathbb{P}\left(\hat{\mu}_s^\ast - \mu^\ast \le -c_{t,s}\right) \le t^{-4}$$
+$\mathbb{P}\left(\hat{\mu}_s^\ast - \mu^\ast \le -c_{t,s}\right) \le t^{-4}$
 
-$$\mathbb{P}\left(\hat{\mu}_{i, s_i}-\mu_i \ge c_{t,s}\right) \le t^{-4}$$
+$\mathbb{P}\left(\hat{\mu}_{i, s_i}-\mu_i \ge c_{t,s}\right) \le t^{-4}$
 
 &nbsp;&nbsp;&nbsp;&nbsp;(3)이 거짓일 $s_i$의 조건은
 
-$$\Delta_i = \mu^\ast-\mu_i \ge 2c_{t,s_i}$$
+$\Delta_i = \mu^\ast-\mu_i \ge 2c_{t,s_i}$
 
-$$s_i \ge {8\ln t \over \Delta_i^2}$$
+$s_i \ge {8\ln t \over \Delta_i^2}$
 
 &nbsp;&nbsp;&nbsp;&nbsp;이제 $\mathbb{E}[T_i(n)]$의 상한을 구해봅시다.
 

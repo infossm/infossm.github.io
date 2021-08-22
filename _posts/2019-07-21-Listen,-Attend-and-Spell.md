@@ -23,12 +23,12 @@ tags: [sequence-to-sequence, attention, machine-learning, natural-language-proce
 
 &nbsp;&nbsp;&nbsp;&nbsp;그러면 $y_i$를 다음과 같이 이전 문자들 $y_{<i}$에 대해 조건부 확률과 체인룰를 이용해서 모델링 할 수 있습니다.
 
-$$P(y|x)=\prod_i P(y_i|x, y_{<i})$$
+$P(y|x)=\prod_i P(y_i|x, y_{<i})$
 
 &nbsp;&nbsp;&nbsp;&nbsp;LAS는 크게 listener와 speller로 이루어져있습니다. listener는 음향 데이터를 입력받는 encoder이고 speller는 attention을 사용해서 출력을 하는 decoder입니다. 다음 수식과 같이 listener는 $x$를 high level feature인 $h=(h_1, ..., h_U), U \leq T$로 변형시키는 Listen 함수로 표현하고, speller는 $h$를 가지고 출력 문자의 분포를 만드는 AttendAndSpell 함수로 표현합니다.
 
-$$h=\text{Listen}(x)$$
-$$P(y|x)=\text{AttendAndSpell}(h, y)$$
+$h=\text{Listen}(x)$
+$P(y|x)=\text{AttendAndSpell}(h, y)$
 
 &nbsp;&nbsp;&nbsp;&nbsp;아래 그림은 LAS 모델을 시각화한 그림입니다.
 
@@ -38,11 +38,11 @@ $$P(y|x)=\text{AttendAndSpell}(h, y)$$
 
 &nbsp;&nbsp;&nbsp;&nbsp;Listen 연산은 Bidirectional Long Short Term Memory RNN (BLSTM)을 사용합니다. 하지만 이것을 직접 사용하면 입력 시퀀스가 매우 길때(time steps가 클 때) AttendAndSpell 연산이 오래 걸리게 됩니다. 이러한 문제를 극복하기 위해 논문에서는 pyramid BLSTM(pBLSTM)을 제안해서 매 층을 지날 때마다 시간을 절반으로 줄일 수 있도록 설계했습니다. $i$번째 time step에서 $j$번째 층의 hidden state를 $h_i^j$라고 할 때, 일반적인 BLSTM은 $h_{i-1}^j$, $h_i^{j-1}$을 가지고 $h_i^j$를 계산합니다.
 
-$$h_i^j = \text{BLSTM}(h_{i-1}^j, h_i^{j-1})$$
+$h_i^j = \text{BLSTM}(h_{i-1}^j, h_i^{j-1})$
 
 &nbsp;&nbsp;&nbsp;&nbsp;이와는 다르게, pBLSTM 모델은 바로 직전 층에서 연속적인 두 time step의 hidden state를 연결(concatenate)하여 사용합니다.
 
-$$h_i^j=\text{pBLSTM}(h_{i-1}^j, [h_{2i}^{j-1},h_{2i+1}^{j-1}])$$
+$h_i^j=\text{pBLSTM}(h_{i-1}^j, [h_{2i}^{j-1},h_{2i+1}^{j-1}])$
 
 &nbsp;&nbsp;&nbsp;&nbsp;논문에서는 BLSTM 층 하나에 세 개의 pBLSTM을 쌓아 listener를 구성하였습니다. 이렇게 함으로써 speller에서 기존의 입력 시퀀스보다 8배 짧은 h에 attention을 작용하게 만들어 시간복잡도를 줄였습니다.
 
@@ -50,17 +50,17 @@ $$h_i^j=\text{pBLSTM}(h_{i-1}^j, [h_{2i}^{j-1},h_{2i+1}^{j-1}])$$
 
 &nbsp;&nbsp;&nbsp;&nbsp;AttendAndSpell 함수는 attention 기반의 LSTM 변환기인 decoder를 통해서 계산됩니다. decoder는 매 time step마다 이전에 결정된 문자들에 대한 다음 문자의 분포를 생성합니다. 즉, 문자 $y_i$의 분포는 decoder의 상태를 나타내는 $s_i$와 attention 정보인 $c_i$를 통해 결정된다고 할 수 있습니다. 또한, $s_i$는 $s_{i-1}, y_{i-1}, c_{i-1}$에 대한 RNN의 결과 값(hidden state)로 나타낼 수 있을 것입니다. 이를 식으로 나타내면 다음과 같습니다.
 
-$$c_i = \text{AttentionContext}(s_i, h)$$
-$$s_i = \text{RNN}(s_{i-1}, y_{i-1}, c_{i-1})$$
-$$P(y_i|x, y_{<i}) = \text{CharacterDistribution}(s_i, c_i)$$
+$c_i = \text{AttentionContext}(s_i, h)$
+$s_i = \text{RNN}(s_{i-1}, y_{i-1}, c_{i-1})$
+$P(y_i|x, y_{<i}) = \text{CharacterDistribution}(s_i, c_i)$
 
 &nbsp;&nbsp;&nbsp;&nbsp;CharaterDistribution을 구현하기 위해서 multilayer perceptron을 사용하고 출력 값에 softmax 함수를 적용하여 각 문자가 나올 확률을 계산합니다. RNN은 두 층의 LSTM으로 구현합니다.
 
 &nbsp;&nbsp;&nbsp;&nbsp;time step i에서 AttentionContext는 현재 decoder의 상태를 나타내는 $s_i$와 앞서 encoder에서 얻은 $h$를 가지고 컨텍스트 벡터인 $c_i$를 생성합니다. 이 값을 구하는 공식은 다음과 같습니다.
 
-$$e_{i,u}=<\phi(s_i), \psi(h_u)>$$
-$$\alpha_{i,u} = {\exp(e_{i,u}) \over {\sum_u \exp(e_{i,u})}}$$
-$$c_i=\sum_u \alpha_{i,u}h_u$$
+$e_{i,u}=<\phi(s_i), \psi(h_u)>$
+$\alpha_{i,u} = {\exp(e_{i,u}) \over {\sum_u \exp(e_{i,u})}}$
+$c_i=\sum_u \alpha_{i,u}h_u$
 
 &nbsp;&nbsp;&nbsp;&nbsp;$\phi$, $\psi$는 MLP로 구현되며 $s_i$과 $h_u$의 내적을 구하기 위해 차원을 맞춰주는 역할을 합니다. $e_{i,u}$는 $s_i$가 $h_u$와 유사한 정도를 나타내고 이 값에 softmax 함수를 취해주면 $h_u$에 대한 가중치 $\alpha_{i,u}$를 구할 수 있습니다. 마지막으로 모든 $h_u$에 대한 가중치 합을 구하면 컨텍스트 벡터 $c_i$를 구할 수 있습니다.
 
@@ -68,7 +68,7 @@ $$c_i=\sum_u \alpha_{i,u}h_u$$
 
 &nbsp;&nbsp;&nbsp;&nbsp;앞에서 설명한 Listen과 AttendAndspell 함수는 같이 학습(end-to-end 학습)이 가능합니다. sequence to sequence 모델에서 다음 식과 같이 log 확률을 최대하는 방법으로 학습할 수 있습니다.
 
-$$\max_{\theta} \sum_i {\log P(y_i|x, y_{<i}^\ast;\theta)}$$
+$\max_{\theta} \sum_i {\log P(y_i|x, y_{<i}^\ast;\theta)}$
 
 &nbsp;&nbsp;&nbsp;&nbsp;여기에서 $y_{<i}^\ast$는 모델이 실제 문자를 나타냅니다. sequence to sequence 모델에서 이와 같이 입력 값으로 이전 스텝에서 예측한 라벨이 아닌 실제 라벨을 쓰는 이유는 학습을 안정적으로 빠르게 하기 위해서 입니다.(Teacher forcing)
 
@@ -76,8 +76,8 @@ $$\max_{\theta} \sum_i {\log P(y_i|x, y_{<i}^\ast;\theta)}$$
 
 &nbsp;&nbsp;&nbsp;&nbsp;LAS에서 수식으로는 다음과 같이 표현합니다.
 
-$$\tilde{y}_i \sim \text{CharacterDistribution}(s_i, c_i)$$
-$$\max_{\theta} \sum_i {\log P(y_i|x, \tilde{y}_{<i};\theta)}$$
+$\tilde{y}_i \sim \text{CharacterDistribution}(s_i, c_i)$
+$\max_{\theta} \sum_i {\log P(y_i|x, \tilde{y}_{<i};\theta)}$
 
 &nbsp;&nbsp;&nbsp;&nbsp;$\tilde{y}_{i-1}$은 일정한 비율로 실제 라벨 혹은 모델로부터 샘플링한 라벨로 정해집니다.
 
@@ -85,14 +85,14 @@ $$\max_{\theta} \sum_i {\log P(y_i|x, \tilde{y}_{<i};\theta)}$$
 
 &nbsp;&nbsp;&nbsp;&nbsp;sequence to sequence 모델에서 답을 추론할 때, 다음과 같이 주어진 음향 데이터에 대해 가장 높은 확률의 문장을 선택합니다.
 
-$$\hat{y}=\arg \max_y \log P(y|x)$$
+$\hat{y}=\arg \max_y \log P(y|x)$
 
 &nbsp;&nbsp;&nbsp;&nbsp;디코딩은 간단히 beam search를 통해 진행됩니다. 처음에는 \<sos> 토큰 한 개만 있는 문장만을 partial hypothesis로 놓고, 이후 partial hypothesis에 있는 각각의 문장에 대해 문자를 하나씩 추가해보면서 최대 $\beta$개의 후보를 추려 paritial hypothesis를 관리합니다. 만약 문장에서 \<eos> 토큰이 추가되었다면 해당 문장을 partial hypothesis에서 제거하고 complete hypothesis에 추가합니다.
 최종적으로는 모든 남아 있는 hypothesis에서 가장 적합한 후보를 선정하게 됩니다. beam search를 할 때 추가적으로 사전을 이용해서 탐색 공간을 줄일 수 있습니다. 하지만, 실험에서는 이러한 사전이 없어도 현실의 단어를 잘 생성하는 것으로 나타났다고 합니다.
 
 &nbsp;&nbsp;&nbsp;&nbsp;논문에서는 언어 모델(language model)을 사용해서 점수를 다시 매겨서 실험을 해보기도 했습니다. LAS 모델에서는 짧은 말일수록 편향이 작게 나타났다고 합니다. 이에 따라 확률을 문자 개수인 $|y|_c$로 나누어 정규화를 했습니다. 언어 모델을 사용한 실험에서는 다음과 같은 점수를 사용했습니다.
 
-$$s(y|x)={\log P(y|x) \over |y|_c} + \lambda \log P_{LM}(y)$$
+$s(y|x)={\log P(y|x) \over |y|_c} + \lambda \log P_{LM}(y)$
 
 &nbsp;&nbsp;&nbsp;&nbsp;여기에서 $\lambda$는 언어 모델의 가중치로 validation set을 가지고 결정합니다.
 
