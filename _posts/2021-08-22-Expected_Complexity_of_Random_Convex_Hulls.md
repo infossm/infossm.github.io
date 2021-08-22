@@ -200,7 +200,7 @@ $\begin{align} E \left[ VL _ n \vert R _ n \right] \le \frac{n}{2} \cdot \frac{A
 
 임의의 두 real random variable $X$​와 $Y$​에 대하여, $E \left[ X \right] = E \left[ E \left[ X \vert Y \right] \right]$​가 성립하므로, 다음을 얻어낼 수 있습니다.
 
-$\begin{align} E \left[ VL _ n \right] & = E \left[ E \left[ VL _ n \vert R _ n \right] \right] \\ & \le E \left[ \frac{n}{2} \cdot \frac{Area(C)-Area(CH(R _ n))}{Area(C)} \right] \\ & = \frac{n}{2} \cdot \frac{Area(C)- E \left[ Area(CH(R _ n)) \right] }{Area(C)} \\ & \le \frac{n}{2} \cdot f\left(\frac{n}{2} \right) \end{align}$​​​
+$\begin{align} E \left[ VL _ n \right] & = E \left[ E \left[ VL _ n \vert R _ n \right] \right] \newline & \le E \left[ \frac{n}{2} \cdot \frac{Area(C)-Area(CH(R _ n))}{Area(C)} \right] \newline & = \frac{n}{2} \cdot \frac{Area(C)- E \left[ Area(CH(R _ n)) \right] }{Area(C)} \newline & \le \frac{n}{2} \cdot f\left(\frac{n}{2} \right) \end{align}$​​​​
 
 $E \left[ VL _ n \right]$에 대해서도 같은 부등식이 성립하므로 두 식을 더하면 다음이 얻어집니다.
 
