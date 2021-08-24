@@ -33,9 +33,9 @@ Controller는 필터의 개수와 크기, stride 등 하나의 convolutional lay
 - number of filters in [24, 36, 48, 64]
 - strides in [1, 2, 3] (or 1)
 
-위의 값들을 모두 결정하면 하나의 레이어가 만들어지고, 이를 $$N$$번 반복하면 $$N$$개의 서로 다른 레이어가 만들어집니다. Controller는 RNN으로 구성되어 매 선택의 순간마다 이전 선택의 결과에 영향을 받도록 했습니다.
+위의 값들을 모두 결정하면 하나의 레이어가 만들어지고, 이를 $N$번 반복하면 $N$개의 서로 다른 레이어가 만들어집니다. Controller는 RNN으로 구성되어 매 선택의 순간마다 이전 선택의 결과에 영향을 받도록 했습니다.
 
-그동안 image classification의 연구 결과들을 보면 GoogLeNet이나 ResNet과 같이 branching이나 skip connection을 적용한 네트워크의 성능이 우수했습니다. 따라서 NAS에서도 이러한 connection을 예측할 수 있도록 하기 위해 anchor point를 도입했습니다. Anchor point는 $$i$$번째 레이어가 $$0$$ ~ $$i-1$$번째 레이어들과 각각 연결될 확률을 계산하는 지점이라 할 수 있습니다. 아래 그림에서 convolutional layer의 파라미터를 결정하는 부분 뒤에 anchor point가 삽입된 것을 볼 수 있습니다.
+그동안 image classification의 연구 결과들을 보면 GoogLeNet이나 ResNet과 같이 branching이나 skip connection을 적용한 네트워크의 성능이 우수했습니다. 따라서 NAS에서도 이러한 connection을 예측할 수 있도록 하기 위해 anchor point를 도입했습니다. Anchor point는 $i$번째 레이어가 $0$ ~ $i-1$번째 레이어들과 각각 연결될 확률을 계산하는 지점이라 할 수 있습니다. 아래 그림에서 convolutional layer의 파라미터를 결정하는 부분 뒤에 anchor point가 삽입된 것을 볼 수 있습니다.
 
 ![그림 2. RNN Controller가 convolutional layer를 예측하는 과정](/assets/images/network-architecture-search/2.PNG)
 
@@ -45,25 +45,25 @@ Controller는 필터의 개수와 크기, stride 등 하나의 convolutional lay
 
 ### Training with REINFORCE
 
-Controller의 학습은 RNN controller의 parameter vector인 $$\theta_c$$를 업데이트하는 것으로 생각할 수 있습니다. 수식으로 나타내면 다음의 식을 최대화하는 것으로 볼 수 있습니다.
+Controller의 학습은 RNN controller의 parameter vector인 $\theta_c$를 업데이트하는 것으로 생각할 수 있습니다. 수식으로 나타내면 다음의 식을 최대화하는 것으로 볼 수 있습니다.
 
 $$
 J(\theta_c)=E_{P(a_{1:T};\theta_c)}[R]
 $$
 
-여기서 $$T$$는 controller가 예측해야 할 파라미터의 개수, $$R$$은 reward (child network로부터 얻은 validation accuracy), $$a_{1:T}$$는 action list (controller가 선택하는 hyperparameter들의 list)입니다. 즉, 우리가 원하는 것은 reward $$R$$의 기댓값을 최대화하는 최적의 policy (각 action의 확률)을 찾는 것입니다. 이를 위해 policy gradient를 이용하게 되는데, 구체적으로는 REINFORCE rule을 사용합니다.
+여기서 $T$는 controller가 예측해야 할 파라미터의 개수, $R$은 reward (child network로부터 얻은 validation accuracy), $a_{1:T}$는 action list (controller가 선택하는 hyperparameter들의 list)입니다. 즉, 우리가 원하는 것은 reward $R$의 기댓값을 최대화하는 최적의 policy (각 action의 확률)을 찾는 것입니다. 이를 위해 policy gradient를 이용하게 되는데, 구체적으로는 REINFORCE rule을 사용합니다.
 
 $$
 \nabla_{\theta_c}J(\theta_c)=\sum_{n=1}^TE_{P(a_{1:T};\theta_c)}[\nabla_{\theta_c}logP(a_t|a_{(t-1):1};\theta_c)R]
 $$
 
-만약 $$m$$개의 sample을 하나의 batch로 한 번에 update하고자 하는 경우, 위 식을 다음과 같이 approximate할 수 있습니다.
+만약 $m$개의 sample을 하나의 batch로 한 번에 update하고자 하는 경우, 위 식을 다음과 같이 approximate할 수 있습니다.
 
 $$
 \frac{1}{m}\sum_{k=1}^{m}\sum_{t=1}^{T}\nabla_{\theta_c}logP(a_t|a_{(t-1):1};\theta_c)R_k
 $$
 
-$$R_k$$는 $$k$$번째 child network로부터 얻은 validation accuracy입니다. 단, 위 식으로 학습을 할 경우 variance가 매우 커질 수 있기 때문에 baseline function을 도입한 다음의 식을 사용합니다.
+$R_k$는 $k$번째 child network로부터 얻은 validation accuracy입니다. 단, 위 식으로 학습을 할 경우 variance가 매우 커질 수 있기 때문에 baseline function을 도입한 다음의 식을 사용합니다.
 
 $$
 \frac{1}{m}\sum_{k=1}^{m}\sum_{t=1}^{T}\nabla_{\theta_c}logP(a_t|a_{(t-1):1};\theta_c)(R_k-b)
@@ -97,7 +97,7 @@ NASNet의 핵심적인 아이디어는 기존 NAS 방법을 유지하되, 새로
 
 NASNet은 앞서 언급했듯이 Normal Cell과 Reduction Cell이라는 단위로 이루어집니다. Normal Cell은 input과 output의 dimension이 같은 convolutional cell이고, Reductoin Cell은 output의 dimension이 input의 절반이 되는 convolutional cell입니다.
 
-하나의 convolutional cell은 다시 $$B$$개의 Block으로 구성됩니다. 각 Block은 두 개의 hidden state를 입력으로 받아 각각 특정 operation을 적용한 후, 특정 method에 따라 두 결과를 combine하여 새로운 hidden state를 만듭니다. 좀 더 쉽게 말하자면 두 개의 레이어를 입력으로 선택하여 어떤 연산을 수행한 후 하나의 출력 레이어를 만드는 것입니다. 즉, 2개의 hidden state, 2개의 operation, 1개의 combine method로 총 5가지의 hyperparameter가 하나의 Block을 정의하게 되고, 이를 RNN Controller로 예측하는 것입니다.
+하나의 convolutional cell은 다시 $B$개의 Block으로 구성됩니다. 각 Block은 두 개의 hidden state를 입력으로 받아 각각 특정 operation을 적용한 후, 특정 method에 따라 두 결과를 combine하여 새로운 hidden state를 만듭니다. 좀 더 쉽게 말하자면 두 개의 레이어를 입력으로 선택하여 어떤 연산을 수행한 후 하나의 출력 레이어를 만드는 것입니다. 즉, 2개의 hidden state, 2개의 operation, 1개의 combine method로 총 5가지의 hyperparameter가 하나의 Block을 정의하게 되고, 이를 RNN Controller로 예측하는 것입니다.
 
 
 
@@ -105,7 +105,7 @@ NASNet은 앞서 언급했듯이 Normal Cell과 Reduction Cell이라는 단위�
 
 
 
-선택 가능한 hidden state(입력)은 $$h_i$$ , $$h_{i-1}$$, 또는 현재 cell에서 이전에 생성된 Block의 output입니다. $$h_i$$와 $$h_{i-1}$$은 이전 두 cell의 output에 해당합니다. 기존 NAS와 달리 skip connection이 가능한 레이어의 범위를 제한한 것도 search space를 줄이는 데 기여했다고 볼 수 있습니다.
+선택 가능한 hidden state(입력)은 $h_i$ , $h_{i-1}$, 또는 현재 cell에서 이전에 생성된 Block의 output입니다. $h_i$와 $h_{i-1}$은 이전 두 cell의 output에 해당합니다. 기존 NAS와 달리 skip connection이 가능한 레이어의 범위를 제한한 것도 search space를 줄이는 데 기여했다고 볼 수 있습니다.
 
 선택 가능한 operation의 종류는 다음과 같습니다.
 
@@ -119,7 +119,7 @@ NASNet은 앞서 언급했듯이 Normal Cell과 Reduction Cell이라는 단위�
 
 combine method로는 element-wise addition과 concatenation 중 하나를 선택하게 됩니다.
 
-이 과정을 $$B$$번 반복하면 서로 다른 $$B$$개의 Block이 생성됩니다. 마지막으로 현재 cell 내에서 사용되지 않은 (다른 block의 input으로 연결되지 않은) hidden state들을 depth 방향으로 이어붙여 cell의 output으로 설정합니다. 우리가 생성해야 하는 cell은 Normal Cell과 Reduction Cell의 두 가지이므로, 2 x $$B$$ 개의 Block을 만들어서 앞의 $$B$$개는 Normal Cell에 사용하고, 뒤의 $$B$$개는 Reduction Cell에 사용합니다.
+이 과정을 $B$번 반복하면 서로 다른 $B$개의 Block이 생성됩니다. 마지막으로 현재 cell 내에서 사용되지 않은 (다른 block의 input으로 연결되지 않은) hidden state들을 depth 방향으로 이어붙여 cell의 output으로 설정합니다. 우리가 생성해야 하는 cell은 Normal Cell과 Reduction Cell의 두 가지이므로, 2 x $B$ 개의 Block을 만들어서 앞의 $B$개는 Normal Cell에 사용하고, 뒤의 $B$개는 Reduction Cell에 사용합니다.
 
 연구진들이 찾은 최적의 Normal Cell과 Reduction Cell은 다음과 같습니다.
 

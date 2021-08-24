@@ -338,13 +338,13 @@ BST나 priority queue 등의 자료구조를 사용하면 해당 문제를 $O(n 
 XOR Maximization은 가우스 소거법을 통해 그리디하게 할 수 있음이 널리 알려져 있습니다([koosaga님의 블로그](https://koosaga.com/132)). 하지만 여기서는 수를 짝수개 골라야 한다는 조건이 추가되어 있습니다. 놀랍게도, 수열 $(a_1, a_2, \cdots, a_n)$을 $(b_1, b_2 , \cdots, b_n) = (a_1 \oplus a_1, a_1 \oplus a_2, \cdots, a_1 \oplus a_n)$으로 바꾼 다음, XOR Maximization을 하면 답이 나옵니다. 이 이유는 다음과 같습니다.
 
 + 정답이 $a_1$을 포함할 경우 : $(a_{i_1}, a_{i_2}, \cdots, a_{i_{2k}})$이 최대이고, $i_1 = 1$일 때, 
-  $$
+  $
   \begin{align*}
    \ &a_{i_1} \oplus a_{i_2} \oplus \cdots \oplus a_{i_{2k}} \\
   =\ & (a_{i_1} \oplus a_{i_1}) \oplus (a_{i_2} \oplus a_{i_1}) \oplus \cdots \oplus (a_{i_{2k}} \oplus a_{i_1}) \\
   =\ & b_{i_1} \oplus b_{i_2} \oplus \cdots \oplus b_{i_{2k}}
   \end{align*}
-  $$
+  $
   이 성립하기에 답이 나옵니다.
   
 + 정답이 $a_1$을 포함하지 않는 경우에도 비슷하게 정답이 됩니다.

@@ -65,27 +65,27 @@ int main() {
 
 먼저, 나눗셈 정리에 의해 다음이 성립합니다.
 
-$$ \begin{align} A(x) & = B(x) Q(x) + R(x) \\ 2x^4 - 3x^3 + 2x^2 - x + 1 & = (x^2 - x - 1)(2x^2 - x + 3) + (x + 4) \end{align} $$
+$ \begin{align} A(x) & = B(x) Q(x) + R(x) \\ 2x^4 - 3x^3 + 2x^2 - x + 1 & = (x^2 - x - 1)(2x^2 - x + 3) + (x + 4) \end{align} $
 
 $x$에 $z^{-1}$을 대입하고, 양변에 $z^N$을 곱해 정리하면 다음처럼 됩니다.
 
-$$ \begin{align} z^N A(z^{-1}) & = (z^M B(z^{-1})) (z^{N-M} Q(z^{-1})) + z^{N-M+1} (z^{M-1} R(z^{-1})) \\ z^4 - z^3 + 2z^2 - 3z + 2 & = (-z^2 - z + 1)(3z^2 - z + 2) + z^3 (4z + 1) \end{align} $$
+$ \begin{align} z^N A(z^{-1}) & = (z^M B(z^{-1})) (z^{N-M} Q(z^{-1})) + z^{N-M+1} (z^{M-1} R(z^{-1})) \\ z^4 - z^3 + 2z^2 - 3z + 2 & = (-z^2 - z + 1)(3z^2 - z + 2) + z^3 (4z + 1) \end{align} $
 
 여기서, $z^N A(z^{-1})$, $z^M B(z^{-1})$, $z^{N-M} Q(z^{-1})$, $z^{M-1} R(z^{-1})$는 $A(x)$, $B(x)$, $Q(x)$, $R(x)$의 계수 순서를 바꾸고 $x$를 $z$로 바꾼 것임을 알 수 있습니다. 이들을 $A'(z)$, $B'(z)$, $Q'(z)$, $R'(z)$라고 하고 식을 다시 적으면 다음과 같습니다.
 
-$$A'(z) = B'(z) Q'(z) + z^{N-M+1} R'(z)$$
+$A'(z) = B'(z) Q'(z) + z^{N-M+1} R'(z)$
 
 양변을 $z^{N-M+1}$으로 나눈 나머지를 취하면 다음처럼 됩니다.
 
-$$ \begin{align} A'(z) & \equiv B'(z) Q'(z) & \pmod{z^{N-M+1}} \\ z^4 - z^3 + 2z^2 - 3z + 2 & \equiv (-z^2 - z + 1)(3z^2 - z + 2) & \pmod{z^3} \end{align} $$
+$ \begin{align} A'(z) & \equiv B'(z) Q'(z) & \pmod{z^{N-M+1}} \\ z^4 - z^3 + 2z^2 - 3z + 2 & \equiv (-z^2 - z + 1)(3z^2 - z + 2) & \pmod{z^3} \end{align} $
 
 만약, 어떤 다항식 $B'^{-1}(z)$가 존재해서, $B'(z) B'^{-1}(z) \equiv 1 \pmod{z^{N-M+1}}$을 만족한다면, 양변에 $B'^{-1}(z)$를 곱해서 다음을 얻습니다.
 
-$$ A'(z) B'^{-1}(z) \equiv B'(z) B'^{-1}(z) Q'(z) \equiv Q'(z) \pmod{z^{N-M+1}} $$
+$ A'(z) B'^{-1}(z) \equiv B'(z) B'^{-1}(z) Q'(z) \equiv Q'(z) \pmod{z^{N-M+1}} $
 
 예시의 경우에는 $(-z^2 - z + 1)(2z^2 + z + 1) \equiv 1 \pmod{z^3}$이므로, 다음을 확인할 수 있습니다.
 
-$$ (z^4 - z^3 + 2z^2 - 3z + 2)(2z^2 + z + 1) \equiv 3z^2 - z + 2 \pmod{z^3} $$
+$ (z^4 - z^3 + 2z^2 - 3z + 2)(2z^2 + z + 1) \equiv 3z^2 - z + 2 \pmod{z^3} $
 
 여기서, $Q'(z)$는 $z$에 대한 $N-M$차 다항식임에 주목해 주십시오. $B'^{-1}(z)$를 빠르게 계산할 수 있다면, $A'(z)$와 $B'^{-1}(z)$를 곱하고 $z^{N-M}$ 이하인 항만 남기는 것으로 $Q'(z)$를 구할 수 있습니다. $Q'(z)$의 계수 순서를 바꾸면, $Q(x)$의 계수를 얻을 수 있으므로 $B'^{-1}(z)$가 존재하고 빠르게 계산할 수 있다면 다항식 나눗셈을 빠르게 할 수 있게 됩니다.
 
@@ -97,29 +97,29 @@ $$ (z^4 - z^3 + 2z^2 - 3z + 2)(2z^2 + z + 1) \equiv 3z^2 - z + 2 \pmod{z^3} $$
 
 이제, $B'(z)U(z) \equiv 1 \pmod{z^K}$를 만족하는 $K-1$차 다항식 $U(z)$를 알고 있다는 가정 하에, $B'(z)V(z) \equiv 1 \pmod{z^{2K}}$를 만족하는 $2K-1$차 다항식 $V(z)$를 구할 것입니다. 여기서 $V(z)$는 어떤 $K-1$차 다항식 $T(z)$에 대해 다음과 같은 꼴이 됩니다.
 
-$$ \begin{align} V(z) & = U(z) + T(z) z^K \\ z + 1 & = 1 + (1) z^1 \end{align} $$
+$ \begin{align} V(z) & = U(z) + T(z) z^K \\ z + 1 & = 1 + (1) z^1 \end{align} $
 
 $B'(z)$를 $k-1$차 다항식 $B'_0(z)$와 $M-K$차 다항식 $B'_1(z)$에 대해 $B'(z) = B'_0(z) + B'_1(z) z^K$라고 합시다. 또한, $B'_0(z) U(z) = 1 + W(z) z^K$라고 하면 다음을 얻습니다.
 
-$$ B'(z) V(z) = (B'_0(z) + B'_1(z) z^K)(U(z) + T(z) z^K) \equiv 1 + (W(z) + B'_0(z) T(z) + B'_1(z) U(z)) z^K \pmod{z^{2K}} $$
+$ B'(z) V(z) = (B'_0(z) + B'_1(z) z^K)(U(z) + T(z) z^K) \equiv 1 + (W(z) + B'_0(z) T(z) + B'_1(z) U(z)) z^K \pmod{z^{2K}} $
 
 $B'(z)V(z) \equiv 1 \pmod {z^{2K}}$이므로,
 
-$$ W(z) + B'_0(z) T(z) + B'_1(z) U(z) \equiv 0 \pmod {z^K} $$
+$ W(z) + B'_0(z) T(z) + B'_1(z) U(z) \equiv 0 \pmod {z^K} $
 
 양변에 $U(z)$를 곱하고 $B'_0(z) U(z) \equiv 1 \pmod {z^K}$임을 이용하면 다음을 얻습니다.
 
-$$ W(z) U(z) + T(z) + B'_1(z) U^2(z) \equiv 0 \pmod {z^k} $$
+$ W(z) U(z) + T(z) + B'_1(z) U^2(z) \equiv 0 \pmod {z^k} $
 
-$$ T(z) \equiv -U(z) (W(z) + B'_1(z) U(z)) \pmod {z^k} $$
+$ T(z) \equiv -U(z) (W(z) + B'_1(z) U(z)) \pmod {z^k} $
 
 얻은 결과를 가지고 $V(z)$를 다시 한 번 정리해 보면,
 
-$$ \begin{align} V(z) & \equiv U(z)(1 - W(z) z^K + B'_1(z) U(z) z^K) \\ & \equiv U(z)(2 - B'_0(z) U(z) - B'_1(z) U(z) z^K) \\ & \equiv U(z)(2 - B'(z) U(z)) \pmod{z^{2K}} \\ z + 1 & \equiv (1) ( 2 - (-z^2 - z + 1) (1)) \pmod{z^2} \end{align} $$
+$ \begin{align} V(z) & \equiv U(z)(1 - W(z) z^K + B'_1(z) U(z) z^K) \\ & \equiv U(z)(2 - B'_0(z) U(z) - B'_1(z) U(z) z^K) \\ & \equiv U(z)(2 - B'(z) U(z)) \pmod{z^{2K}} \\ z + 1 & \equiv (1) ( 2 - (-z^2 - z + 1) (1)) \pmod{z^2} \end{align} $
 
 위 계산식을 여러 번 적용해서, 차수가 $N-M$ 이상이 될 때까지 반복하면 $B'^{-1}(z)$를 구할 수 있습니다.
 
-$$ (z + 1)(2 - (-z^2 - z + 1)(z + 1)) \equiv 2z^2 + z + 1 \pmod{z^3} $$
+$ (z + 1)(2 - (-z^2 - z + 1)(z + 1)) \equiv 2z^2 + z + 1 \pmod{z^3} $
 
 # $O(N \log N)$ 알고리즘
 

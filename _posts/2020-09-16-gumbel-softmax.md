@@ -35,11 +35,11 @@ tags: [machine-learning]
 
 &nbsp;&nbsp;&nbsp;&nbsp;$g_1, g_2, ..., g_k$이 standard gumbel 분포를 따르고 독립적이라고 합시다. Gumbel-Max 트릭을 사용하면 클래스 확률이 $\pi$인 카테고리 분포에서의 샘플 $z$을 다음과 같이 나타낼 수 있습니다.
 
-$$z=\text{one_hot}(\argmax_i[g_i+\log \pi_i])$$ 
+$z=\text{one_hot}(\argmax_i[g_i+\log \pi_i])$ 
 
 &nbsp;&nbsp;&nbsp;&nbsp;$\argmax$는 미분이 불가능하기 때문에 softmax 함수와 temperature $\tau$를 가지고 미분가능한 형태로 근사합니다. 그래서 $z$ 대신에 다음과 같이 정의되는 $y=(y_1, ..., y_k)$를 사용합니다.
 
-$$y_i={\exp((\ln(\pi_i)+g_i)/\tau) \over {\sum_{j=1}^k \exp((\ln(\pi_j)+g_j)/\tau)}}, i=1,..,k$$
+$y_i={\exp((\ln(\pi_i)+g_i)/\tau) \over {\sum_{j=1}^k \exp((\ln(\pi_j)+g_j)/\tau)}}, i=1,..,k$
 
 &nbsp;&nbsp;&nbsp;&nbsp;$\tau$가 0에 가까워질 수록 Gumbel-Softmax의 샘플이 원 핫에 가까워지고 분포가 카테고리 분포와 비슷하게 됩니다. 반대로 $\tau$가 커지면 샘플이 원 핫 모양이 아니게 되고 분포가 uniform 분포에 가까워집니다.
 
@@ -71,7 +71,7 @@ $$y_i={\exp((\ln(\pi_i)+g_i)/\tau) \over {\sum_{j=1}^k \exp((\ln(\pi_j)+g_j)/\ta
 
 &nbsp;&nbsp;&nbsp;&nbsp;Gumbel-Softmax를 사용하여 Variational autoencoder(VAE)를 간단하게 구현해보았습니다. VAE는 아래 식에서 우변 ELBO를 최대화하도록 학습합니다.
 
-$$\log p_\theta (x) \geq \mathbb{E}_{q_\phi(y|x)}[\log p_\theta(x|y)]-KL(q_\phi(y|x)||p_\theta(y))$$
+$\log p_\theta (x) \geq \mathbb{E}_{q_\phi(y|x)}[\log p_\theta(x|y)]-KL(q_\phi(y|x)||p_\theta(y))$
 
 &nbsp;&nbsp;&nbsp;&nbsp;논문과 같이 Gumbel prior 대신 카테고리 prior를 사용했고 MINIST 이미지 데이터 셋으로 학습시켰습니다.
 

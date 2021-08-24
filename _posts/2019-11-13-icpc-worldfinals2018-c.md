@@ -14,48 +14,48 @@ tags: [algorithm, dynamic-programming, ICPC, data-structure, optimization]
 
 # 문제
 
-문제 자체는 굉장히 간단하다. edge마다 이동할 때 드는 cost가 있는 트리가 있고, vertex $$i$$에 현재 $$X_i$$명이 있으며 최종 상태에는 적어도 $$Y_i$$명이 있어야 할 때, 사용해야 하는 cost를 minimize하는 문제이다.
+문제 자체는 굉장히 간단하다. edge마다 이동할 때 드는 cost가 있는 트리가 있고, vertex $i$에 현재 $X_i$명이 있으며 최종 상태에는 적어도 $Y_i$명이 있어야 할 때, 사용해야 하는 cost를 minimize하는 문제이다.
 
 # Heavy-Light Decomposition
 
-이미 상당히 유명해진 트릭인 heavy-light decomposition에 대해 먼저 간략히 설명하고 넘어갈 것이다. rooted tree에서 heavy edge란, vertex $$v$$의 자식들 중 가장 subtree의 크기가 큰(vertex 개수가 많은) 자식을 $$u$$라 할 때, $$(u, v)$$를 heavy edge라고 하고, $$u$$를 $$v$$의 heavy child라고 한다. $$v$$와 다른 child를 잇는 edge는 light edge가 된다. 이렇게 각 edge에 heavy, light 라벨을 붙이면 어떤 vertex $$v$$에 대해서도 $$v$$와 root를 잇는 path에 light edge는 $$log N +1$$개 이하만 존재할 수 있다. 이유는 간단한데, $$v$$가 $$u$$의 parent이고 $$(u, v)$$가 light edge이면 $$v$$를 root로 하는 subtree가 $$u$$를 root로 하는 subtree보다 2배 이상 크기 때문이다.
+이미 상당히 유명해진 트릭인 heavy-light decomposition에 대해 먼저 간략히 설명하고 넘어갈 것이다. rooted tree에서 heavy edge란, vertex $v$의 자식들 중 가장 subtree의 크기가 큰(vertex 개수가 많은) 자식을 $u$라 할 때, $(u, v)$를 heavy edge라고 하고, $u$를 $v$의 heavy child라고 한다. $v$와 다른 child를 잇는 edge는 light edge가 된다. 이렇게 각 edge에 heavy, light 라벨을 붙이면 어떤 vertex $v$에 대해서도 $v$와 root를 잇는 path에 light edge는 $log N +1$개 이하만 존재할 수 있다. 이유는 간단한데, $v$가 $u$의 parent이고 $(u, v)$가 light edge이면 $v$를 root로 하는 subtree가 $u$를 root로 하는 subtree보다 2배 이상 크기 때문이다.
 
-Heavy light decomposition으로 할 수 있는 것 중 대표적인 것은 tree의 모든 path를 heavy chain $$O(log N)$$개로 나눌 수 있으므로 segment tree를 이용하여 여러 값을 계산하거나 업데이트할 수 있다는 것이다. 그러나, 이 외에도 heavy light decomposition을 응용할 수 있는 아이디어는 많다. 특히, 직접 heavy-light decomposition을 구현하지 않고 아이디어만 사용하는 경우가 매우 빈번하다.
+Heavy light decomposition으로 할 수 있는 것 중 대표적인 것은 tree의 모든 path를 heavy chain $O(log N)$개로 나눌 수 있으므로 segment tree를 이용하여 여러 값을 계산하거나 업데이트할 수 있다는 것이다. 그러나, 이 외에도 heavy light decomposition을 응용할 수 있는 아이디어는 많다. 특히, 직접 heavy-light decomposition을 구현하지 않고 아이디어만 사용하는 경우가 매우 빈번하다.
 
-예를 들어, rooted tree에서 모든 vertex $$v$$에 대해 $$v$$의 subtree들의 집합 $$subtree(v) $$의 각 노드에 쓰인 수들의 집합을 계산해야 한다고 하자. 이를 계산할 때, $$v$$의 모든 자식들이 들고 있는 집합을 다 꺼내서  정렬한 후 합치면 시간이 오래 걸릴 수 있다. 그러나, $$v$$의 heavy child가 $$u$$라고 할 때, $$u$$가 아닌 다른 자식에 있는 집합의 원소들을 다 꺼내어 $$u$$의 집합에 넣는다면, 어느 vertex도 root까지 light edge가 $$O(log N)$$개이기 때문에 $$O(log N)$$번만 삽입되게 되고, 집합을 구현한 자료구조가 STL::set인 경우 한 번 삽입하는 데에 $$O(log N)$$시간이 소모되므로 $$O(N log^2 N)$$ 시간에 모든 vertex $$v$$에 대해 집합을 계산할 수 있게 된다.
+예를 들어, rooted tree에서 모든 vertex $v$에 대해 $v$의 subtree들의 집합 $subtree(v) $의 각 노드에 쓰인 수들의 집합을 계산해야 한다고 하자. 이를 계산할 때, $v$의 모든 자식들이 들고 있는 집합을 다 꺼내서  정렬한 후 합치면 시간이 오래 걸릴 수 있다. 그러나, $v$의 heavy child가 $u$라고 할 때, $u$가 아닌 다른 자식에 있는 집합의 원소들을 다 꺼내어 $u$의 집합에 넣는다면, 어느 vertex도 root까지 light edge가 $O(log N)$개이기 때문에 $O(log N)$번만 삽입되게 되고, 집합을 구현한 자료구조가 STL::set인 경우 한 번 삽입하는 데에 $O(log N)$시간이 소모되므로 $O(N log^2 N)$ 시간에 모든 vertex $v$에 대해 집합을 계산할 수 있게 된다.
 
-이러한 아이디어는 때때로 $$O(N^2)$$시간이 소모되는 tree DP 문제를 $$O(Nlog^2N)$$이나 $$O(NlogN)$$ 시간에 해결할 수 있도록 도움을 준다. 보통 각 vertex마다 계산해야 하는 DP table의 크기가 (subtree의 vertex 개수)나 (subtree의 높이)인 경우에, DP 값이 convex한 경우 이를 사용하여 해결하는 풀이가 존재할 수 있다. (모든 경우 풀리는 것은 아니다)
+이러한 아이디어는 때때로 $O(N^2)$시간이 소모되는 tree DP 문제를 $O(Nlog^2N)$이나 $O(NlogN)$ 시간에 해결할 수 있도록 도움을 준다. 보통 각 vertex마다 계산해야 하는 DP table의 크기가 (subtree의 vertex 개수)나 (subtree의 높이)인 경우에, DP 값이 convex한 경우 이를 사용하여 해결하는 풀이가 존재할 수 있다. (모든 경우 풀리는 것은 아니다)
 
 # Conquer the world
 
 이제 다시 conquer the world 문제로 돌아가 보자. 다음과 같은 naive한 DP를 생각할 수 있다.
 
-$$D[u][i]$$: $$u$$의 subtree에서 초기 상태보다 최종 상태에 사람 수가 $$i$$명 줄어들었을 때, 조건을 만족하도록 하면서($$Y_i$$ 이상) $$u$$의 subtree 내에서 이동하는 cost의 최솟값. 즉, $$i$$가 0 이상인 경우 subtree 내에서 사람들을 이동시킨 후 $$u$$에서 $$parent[u]$$로 $$i$$명이 이동해야 하고, $$i$$가 0 이하인 경우 처음에 $$parent[u]$$에서 $$u$$로 $$-i$$명이 온 후에 subtree 내에서 사람들을 이동시키는 cost이다.
+$D[u][i]$: $u$의 subtree에서 초기 상태보다 최종 상태에 사람 수가 $i$명 줄어들었을 때, 조건을 만족하도록 하면서($Y_i$ 이상) $u$의 subtree 내에서 이동하는 cost의 최솟값. 즉, $i$가 0 이상인 경우 subtree 내에서 사람들을 이동시킨 후 $u$에서 $parent[u]$로 $i$명이 이동해야 하고, $i$가 0 이하인 경우 처음에 $parent[u]$에서 $u$로 $-i$명이 온 후에 subtree 내에서 사람들을 이동시키는 cost이다.
 
-그러면 $$D[root][0]$$이 구하고자 하는 최종 답이 될 것이다.
+그러면 $D[root][0]$이 구하고자 하는 최종 답이 될 것이다.
 
-$$F(u, i) = D[u][i] + cost(u, parent[u]) * abs(i)$$ 로 놓으면 $$F(u,i)$$는 $$u$$와 $$parent[u]$$를 잇는 edge까지 고려한 cost가 된다. 그러면 이제 $$D2[u][i]$$를 $$u$$의 subtree에서 정점 $$u$$는 제외했을 때 계산한 dp값이라고 하면 $$F$$값을 이용해 $$D2$$의 값은 쉽게 계산할 수 있다. $$u$$의 자식 $$c_1,.. ,c_k$$에 대해, $$D2[u][i] = Min_{j_1 + j_2 + .. + j_k = i}(F(c_1, j_1) +F(c_2,j_2)+...+F(c_k,j_k))$$이다. 그 후 정점 $$u$$를 고려해주면 $$D[u][i + X_u- Y_v] = D2[u][i]$$ 이므로 $$u$$의 dp값을 $$u$$의 자식들의 dp값으로부터 계산할 수 있다.
+$F(u, i) = D[u][i] + cost(u, parent[u]) * abs(i)$ 로 놓으면 $F(u,i)$는 $u$와 $parent[u]$를 잇는 edge까지 고려한 cost가 된다. 그러면 이제 $D2[u][i]$를 $u$의 subtree에서 정점 $u$는 제외했을 때 계산한 dp값이라고 하면 $F$값을 이용해 $D2$의 값은 쉽게 계산할 수 있다. $u$의 자식 $c_1,.. ,c_k$에 대해, $D2[u][i] = Min_{j_1 + j_2 + .. + j_k = i}(F(c_1, j_1) +F(c_2,j_2)+...+F(c_k,j_k))$이다. 그 후 정점 $u$를 고려해주면 $D[u][i + X_u- Y_v] = D2[u][i]$ 이므로 $u$의 dp값을 $u$의 자식들의 dp값으로부터 계산할 수 있다.
 
 DP를 이제 다음과 같이 조금 변형해서 정의해 보자.
 
-$$D[u][i]$$: $$u$$의 subtree에서 초기 상태보다 최종 상태에 사람 수가 $$i$$명 **이상** 줄어들었을 때, 조건을 만족하도록 하면서($$Y_i$$ 이상) $$u$$의 subtree 내에서 이동하는 cost의 최솟값
+$D[u][i]$: $u$의 subtree에서 초기 상태보다 최종 상태에 사람 수가 $i$명 **이상** 줄어들었을 때, 조건을 만족하도록 하면서($Y_i$ 이상) $u$의 subtree 내에서 이동하는 cost의 최솟값
 
-만약 $$u$$가 leaf라면, $$D[u][i]$$는 $$i > X_u - Y_u$$이면 무한일 것이고, $$i \le X_u - Y_u$$이면 0일 것이다. 정점 $$u$$에 대해, $$D[u][i]$$값이 무한이 아닌 최대 $$i$$를 $$M(u)$$라 하자.
+만약 $u$가 leaf라면, $D[u][i]$는 $i > X_u - Y_u$이면 무한일 것이고, $i \le X_u - Y_u$이면 0일 것이다. 정점 $u$에 대해, $D[u][i]$값이 무한이 아닌 최대 $i$를 $M(u)$라 하자.
 
-$$F(u,i) = Min_{i \le j}(D[u][j] +cost(u, parent[u]) * abs(j))$$ 로 놓으면, $$u$$에서 $$parent[u]$$로 i명 이상 이동할 때 최소 cost가 계산이 된다. 이는 우리가 $$D[u][i]$$를 이산적으로 보지 않고 $$i$$에 대한 함수 $$d(i)$$로 생각을 한다면 $$f(i) = d(i) + cost * \lvert i \rvert$$로 놓은 후 에, $$F(i) = Min_{i \le j}(f(j))$$로 정의한 것과 같다. 만약 $$d(i)$$가 $$ i \le M(u)$$에서 convex라면, 즉 $$d(i) - d(i-1) \le d(i+1) - d(i)$$가 성립한다면 $$f(i)$$ 역시 convex하고, $$F(i)$$도 convex한 형태가 됨을 알 수 있다. $$u$$의 자식 $$c_1, ..., c_k$$에 대해 $$F(c_1), ..., F(c_2)$$로부터 $$D_2[u]$$를 계산하는 것은 convex function의 민코프스키 합을 계산하는 것과 같은데, 이는 단순히 모든 기울기를 정렬한 후 그대로 나열하는 것으로 충분하다. 
+$F(u,i) = Min_{i \le j}(D[u][j] +cost(u, parent[u]) * abs(j))$ 로 놓으면, $u$에서 $parent[u]$로 i명 이상 이동할 때 최소 cost가 계산이 된다. 이는 우리가 $D[u][i]$를 이산적으로 보지 않고 $i$에 대한 함수 $d(i)$로 생각을 한다면 $f(i) = d(i) + cost * \lvert i \rvert$로 놓은 후 에, $F(i) = Min_{i \le j}(f(j))$로 정의한 것과 같다. 만약 $d(i)$가 $ i \le M(u)$에서 convex라면, 즉 $d(i) - d(i-1) \le d(i+1) - d(i)$가 성립한다면 $f(i)$ 역시 convex하고, $F(i)$도 convex한 형태가 됨을 알 수 있다. $u$의 자식 $c_1, ..., c_k$에 대해 $F(c_1), ..., F(c_2)$로부터 $D_2[u]$를 계산하는 것은 convex function의 민코프스키 합을 계산하는 것과 같은데, 이는 단순히 모든 기울기를 정렬한 후 그대로 나열하는 것으로 충분하다. 
 
-따라서, 모든 vertex $$u$$에 대해 함수 $$d(i)$$를 계산하기 위해서는 다음과 같은 연산을 수행할 수 있어야 한다.
+따라서, 모든 vertex $u$에 대해 함수 $d(i)$를 계산하기 위해서는 다음과 같은 연산을 수행할 수 있어야 한다.
 
-1. $$d_1(i), d_2(i), .., d_k(i)$$에 대한 민코프스키 합 계산
-2. $$f(i) = d(i) + c * \lvert i \rvert$$ 계산 
-3. $$F(i) = Min_{i \le j}(f(j))$$ 계산
-4. $$X_u - Y_u$$만큼 평행이동
+1. $d_1(i), d_2(i), .., d_k(i)$에 대한 민코프스키 합 계산
+2. $f(i) = d(i) + c * \lvert i \rvert$ 계산 
+3. $F(i) = Min_{i \le j}(f(j))$ 계산
+4. $X_u - Y_u$만큼 평행이동
 
-1번은 $$d(i)$$의 정의역에 대해 $$d(x+1)-d(x)$$의 값을 모두 알고 있다면, priority queue나 multiset을 이용해 기울기를 정렬된 상태로 합칠 수 있다.
+1번은 $d(i)$의 정의역에 대해 $d(x+1)-d(x)$의 값을 모두 알고 있다면, priority queue나 multiset을 이용해 기울기를 정렬된 상태로 합칠 수 있다.
 
-2번은 $$d(x+1)-d(x)$$의 값이 $$x < 0$$에서는 $$c$$만큼 작아지고, $$x \ge 0$$에서는 $$c$$만큼 커지므로 구간에 어떤 수를 더하는 쿼리를 수행할 수 있다면 해결할 수 있다.
+2번은 $d(x+1)-d(x)$의 값이 $x < 0$에서는 $c$만큼 작아지고, $x \ge 0$에서는 $c$만큼 커지므로 구간에 어떤 수를 더하는 쿼리를 수행할 수 있다면 해결할 수 있다.
 
-3번의 경우, $$f(i)$$가 convex이면 $$F(i)$$는 $$f(x)-f(x-1) < 0$$이 성립하는 가장 큰 $$x$$를 $$x_0$$이라고 하면 $$x \le x_0$$인 모든 $$x$$에 대해 $$F(x) = f(x_0)$$이고, $$x \ge x_0$$인 모든 $$x$$에 대해 $$F(x) = f(x)$$가 된다. 따라서, $$f(i) - f(i-1)$$를 들고 있는 multiset이나 priority queue가 있다면 가장 작은 원소를 보면서 0보다 작다면 제거해주는 식으로 구현 할 수 있다.
+3번의 경우, $f(i)$가 convex이면 $F(i)$는 $f(x)-f(x-1) < 0$이 성립하는 가장 큰 $x$를 $x_0$이라고 하면 $x \le x_0$인 모든 $x$에 대해 $F(x) = f(x_0)$이고, $x \ge x_0$인 모든 $x$에 대해 $F(x) = f(x)$가 된다. 따라서, $f(i) - f(i-1)$를 들고 있는 multiset이나 priority queue가 있다면 가장 작은 원소를 보면서 0보다 작다면 제거해주는 식으로 구현 할 수 있다.
 
 4번의 경우, 얼마만큼 평행이동이 되었다는 offset을 그래프에 표시해주면 된다.
 
@@ -176,7 +176,7 @@ int main() {
 
 이를 위해서는 splay tree 등의 BBST가 필요하다. splay tree에서는 lazy propagation을 쉽게 할 수 있고, 이에 따라 1, 2, 3, 4번의 쿼리를 모두 처리할 수 있다.
 
-다음은 이 문제를 $$O(N log^2 N)$$ 시간에 해결하는 코드이다. ($$X_i$$의 합과 $$Y_i$$의 합이 1000000 이하인데, 시간복잡도의 $$N$$은 정점 개수 뿐만이 아닌 이 수치도 포함된 값이다)
+다음은 이 문제를 $O(N log^2 N)$ 시간에 해결하는 코드이다. ($X_i$의 합과 $Y_i$의 합이 1000000 이하인데, 시간복잡도의 $N$은 정점 개수 뿐만이 아닌 이 수치도 포함된 값이다)
 
 
 

@@ -23,18 +23,18 @@ Surface code는 물리적 큐빗(양자)을 프로그램으로 제어 가능한 
 
 기저 상태이자 $\hat{Z}$축인
 
-$$\left\vert{g}\right> = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$$
+$\left\vert{g}\right> = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$
 
 가 있으며, 들뜬 상태인
 
-$$\left\vert{e}\right> = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$$
+$\left\vert{e}\right> = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$
 
 가 다른 축을 이룹니다. $\hat{Z}$ 연산자는 다음과 같이
 
 $$\hat{Z} = \hat{\sigma_z} = \begin{bmatrix}
 1 & 0 \\
 0 & -1
-\end{bmatrix}$$
+\end{bmatrix}$
 
 정의되며 고윳값은 $+1$, $-1$을 가지고 고유벡터 $\left\vert{g}\right>$, $\left\vert{e}\right>$를 가집니다.
 
@@ -43,14 +43,14 @@ $\hat{X}$ 연산자는 다음과 같이
 $$\hat{X} = \hat{\sigma_x} = \begin{bmatrix}
 0 & 1 \\
 1 & 0
-\end{bmatrix}$$
+\end{bmatrix}$
 
 정의되며 고윳값 $+1$ , $-1$ 및 고유벡터
 
 $$\begin{align*}
 \left\vert{+}\right> &= \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ 1 \end{bmatrix} = \frac{1}{\sqrt{2}}(\left\vert{g}\right> + \left\vert{e}\right>) \\
 \left\vert{-}\right> &= \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ -1 \end{bmatrix} = \frac{1}{\sqrt{2}}(\left\vert{g}\right> - \left\vert{e}\right>)
-\end{align*}$$
+\end{align*}$
 
 를 가집니다.
 
@@ -59,13 +59,13 @@ $\hat{Y}$ 연산자는 다음과 같이
 $$\hat{Y} = -i\hat{\sigma_y} = \hat{Z}\hat{X} = \begin{bmatrix}
 0 & 1 \\
 -1 & 0
-\end{bmatrix}$$
+\end{bmatrix}$
 
 로 정의되며, 허수가 들어가는 $\hat{\sigma}_y$랑은 다릅니다.
 
 $\hat{X}$, $\hat{Y}$, $\hat{Z}$ 연산자는 다음을 만족합니다.
 
-$$\begin{align*}\hat{X}\,^2 &= -\hat{Y}\,^2 = \hat{Z}\,^2 = I \\            \hat{X}\hat{Z} &= -\hat{Z}\hat{X} \\            [\hat{X},\hat{Y}] &= \hat{X}\hat{Y} - \hat{Y}\hat{X} = -2\hat{Z}\end{align*}$$
+$\begin{align*}\hat{X}\,^2 &= -\hat{Y}\,^2 = \hat{Z}\,^2 = I \\            \hat{X}\hat{Z} &= -\hat{Z}\hat{X} \\            [\hat{X},\hat{Y}] &= \hat{X}\hat{Y} - \hat{Y}\hat{X} = -2\hat{Z}\end{align*}$
 
 양자 상태에서 **관측**이란, 어떤 양자 상태를 관측과 관련된 연산자의 고유벡터로 사영하는 과정입니다. 때문에 $M_Z$를 거친 큐빗은 $\pm \left\vert{g}\right>$나 $\pm \left\vert{e}\right>$이 됩니다.
 
@@ -77,7 +77,7 @@ bit error는 0이 1이 되거나, 1이 0이 되어 뒤집히는 현상입니다.
 
 $M_X$와 $M_Z$를 통해, 각 양자 상태를 확실히 관측해볼 수도 있습니다. 그러나 $\hat{X}\hat{Z} \neq \hat{Z}\hat{X}$이기 때문에 $M_X$와 $M_Z$는 독립적이지 않습니다. 한쪽으로 관측을 하면 양자 정보가 소실됩니다. 흥미롭게도, 큐빗을 2개 ($a$와 $b$) 준비한 다음 $\hat{X}_a\hat{X}_b$와 $\hat{Z}_a\hat{Z}_b$를 연산자로 삼으면 교환법칙이 성립합니다.
 
-$$\begin{align*}[\hat{X}_a\hat{X}_b, \hat{Z}_a\hat{Z}_b] &= (\hat{X}_a\hat{X}_b)(\hat{Z}_a\hat{Z}_b) - (\hat{Z}_a\hat{Z}_b)(\hat{X}_a\hat{X}_b) \\        &= \hat{X}_a\hat{Z}_a\hat{X}_b\hat{Z}_b - \hat{Z}_a\hat{X}_a\hat{Z}_b\hat{X}_b \\        &= (-\hat{Z}_a\hat{X}_a)(-\hat{Z}_b\hat{X}_b) - (\hat{Z}_a\hat{X}_a)(\hat{Z}_b\hat{X}_b) \\        &= \hat{0}\end{align*}$$
+$\begin{align*}[\hat{X}_a\hat{X}_b, \hat{Z}_a\hat{Z}_b] &= (\hat{X}_a\hat{X}_b)(\hat{Z}_a\hat{Z}_b) - (\hat{Z}_a\hat{Z}_b)(\hat{X}_a\hat{X}_b) \\        &= \hat{X}_a\hat{Z}_a\hat{X}_b\hat{Z}_b - \hat{Z}_a\hat{X}_a\hat{Z}_b\hat{X}_b \\        &= (-\hat{Z}_a\hat{X}_a)(-\hat{Z}_b\hat{X}_b) - (\hat{Z}_a\hat{X}_a)(\hat{Z}_b\hat{X}_b) \\        &= \hat{0}\end{align*}$
 
 교환법칙이 성립하기 때문에, 두 연산자를 기저로 삼을 수도 있습니다. 그리고 $\hat{X}_a\hat{X}_b$로도, $\hat{Z}_a\hat{Z}_b$로도 관측해도 변하지 않는 양자 상태들이 존재합니다.
 
@@ -102,7 +102,7 @@ measurement qubit은 두 종류로 나뉩니다. measure-Z라고 불리는 노�
 
 measurement qubit은 $\hat{X}$/$\hat{Z}$ stabilizer인 $\hat{X}_a\hat{X}_b\hat{X}_c\hat{X}_d$/$\hat{Z}_a\hat{Z}_b\hat{Z}_c\hat{Z}_d$를 data qubit에 적용할 수 있습니다. 이 연산도 아까 전 큐빗 2개일 때의 $\hat{X}_a\hat{X}_b$/$\hat{Z}_a\hat{Z}_b$처럼 서로 교환법칙이 성립할 뿐더러, data qubit의 상태가 $\left\vert \psi \right>$일 때 
 
-$$\hat{X}_a\hat{X}_b\hat{X}_c\hat{X}_d \left\vert \psi \right> = X_{abcd}\left\vert {\psi} \right>$$
+$\hat{X}_a\hat{X}_b\hat{X}_c\hat{X}_d \left\vert \psi \right> = X_{abcd}\left\vert {\psi} \right>$
 
 가 성립합니다. $\hat{Z}$ stabilizer도 마찬가지입니다.
 

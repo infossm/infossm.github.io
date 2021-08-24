@@ -114,7 +114,7 @@ index 26a0b6e97..35b2e466f 100644
    <amp-mathml
      layout="container"
 -    data-formula="\[ \cos(θ+φ)=\cos(θ)\cos(φ)−\sin(θ)\sin(φ) \]">
-+    data-formula="$$ \cos(θ+φ)=\cos(θ)\cos(φ)−\sin(θ)\sin(φ) $$">
++    data-formula="$ \cos(θ+φ)=\cos(θ)\cos(φ)−\sin(θ)\sin(φ) $">
    </amp-mathml>
 -  <h2>Inline formula.</h2>
 -  This is an example of a formula placed  inline in the middle of a block of text. <amp-mathml layout="container" inline data-formula="\[ \cos(θ+φ) \]"></amp-mathml> This shows how the formula will fit inside a block of text and can be styled with CSS.
@@ -167,7 +167,7 @@ index 36012b992..3c8a73706 100644
  
  ```html
 -<amp-mathml layout="container" data-formula="\[ \cos(θ+φ)=\cos(θ)\cos(φ)−\sin(θ)\sin(φ) \]">
-+<amp-mathml layout="container" data-formula="$$ \cos(θ+φ)=\cos(θ)\cos(φ)−\sin(θ)\sin(φ) $$">
++<amp-mathml layout="container" data-formula="$ \cos(θ+φ)=\cos(θ)\cos(φ)−\sin(θ)\sin(φ) $">
  </amp-mathml>
  ```　
  #### Example: Inline formula

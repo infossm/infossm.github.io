@@ -32,7 +32,7 @@ Cryptovirology라니, 요즘처럼 코로나가 극성인 시대에 적합한 �
 
 이들이 쓴 논문중에 `The prevalence of kleptographic attacks on discrete-log based cryptosystems`([링크](https://link.springer.com/chapter/10.1007/BFb0052241))을 주목해봅시다.
 
-해당 논문에서는 black-box cryptosystem $$C$$에 공격자만이 알 수 있는 백도어가 추가되었지만 공격자를 제외한 다른 모든 사용자는 출력값을 보고 백도어의 존재 여부를 알 수 없는 수정을 가한 cryptosystem $$C'$$을 만들어내는 방법을 서술하고 있습니다. 2.1장의 Discrete Log Kleptogram에서는 Diffie Hellman에서 쓰일 것 같은, $$g^c mod p$$를 랜덤하게 만들어내는 것 처럼 보이는 backdoored pseudorandom function을 소개하고 있습니다. 사용자나 기타 다른 사람은 이 함수를 보고도 이상한 점을 눈치챌 수 없었지만 공격자는 매번 지수 $$c$$를 알아낼 수 있고 이 black box를 누군가 Diffie Hellman 키 교환에서 사용한다면 공격자는 공유된 비밀 키를 알아내어 둘 사이의 통신을 마음껏 들여다볼 수 있을 것입니다.
+해당 논문에서는 black-box cryptosystem $C$에 공격자만이 알 수 있는 백도어가 추가되었지만 공격자를 제외한 다른 모든 사용자는 출력값을 보고 백도어의 존재 여부를 알 수 없는 수정을 가한 cryptosystem $C'$을 만들어내는 방법을 서술하고 있습니다. 2.1장의 Discrete Log Kleptogram에서는 Diffie Hellman에서 쓰일 것 같은, $g^c mod p$를 랜덤하게 만들어내는 것 처럼 보이는 backdoored pseudorandom function을 소개하고 있습니다. 사용자나 기타 다른 사람은 이 함수를 보고도 이상한 점을 눈치챌 수 없었지만 공격자는 매번 지수 $c$를 알아낼 수 있고 이 black box를 누군가 Diffie Hellman 키 교환에서 사용한다면 공격자는 공유된 비밀 키를 알아내어 둘 사이의 통신을 마음껏 들여다볼 수 있을 것입니다.
 
 그리고 NSA는 이것과 유사한 방식을 Random Generator에 넣을 생각을 합니다.
 
@@ -44,30 +44,30 @@ CSPRNG는 `좋은 성질`을 만족하는 유사 난수(PRNG, Pseudorandom Numbe
 
 `CSPRNG로 만들어낸 수열과 실제 uniformly random하게 만들어낸 수열이 제시되었을 때 이들을 구분해낼 확률이 임의의 polynomial p(x)보다 작다.`
 
-이러한 관점에서 단순히 어떤 polynomial function $$f$$에 대해 $$x_i = f(x_{i-1})$$로 정의되는 PRNG나 seed의 state가 굉장히 적은 C언어에서의 random 함수는 CSPRNG가 아닙니다.
+이러한 관점에서 단순히 어떤 polynomial function $f$에 대해 $x_i = f(x_{i-1})$로 정의되는 PRNG나 seed의 state가 굉장히 적은 C언어에서의 random 함수는 CSPRNG가 아닙니다.
 
 이렇게 난수를 만들어내는 일은 암호학적 관점에서 굉장한 중요한 일이고 실제 컴퓨터가 진정한 의미의 난수를 만들 수는 없기에 난수가 필요할 때에는 난수 대신 유사 난수를 사용합니다. 윈도우나 리눅스와 같은 운영체제에서는 별도로 CSPRNG를 제공하는 API를 제공하고, NIST(National Institute of Standards and Technology, 미국 국립표준기술연구소)와 같은 단체에서는 CSPRNG를 만드는 방법을 표준으로 제정해서 프로그램 제작자들이 표준대로 난수를 생성하게끔 합니다.
 
 # Dual_EC_DRBG
 
-NIST가 2006년에 발표한 NIST SP 800-90A 표준을 보면 CSPRNG로 4가지를 제시하고 있습니다. 처음 3개는 Hash_DRBG, HMAC_DRBG, CTR_DBRG입니다. 그리고 마지막으로 제시된 CSPRNG는 `Dual_EC_DPBG`입니다. 이 Dual_EC_DPBG는 Eliptic Curve의 연산을 통해 난수를 생성하는 방법입니다. Eliptic Curve의 연산이란 Curve 위에 존재하는 점들 사이에서의 덧셈과 뺄셈을 의미하고 마치 $$Z_n$$에서 generator $$g$$와 $$y$$가 주어질 때 $$g^x = y$$를 만족하는 $$x$$를 찾는 것이 어려운 것과 같이 generator $$G$$와 점 $$P$$가 $$P = xG$$를 만족하는 $$x$$를 찾는 것이 어렵습니다.
+NIST가 2006년에 발표한 NIST SP 800-90A 표준을 보면 CSPRNG로 4가지를 제시하고 있습니다. 처음 3개는 Hash_DRBG, HMAC_DRBG, CTR_DBRG입니다. 그리고 마지막으로 제시된 CSPRNG는 `Dual_EC_DPBG`입니다. 이 Dual_EC_DPBG는 Eliptic Curve의 연산을 통해 난수를 생성하는 방법입니다. Eliptic Curve의 연산이란 Curve 위에 존재하는 점들 사이에서의 덧셈과 뺄셈을 의미하고 마치 $Z_n$에서 generator $g$와 $y$가 주어질 때 $g^x = y$를 만족하는 $x$를 찾는 것이 어려운 것과 같이 generator $G$와 점 $P$가 $P = xG$를 만족하는 $x$를 찾는 것이 어렵습니다.
 
 Dual_EC_DPBG는 아래와 같은 절차를 거칩니다.
 
-1. 곡선과 점 $$P, Q$$가 주어집니다. 곡선은 256비트 크기의 곡선입니다.
-2. 첫 번째 시드 $$s_0$$을 랜덤으로 정합니다.
-3. 이후 $$s_i = s_{i-1} \cdot P$$로 정의됩니다.
-4. 계산된 $$s_i$$에 대해 $$s_1 \cdot Q$$부터 차례로 MSB 16비트를 잘라낸 값들을 난수로 사용합니다.
+1. 곡선과 점 $P, Q$가 주어집니다. 곡선은 256비트 크기의 곡선입니다.
+2. 첫 번째 시드 $s_0$을 랜덤으로 정합니다.
+3. 이후 $s_i = s_{i-1} \cdot P$로 정의됩니다.
+4. 계산된 $s_i$에 대해 $s_1 \cdot Q$부터 차례로 MSB 16비트를 잘라낸 값들을 난수로 사용합니다.
 
-이 난수 알고리즘은 상당히 의문스러운 점이 많았습니다. 첫 번째로 $$P$$는 곡선의 generator였지만 $$Q$$는 정체를 알 수 없는 값인데 그 값이 매번 랜덤하게 정하는 대신 표준에 적힌 상수로 고정되어 있었기 때문입니다. 암호에서 상수가 필요할 땐 불필요한 의심을 덜기 위해 `0123456789`, `1414...`($$\sqrt{2})$$, `2718...`($$e$$), `3.1415926...`($$\phi$$)과 같이 출처가 분명한 것을 사용하는 것이 일반적입니다. 이러한 관례적인 수를 [Nothing-up-my-sleeve number](https://en.wikipedia.org/wiki/Nothing-up-my-sleeve_number)라고 부릅니다. 반대로 말해 상수를 이런 수가 아니라 다른 값을 쓴다면 그 부분이 백도어가 아닌가 하는 의심을 받을 수 있습니다. 일례로 DES의 경우 추후 설계 원리에서 차분 공격을 막기 위한 설계였음이 밝혀지기도 했지만 S-box가 Nothing-up-my-sleeve number가 아니어서 의심을 사기도 했습니다. 아무튼 $$Q$$는 쓰임새가 중요한 난수인데 선정 이유에 대한 단서가 없다는 점이 문제였습니다.
+이 난수 알고리즘은 상당히 의문스러운 점이 많았습니다. 첫 번째로 $P$는 곡선의 generator였지만 $Q$는 정체를 알 수 없는 값인데 그 값이 매번 랜덤하게 정하는 대신 표준에 적힌 상수로 고정되어 있었기 때문입니다. 암호에서 상수가 필요할 땐 불필요한 의심을 덜기 위해 `0123456789`, `1414...`($\sqrt{2})$, `2718...`($e$), `3.1415926...`($\phi$)과 같이 출처가 분명한 것을 사용하는 것이 일반적입니다. 이러한 관례적인 수를 [Nothing-up-my-sleeve number](https://en.wikipedia.org/wiki/Nothing-up-my-sleeve_number)라고 부릅니다. 반대로 말해 상수를 이런 수가 아니라 다른 값을 쓴다면 그 부분이 백도어가 아닌가 하는 의심을 받을 수 있습니다. 일례로 DES의 경우 추후 설계 원리에서 차분 공격을 막기 위한 설계였음이 밝혀지기도 했지만 S-box가 Nothing-up-my-sleeve number가 아니어서 의심을 사기도 했습니다. 아무튼 $Q$는 쓰임새가 중요한 난수인데 선정 이유에 대한 단서가 없다는 점이 문제였습니다.
 
-두 번째로 $$r_i$$를 얻어내기 위해 MSB 16비트만 잘라내는 과정 또한 의심스러웠습니다. 잘라내는 비트가 충분하지 않아 $$r_i$$가 주어졌을 때 $$s_i \cdot Q$$의 후보군을 $$2^{16}$$개로 추측해낼 수 있었습니다. 
+두 번째로 $r_i$를 얻어내기 위해 MSB 16비트만 잘라내는 과정 또한 의심스러웠습니다. 잘라내는 비트가 충분하지 않아 $r_i$가 주어졌을 때 $s_i \cdot Q$의 후보군을 $2^{16}$개로 추측해낼 수 있었습니다. 
 
 세 번째로 원래 공개키 기반의 암호 시스템이 비밀키 기반의 암호 시스템보다 월등히 느린데 다른 CSPRNG와 다르게 Dual_EC_DRPG는 ECC(Eliptic Curve Cryptography) 기반이기 때문에 동작 속도가 많게는 수 천배 가까이 차이났습니다.
 
-이렇듯 표준으로 등록될 때 부터 의심스러운 점이 많았던 Dual_EC_DRPG는 2007년 Microsoft의 Dan Shumow, Niels Ferguson이 백도어를 찾아내면서 그 쓰임새를 다했습니다. 백도어는 허무할정도로 간단했는데 $$Q = dP$$인 $$d$$를 알고 있는 공격자는 너무나 쉽게 난수로부터 시드를 복원해낼 수 있어 앞으로 나올 모든 난수의 값을 알 수 있었습니다.
+이렇듯 표준으로 등록될 때 부터 의심스러운 점이 많았던 Dual_EC_DRPG는 2007년 Microsoft의 Dan Shumow, Niels Ferguson이 백도어를 찾아내면서 그 쓰임새를 다했습니다. 백도어는 허무할정도로 간단했는데 $Q = dP$인 $d$를 알고 있는 공격자는 너무나 쉽게 난수로부터 시드를 복원해낼 수 있어 앞으로 나올 모든 난수의 값을 알 수 있었습니다.
 
-구체적으로 공격법을 설명하자면 $$R = (r_1, y_{r_1}) = s_1Q$$라고 할 때 공격자는 MSB 16비트를 전수조사함으로서 우선 $$R$$을 복원할 수 있습니다. 이후 $$Q = dP$$인 $$d$$를 알고 있으면 $$s_1$$을 모르더라도 $$dR = s_1P = s_2$$이기 때문에 앞으로의 난수 생성에 필요한 seed를 계산해낼 수 있습니다.
+구체적으로 공격법을 설명하자면 $R = (r_1, y_{r_1}) = s_1Q$라고 할 때 공격자는 MSB 16비트를 전수조사함으로서 우선 $R$을 복원할 수 있습니다. 이후 $Q = dP$인 $d$를 알고 있으면 $s_1$을 모르더라도 $dR = s_1P = s_2$이기 때문에 앞으로의 난수 생성에 필요한 seed를 계산해낼 수 있습니다.
 
 # Bullrun
 

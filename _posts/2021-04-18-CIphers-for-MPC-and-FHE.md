@@ -38,7 +38,7 @@ MPC에서는 1번과 같이 AND 연산의 개수가 적을수록 성능이 좋�
 
 ![](/assets/images/Ciphers-for-MPC-and-FHE/1.png)
 
-$$ \text{LowMCRound}(i) = \\ \text{KeyAddition}(i) \circ \text{ConstantAddition}(i) \circ \text{LinearLayer}(i) \circ \text{SboxLayer}$$
+$ \text{LowMCRound}(i) = \\ \text{KeyAddition}(i) \circ \text{ConstantAddition}(i) \circ \text{LinearLayer}(i) \circ \text{SboxLayer}$
 
 LowMC는 AES와 같이 SPN(Substitution-Permutation Network) 구조입니다. 블록의 크기는 $n$, 키의 크기는 $k$, S-box의 개수는 $m$, data complexity는 $d$이고 이 값들은 독립적으로 선택됩니다.
 

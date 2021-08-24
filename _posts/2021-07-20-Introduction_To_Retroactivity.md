@@ -88,7 +88,7 @@ Retroactive data structure의 runtime을 표현할 때, 다음 변수들을 사�
 
 이제 다음 $m=2n+1$개의 연산들을 생각해봅시다.
 
-$$[\mathrm{addY}(a _ n) , \mathrm{mulXY}() , \mathrm{addY}(a _ {n-1}) , \mathrm{mulXY}() , \cdots , \mathrm{mulXY}() , \mathrm{addY}(a _ 0)]$$
+$[\mathrm{addY}(a _ n) , \mathrm{mulXY}() , \mathrm{addY}(a _ {n-1}) , \mathrm{mulXY}() , \cdots , \mathrm{mulXY}() , \mathrm{addY}(a _ 0)]$
 
 이후 연산열의 제일 첫부분에 $\mathrm{addX}(x)$를 retroactive하게 삽입하면, $Y$에는 최종적으로 $ a _ 0 + a _ 1 x + \cdots + a _ n x ^ n $이 저장됩니다. Degree $d$인 polynomial의 evaluation에는 최소 $O(d)$의 시간이 필요하기에, 결국 $\mathrm{Insert}(m-r, \mathrm{addX(x)})$ 이후 $\mathrm{PrintY}()$를 호출하는데에 적어도 $O(r)$시간이 필요합니다.
 

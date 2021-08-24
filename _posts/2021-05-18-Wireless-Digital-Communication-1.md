@@ -71,10 +71,10 @@ basis function이 1개 있을 때 demodulation은 다음과 같은 과정을 거
 
 $r(t) = s_m \psi(t)$일 때,
 
-$$\int_{0}^{T_b}{r(t)\psi(t)dt}$$
-$$= \int_{0}^{T_b}{s_m\psi^{2}(t)dt}$$
-$$= s_m\int_{0}^{T_b}{\psi^{2}(t)dt}$$
-$$= s_m$$
+$\int_{0}^{T_b}{r(t)\psi(t)dt}$
+$= \int_{0}^{T_b}{s_m\psi^{2}(t)dt}$
+$= s_m\int_{0}^{T_b}{\psi^{2}(t)dt}$
+$= s_m$
 
 위 식에서 $\psi(t)$가 normalized 되었으므로 $\int_{0}^{T_b}{\psi^{2}(t)dt} = 1$이라는 사실을 이용했습니다. 즉, 수신된 신호에 basis function을 곱하여 신호 구간에 대해 적분하면 송신단에서 전송한 신호가 무엇인지 알 수 있습니다.
 
@@ -92,8 +92,8 @@ PPM 방식은 이름과 위 그림에서 알 수 있듯이 pulse의 위치로 �
 
 basis function을 위 그림처럼 잡아보겠습니다. 그렇다면 아래의 식과 같은 관계가 성립합니다.
 
-- $$s_1(t) = s_{11}\psi_1(t) + s_{12}\psi_2(t) \rightarrow s_1 = [s_{11}\quad s_{12}] = [\sqrt{\varepsilon_b}\quad 0]$$
-- $$s_2(t) = s_{21}\psi_1(t) + s_{22}\psi_2(t) \rightarrow s_1 = [s_{11}\quad s_{12}] = [0\quad \sqrt{\varepsilon_b}]$$
+- $s_1(t) = s_{11}\psi_1(t) + s_{12}\psi_2(t) \rightarrow s_1 = [s_{11}\quad s_{12}] = [\sqrt{\varepsilon_b}\quad 0]$
+- $s_2(t) = s_{21}\psi_1(t) + s_{22}\psi_2(t) \rightarrow s_1 = [s_{11}\quad s_{12}] = [0\quad \sqrt{\varepsilon_b}]$
 
 <img src="/assets/images/cheetose-post/3/PPM3.png" alt="PPM constellation" style="zoom:60%;" />
 
@@ -108,21 +108,21 @@ BFSK는 두 신호가 아래와 같은 modulation 방식입니다.
 
 여기서 $f_1 = \frac{k_1}{2T_b}$, $f_2 = \frac{k_2}{2T_b}$($k_1$과 $k_2$는 서로 다른 정수)꼴이어야 두 신호가 orthogonal이 됩니다. 증명은 아래와 같습니다.
 
-$$\int_{0}^{T_b}{s_1(t)s_2(t)dt}$$
-$$= \frac{2\varepsilon_b}{T_b}\int_{0}^{T_b}{cos(2\pi f_1t)cos(2\pi f_2t)dt}$$
-$$= \frac{\varepsilon_b}{T_b}\int_{0}^{T_b}{cos(2\pi (f_1+f_2)t) + cos(2\pi (f_1-f_2)t)dt}$$
+$\int_{0}^{T_b}{s_1(t)s_2(t)dt}$
+$= \frac{2\varepsilon_b}{T_b}\int_{0}^{T_b}{cos(2\pi f_1t)cos(2\pi f_2t)dt}$
+$= \frac{\varepsilon_b}{T_b}\int_{0}^{T_b}{cos(2\pi (f_1+f_2)t) + cos(2\pi (f_1-f_2)t)dt}$
 
 보통 통신에서 사용하는 주파수 대역이 GHz단위이기 때문에 $\int_{0}^{T_b}{cos(2\pi (f_1+f_2)t)dt}$는 0이라고 가정할 수 있습니다. 계속 이어서 쓰면
 
-$$= \frac{\varepsilon_b}{T_b}\int_{0}^{T_b}{cos(2\pi (f_1-f_2)t)dt}$$
-$$= \frac{\varepsilon_b}{T_b}\frac{1}{2\pi(f_1-f_2)}[sin(2\pi(f_1-f_2)t)]_{t=0}^{T_b}$$
-$$= \frac{\varepsilon_b}{T_b}\frac{1}{2\pi(f_1-f_2)}sin(2\pi(f_1-f_2)T_b)$$
-$$= \frac{\varepsilon_b}{T_b}\frac{1}{2\pi\Delta f}sin(2\pi\Delta f T_b), \Delta f = f_1-f_2$$
+$= \frac{\varepsilon_b}{T_b}\int_{0}^{T_b}{cos(2\pi (f_1-f_2)t)dt}$
+$= \frac{\varepsilon_b}{T_b}\frac{1}{2\pi(f_1-f_2)}[sin(2\pi(f_1-f_2)t)]_{t=0}^{T_b}$
+$= \frac{\varepsilon_b}{T_b}\frac{1}{2\pi(f_1-f_2)}sin(2\pi(f_1-f_2)T_b)$
+$= \frac{\varepsilon_b}{T_b}\frac{1}{2\pi\Delta f}sin(2\pi\Delta f T_b), \Delta f = f_1-f_2$
 $\therefore$ $\Delta f = \frac{k}{2T_b}, (k$는 0이 아닌 정수$)$ 꼴이면 위의 식이 0이 되므로 orthogonal하다는 사실을 확인할 수 있습니다. 참고로 $k=0$이면 둘은 완전히 동일한 신호가 되므로 그런 일은 없도록 해야합니다.
 
 이것도 PPM과 마찬가지로
-- $$s_1(t) = s_{11}\psi_1(t) + s_{12}\psi_2(t) \rightarrow s_1 = [s_{11}\quad s_{12}] = [\sqrt{\varepsilon_b}\quad 0]$$
-- $$s_2(t) = s_{21}\psi_1(t) + s_{22}\psi_2(t) \rightarrow s_1 = [s_{11}\quad s_{12}] = [0\quad \sqrt{\varepsilon_b}]$$
+- $s_1(t) = s_{11}\psi_1(t) + s_{12}\psi_2(t) \rightarrow s_1 = [s_{11}\quad s_{12}] = [\sqrt{\varepsilon_b}\quad 0]$
+- $s_2(t) = s_{21}\psi_1(t) + s_{22}\psi_2(t) \rightarrow s_1 = [s_{11}\quad s_{12}] = [0\quad \sqrt{\varepsilon_b}]$
 
 의 형태로 표현할 수 있고, 따라서 constellation 역시 같은 결과를 나타냅니다. 즉, PPM과 FSK역시 demodulation의 성능이 동일하다는 것을 알 수 있습니다.
 
@@ -130,9 +130,9 @@ $\therefore$ $\Delta f = \frac{k}{2T_b}, (k$는 0이 아닌 정수$)$ 꼴이면 
 
 binary orthogonal에서는 수신된 메시지가  $r(t) = s_{m1} \psi_1(t) + s_{m2} \psi_2(t)$입니다. 우리의 목적은 $s_{m1}$과 $s_{m2}$가 무엇인지 알아내는 것입니다. 이 과정은 binary antipodal 시스템에서와 매우 유사합니다. 우선 $s_{m1}$을 구하려면 다음과 같이 처리하면 됩니다.
 
-$$\int_{0}^{T_b}{r(t)\psi_1(t)dt}$$
-$$= \int_{0}^{T_b}{s_{m1}\psi_1^{2}(t)+s_{m2}\psi_1(t)\psi_2(t)dt}$$
-$$= s_{m1}$$
+$\int_{0}^{T_b}{r(t)\psi_1(t)dt}$
+$= \int_{0}^{T_b}{s_{m1}\psi_1^{2}(t)+s_{m2}\psi_1(t)\psi_2(t)dt}$
+$= s_{m1}$
 
 여기서 $\psi_1(t)$와 $\psi_2(t)$가 orthonormal하기 때문에 $\int_{0}^{T_b}{\psi_1^2(t)dt}=1$, $\int_{0}^{T_b}{\psi_1(t)\psi_2(t)dt}=0$이므로 위의 식이 성립합니다. 정리하자면 $s_{m1}$을 구하기 위해서는 수신 신호에 $\psi_1(t)$를 곱하고 신호 구간에 대해 적분을 해주면 됩니다. 마찬가지로 $s_{m2}$를 구하기 위해서는 수신 신호에 $\psi_2(t)$를 곱하고 신호 구간에 대해 적분을 해주면 됩니다.
 

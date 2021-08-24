@@ -24,8 +24,8 @@ tags: [graph-theory]
 ​
 ## Master Solution: Kirchoff’s law
 
-- **키르히호프 1법칙. (전하량 보존 법칙)** 한 점에서 들어오고 나가는 전류의 합은 $$0$$이다.
-- **키르히호프 2법칙. (폐회로의 법칙)** 임의의 닫힌 회로에 대해서 전압 변화의 합은 $$0$$이다.
+- **키르히호프 1법칙. (전하량 보존 법칙)** 한 점에서 들어오고 나가는 전류의 합은 $0$이다.
+- **키르히호프 2법칙. (폐회로의 법칙)** 임의의 닫힌 회로에 대해서 전압 변화의 합은 $0$이다.
 
 <img src="/assets/images/tamref/typora-user-images/image-20210417220815593.png" alt="kirchoff 1st law" style="zoom:33%;" /><img src="/assets/images/tamref/typora-user-images/k2nd.png" alt="kirchoff 2nd law" style="zoom:33%;" />
 

@@ -48,7 +48,7 @@ Random tree를 생성하여 expression을 만들고 그것을 기존의 CAS 프�
 FWD의 단점을 극복하기 위해 solution에 해당하는 random tree를 먼저 만들고 그것을 미분하여 input expression을 만드는 방법입니다. 미분은 [Sympy](https://www.sympy.org/en/index.html)와 같은 library에서 rule-base로 정확하게 수행할 수 있습니다.
 
 **Backward Generation By Itegration By Parts(IBP)**
-하지만 BWD에도 단점은 있습니다. $f(x)=x^3 sin(x)$와 같이 간단한 함수들이 input으로 등장하는 경우가 매우 적게 됩니다. 왜냐하면 $f$의 적분은 $F(x)=-x^3 \cos(x) + 3x^2 \sin(x) + 6x \cos(x) -6 \sin(x)$ 로 random tree를 만들었을 때 나올 확률이 매우 작습니다. 즉, FWD는 input이 output에 비해 짧은 경향이 있지만 BWD는 input이 output에 비해 긴 경향이 있습니다. 이것을 해결하기 위해 부분적분(Integration by parts)으로 새로운 데이터를 만들 수 있습니다. $F$와 $G$를 random하게 만들고 그것의 미분 $f$와 $g$를 구합니다. 그러고 나서 만약 $fG$의 적분이 이미 dataset에 존재하면 다음과 같이 $Fg$의 적분도 구할 수 있습니다.$$\int Fg = FG - \int fG$$
+하지만 BWD에도 단점은 있습니다. $f(x)=x^3 sin(x)$와 같이 간단한 함수들이 input으로 등장하는 경우가 매우 적게 됩니다. 왜냐하면 $f$의 적분은 $F(x)=-x^3 \cos(x) + 3x^2 \sin(x) + 6x \cos(x) -6 \sin(x)$ 로 random tree를 만들었을 때 나올 확률이 매우 작습니다. 즉, FWD는 input이 output에 비해 짧은 경향이 있지만 BWD는 input이 output에 비해 긴 경향이 있습니다. 이것을 해결하기 위해 부분적분(Integration by parts)으로 새로운 데이터를 만들 수 있습니다. $F$와 $G$를 random하게 만들고 그것의 미분 $f$와 $g$를 구합니다. 그러고 나서 만약 $fG$의 적분이 이미 dataset에 존재하면 다음과 같이 $Fg$의 적분도 구할 수 있습니다.$\int Fg = FG - \int fG$
 $Fg$가 dataset에 있는 경우에도 마찬가지이며, 둘다 존재하지 않는 경우에는 단순히 $(f, F)$와 $(g, G)$를 dataset에 넣게 됩니다.
 
 

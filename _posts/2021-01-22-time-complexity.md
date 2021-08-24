@@ -170,11 +170,11 @@ int main()
 따라서 이 코드의 시간 복잡도는,
 
 $$\mathcal{O}(n) + \mathcal{O}(m) \times (\mathcal{O}(1) + \mathcal{O}(m) + \mathcal{O}(n)) \\
-= \mathcal{O}(n) + \mathcal{O}(m) + \mathcal{O}(m^2) + \mathcal{O}(nm)$$
+= \mathcal{O}(n) + \mathcal{O}(m) + \mathcal{O}(m^2) + \mathcal{O}(nm)$
 
 으로 계산할 수 있으며, 점근 표기법에서는 최고 차항만을 고려해도 동일하므로, 보다 단축하여
 
-$$\mathcal{O}(m^2 + nm)$$
+$\mathcal{O}(m^2 + nm)$
 
 으로 쓸 수 있습니다.
 

@@ -16,21 +16,21 @@ tags: [data-structure]
 
 Segment Tree를 구현하는 방법으로는 Top-Down 방식과 Bottom-Up 방식이 있습니다. 이전 글에서는 Top-Down 방식만을 설명했으나 2D Segment Tree에서는 Bottom-Up 방식을 통해 메모리에서 이득을 보는 경우가 있어 이번 글에서는 Bottom-Up 방식을 설명하도록 하겠습니다.
 
-Bottom-Up 방식은 Top-Down 방식과 비슷하게 미리 각 노드가 특정 구간을 대표하는 이진 트리에서 연산이 이루어집니다. 이 이진트리는 리프가 $$n$$개이고 인덱스가 적절하게 붙어있어 정확히 $$2n$$의 공간이 필요합니다.
+Bottom-Up 방식은 Top-Down 방식과 비슷하게 미리 각 노드가 특정 구간을 대표하는 이진 트리에서 연산이 이루어집니다. 이 이진트리는 리프가 $n$개이고 인덱스가 적절하게 붙어있어 정확히 $2n$의 공간이 필요합니다.
 
-Top-Down 방식은 재귀적인 구조로 인해 함수 호출이 다수 발생하고 메모리가 최대 $$4n$$만큼 필요한 반면 Bottom-Up 방식은 반복문을 돌면서 동작하고 메모리가 정확히 $$2n$$만큼 필요하기 때문에 실행 속도와 메모리 모두 Bottom-Up 방식보다 Top-Down 방식이 우수합니다. 그러나 lazy propagation의 경우, Bottom-Up 방식에서도 처리가 가능하긴 하지만 Top-Down 방식이 더 직관적으로 이해가 쉬워 저는 lazy propagation이 필요하면 Top-Down으로, 그렇지 않으면 Bottom-Up으로 구현하는 것을 선호합니다.
+Top-Down 방식은 재귀적인 구조로 인해 함수 호출이 다수 발생하고 메모리가 최대 $4n$만큼 필요한 반면 Bottom-Up 방식은 반복문을 돌면서 동작하고 메모리가 정확히 $2n$만큼 필요하기 때문에 실행 속도와 메모리 모두 Bottom-Up 방식보다 Top-Down 방식이 우수합니다. 그러나 lazy propagation의 경우, Bottom-Up 방식에서도 처리가 가능하긴 하지만 Top-Down 방식이 더 직관적으로 이해가 쉬워 저는 lazy propagation이 필요하면 Top-Down으로, 그렇지 않으면 Bottom-Up으로 구현하는 것을 선호합니다.
 
 `5, 4, 3, 2, 1, 0` 이라는 배열로 Bottom-Up 방식의 Segment Tree를 구축하면 아래와 같습니다.
 
 ![Semgent Tree 구축](/assets/images/2D-segment-tree/pic1.png)
 
-index가 정해지는 것이 Top-Down 방식과 약간 차이가 있는데, 0-indexed 기준으로 $$k$$번째 원소는 $$n+k$$번 노드에 대응이 됩니다.
+index가 정해지는 것이 Top-Down 방식과 약간 차이가 있는데, 0-indexed 기준으로 $k$번째 원소는 $n+k$번 노드에 대응이 됩니다.
 
-Init의 경우에는 $$n$$번 노드부터 $$2n-1$$번 노드까지 0, 1, 2, .. 번째 배열의 원소 값을 다 넣어둔 후 $$n-1$$번 노드부터 $$1$$번 노드까지 자식 두 개의 합을 대입하도록 함으로서 구현할 수 있습니다.
+Init의 경우에는 $n$번 노드부터 $2n-1$번 노드까지 0, 1, 2, .. 번째 배열의 원소 값을 다 넣어둔 후 $n-1$번 노드부터 $1$번 노드까지 자식 두 개의 합을 대입하도록 함으로서 구현할 수 있습니다.
 
-Update의 경우에는 $$n+k$$번 노드에서 시작해 1번 노드에 도달할 때 까지 부모로 계속 올라가면서(=2를 나누면서) 만나는 모든 노드에 대해 값을 갱신해주면 되기에 굉장히 간단합니다.
+Update의 경우에는 $n+k$번 노드에서 시작해 1번 노드에 도달할 때 까지 부모로 계속 올라가면서(=2를 나누면서) 만나는 모든 노드에 대해 값을 갱신해주면 되기에 굉장히 간단합니다.
 
-Query의 경우에는 $$l$$번째부터 $$r$$번째까지의 원소의 합을 구한다고 할 때 `lidx`를 $$n+l$$번 노드에, `ridx`를 $$n+r+1$$번 노드에 둔 후 `lidx < ridx`일 때 까지 부모로 올라가는 방식으로 구현합니다.
+Query의 경우에는 $l$번째부터 $r$번째까지의 원소의 합을 구한다고 할 때 `lidx`를 $n+l$번 노드에, `ridx`를 $n+r+1$번 노드에 둔 후 `lidx < ridx`일 때 까지 부모로 올라가는 방식으로 구현합니다.
 
 이 때, `lidx`가 오른쪽 자식 노드일 경우 해당 노드의 값을 더하고 `lidx`의 값을 1 증가시켜주고, `ridx`가 오른쪽 자식 노드일 경우 `ridx`의 값을 1 뺀 후 해당 노드의 값을 더하면 됩니다. 이후 부모로 올라갑니다. 말로 풀어쓰면 조금 헷갈릴 수 있는데 아래의 그림을 참고해주세요. `lidx` 에서부터 `ridx-1` 까지의 값이 더해져야 한다는 점에 집중하면(즉 `ridx`의 경우 exclusive한 범위라는 점에 집중하면) 이해에 도움이 될 것입니다.
 
@@ -65,13 +65,13 @@ public:
 
 # 2D Segment Tree란?
 
-2D Segment Tree는 이차원 배열에서 특정 노드의 Update와 구간의 Query를 $$lg^2n$$에 처리할 수 있는 자료구조입니다. 각 노드가 Segment Tree인 Segment Tree를 만든다는 충격적인 아이디어를 통해 구현이 가능합니다. 4*4 배열에서의 예시를 그림으로 들면 아래와 같습니다.
+2D Segment Tree는 이차원 배열에서 특정 노드의 Update와 구간의 Query를 $lg^2n$에 처리할 수 있는 자료구조입니다. 각 노드가 Segment Tree인 Segment Tree를 만든다는 충격적인 아이디어를 통해 구현이 가능합니다. 4*4 배열에서의 예시를 그림으로 들면 아래와 같습니다.
 
 ![2D Segment Tree 예시](/assets/images/2D-segment-tree/pic3.png)
 
 굉장히 난해한 모양이지만 곰곰히 이해를 하려고 해본다면 크게 어렵지는 않습니다. 네모난 모양의 노드는 각 row 자체를 원소로 생각한 노드이고, 네모난 모양의 노드가 담고 있는 Segment Tree는 자신이 담당하는 row들의 구간 내에서 일반적인 1차원 Segment Tree를 만든 것입니다.
 
-N*M 크기의 배열에서 Update, Query 모두 최대 $$lgNlgM$$개의 원소에 대한 처리가 필요합니다. 아래의 예시를 참고해보세요.
+N*M 크기의 배열에서 Update, Query 모두 최대 $lgNlgM$개의 원소에 대한 처리가 필요합니다. 아래의 예시를 참고해보세요.
 
 ![Upd(1, 2)일 때 변경되는 노드](/assets/images/2D-segment-tree/pic4.png)
 
@@ -141,9 +141,9 @@ public:
 
 # 메모리 절약 방법
 
-현재의 2D Segment Tree 구현은 N*M 배열에서 $$O(NM)$$의 공간이 필요합니다. 이것만 해도 그럭저럭 어렵지만, 실제 2D Segment Tree 문제들은 더 흉악한 경우가 많습니다.
+현재의 2D Segment Tree 구현은 N*M 배열에서 $O(NM)$의 공간이 필요합니다. 이것만 해도 그럭저럭 어렵지만, 실제 2D Segment Tree 문제들은 더 흉악한 경우가 많습니다.
 
-대표적으로 IOI 13 GAME([BOJ 링크](icpc.me/8876)), SEERC 2018 Points and Rectangles([BOJ 링크](icpc.me/16336))의 경우 $$N, M$$이 최대 $$10^9$$입니다.
+대표적으로 IOI 13 GAME([BOJ 링크](icpc.me/8876)), SEERC 2018 Points and Rectangles([BOJ 링크](icpc.me/16336))의 경우 $N, M$이 최대 $10^9$입니다.
 
 물론 Offline 쿼리라고 한다면 좌표압축을 통해 $N, M$을 최대 쿼리의 갯수 만큼 줄일 수 있긴 하지만 그렇다고 해도 쿼리가 많게는 25만개씩 되는 상황에서는 여전히 $O(NM)$이 불가능합니다.
 
@@ -161,9 +161,9 @@ IOI 13 GAME 문제에 대한 [정답 코드](http://boj.kr/b375b4a5b4b24555a73ad
 
 ## Bottom-Up 방식
 
-위에서 나왔던 Bottom-Up 방식을 잘 생각해보면 바깥 Segment Tree에 노드가 $$2n$$개 필요하고, 각 노드는 $$n$$개의 원소를 Segment Tree로 만든 구조, 즉 $$2n$$개의 int를 가지고 있는 Segment Tree이기 때문에 $$O(n^2)$$의 공간이 필요했습니다.
+위에서 나왔던 Bottom-Up 방식을 잘 생각해보면 바깥 Segment Tree에 노드가 $2n$개 필요하고, 각 노드는 $n$개의 원소를 Segment Tree로 만든 구조, 즉 $2n$개의 int를 가지고 있는 Segment Tree이기 때문에 $O(n^2)$의 공간이 필요했습니다.
 
-Bottom-Up에서 공간을 절약하는 핵심 아이디어는 바깥 Segment Tree는 $$2n$$의 노드가 필요하지만 각 노드가 $$n$$개의 원소를 다 가지고 있을 필요가 없다는 점입니다.
+Bottom-Up에서 공간을 절약하는 핵심 아이디어는 바깥 Segment Tree는 $2n$의 노드가 필요하지만 각 노드가 $n$개의 원소를 다 가지고 있을 필요가 없다는 점입니다.
 
 다시 위의 그림을 보며 `Upd(1,2)와 Query(0,0,2,2)`가 호출되는 상황을 생각해봅시다.
 
