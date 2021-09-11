@@ -87,7 +87,7 @@ int n, v[1010][1010], nxt[1010];
 
 void dfs(int cur){
     for(int &x=nxt[cur];x<=n;x++){ // 봤었던 곳까지는 기록해 놓아야 시간복잡도가 보장됩니다.
-        while(v[cur][x]){
+        while(x<=n && v[cur][x]){
             v[x][cur]--, v[cur][x]--;
             dfs(x);
         }
