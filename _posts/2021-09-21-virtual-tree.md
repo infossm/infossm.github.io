@@ -57,7 +57,7 @@ $S_i \cup T_i$에 속하는 서로 다른 두 정점 $a,b$ 사이의 경로는 $
 
 4. 새로운 트리에서 정답을 구합니다.
 
-Euler Tour를 구하고 LCA의 계산을 위한 스파스 테이블을 전처리하는 데에 $O(N \log N)$, 새로운 트리를 구성하는 데 $O(\sum (\lvert S_i \rvert + \lvert T_i \rvert) \log (\lvert S_i \rvert + \lvert T_i \rvert))$의 시간이 소요되므로, 시간 제한 내에 전체 문제를 해결할 수 있습니다.
+Euler Tour를 구하고 LCA의 계산을 위한 스파스 테이블을 전처리하는 데에 $O(N \log N)$, 새로운 트리를 구성하는 데 $O(\sum (\lvert S_i \rvert + \lvert T_i \rvert) \log N)$의 시간이 소요되므로, 시간 제한 내에 전체 문제를 해결할 수 있습니다.
 
 
 ### 코드
