@@ -38,9 +38,13 @@ tags: [Data Structure]
 고정된 finite set $U = \lbrace a _ 1, \cdots , a _ m \rbrace$가 주어졌을 때, PQ tree over $U$란, 각 leaf가 $U$의 원소로 label되어 있고, 각 internal (non-leaf) node가 P 또는 Q로 label되어 있는 ordered rooted tree를 의미합니다. 즉, 다음 operation들을 유한번 반복하여 얻어낼 수 있는 tree를 PQ tree라 합니다.
 
 1. 어떤 $a \in U$에 대해, $a$로 label된 leaf 하나로 이루어진 tree를 만듭니다.
+
 2. PQ tree $T _ 1, \cdots T _ k$가 주어질 때, P로 label된 node에 $T _ 1, \cdots , T _ k$의 root들을 child로 붙여서 tree를 만듭니다. 이러한 P node는 앞으로 다음 figure와 같이 원으로 나타내겠습니다.
+
    ![](/assets/images/Aeren_images/PQ_Tree_Part_1/fig1.png)
+
 3. PQ tree $T _ 1, \cdots T _ k$가 주어질 때, Q로 label된 node에 $T _ 1, \cdots , T _ k$의 root들을 child로 붙여서 tree를 만듭니다. 이러한 Q node는 앞으로 다음 figure와 같이 직사각형으로 나타내겠습니다.
+
    ![](/assets/images/Aeren_images/PQ_Tree_Part_1/fig2.png)
 
 PQ tree는 ordered rooted tree이므로 dfs order가 유일합니다. 이 dfs order에서 나타나는 leaf들의 label들의 sequence를 주어진 PQ tree $T$의 **frontier**라고 정의하고, $FRONTIER(T)$라 표기하겠습니다. 다음은 frontier가 $ABCDEFGHIJK$인 PQ tree의 예시입니다.
@@ -75,9 +79,10 @@ $CONSISTENT(T) = \lbrace FRONTIER(T'): T \equiv T' \rbrace$
 먼저 특별한 PQ tree 두개를 소개하겠습니다.
 
 1. **Universal tree**란 하나의 P node에 $U$의 모든 원소가 child로서 달려 있는 PQ tree입니다.
+
 2. **Null tree**란 node가 하나도 없는 PQ tree입니다. 사실 node가 없으면 tree의 조건조차 만족하지 않지만, 논의의 편의성을 위해 이경우 특별히 허용하도록 하겠습니다.
 
-/![](/assets/images/Aeren_images/PQ_Tree_Part_1/fig5.png)
+   ![](/assets/images/Aeren_images/PQ_Tree_Part_1/fig5.png)
 
 Universal tree의 consistent frontier set은 $U$의 모든 permutation들을 포함합니다. 예를 들어 constraint $C$가 empty set일 경우 universal tree가 우리가 원하는 결과가 됩니다.
 
@@ -116,14 +121,19 @@ Partial label은 현재 node가 Q node이며, 어떤 consistent frontier $F$가 
 현재 node $u$가 P node일 경우, 7가지 template이 존재합니다.
 
 1. (Template P0 and P1) 만약 모든 child가 empty이거나, 혹은 모든 child가 full이면, $u$에는 각각 empty와 full의 label이 매겨지고 다음 노드로 넘어갑니다.
+
    ![](/assets/images/Aeren_images/PQ_Tree_Part_1/fig7.png)
 
 P0와 P1에 matching되지 않았지만, 모든 child가 empty 혹은 full일 경우, $u$가 $ROOT(T,S)$인지의 여부에 따라서 두 경우로 나뉩니다.
 
 2. (Template P2) $u=ROOT(T,S)$인 경우, $u$의 모든 full child들을 묶어놓는 P node $v$가 $u$의 full child들과 교체됩니다. (단, 그러한 node가 한개라면, 아무일도 일어나지 않습니다.)
+
    ![](/assets/images/Aeren_images/PQ_Tree_Part_1/fig8.png)
+
 3. (Template P3) $u\ne ROOT(T,S)$일 경우, 모든 empty child를 묶어놓는 node $v$와 모든 full child를 묶어놓는 node $w$가 $u$의 두 child로 설정됩니다. (단, 각각의 label에 대해, 해당 child의 갯수가 1이면, 새로운 node는 추가되지 않습니다.) 이 때, $u$는 Q node로 바뀌며, partial로 label됩니다.
+
    ![](/assets/images/Aeren_images/PQ_Tree_Part_1/fig9.png)
+
    ![](/assets/images/Aeren_images/PQ_Tree_Part_1/fig10.png)
 
 이제 한 개 이상의 partial child를 갖고 있는 경우를 보겠습니다.
@@ -131,13 +141,17 @@ P0와 P1에 matching되지 않았지만, 모든 child가 empty 혹은 full일 �
 Partial child가 한 개인 경우, 마찬가지로 root인지에 따라 경우가 나뉩니다.
 
 4. (Template P4) $u=ROOT(T,S)$인 경우, $u$의 모든 full node들이 새로운 P node $v$로 옮겨 간 후, $v$가 $u$의 partial child의 full인 쪽 끝에 붙습니다. (단, full node가 한 개 이하이면, 그러한 $v$를 생성하지 않고 붙입니다.)
+
    ![](/assets/images/Aeren_images/PQ_Tree_Part_1/fig11.png)
+
 5. (Template P5) $u\ne ROOT(T,S)$인 경우, $u$의 partial child가 $u$로 대체된 후, 원래 $u$의 empty child를 묶어놓은 $v$와 full child를 묶어놓은 $w$가 각각 empty인 쪽 끝과 full인 쪽 끝에 붙습니다. (단, 각각 한 개 이하면, 그러한 node를 생성하지 않습니다.) 이 때, $u$는 Q node로 바뀌며, partial로 label됩니다.
+
    ![](/assets/images/Aeren_images/PQ_Tree_Part_1/fig12.png)
 
 마지막으로, partial child가 두 개인 경우, 현재 node는 반드시 root여야 하며, 다음과 같은 형태로 matching됩니다.
 
 6. (Template P6) 두개의 partial child들이 full child들을 묶는 새로운 node를 사이에 두고 full인 끝이 마주한 채로 합쳐집니다. (단, full node가 한 개 이하면, 그러한 node는 생성되지 않습니다.)
+   
    ![](/assets/images/Aeren_images/PQ_Tree_Part_1/fig13.png)
 
 그리고 위의 template들에 모두 matching되지 않는다면, PQ tree는 null tree로 바뀌며 알고리즘이 종료됩니다.
@@ -149,9 +163,13 @@ Partial child가 한 개인 경우, 마찬가지로 root인지에 따라 경우�
 현재 node $u$가 Q node일 경우, 4가지 template이 존재합니다.
 
 1. (Template Q0 and Q1) 만약 모든 child가 empty이거나, 혹은 모든 child가 full이면, $u$에는 각각 empty와 full의 label이 매겨지고 다음 노드로 넘어갑니다.
+
 2. (Template Q2) 만약 partial child가 한 개이고, 그 partial child에 의해 $u$의 child가 empty와 full child로 분할된다면, partial child $v$의 모든 child들을 $v$대신 삽입 한 후, $v$를 삭제합니다. 이 때, $u$는 partial로 label됩니다.
+
    ![](/assets/images/Aeren_images/PQ_Tree_Part_1/fig14.png)
+
 3. (Template Q3) 만약 partial child가 두 개이고, $u=ROOT(T,S)$이며, 그 partial child들에 의해 $u$의 child가 $L, M, R$ 세 부분으로 분할되고, $L$은 empty, $M$은 full, $R$은 empty node들로만 구성되어 있다면, Q2와 마찬가지로 partial child의 node들을 $u$에 삽입해 줍니다.
+
    ![](/assets/images/Aeren_images/PQ_Tree_Part_1/fig15.png)
 
 
