@@ -5,6 +5,10 @@ module Jekyll
       input.gsub! /\t/, '    '
       input.strip_control_and_extended_characters
     end
+    def mathmode(input)
+      input.gsub! '\\',''
+      input.gsub '$',''
+    end
   end
 end
 
