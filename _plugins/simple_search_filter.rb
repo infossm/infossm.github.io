@@ -7,7 +7,8 @@ module Jekyll
     end
     def mathmode(input)
       input.gsub! '\\',''
-      input.gsub '$',''
+      input.gsub! '$',''
+      input.gsub /[\u0000-\u001f\u007f]/,''
     end
   end
 end
