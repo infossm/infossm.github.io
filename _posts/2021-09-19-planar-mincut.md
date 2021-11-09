@@ -3,7 +3,7 @@ layout: post
 title: Minimum $s - t$ cut of a planar undirected graph in $O(n \log^2 n)$ time
 date: 2021-09-19 22:00
 author: koosaga
-tags: algorithms, graph theory, divide and conquer
+tags: algorithms graph-theory divide-and-conquer
 ---
 # Minimum $s - t$ cut of a planar undirected graph in $O(n \log^2 n)$ time
 
