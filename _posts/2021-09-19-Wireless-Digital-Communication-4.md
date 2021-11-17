@@ -38,14 +38,16 @@ $x_p(t) = \sum_{k=0}^{K-1} \sum_{n=1}^{N} x_{kn} \psi_n(t-kT) * h(t)$ 로 표현
 
 위 그림은 ISI 채널 모델을 도식화한 것입니다. 여기서 $\psi_p(t)$는 $p(t)$를 normalize한 함수, 즉 $\psi_p(t) = \frac{p(t)}{\vert p \vert}$입니다. 위 도식을 따라가며 $y(t)$을 구해보면 그 식은 아래와 같습니다.
 
-- $y(t) = \sum_k \vert p \vert x_k \psi_p(t-kT)* \psi_p^*(-t) + n_p(t) * \psi_p^*(-t)$
+$y(t) = \sum_k \vert p \vert x_k \psi_p(t-kT)* \psi_p^*(-t) + n_p(t) * \psi_p^*(-t)$
 
-여기서 $\psi_p(t) * \psi_p^*(-t) = q(t)$, $n_p(t) * n_p^*(-t) = n(t)$로 정의하면 $y(t) = \sum_k \vert p \vert x_k q(t-kT) + n(t)$로 정리할 수 있습니다. 그리고 이 함수를 $t=kT$에 대해 샘플링한 결과가 $y_k$가 됩니다. 여기서 중요한 사실이 있는데, $y(t)$를 샘플링해서 $y_k$를 구했는데 이 때 정보 손실이 전혀 없습니다. 따라서 $y(t)$ 대신에 $y_k$를 이용해서 정보들을 처리해도 전혀 문제가 없습니다.
+여기서 $\psi_p(t) * \psi_p^*(-t) = q(t), n_p(t) * n_p^*(-t) = n(t)$ 로 정의하면 $y(t) = \sum_k \vert p \vert x_k q(t-kT) + n(t)$로 정리할 수 있습니다. 그리고 이 함수를 $t=kT$에 대해 샘플링한 결과가 $y_k$가 됩니다. 여기서 중요한 사실이 있는데, $y(t)$를 샘플링해서 $y_k$를 구했는데 이 때 정보 손실이 전혀 없습니다. 따라서 $y(t)$ 대신에 $y_k$를 이용해서 정보들을 처리해도 전혀 문제가 없습니다.
 
 $y_k$를 식으로 표현하면 아래와 같습니다.
 
 $y_k = y(t) \vert _{t=kT} = \sum_m \vert p \vert x_m q(kT-mT) + n(kT) = \sum_m \vert p \vert x_m q_{k-m} + n_k$
+
 $ = \vert p \vert x_k * q_k + n_k$
+
 $ = \vert p \vert (\cdots + q_{-1} x_{k+1} + q_0 x_k + q_1 x_{k-1} + \cdots) + n_k$
 
 여기서 $q(t)$가 Hermitian function 이므로 $q_0 = 1$입니다. 따라서
@@ -63,8 +65,11 @@ $x_a(t)$를 푸리에 변환한 결과를 $X_a(\omega) = \int_{-\infty}^{\infty}
 $x_a(t)$를 $t=kT$에 대해 샘플링한 결과가 $x_k = x_a(kT)$라고 했고, 이를 $x[k]$라고 표현하겠습니다. 그러면 $x[k]$는 위 결과에 $t=kT$를 대입한 결과와 같으므로
 
 $x[k] = x_a(kT) = \frac{1}{2\pi} \int_{-\infty}^{\infty} X_a(\omega)e^{jwkT} d\omega$
+
 $ = \frac{1}{2\pi} \sum_{n = -\infty}^{\infty} \int _{\frac{(2n-1)\pi}{T}}^{\frac{(2n+1)\pi}{T}} X_a(\omega) e^{jwkT} d\omega$ ($-\infty$ 부터 $\infty$ 의 구간을 주기 $T$의 무한한 구간으로 나눴습니다.) 여기서 $\omega - \frac{2n\pi}{T} = \omega'$으로 치환하면
+
 $x[k] =\frac{1}{2\pi} \sum_{-\infty}^{\infty} \int_{-\frac{\pi}{T}}^{\frac{\pi}{T}} X_a(\omega' + \frac{2n\pi}{T}) e^{j(\omega' + \frac{2n\pi}{T})kT} d\omega$ 이고, $e^{j(\omega' + \frac{2n\pi}{T})kT} = e^{j\omega'kT} \cdot e^{j2\pi nk} = e^{j\omega'kT} (\because e^{j2\pi nk} = 1)$ 이므로
+
 $x[k] = \frac{1}{2\pi} \sum_{-\infty}^{\infty} \int_{-\frac{\pi}{T}}^{\frac{\pi}{T}} X_a(\omega + \frac{2n\pi}{T}) e^{j\omega kT} d\omega$ 가 됩니다.
 
 이번엔 다른 방식으로 $x[k]$에 대한 식을 구해보겠습니다. DTFT의 정의에 의해 $X(e^{j\Omega}) = \sum_{k = -\infty}^{\infty} x[k]e^{-j\Omega k}$ 이고 이를 역변환하면 $x[k] = \frac{1}{2\pi} \int_{-\pi}^{\pi} X(e^{j\Omega}) e^{j\Omega k} d\Omega$ 입니다. 구간이 [$-\pi, \pi$]인 이유는 $e^{j\Omega}$의 주기가 $2\pi$이기 때문입니다. 여기서 $\omega = \frac{\Omega}{T}$ 를 대입하면
