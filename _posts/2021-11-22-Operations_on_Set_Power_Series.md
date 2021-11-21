@@ -51,7 +51,7 @@ vector<T> addition(const vector<T> &p, const vector<T> &q){
 
 <h3 id="or">Or Convolution</h3>
 
-Binary operation $\bigoplus: \mathcal{S}_G(R) \times \mathcal{S}_G(R) \rightarrow \mathcal{S}_G(R)$을 $p \bigoplus q = \sum_{S,T\subseteq G}p_S q_T X^{S \cup T}$ 이 성립하도록 정의하겠습니다. 임의의 $S \subseteq G$를 각 $g _ i$에 대한 bitmask로 표현할 때, $X ^ a \bigoplus X ^ b = X ^ {a \vert b}$가 성립하기에, 위 연산을 **or convolution**이라 부릅니다. 이 때, $X^{g _ i} \mapsto X _ i :(\mathcal{S} _ G(R),+,\bigoplus) \rightarrow R[X _ 0, \cdots X _ {N - 1}]/(X _ 0^2 - X _ 0,\cdots X _ {N - 1} ^ 2 - X _ {N - 1})$이 ring isomorphism임은 쉽게 확인할 수 있습니다.
+Binary operation $\bigoplus: \mathcal{S} _ G(R) \times \mathcal{S} _ G(R) \rightarrow \mathcal{S} _ G(R)$을 $p \bigoplus q = \sum_{S,T\subseteq G}p_S q_T X^{S \cup T}$ 이 성립하도록 정의하겠습니다. 임의의 $S \subseteq G$를 각 $g _ i$에 대한 bitmask로 표현할 때, $X ^ a \bigoplus X ^ b = X ^ {a \vert b}$가 성립하기에, 위 연산을 **or convolution**이라 부릅니다. 이 때, $X^{g _ i} \mapsto X _ i :(\mathcal{S} _ G(R),+,\bigoplus) \rightarrow R[X _ 0, \cdots X _ {N - 1}]/(X _ 0^2 - X _ 0,\cdots X _ {N - 1} ^ 2 - X _ {N - 1})$이 ring isomorphism임은 쉽게 확인할 수 있습니다.
 
 이 or convolution은 sum of subset dp라고 알려진 **zeta transform**을 통해 $p$와 $q$를 변환시켜 준 후, 각 term을 곱해주고, 다시 inverse zeta transform을 통해 변환시켜 주면 구할 수 있습니다. Zeta transform은 $\Theta(N\cdot 2^N)$의 ring addition을 필요로 하며 곱하는데 $\Theta(2^N)$의 ring multiplication연산이 필요합니다.
 
@@ -83,7 +83,7 @@ vector<T> or_convolution(vector<T> p, vector<T> q){
 
 <h3 id="subset">Subset Convolution</h3>
 
-Binary operation $\bigotimes: \mathcal{S}_G(R) \times \mathcal{S}_G(R) \rightarrow \mathcal{S}_G(R)$을 $p \bigotimes q = \sum_{S,T\subseteq G,S \cap T = \emptyset}p_S q_T X^{S \cup T}$이 성립하도록 정의하겠습니다. 즉, $p \bigotimes q$의 $X^S$의 coefficient는 $S$의 모든 크기 2의 partition $(L,R)$에 대한 $p _ L \cdot q _ R$의 합입니다. 이 때, $X^{g _ i} \mapsto X _ i :(\mathcal{S} _ G(R),+,\bigotimes) \rightarrow R[X _ 0, \cdots X _ {N - 1}]/(X _ 0^2,\cdots X _ {N - 1} ^ 2)$이 ring isomorphism임은 쉽게 확인할 수 있습니다.
+Binary operation $\bigotimes: \mathcal{S} _ G(R) \times \mathcal{S} _ G(R) \rightarrow \mathcal{S} _ G(R)$을 $p \bigotimes q = \sum_{S,T\subseteq G,S \cap T = \emptyset}p_S q_T X^{S \cup T}$이 성립하도록 정의하겠습니다. 즉, $p \bigotimes q$의 $X^S$의 coefficient는 $S$의 모든 크기 2의 partition $(L,R)$에 대한 $p _ L \cdot q _ R$의 합입니다. 이 때, $X^{g _ i} \mapsto X _ i :(\mathcal{S} _ G(R),+,\bigotimes) \rightarrow R[X _ 0, \cdots X _ {N - 1}]/(X _ 0^2,\cdots X _ {N - 1} ^ 2)$이 ring isomorphism임은 쉽게 확인할 수 있습니다.
 
 $Rank_i(p)=\sum _ {S \subseteq G, \vert S \vert = i} p _ S X ^ S$라 정의하겠습니다. $p=\sum _ {i = 0} ^ N Rank _ i(p)$이 성립함은 쉽게 확인할 수 있습니다. 또한 임의의 $k$에 대하여, $\sum _ {i+j=k} Rank _ i(p) \bigotimes Rank _ j(q) = Rank _ k(p \bigotimes q)$도 성립합니다. $\vert S \vert + \vert T \vert = \vert S \cup T \vert$일 필요충분 조건은 $S \cap T = \emptyset$이 성립하는 것이므로, $Rank _ i(p) \bigotimes Rank _j(q) = Rank _ {i+j} \left( Rank _ i(p) \bigoplus Rank _ j(q) \right) $도 성립합니다. 위 관찰들에 의해, $\Theta (N^2 \cdot 2^N)$의 ring addition과 $\Theta(N^2 \cdot 2^N)$의 ring multiplication을 필요로 하는 subset convolution algorithm을 얻어낼 수 있습니다.
 
