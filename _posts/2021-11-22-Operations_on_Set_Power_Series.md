@@ -157,7 +157,7 @@ vector<T> exponential(const vector<T> &p){
 
 Set power series $A \in \mathcal{S} _ V (\mathbb{F} _ {998244353})$를 각 $S \subseteq V$에 대하여, $A _ S$가 $G[S]$의 edge를 일부 제거한 후, vertex 2-coloring하는 방법의 수를 나타내도록 정의하겠습니다. 첫 번째 색을 칠할 vertex set $T \subseteq S$를 고정했을 때, 그에 맞춰 edge를 제거하는 경우의 수는 $2 ^ {\vert E[S] - E[T] - E[S-T]}$이므로
 
-$\begin{align} A &= \sum _ {S \subseteq V} A _ S X ^ S \\ &= \sum _ {S \subseteq V} \left( \sum _ {T \subseteq S} 2 ^ {\vert E[S] \vert - \vert E[T] \vert - \vert E[S - T] \vert } \right) X ^ S \\ &= \sum _ {S \subseteq V} 2 ^ {\vert E[S] \vert} \left( \sum _ {T \subseteq S} 2 ^ {- \vert E[T] \vert - \vert E[S - T] \vert } \right) X ^ S \end{align}$
+$\begin{align} A = \sum _ {S \subseteq V} A _ S X ^ S = \sum _ {S \subseteq V} \left( \sum _ {T \subseteq S} 2 ^ {\vert E[S] \vert - \vert E[T] \vert - \vert E[S - T] \vert } \right) X ^ S = \sum _ {S \subseteq V} 2 ^ {\vert E[S] \vert} \left( \sum _ {T \subseteq S} 2 ^ {- \vert E[T] \vert - \vert E[S - T] \vert } \right) X ^ S \end{align}$
 
 이며, $B = \sum _ {S \subseteq V} 2 ^ {- \vert E[S] \vert}$일 때 $A = \sum _ {S \subseteq V} 2 ^ {\vert E[S] \vert}(B \bigotimes B) _ S$임을 알 수 있습니다. 모든 $S \subseteq V$에 대하여 $\vert E[S] \vert$를 계산하는데 $\Theta ( \vert E \vert \cdot 2 ^ {\vert V \vert} )$이 걸리며, $B \bigotimes B$를 계산하는데 $\Theta ( \vert V \vert ^ 2 \cdot 2 ^ {\vert V \vert} )$이 걸리므로, $A$를 계산하는데  $\Theta (\vert E \vert \cdot 2 ^ {\vert V \vert} + \vert V \vert ^ 2 \cdot 2 ^ {\vert V \vert})$의 시간이 걸립니다.
 
@@ -165,7 +165,7 @@ Set power series $R \in \mathcal{S} _ V (\mathbb{F} _ {998244353})$을 각 $S$�
 
 이제 $A$를 다른방법으로 enumerate해보겠습니다. 각 $S \subseteq V$에 대하여, $A _ S$는 $S$의 모든 unordered partition $\lbrace S _ 1, \cdots, S _ k \rbrace$에 대한 $\prod _ {i=1} ^ k 2R _ {S _ i}$의 합과 같습니다. 그리고 이는 $S$의 모든 ordered partition $(S _ 1, \cdots , S _ k)$에 대한 $1 / k! \cdot \prod _ {i = 1} ^ k 2R _ {S _ i}$의 합과 같습니다. 마지막으로, 이는 $S = \cup _ {i = 1} ^ k S _ i$를 만족하는 모든 non-empty $S _ i \subset V$에 대하여 $1 / k! \cdot [S _ i \mathrm{s \space are \space disjoint}] \cdot \prod _ {i = 1} ^ k 2R _ {S _ i} $의 합과 같습니다.  고정된 $k$에 대하여, 마지막 식은 $1/k! \cdot (2R)^k$의 $X ^ S$의 coefficient와 일치한다는 것을 어렵지 않게 확인할 수 있습니다. 따라서
 
-$\begin{align} A &= \sum _ {k = 0} ^ {\vert V \vert} \frac1{k!} (2R) ^ k \\ &= \exp(2R) \end{align}$
+$\begin{align} A = \sum _ {k = 0} ^ {\vert V \vert} \frac1{k!} (2R) ^ k = \exp(2R)  \end{align}$
 
 입니다. 양변에 $\log$를 취한 후 $2$로 나눠주면, $R=1/2 \cdot \log (A)$임이 얻어집니다. 위 general case에 $f = \log$를 대입해주면, $R$을 $A$로 부터 $\Theta ( \vert V \vert ^ 2 \cdot 2 ^ {\vert V \vert} )$시간에 계산할 수 있습니다. 총 시간복잡도는 $\Theta (\vert E \vert \cdot 2 ^ {\vert V \vert} + \vert V \vert ^ 2 \cdot 2 ^ {\vert V \vert})$입니다.
 
