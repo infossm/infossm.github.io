@@ -37,7 +37,7 @@ date: 2021-11-22
 
 두 set power series $p,q\in \mathcal{S} _ G(R)$에 대하여 addition을 $p+q=\sum_{S\subseteq G}(p _ S + q _ S)X^S$로 정의합니다. 
 
-계산할 땐, 단순히 모든 $S\subseteq G$에 대하여, $p _ S$와 $q _ S$를 더해주면 됩니다. $\Theta (2^N)$만큼의 ring addition연산을 필요로 합니다.
+계산할 땐, 단순히 모든 $S\subseteq G$에 대하여, $p _ S$와 $q _ S$를 더해주면 됩니다. $\Theta (2^N)$의 ring addition연산을 필요로 합니다.
 
 ```cpp
 template<class T>
@@ -53,7 +53,7 @@ vector<T> addition(const vector<T> &p, const vector<T> &q){
 
 Binary operation $\bigoplus: \mathcal{S}_G(R) \times \mathcal{S}_G(R) \rightarrow \mathcal{S}_G(R)$을 $p \bigoplus q = \sum_{S,T\subseteq G}p_S q_T X^{S \cup T}$ 이 성립하도록 정의하겠습니다. 임의의 $S \subseteq G$를 각 $g _ i$에 대한 bitmask로 표현할 때, $X ^ a \bigoplus X ^ b = X ^ {a \vert b}$가 성립하기에, 위 연산을 **or convolution**이라 부릅니다. 이 때, $X^{g _ i} \mapsto X _ i :(\mathcal{S} _ G(R),+,\bigoplus) \rightarrow R[X _ 0, \cdots X _ {N - 1}]/(X _ 0^2 - X _ 0,\cdots X _ {N - 1} ^ 2 - X _ {N - 1})$이 ring isomorphism임은 쉽게 확인할 수 있습니다.
 
-이 or convolution은 sum of subset dp라고 알려진 **zeta transform**을 통해 $p$와 $q$를 변환시켜 준 후, 각 term을 곱해주고, 다시 inverse zeta transform을 통해 변환시켜 주면 구할 수 있습니다. Zeta transform은 $\Theta(N\cdot 2^N)$만큼의 ring addition을 필요로 하며 곱하는데 $\Theta(2^N)$만큼의 ring multiplication연산이 필요합니다.
+이 or convolution은 sum of subset dp라고 알려진 **zeta transform**을 통해 $p$와 $q$를 변환시켜 준 후, 각 term을 곱해주고, 다시 inverse zeta transform을 통해 변환시켜 주면 구할 수 있습니다. Zeta transform은 $\Theta(N\cdot 2^N)$의 ring addition을 필요로 하며 곱하는데 $\Theta(2^N)$의 ring multiplication연산이 필요합니다.
 
 ```cpp
 template<class T>
