@@ -51,9 +51,11 @@ vector<T> addition(const vector<T> &p, const vector<T> &q){
 
 <h3 id="or">Or Convolution</h3>
 
-Binary operation $\bigoplus: \mathcal{S} _ G(R) \times \mathcal{S} _ G(R) \rightarrow \mathcal{S} _ G(R)$을 $p \bigoplus q = \sum_{S,T\subseteq G}p_S q_T X^{S \cup T}$ 이 성립하도록 정의하겠습니다. 임의의 $S \subseteq G$를 각 $g _ i$에 대한 bitmask로 표현할 때, $X ^ a \bigoplus X ^ b = X ^ {a \vert b}$가 성립하기에, 위 연산을 **or convolution**이라 부릅니다. 이 때, $X^{g _ i} \mapsto X _ i :(\mathcal{S} _ G(R),+,\bigoplus) \rightarrow R[X _ 0, \cdots X _ {N - 1}]/(X _ 0^2 - X _ 0,\cdots X _ {N - 1} ^ 2 - X _ {N - 1})$이 ring isomorphism임은 쉽게 확인할 수 있습니다.
+Binary operation $\oplus: \mathcal{S} _ G(R) \times \mathcal{S} _ G(R) \rightarrow \mathcal{S} _ G(R)$을 $p \oplus q = \sum_{S,T\subseteq G}p_S q_T X^{S \cup T}$ 이 성립하도록 정의하겠습니다. 임의의 $S \subseteq G$를 각 $g _ i$에 대한 bitmask로 표현할 때, $X ^ a \oplus X ^ b = X ^ {a \vert b}$가 성립하기에, 위 연산을 **or convolution**이라 부릅니다. 이 때,
 
-이 or convolution은 sum of subset dp라고 알려진 **zeta transform**을 통해 $p$와 $q$를 변환시켜 준 후, 각 term을 곱해주고, 다시 inverse zeta transform을 통해 변환시켜 주면 구할 수 있습니다. Zeta transform은 $\Theta(N\cdot 2^N)$의 ring addition을 필요로 하며 곱하는데 $\Theta(2^N)$의 ring multiplication연산이 필요합니다.
+$\begin{align} X^{g _ i} \mapsto X _ i : \left( \mathcal{S} _ G(R),+,\oplus \right) \rightarrow R[X _ 0, \cdots X _ {N - 1}]/ \left( X _ 0^2 - X _ 0,\cdots X _ {N - 1} ^ 2 - X _ {N - 1} \right) \end{align}$
+
+이 ring isomorphism임은 쉽게 확인할 수 있습니다. Or convolution은 sum of subset dp라고 알려진 **zeta transform**을 통해 $p$와 $q$를 변환시켜 준 후, 각 term을 곱해주고, 다시 inverse zeta transform을 통해 변환시켜 주면 구할 수 있습니다. Zeta transform은 $\Theta(N\cdot 2^N)$의 ring addition을 필요로 하며 곱하는데 $\Theta(2^N)$의 ring multiplication연산이 필요합니다.
 
 ```cpp
 template<class T>
@@ -83,9 +85,11 @@ vector<T> or_convolution(vector<T> p, vector<T> q){
 
 <h3 id="subset">Subset Convolution</h3>
 
-Binary operation $\bigotimes: \mathcal{S} _ G(R) \times \mathcal{S} _ G(R) \rightarrow \mathcal{S} _ G(R)$을 $p \bigotimes q = \sum_{S,T\subseteq G,S \cap T = \emptyset}p_S q_T X^{S \cup T}$이 성립하도록 정의하겠습니다. 즉, $p \bigotimes q$의 $X^S$의 coefficient는 $S$의 모든 크기 2의 partition $(L,R)$에 대한 $p _ L \cdot q _ R$의 합입니다. 이 때, $X^{g _ i} \mapsto X _ i :(\mathcal{S} _ G(R),+,\bigotimes) \rightarrow R[X _ 0, \cdots X _ {N - 1}]/(X _ 0^2,\cdots X _ {N - 1} ^ 2)$이 ring isomorphism임은 쉽게 확인할 수 있습니다.
+Binary operation $\otimes: \mathcal{S} _ G(R) \times \mathcal{S} _ G(R) \rightarrow \mathcal{S} _ G(R)$을 $p \otimes q = \sum_{S,T\subseteq G,S \cap T = \emptyset}p_S q_T X^{S \cup T}$이 성립하도록 정의하겠습니다. 즉, $p \otimes q$의 $X^S$의 coefficient는 $S$의 모든 크기 2의 partition $(L,R)$에 대한 $p _ L \cdot q _ R$의 합입니다. 이 때, 
 
-$Rank_i(p)=\sum _ {S \subseteq G, \vert S \vert = i} p _ S X ^ S$라 정의하겠습니다. $p=\sum _ {i = 0} ^ N Rank _ i(p)$이 성립함은 쉽게 확인할 수 있습니다. 또한 임의의 $k$에 대하여, $\sum _ {i+j=k} Rank _ i(p) \bigotimes Rank _ j(q) = Rank _ k(p \bigotimes q)$도 성립합니다. $\vert S \vert + \vert T \vert = \vert S \cup T \vert$일 필요충분 조건은 $S \cap T = \emptyset$이 성립하는 것이므로, $Rank _ i(p) \bigotimes Rank _j(q) = Rank _ {i+j} \left( Rank _ i(p) \bigoplus Rank _ j(q) \right) $도 성립합니다. 위 관찰들에 의해, $\Theta (N^2 \cdot 2^N)$의 ring addition과 $\Theta(N^2 \cdot 2^N)$의 ring multiplication을 필요로 하는 subset convolution algorithm을 얻어낼 수 있습니다.
+$\begin{align} X^{g _ i} \mapsto X _ i :(\mathcal{S} _ G(R),+,\otimes) \rightarrow R[X _ 0, \cdots X _ {N - 1}]/(X _ 0^2,\cdots X _ {N - 1} ^ 2) \end{align}$
+
+이 ring isomorphism임은 쉽게 확인할 수 있습니다. $Rank_i(p)=\sum _ {S \subseteq G, \vert S \vert = i} p _ S X ^ S$라 정의하겠습니다. $p=\sum _ {i = 0} ^ N Rank _ i(p)$이 성립함은 쉽게 확인할 수 있습니다. 또한 임의의 $k$에 대하여, $\sum _ {i+j=k} Rank _ i(p) \otimes Rank _ j(q) = Rank _ k(p \otimes q)$도 성립합니다. $\vert S \vert + \vert T \vert = \vert S \cup T \vert$일 필요충분 조건은 $S \cap T = \emptyset$이 성립하는 것이므로, $Rank _ i(p) \otimes Rank _j(q) = Rank _ {i+j} \left( Rank _ i(p) \oplus Rank _ j(q) \right) $도 성립합니다. 위 관찰들에 의해, $\Theta (N^2 \cdot 2^N)$의 ring addition과 $\Theta(N^2 \cdot 2^N)$의 ring multiplication을 필요로 하는 subset convolution algorithm을 얻어낼 수 있습니다.
 
 ```cpp
 template<class T>
@@ -124,9 +128,9 @@ vector<T> subset_convolution(const vector<T> &p, const vector<T> &q){
 
 $p _ \emptyset = 0$인 Set power series $p$에 대하여, $p^k := \bigotimes _ {i = 0} ^ {k - 1} p$로 정의하면, $k > n$일 때, $p ^ k$는 constant 0입니다. $1,2,\cdots, N$이 $R$에서 multiplicative inverse를 갖는다고 가정하면, $\exp(p)=\sum _ {i=0} ^ N p ^ i / i!$가 잘 정의되며, 일반적인 monovariate power series에서의 exponential의 정의와 일치합니다. 이제 주어진 $p$에 대해 $\exp(p)$를 빠르게 계산하는 법에 대해 소개하겠습니다.
 
-$(\mathcal{S} _ G(R),+,\bigotimes) \cong R[X _ 0, \cdots X _ {N - 1}]/(X _ 0^2,\cdots X _ {N - 1} ^ 2)$이므로 $p$를 $R[X _ 0, \cdots X _ {N - 1}]/(X _ 0^2,\cdots X _ {N - 1} ^ 2)$의 원소로서 다루겠습니다. 일반적인 monovariate power series의 exponential과 비슷하게 임의의 $0\le i < N$에 대하여 $\partial \exp (p) / \partial X _ i = \partial p / \partial X _ i \bigotimes \exp(p)$임은 쉽게 확인할 수 있습니다.
+$(\mathcal{S} _ G(R),+,\otimes) \cong R[X _ 0, \cdots X _ {N - 1}]/(X _ 0^2,\cdots X _ {N - 1} ^ 2)$이므로 $p$를 $R[X _ 0, \cdots X _ {N - 1}]/(X _ 0^2,\cdots X _ {N - 1} ^ 2)$의 원소로서 다루겠습니다. 일반적인 monovariate power series의 exponential과 비슷하게 임의의 $0\le i < N$에 대하여 $\partial \exp (p) / \partial X _ i = \partial p / \partial X _ i \otimes \exp(p)$임은 쉽게 확인할 수 있습니다.
 
-Set power series $p$와 정수 $0\le i < N, 0 \le e \le 1$에 대해 $[i,1]p=\sum _ {g _ i\in S\subseteq G} p _ S X ^ S$, 그리고 $[i,0]p=\sum _ {g _ i \notin S \subseteq G} p _ S X ^ S$라 정의하겠습니다. 위 identity에서 $i=N-1$로 놓은 후 $X _ i$의 exponent가 0인 term들을 비교해보면, $[N-1,1]\exp(p)=[N-1,1]p \bigotimes[N-1,0]\exp(p)$가 얻어집니다. 즉, $[N-1,0]\exp(p)$를 알고있다면, 한 번의 subset convolution을 통해 $[N-1,1]\exp(p)$를 구할 수 있으며, 우리는 indeterminate의 갯수가 1 줄어든 subproblem을 풀면 됩니다. 총 시간복잡도는 $T(N) - T(N - 1) \in \Theta(N^2 \cdot 2 ^ N)$에서 $T(N) \in \Theta(N^2 \cdot 2^N)$입니다. 이 method는 "pointwise Newton iteration"이라 이름붙여져 있습니다.
+Set power series $p$와 정수 $0\le i < N, 0 \le e \le 1$에 대해 $[i,1]p=\sum _ {g _ i\in S\subseteq G} p _ S X ^ S$, 그리고 $[i,0]p=\sum _ {g _ i \notin S \subseteq G} p _ S X ^ S$라 정의하겠습니다. 위 identity에서 $i=N-1$로 놓은 후 $X _ i$의 exponent가 0인 term들을 비교해보면, $[N-1,1]\exp(p)=[N-1,1]p \otimes[N-1,0]\exp(p)$가 얻어집니다. 즉, $[N-1,0]\exp(p)$를 알고있다면, 한 번의 subset convolution을 통해 $[N-1,1]\exp(p)$를 구할 수 있으며, 우리는 indeterminate의 갯수가 1 줄어든 subproblem을 풀면 됩니다. 총 시간복잡도는 $T(N) - T(N - 1) \in \Theta(N^2 \cdot 2 ^ N)$에서 $T(N) \in \Theta(N^2 \cdot 2^N)$입니다. 이 method는 "pointwise Newton iteration"이라 이름붙여져 있습니다.
 
 ```cpp
 template<class T>
@@ -145,7 +149,7 @@ vector<T> exponential(const vector<T> &p){
 
 <h3 id="gen">General Case</h3>
 
-이제 $f(p)$가 잘 정의되는 $f \in R[[x]]$와 $p \in \mathcal{S} _ G(R)$가 주어졌을 때, $f(p)$를 빠르게 계산하는 문제를 생각해 보겠습니다. Exponential일 때와 비슷하게, 양 변에 partial derivative를 취하면 $\partial f(p)/\partial X _ i = \partial p / \partial X _ i \bigotimes f'(p)$가 얻어집니다. 이제 $i=N-1$일 때, $X _ i$의 exponent가 0인 term들을 비교해보면, $[N-1,1] f(p) = [N-1,1] p \bigotimes [N-1,0]f'(p)$이 얻어지며, $[N-1,0]f(p)$와 $[N-1,0]f'(p)$를 구하는 2개의 subproblem으로 나뉩니다. 언뜻 보면, complexity가 매우 커보이지만, 다음 layer에선 $[N-2,0][N-1,0]f(p), [N-2,0][N-1,0]f'(p)$, 그리고 $[N-2,0][N-1,0]f''(p)$의 3개의 subproblem으로 나뉘며, 각 layer마다 subproblem의 갯수가 1씩 증가함을 알수있습니다. 즉, $T(N)=\sum _ {i=0} ^ {N-1} (N-i) \cdot N^2 \cdot 2^N \in \Theta ( N^2 \cdot 2 ^ N )$입니다.
+이제 $f(p)$가 잘 정의되는 $f \in R[[x]]$와 $p \in \mathcal{S} _ G(R)$가 주어졌을 때, $f(p)$를 빠르게 계산하는 문제를 생각해 보겠습니다. Exponential일 때와 비슷하게, 양 변에 partial derivative를 취하면 $\partial f(p)/\partial X _ i = \partial p / \partial X _ i \otimes f'(p)$가 얻어집니다. 이제 $i=N-1$일 때, $X _ i$의 exponent가 0인 term들을 비교해보면, $[N-1,1] f(p) = [N-1,1] p \otimes [N-1,0]f'(p)$이 얻어지며, $[N-1,0]f(p)$와 $[N-1,0]f'(p)$를 구하는 2개의 subproblem으로 나뉩니다. 언뜻 보면, complexity가 매우 커보이지만, 다음 layer에선 $[N-2,0][N-1,0]f(p), [N-2,0][N-1,0]f'(p)$, 그리고 $[N-2,0][N-1,0]f''(p)$의 3개의 subproblem으로 나뉘며, 각 layer마다 subproblem의 갯수가 1씩 증가함을 알수있습니다. 즉, $T(N)=\sum _ {i=0} ^ {N-1} (N-i) \cdot N^2 \cdot 2^N \in \Theta ( N^2 \cdot 2 ^ N )$입니다.
 
 
 
@@ -159,7 +163,7 @@ Set power series $A \in \mathcal{S} _ V (\mathbb{F} _ {998244353})$를 각 $S \s
 
 $\begin{align} A = \sum _ {S \subseteq V} A _ S X ^ S = \sum _ {S \subseteq V} \left( \sum _ {T \subseteq S} 2 ^ {\vert E[S] \vert - \vert E[T] \vert - \vert E[S - T] \vert } \right) X ^ S = \sum _ {S \subseteq V} 2 ^ {\vert E[S] \vert} \left( \sum _ {T \subseteq S} 2 ^ {- \vert E[T] \vert - \vert E[S - T] \vert } \right) X ^ S \end{align}$
 
-이며, $B = \sum _ {S \subseteq V} 2 ^ {- \vert E[S] \vert}$일 때 $A = \sum _ {S \subseteq V} 2 ^ {\vert E[S] \vert}(B \bigotimes B) _ S$임을 알 수 있습니다. 모든 $S \subseteq V$에 대하여 $\vert E[S] \vert$를 계산하는데 $\Theta ( \vert E \vert \cdot 2 ^ {\vert V \vert} )$이 걸리며, $B \bigotimes B$를 계산하는데 $\Theta ( \vert V \vert ^ 2 \cdot 2 ^ {\vert V \vert} )$이 걸리므로, $A$를 계산하는데  $\Theta (\vert E \vert \cdot 2 ^ {\vert V \vert} + \vert V \vert ^ 2 \cdot 2 ^ {\vert V \vert})$의 시간이 걸립니다.
+이며, $B = \sum _ {S \subseteq V} 2 ^ {- \vert E[S] \vert}$일 때 $A = \sum _ {S \subseteq V} 2 ^ {\vert E[S] \vert}(B \otimes B) _ S$임을 알 수 있습니다. 모든 $S \subseteq V$에 대하여 $\vert E[S] \vert$를 계산하는데 $\Theta ( \vert E \vert \cdot 2 ^ {\vert V \vert} )$이 걸리며, $B \otimes B$를 계산하는데 $\Theta ( \vert V \vert ^ 2 \cdot 2 ^ {\vert V \vert} )$이 걸리므로, $A$를 계산하는데  $\Theta (\vert E \vert \cdot 2 ^ {\vert V \vert} + \vert V \vert ^ 2 \cdot 2 ^ {\vert V \vert})$의 시간이 걸립니다.
 
 Set power series $R \in \mathcal{S} _ V (\mathbb{F} _ {998244353})$을 각 $S$에 대해, $R _ S$가 $G[S]$가 connected component가 한 개인 bipartite graph가 되도록 edge의 일부를 제거하는 방법의 수라고 정의하겠습니다. 문제에서 출력해야 되는 값은 $R _ V$입니다. 임의의 connected bipartite graph를 vertex 2-coloring하는 방법은 정확히 두 가지이므로 $2R _ S$는 $G[S]$의 일부 edge를 G[S]가 connected이도록 제거 한 후, vertex 2-coloring하는 방법의 수를 나타내게 됩니다.
 
