@@ -129,6 +129,7 @@ tags: [data-structure, algorithm]
 ## 입력 예제
 
 4
+
 1 4 3 8
 
 ## 출력 에제
