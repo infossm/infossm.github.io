@@ -210,7 +210,7 @@ $\begin{align} U(X) &= P(X) \cdot Q(-X) \newline V(X) &= \left( Q(X) \cdot Q(-X)
 
 라 정의하면, $Q(X)\cdot Q(-X)$가 even power series이므로 $V(X ^ 2) = Q(X)\cdot Q(-X)$이며,
 
-$\begin{align} [X^N]\frac{P(X)\cdot Q(-X)}{Q(X)\cdot Q(-X)} &= [X ^ N] \frac{U _ {even}(X ^ 2) + X \cdot U _ {odd}(X^2)}{V(X^2)} \newline &= [X ^ N] \frac{U _ {even}(X ^ 2)}{V(X ^ 2)} + [X ^ N]X \cdot \frac{U _ {odd}(X ^ 2)}{V(X ^ 2)} \newline &= \begin{cases} [X ^ N] \frac{U _ {even}(X ^ 2)}{V(X ^ 2)} & \text{if $N$ is even} \\ [X ^ N]X \cdot \frac{U _ {odd}(X ^ 2)}{V(X ^ 2)} & \text{if $N$ is odd}  \end{cases} \newline &= \begin{cases} [X ^ {N / 2}] \frac{U _ {even}(X)}{V(X)} & \text{if $N$ is even} \\ [X ^ {(N - 1) / 2}]\frac{U _ {odd}(X)}{V(X)} & \text{if $N$ is odd}  \end{cases} \end{align}$
+$\begin{align} [X^N]\frac{P(X)\cdot Q(-X)}{Q(X)\cdot Q(-X)} &= [X ^ N] \frac{U _ {even}(X ^ 2) + X \cdot U _ {odd}(X^2)}{V(X^2)} \newline &= [X ^ N] \frac{U _ {even}(X ^ 2)}{V(X ^ 2)} + [X ^ N]X \cdot \frac{U _ {odd}(X ^ 2)}{V(X ^ 2)} \newline &= \begin{cases} [X ^ N] \frac{U _ {even}(X ^ 2)}{V(X ^ 2)} & \text{if $N$ is even} \newline [X ^ N]X \cdot \frac{U _ {odd}(X ^ 2)}{V(X ^ 2)} & \text{if $N$ is odd}  \end{cases} \newline &= \begin{cases} [X ^ {N / 2}] \frac{U _ {even}(X)}{V(X)} & \text{if $N$ is even} \newline [X ^ {(N - 1) / 2}]\frac{U _ {odd}(X)}{V(X)} & \text{if $N$ is odd}  \end{cases} \end{align}$
 
 이 됩니다. $V(X)$는 degree가 $d$인 polynomial이며 $U _ {even} (X)$와 $U _ {odd}(X)$는 degree가 $d$미만인 polynomial이므로 $N$의 크기만 절반으로 줄어든 subproblem이 얻어집니다. 위 iteration은 $\lfloor \log (N + 1) \rfloor$번 반복되며 각 iteration마다 $U(X)$와 $V(X)$를 계산하는데에 각각 $M(d)$만큼의 ring operation이 필요되므로 전체 algorithm은
 
