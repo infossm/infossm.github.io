@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "랜덤한 교란 순열을 생성하는 card-based 알고리즘 (1)"
+title: "랜덤한 교란 순열을 생성하는 card-based 프로토콜 (1)"
 author: leejseo
 date: 2021-12-12
 tags: [math, cryptography]
@@ -32,10 +32,8 @@ Symmetric group $S_n$의 원소, 즉, $[n]$ 상의 순열 가운데 fixed point�
 
 여기에서는 하나의 비트를 표현하는데에 두 장의 카드를 사용하게 된다. 검은 카드 - 빨간 카드 순으로 놓이면 이것은 0을, 빨간 카드 - 검은 카드 순으로 놓으면 1을 의미하게 된다. 기본적으로는 섹션 2에서 소개한것과 비슷하지만, fixed point의 존재 여부를 확인하는 과정이 다르고, 다소 까다롭다.
 
-일단, $\pi(i) - 1$ 의 이진전개는 $\pi(i) - 1 = a_{\log n}\cdots a_2 a_1$ 라 하고, $i - 1$의 이진 전개는 $b_{\log n}\cdots b_2 b_1$ 이라고 할 때, 우리가 판별하고자 하는 것을 비트 연산을 이용해 다음과 같이 적을 수 있다:
-$$
-(a_1 \oplus \bar b_1) \land \cdots \land (a_{\log n} \oplus \bar b_{\log n}) = 0.
-$$
+일단, $\pi(i) - 1$ 의 이진전개는 $\pi(i) - 1 = a_{\log n}\cdots a_2 a_1$ 라 하고, $i - 1$의 이진 전개는 $b_{\log n}\cdots b_2 b_1$ 이라고 할 때, 우리가 판별하고자 하는 것을 비트 연산을 이용해 다음과 같이 적을 수 있다: $(a_1 \oplus \bar b_1) \land \cdots \land (a_{\log n} \oplus \bar b_{\log n})$
+
 결국, 우리는 $\pi(i)$에 대해 추가적인 정보를 노출하지 않으면서 위 논리식의 값을 평가하면 되고, 이제 이를 위한 *특별한* 비트 연산 방식을 알아보자.
 
 ### NEGATE
@@ -69,12 +67,7 @@ $$
 
 ### Checking Fixed Point
 
-위의 연산들을 이용하면 이제 다음 논리식
-$$
- (a_1 \oplus \bar b_1) \land \cdots \land (a_{\log n} \oplus \bar b_{\log n}) = 0
-$$
-의 값을 평가할 수 있게 되고, 결국 총 $O(n \log n)$ 장의 카드만 사용해서 Derangement를 생성할 수 있었다. 
-
+위의 연산들을 이용하면 이제 논리식 $(a_1 \oplus \bar b_1) \land \cdots \land (a_{\log n} \oplus \bar b_{\log n})$ 의 값을 평가할 수 있게 되고, 결국 총 $O(n \log n)$ 장의 카드만 사용해서 Derangement를 생성할 수 있었다. 
 ## References
 
 * [1] R. Ishikawa et al. Efficient Card-based Protocols for Generating a Hidden Random Permutation without Fixed Points (2015)
