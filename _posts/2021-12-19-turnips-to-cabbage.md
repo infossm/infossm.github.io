@@ -21,12 +21,12 @@ tags: [algorithm, bioinformatics]
 일단 몇 가지 정의를 짚고 넘어간다.
 1. 입력은 signed permutation $\pi = (\pi_1, \ldots, \pi_n)$ 이다.
 2. $\pi_0 = 0, \pi_{n + 1}= n + 1$ 이라고 하자. (길이 $n + 2$ 수열이라고 가정한다.)
-3. $0 \le i \le n$ 에 대해 $(\pi_i, \pi_{i + 1})$ 을 *gap* 이라고 부른다. 이 때  $|\pi_i - \pi_{i + 1}| \neq 1$ 일 경우 이 *gap* 은 *breakpoint*. 그 외 경우 *adjacency* 라고 불린다.
+3. $0 \le i \le n$ 에 대해 $(\pi_i, \pi_{i + 1})$ 을 *gap* 이라고 부른다. 이 때  $abs(\pi_i - \pi_{i + 1}) \neq 1$ 일 경우 이 *gap* 은 *breakpoint*. 그 외 경우 *adjacency* 라고 불린다.
 4. $b(\pi)$ 를 순열 $\pi$ 의 *breakpoint* 의 개수로 정의한다.
 5. 뒤집기 연산 $r(i, j)$ 는 $\pi$ 를 $(\pi_1, \ldots, -\pi_j, -\pi_{j-1}, \ldots, -\pi_i, \pi_{j+1}, \ldots, \pi_n)$ 로 변환한다. 이 때 $r(i, j)$ 는 *gap* $(\pi_{i - 1}, \pi_i)$, $(\pi_{j}, \pi_{j + 1})$ 에 *작용했다* 고 한다.
 
 ### Breakpoint Graph
-어떠한 순열 $\pi = (\pi_1, \ldots, \pi_n)$ 의 *breakpoint graph* $B(\pi)$ 는 $n + 2$ 개의 정점 $\{\pi_0, \pi_1, \ldots, \pi_n, \pi_{n + 1}) = \{0, 1, \ldots, n + 1\})$ 을 가진다. 정점 $\pi_i, \pi_{i + 1}$ 에 대해 $(\pi_i, \pi_{i + 1})$ 이 $\pi$ 에서 breakpoint 라면 두 정점간에 *검은 간선* 을 이어주고, 정점 $i, j$ 에 대해 $(i, j)$ 가 $\pi^{-1}$ 에서 breakpoint 라면 (즉, $|\pi_i - \pi_j| = 1, |i - j| \neq 1$) 두 정점 간에 *회색 간선* 을 이어준다. 여기서의 순열은 부호가 없어서, $\pi^{-1}$ 의 정의는 우리가 일반적으로 아는 정의와 동일하다.
+어떠한 순열 $\pi = (\pi_1, \ldots, \pi_n)$ 의 *breakpoint graph* $B(\pi)$ 는 $n + 2$ 개의 정점 $\{\pi_0, \pi_1, \ldots, \pi_n, \pi_{n + 1}) = \{0, 1, \ldots, n + 1\})$ 을 가진다. 정점 $\pi_i, \pi_{i + 1}$ 에 대해 $(\pi_i, \pi_{i + 1})$ 이 $\pi$ 에서 breakpoint 라면 두 정점간에 *검은 간선* 을 이어주고, 정점 $i, j$ 에 대해 $(i, j)$ 가 $\pi^{-1}$ 에서 breakpoint 라면 (즉, $abs(\pi_i - \pi_j) = 1, abs(i - j) \neq 1$) 두 정점 간에 *회색 간선* 을 이어준다. 여기서의 순열은 부호가 없어서, $\pi^{-1}$ 의 정의는 우리가 일반적으로 아는 정의와 동일하다.
 
 Breakpoint graph의 정의는 일반 순열에만 성립하니, Signed permutation에서도 성립하게 하려면 추가적인 작업이 필요하다. 길이 $n$ 의 signed permutation $\pi$가 주어졌을 때, 원소 $x > 0$ 을 $2x - 1, 2x$ 로 대체하고, 원소 $(-x) < 0$ 을 $2x, 2x - 1$ 로 대체함으로써 길이 $2n$ 의 순열 $u(\pi)$ 를 만들 수 있다.
 
@@ -116,9 +116,9 @@ Hannenhalli-Pevzner은 아래와 같은 Theorem을 증명했다.
 
 이 때, happy clique에는 항상 safe reversal이 존재한다.
 
-**Theorem 6.** $C$ 를 Happy clique라고 하고, $e \in V(C)$ 를 $|UN(e)|$ 의 값을 최대화하는 정점이라고 하자. $r(e)$ 는 safe reversal이다.
+**Theorem 6.** $C$ 를 Happy clique라고 하고, $e \in V(C)$ 를 $UN(e)$ 의 값을 최대화하는 정점이라고 하자. $r(e)$ 는 safe reversal이다.
 
-만약 Happy clique를 찾았다고 하면, 여기서 $|UN(e)|$ 의 값을 최대화하는 정점을 찾는 것은 단순한 계산 문제이다. 논문에서는 이를 $O(n)$ 에 하는 방법을 서술하는데, Segment tree 등의 자료구조를 사용해서 $O(n \log n)$ 정도에 찾는 것은 어렵지 않으며 역시 충분히 빠를 것이다. $OV(\pi)$ 에 Happy clique는 항상 존재하며, 증명은 선형 시간에 작동하는 구성적 알고리즘이다.
+만약 Happy clique를 찾았다고 하면, 여기서 $UN(e)$ 의 값을 최대화하는 정점을 찾는 것은 단순한 계산 문제이다. 논문에서는 이를 $O(n)$ 에 하는 방법을 서술하는데, Segment tree 등의 자료구조를 사용해서 $O(n \log n)$ 정도에 찾는 것은 어렵지 않으며 역시 충분히 빠를 것이다. $OV(\pi)$ 에 Happy clique는 항상 존재하며, 증명은 선형 시간에 작동하는 구성적 알고리즘이다.
 
 **Theorem 7.** $OV(\pi)$ 에는 Happy clique가 항상 존재한다.
 **Proof.** $OV(\pi)$ 상의 모든 oriented vertices들을 왼쪽 끝점이 증가하는 순으로 정렬하자. 이를 $e_1, e_2, \ldots, e_k$ 라고 했을 때, 알고리즘은 $e_1, e_2, \ldots, e_i$ 의 happy clique $C_i$ 를 관리하고, 만약 $C_i$ 의 모든 구간을 포함하는 구간이 존재한다면 이러한 구간 $t_i$ 를 하나 관리한다. 이 때의 불변량은 다음과 같다.
