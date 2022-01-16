@@ -73,7 +73,7 @@ B와 A 상태의 음료는 항상 하나 차이이며, A에서의 음료는 B �
 
 더 생각하면 이 때, 비어있는 상자를 알아내는 것 외의 연결관계는 의미가 없으므로, 경로 압축(추가로 랭크 압축)을 해주게 되면 시간복잡도가 크게 개선되어 평균적으로 $O(N)$에 가깝게 문제를 해결할 수 있습니다. 해당 내용은 위 유니온 파인드에 대한 링크에서 확인할 수 있습니다.
 
-# [방 청소 - ICPC Daejeon Nationalwide Internet Competition 2016 L번](https://www.acmicpc.net/problem/13335)
+# [트럭 - ICPC Daejeon Nationalwide Internet Competition 2016 L번](https://www.acmicpc.net/problem/13335)
 
 ## 관찰
 
