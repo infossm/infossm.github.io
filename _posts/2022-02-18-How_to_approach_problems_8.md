@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "알고리즘 문제 접근 과정 8"
-date:   2022-02-18 08:00:00
+date:   2022-02-18
 author: VennTum
 tags: [data-structure, algorithm]
 ---
