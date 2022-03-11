@@ -7,7 +7,7 @@ tags: [DP, Bitmask, Stiner Tree]
 ---
 
 # 서론
-그래프 $G$와, 정점의 부분집합 $T$가 주어졌을 때, $T$를 모두 포함하는 Spanning Tree ($G$의 부분그래프 중, 정점과 간선 일부를 선택하여 만든 트리)를 $T$의 Steiner Tree라고 한다. 가중치가 주어진 방향 없는 그래프 $G$에 대해 간선 가중치 합이 가장 작은 Steiner Tree를 계산하는 문제는 [일반적인 상황에서 NP-Hard](http://www.secmem.org/blog/2020/08/18/karp-21-np-complete/임)이 알려져있다. 이 게시글에서는, 해당 Steiner Tree를 계산하는 동적계획법을 다룬다.
+그래프 $G$와, 정점의 부분집합 $T$가 주어졌을 때, $T$를 모두 포함하는 Spanning Tree ($G$의 부분그래프 중, 정점과 간선 일부를 선택하여 만든 트리)를 $T$의 Steiner Tree라고 한다. 가중치가 주어진 방향 없는 그래프 $G$에 대해 간선 가중치 합이 가장 작은 Steiner Tree를 계산하는 문제는 [일반적인 상황에서 NP-Hard](http://www.secmem.org/blog/2020/08/18/karp-21-np-complete/)임이 알려져있다. 이 게시글에서는, 해당 Steiner Tree를 계산하는 동적계획법을 다룬다.
 
 ## Naïve
 
