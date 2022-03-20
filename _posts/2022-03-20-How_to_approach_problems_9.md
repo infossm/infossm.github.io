@@ -384,77 +384,117 @@ x 혹은 y좌표가 최대 1이라면, 항상 매 초마다 개미는 벽에 부
 이를 이용해 우리는 O(w + h)에 문제를 해결할 수 있습니다.
 또한, 2w, 2h로 나눈 나머지 시간만큼에 대해, 개미는 벽을 최대 3번만 부딫히게 되므로 이를 이용해 벽에 부딪힐 때까지의 이동을 O(1)에 계산해준다면, 총 6번만에 개미의 최종 위치를 구할 수 있어 O(1)로 해결할 수도 있습니다.
 
+# [Black Chain - ICPC Seoul Nationalwide Internet Competition 2018 A번](https://www.acmicpc.net/problem/16282)
+
+## 관찰
+
+만약 우리가 무게의 총 합이 n이 되는 $a_{1}, …, a_{k}g$짜리 독립된 고리들을 만들고 싶다면, 한 번 푸는 걸로 $a_{1}$을, 또 한 번 푸는 걸로 $a_{2}$를 만들 수 있고, 이처럼 점점 하나씩 풀어가다가, $a_{(k-1)}g$짜리 고리를 만들기 위해 풀고나면, 나머지는 $a_{k}g$ 짜리가 되므로, 총 k - 1번만 풀어도 k개의 고리들을 만들 수 있습니다. 이를 통해, 우리는 순서에 상관없이, (최종적으로 남아있는 풀어진 고리들의 수 - 1)이 구하고자하는 횟수임을 알 수 있습니다.
+
+## 풀이
+
+이제 우리는 만드는 순서는 상관없으므로, N개의 고리들을 이용해 다 만든 이후, 남아있는 수만 알아도 답을 구할 수 있다는 것을 알게 되었습니다. 그렇다면, 이를 위해 가장 작은 무게부터 하나씩 만들어보도록 하겠습니다.
+
+1g짜리 고리는, 어떠한 조합으로도 만들 수 없고, 단일고리 하나가 무조건 존재해야합니다. 그러므로 n이 1이 아닌 경우, 적어도 하나의 1g 고리를 만들어야합니다.
+
+2g 고리의 경우, 1g과 n-1g의 고리가 있다면, n-1이 2 이하가 아닌 경우 무조건 하나 만들어야함을 알 수 있습니다.
+
+그렇다면, 3g은 어떻게 될까요? 이 때, 남아있는 고리는 1, 2, n-3g이기 때문에, 항상 1, 2g을 조합하여 3g을 만들 수 있고, 더 만들 필요가 없습니다.
+
+4g을 확인하면 앞선 3g과 같이 1, 2, n-3g이 남아있습니다. 우리는 1, 2g을 이용해 1~3g을 모두 만들 수 있기 때문에, n-3이 4g이하라면 만드는 것이 가능하지만, 아닐 경우 1~4g 하나를 만들어야 한다는 것을 알 수 있습니다.
+
+만약, 우리가 1, 2, 4g짜리 고리를 만들게 되면, 그 이후엔 1, 2, 4g을 이용해 1~7g까지의 모든 조합을 만들 수 있게 됩니다. 더 이상 만들 수 없는 경우는, 나머지 고리가 8g 초과일 때가 되므로, 1~8g을 추가해야 할 것입니다.
+
+규칙을 보신다면, 아마 고리를 2배씩 늘리면서, 필요한 고리 중 가장 최대의 길이로 잘라내야한다는 것을 알 수 있을 것입니다. 그렇다면 실제로 맞는 방법인지 증명해봅시다.
+
+a1, a2, …, ak g의 고리를 이용해, 1~p g(p = a1 + … + ak)까지 모든 조합을 만들 수 있다고 합시다. 이 때, 우리는 남아있는 고리가 p + 1g 초과일 경우, 항상 p + 1g을 만들어 낼 수 없기 때문에, 1~p + 1g 짜리 고리를 만들어야하고, 남아있는 고리는 항상 이보다 길이가 크기 때문에 언제나 만들어 낼 수 있습니다.
+
+이 때, p + 1g짜리 고리를 만든다면, 1~p g, p + 1 ~ 2*p + 1 = 1 ~ 2*p + 1 g을 모두 만들 수 있는데 반해, 1~p g짜리 고리를 만들면 최대 1 ~ 2 * p g만 만들 수 있게 되므로, 최대한 많은 경우의 수를 만들기 위해선, 1~p g짜리를 만들 때, 이를 p + 1g짜리 고리를 만드는 것으로 대체해도 상관 없게 됩니다. 만약에 p + 1g짜리 고리를 만들 수 있다면, 남아있는 고리가 p g 이하라는 것이므로, 어차피 모든 경우를 만들 수 있게 되어, 우리는 매 순간, 만들 수 있는 가장 큰 고리를 만드는 것이 항상 좋은 답을 만든다는 것을 알 수 있습니다.
+
+이를 1g부터 계속 반복해나가면, 우리는 항상 2의 거듭제곱 꼴의 고리들이 필요하고, 남아있는 고리가 필요한 고리보다 더 작거나 같아질 경우까지 만들면, 언제나 원하는 무게를 만들어낼 수 있게 됩니다.
+
+그리고, 우리는 이를 1g이 무조건 필요하다는 것을 증명했고, 이후에 만들어지는 고리들은, 존재하지 않으면 답을 만들어낼 수 없는 고리들 중, 가장 길이가 긴 고리들을 이용해 만들었기 때문에, 이보다 더 짧은 고리들을 쓴다면 항상 우리가 구한 답보다 더 크거나 같다는 것을 알 수 있습니다.
+즉, 다른 방법으로도 답을 만들 수 있다면, 그 고리들에서 합치거나 길이를 길게 나누는 것으로 항상 우리가 만들어낸 답과 같은 형태를 만들 수 있어, 이 방법으로 구한 것이 항상 답이 된다는 것을 알 수 있습니다.
+
+이는 고리의 크기를 2배씩 늘리면서, 주어진 n보다 클 때까지만 확인하면 되기 때문에, 총 O(lgN)에 문제를 해결할 수 있습니다.
+
 # 코드
 
-## 버스 노선
+## 짐 정리
 
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Data{ int x, y, idx; } arr[2000010];
+int n, min1, res;
+int arr[10010], tarr[10010], visit[10010], table[100010];
 
-int n, m, cnt;
-int carr[500010];
-
-bool compare(Data d1, Data d2){
-	if(d1.x == d2.x) return d1.y > d2.y;
-	return d1.x < d2.x;
-}
 int main(){
-	int i, now;
-    scanf("%d %d",&n, &m);
-    for(i = 0; i < m; i++){
-        scanf("%d %d",&arr[cnt].x, &arr[cnt].y);
-        arr[cnt].idx = i + 1;
-        if(arr[cnt].x > arr[cnt].y){
-            arr[cnt].y += n;
-            cnt++;
-        }
-        else{
-            arr[cnt + 1].x = arr[cnt].x + n;
-            arr[cnt + 1].y = arr[cnt].y + n;
-            arr[cnt + 1].idx = i + 1;
-            cnt += 2;
-        }
-    }
-	sort(arr,arr+cnt,compare);
-	now = arr[0].y;
-    for(i = 1; i < cnt; i++){
-        if(arr[i].y <= now) carr[arr[i].idx] = 1;
-        now = max(arr[i].y, now);
-    }
-	cnt = 0;
-    for(i = 1; i <= m; i++){
-        if(!carr[i]) printf("%d ", i);
-    }
+	int i, now, nmin, r, cnt;
+	scanf("%d", &n);
+	for(i = 1; i <= n; i++) scanf("%d", &arr[i]), tarr[i] = arr[i];
+	sort(tarr + 1, tarr + n + 1);
+	min1 = tarr[1];
+	for(i = 1; i <= n; i++) table[tarr[i]] = i;
+	for(i = 1; i <= n; i++){
+		if(visit[i] || table[arr[i]] == i) continue;
+		now = i;
+		cnt = 0;
+		r = 0;
+		nmin = arr[i];
+		while(!visit[now]){
+			visit[now] = 1;
+			r += arr[now];
+			nmin = min(nmin, arr[now]);
+			now = table[arr[now]];
+			cnt++;
+		}
+		res += r;
+		res += min((cnt - 2) * nmin, (cnt + 1) * min1 + nmin);
+	}
+	printf("%d", res);
 	return 0;
 }
 ```
 
-## 햄버거 분배
+## 개미
 
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
-int n, k, res;
-char arr[20010];
+int n, m, tt, a, b, t;
 
 int main(){
-	int i = 0, j = 0;
-	scanf("%d %d %s", &n, &k, arr);
-	while(i < n){
-		while(j < i - k) j++;
-		if(arr[i] == 'P'){
-			while(j <= i + k && j < n){
-				if(arr[j] == 'H'){ res++, j++; break; }
-				j++;
-			}
-		}
-		i++;
+    int temp;
+    scanf("%d %d %d %d %d", &n, &m, &a, &b, &t); tt=t;
+    temp = min(t, n - a); a = a + temp; t -= temp;
+    t = t % (2 * n); temp = min(t, n); a -= min(t, n); t -= temp; a += t; t = tt;
+    temp = min(t, m - b); b = b + temp; t -= temp;
+    t = t % (2 * m); temp = min(t, m); b -= min(t, m); t -= temp; b += t;
+    printf("%d %d", a, b);
+    return 0;
+}
+```
+
+## Black Chain
+
+```cpp
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+
+ll n, sum = 7, addsum = 4;
+
+int main(){
+	int i, cnt = 1;
+	scanf("%lld", &n);
+	if(n == 1){ printf("0"); return 0; }
+	while(true){
+		if(n <= sum) break;
+		sum += addsum; sum += sum + 1; addsum *= 2;
+		cnt++;
 	}
-	printf("%d", res);
+	printf("%d", cnt);
 	return 0;
 }
 ```
