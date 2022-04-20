@@ -78,7 +78,7 @@ $\ell(v)$의 길이를 생각하면 $k = O(\log n)$이고, 모든 수의 범위�
 
 $0, 1, \ast$로 이루어진 길이가 같은 두 ternary string $S = s _ {1}\cdots s _ {l}, T = t _ {1}\cdots t _ {l}$를 생각해봅시다. $S, T$의 hamming distance $D _ {H}(S, T)$를 $\sum _ {i=1}^{l} f(s _ {i}, t _ {i})$로 정의합니다. 이 때 comparator $f(x, y)$는
 
-$f(x, y) = \begin{cases} 1 & (\lbrace x, y\rbrace = \lbrace 0, 1\rbrace) \\ 1 & (\text{otherwise})\end{cases}$
+$f(x, y) = \begin{cases} 1 & (\lbrace x, y\rbrace = \lbrace 0, 1\rbrace) \\ 0 & (\text{otherwise})\end{cases}$
 
 로 정의합니다. 즉 기존의 binary string에 대한 hamming distance에 모든 점과 거리가 $0$인 문자 $\ast$를 추가한 문자열입니다. $l$ 차원 공간에 그려진 모습 때문에 이 문자열들의 공간을 "squashed cube"라고도 부릅니다. 다음은 실제 $K _ {4}$를 3차원 squashed cube에 그린 모습입니다.
 
