@@ -60,11 +60,11 @@ Training set $T \subseteq \mathbb{R}^{d}$라고 둡시다.
 
 $V _ {p}$들의 interior point들은 서로 겹치지 않고, boundary는 겹칠 수 있습니다. cell들의 유한 intersection으로 나타낼 수 있는 집합을 face라고 두고, $d-1$차원짜리 face를 *wall*, $d-2$차원짜리 face를 *junction* 이라고 두겠습니다. 익숙한 2차원 그림의 경우 wall은 변(side), junction은 꼭짓점에 대응됩니다. $d > 2$일 때도 junction $j$에 수직한 평면으로 voronoi diagram을 잘라서 그 단면을 보면 $j$를 포함하는 wall은 반직선으로, 그리고 $j$를 포함하는 cell은 cone으로 표현됩니다.
 
-![voronoi diagram](/assets/images/tamref21apr/voronoi _ cell.png)
+![voronoi diagram](/assets/images/tamref21apr/voronoi_cell.png)
 
 만약 모든 점이 general position에 있다면 - 임의의 $d + 2$개의 점이 같은 sphere 위에 존재하지 않다면 - 모든 단면에는 3개의 반직선과 3개의 cone이 존재합니다. 아래는 2차원에서 non general position에 있는 voronoi diagram을 나타냅니다.
 
-![voronoi diagram with non general position](/assets/images/tamref21apr/non _ general _ voronoi.png)
+![voronoi diagram with non general position](/assets/images/tamref21apr/non_general_voronoi.png)
 
 $2$차원에서 dual graph로 정의되던 delaunay graph도 비슷하게 정의할 수 있습니다. 각 cell을 정점으로 하고, 두 cell의 교집합이 wall일 때 간선을 이어준 것을 delaunay graph라고 부릅니다. 만약 모든 점이 general position에 있다면 delaunay graph는 chordal graph가 되고 이를 delaunay triangulation이라고도 부릅니다. 물론 소개할 알고리즘은 non-general position 세팅에서도 잘 작동합니다.
 
@@ -135,7 +135,7 @@ $\overline{p _ i}$가 $\overline{P} + O$의 convex hull 위에 존재한다면, 
 
 엄밀히 state하기 위해선 위상수학 용어가 필요하지만, 여기서는 그리드의 voronoi diagram을 이용하는 것으로 대체합니다. Eppstein (2022)의 논문 Figure를 인용합니다.
 
-![grid voronoi](/assets/images/tamref21apr/grid _ voronoi.png)
+![grid voronoi](/assets/images/tamref21apr/grid_voronoi.png)
 
 위 그림에서 $\partial(B1)$은 굵은 선으로 표기된 바깥쪽 경계 $K _ {1}$, R3와 맞닿은 안쪽 경계 $K _ {2}$를 연결 컴포넌트로 갖습니다. 이 때 $K _ {1} = \partial(B1 \cup R3)$, $K _ {2} = \partial(R3)$가 성립합니다. 단, $K$의 side가 반드시 한 class로만 이루어져 있을 필요가 없다는 것에 주의하세요.
 
