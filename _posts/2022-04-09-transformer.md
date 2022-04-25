@@ -14,13 +14,13 @@ tags: ['AI']
 
 Transformer가 발표되기 이전 자연어처리를 위한 language model은 주로 LSTM [1], GRU [2]과 같은 recurent neural networks (RNNs) 나 Encoder-decoder 구조를 가졌다. 예를 들어 “ABCD”로 이루어진 문장을 “XYZ”로 번역하는 machine translation 모델의 경우, A, B, C, D 각 단어를 LSTM의 각 cell의 입력으로 넣어주고, X, Y, Z 각 번역된 단어를 각 cell의 출력으로 얻는 것이다. (그림 1)
 
-<img href="/assets/images/transformer_1/1.png" width="500px">
+![](/assets/images/transformer_1/1.png)
 
 *그림 1. Neural machine translation. \<eos>는 문장의 끝을 의미한다. [3]*
 
 사과, apple, リンゴ는 모두 다른 모양새지만 의미는 같다. 결국 사과, apple, リンゴ라는 단어는 “사과”라는 의미를 표현하는 방식이 다른 것뿐이다. 표현(representation)을 의미(latent vector)로 바꾸는 것을 encoding, 의미를 표현으로 바꾸는 것을 decoding이라 하고, 표현을 의미로 바꾸어 다시 다른 방식의 표현으로 바꾸는 모델을 encoder-decoder 모델이라고 한다. Machine translation에서 서로 다른 표현이란 서로 다른 언어를 뜻하지만, encoder-decoder 구조는 그외에도 다양한 딥러닝 태스크에서 사용될 수 있다. 이미지와 segmentation도 결국은 한 scene의 서로 다른 표현 방식이다. (그림 2) 이미지와 caption도 마찬가지다. [4]
 
-<img href="/assets/images/transformer_1/2.png" width="500px">
+![](/assets/images/transformer_1/2.png)
 
 *그림 2. SegNet [5]*
 
@@ -36,19 +36,19 @@ $\text{A}(Q, K, V) = \text{softmax}\bigg(\dfrac{Q W_Q W_K^T K^T}{\sqrt{L}}\bigg)
 
 Multi-head attention은 이러한 scaled dot-product attention을 stack한 구조로, 서로 다른 parameter matrices를 통해 입력된 정보를 서로 다른 관점에서 attention할 수 있다. 이때 각각의 scaled dot-product attention를 head라 한다.
 
-<img href="/assets/images/transformer_1/3.png" width="500px">
+![](/assets/images/transformer_1/3.png)
 
 *그림 3. (좌) Scaled Dot-Product Attention (우) Multi-head Attention*
 
 다시 “The Law will never be perfect, but its application should be just.”로 돌아가서, 이 문장을 multi-head attention에 입력했을 때의 attention 가중치를 시각화한 결과를 보자. 서로 다른 색은 서로 다른 head를 의미한다. 첫 번째 attention head는 ‘its’를 이해하는데 가장 중요한 ‘Law’를 매우 높은 가중치로 전달하고 있고, 두 번째 attention head는 ‘its’와 관련이 있는 ‘Law’, ‘application’을 높은 가중치로 전달하고 있는 것을 확인할 수 있다.
 
-<img href="/assets/images/transformer_1/4.png" width="500px">
+![](/assets/images/transformer_1/4.png)
 
 *그림 4. 두 개의 attention head로 이루어진 multi-head attention.*
 
 Transformer의 전체 구조는 아래와 같다. Embedding layer을 통과한 input과 output은 반복되는 별개의 모듈을 통과하는데, decoder의 두 번째 multi-head attention은 encoder의 output을 value와 key로 사용한다.  
 
-<img href="/assets/images/transformer_1/5.png" width="500px">
+![](/assets/images/transformer_1/5.png)
 
 *그림 5. Transformer model architecture*
 
@@ -56,7 +56,7 @@ Transformer의 전체 구조는 아래와 같다. Embedding layer을 통과한 i
 
 Self-attention은 기존에 사용되던 recurrent layer나 convolutional layer에 비해 낮은 computational complexity를 가진다. 또 recurrent한 구조를 취하지 않으므로 계산을 병렬처리할 수 있어 방대한 양의 데이터를 사용하는 language model에 적합하다.
 
-<img href="/assets/images/transformer_1/6.png" width="500px">
+![](/assets/images/transformer_1/6.png)
 
 *그림 6. Computational complexity 비교. n은 문장의 길이를, k는 convolutional layer의 kernel 크기를, d는 embedding의 차원을 의미한다.*
 
@@ -66,7 +66,7 @@ Self-attention은 기존에 사용되던 recurrent layer나 convolutional layer�
 
 Transformer을 기반으로 한 모델들은 현재 자연어처리의 다양한 태스크에서 기록을 갈아치우며 선전하고 있다. 그러나 transformer 역시 큰 데이터셋을 필요로 하고 학습에 긴 시간이 필요한 등의 단점이 있다. 그런만큼 소규모 연구실이나 개인이 transformer을 학습하기 어려워 대기업에서 발표한 pretrained model을 사용하는 경우가 많다. 이렇게 대기업이 주도하는 연구 문화에 대항해 쉽게 transformer을 사용할 수 있는 시스템을 제공하는 [단체](https://huggingface.co/)도 존재한다.
 
-<img href="/assets/images/transformer_1/7.png" width="500px">
+![](/assets/images/transformer_1/7.png)
 
 *그림 7. Hugging Face*
 
