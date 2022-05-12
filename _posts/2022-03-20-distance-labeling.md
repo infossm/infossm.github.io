@@ -26,9 +26,9 @@ tags: [graph-theory, divide-and-conquer]
 
 ### Heavy-Light Decomposition (HLD)
 
-정점이 $\{1, \cdots, n\}$인 rooted tree $T$에 대해, $T$의 heavy-light decomposition $\mathcal{H} _ {T} = \{(r _ {i}, S _ {i})\} _ {i = 1}^{h}$ 를 정의합시다.
+정점이 $\lbrace 1, \cdots, n\rbrace$인 rooted tree $T$에 대해, $T$의 heavy-light decomposition $\mathcal{H} _ {T} = \lbrace (r _ {i}, S _ {i})\rbrace _ {i = 1}^{h}$ 를 정의합시다.
  
-- 각 $S _ {i}$는 $\{1, \cdots, n\}$의 부분집합으로 직선을 이루되, $r _ {i}$를 시조로 하는 조상-자손 관계를 이룹니다. 보통 $S _ {i}$를 "(heavy) chain", $r _ {i}$를 "$S _ {i}$의 head"라고 부릅니다.
+- 각 $S _ {i}$는 $\lbrace 1, \cdots, n\rbrace$의 부분집합으로 직선을 이루되, $r _ {i}$를 시조로 하는 조상-자손 관계를 이룹니다. 보통 $S _ {i}$를 "(heavy) chain", $r _ {i}$를 "$S _ {i}$의 head"라고 부릅니다.
 - 임의의 두 정점 $u, v$에 대해 두 점을 잇는 경로 위의 서로 다른 chain은 $O(\log n)$개입니다.
 
 - $T$의 HLD $\mathcal{H} _ {T}$는 $O(n)$ 시간에 찾을 수 있습니다. [링크](https://codeforces.com/blog/entry/53170)
@@ -78,7 +78,7 @@ $\ell(v)$의 길이를 생각하면 $k = O(\log n)$이고, 모든 수의 범위�
 
 $0, 1, \ast$로 이루어진 길이가 같은 두 ternary string $S = s _ {1}\cdots s _ {l}, T = t _ {1}\cdots t _ {l}$를 생각해봅시다. $S, T$의 hamming distance $D _ {H}(S, T)$를 $\sum _ {i=1}^{l} f(s _ {i}, t _ {i})$로 정의합니다. 이 때 comparator $f(x, y)$는
 
-$f(x, y) = \begin{cases} 1 & (\{x, y\} = \{0, 1\}) \\ 1 & (\text{otherwise})\end{cases}$
+$f(x, y) = \begin{cases} 1 & (\lbrace x, y\rbrace = \lbrace 0, 1\rbrace) \\ 0 & (\text{otherwise})\end{cases}$
 
 로 정의합니다. 즉 기존의 binary string에 대한 hamming distance에 모든 점과 거리가 $0$인 문자 $\ast$를 추가한 문자열입니다. $l$ 차원 공간에 그려진 모습 때문에 이 문자열들의 공간을 "squashed cube"라고도 부릅니다. 다음은 실제 $K _ {4}$를 3차원 squashed cube에 그린 모습입니다.
 
@@ -144,7 +144,7 @@ $d _ {G}(u, v) = d _ {T}(u, z) + \sum _ {x \in (z, v]} \delta _ {u}(p(x), x)$
 - $z \in \mathrm{hp}(u)$인 경우 그냥 $d _ {T}(u, z) \in \mathrm{hpd}(u)$입니다.
 - $z \in \mathrm{hp}(v)$인 경우, $d _ {T}(u, z) = d _ {T}(u, r) - (d _ {T}(v, r) - d _ {T}(v, z))$ 로 계산할 수 있습니다.
 
-따라서 $x \in (z, v]$에 대해 $\delta _ {u}(p(x), x)$를 $\ell(u)$가 모두 들고 있기만 하면 충분합니다. 이 때 정점 $x$의 dfs order (on $T$)를 $\mathrm{dfs}(x) \in \{0, \cdots, n-1\}$라고 두면, $\mathrm{dfs}(x) \in (\mathrm{dfs}(u), \mathrm{dfs}(u) + \frac{n}{2}]$에 대해서만 $\delta _ {u}(p(x), x)$의 값을 저장해두면 충분합니다. 이 때 $\mathrm{dfs}(u) \ge n/2$이면 circular하게 생각하여 $(\mathrm{dfs}(u), n-1] \cup [0, \mathrm{dfs}(u) - n/2]$의 범위를 저장합니다. 이 데이터를 $\Delta _ {u}$라고 하겠습니다.
+따라서 $x \in (z, v]$에 대해 $\delta _ {u}(p(x), x)$를 $\ell(u)$가 모두 들고 있기만 하면 충분합니다. 이 때 정점 $x$의 dfs order (on $T$)를 $\mathrm{dfs}(x) \in \lbrace 0, \cdots, n-1\rbrace$라고 두면, $\mathrm{dfs}(x) \in (\mathrm{dfs}(u), \mathrm{dfs}(u) + \frac{n}{2}]$에 대해서만 $\delta _ {u}(p(x), x)$의 값을 저장해두면 충분합니다. 이 때 $\mathrm{dfs}(u) \ge n/2$이면 circular하게 생각하여 $(\mathrm{dfs}(u), n-1] \cup [0, \mathrm{dfs}(u) - n/2]$의 범위를 저장합니다. 이 데이터를 $\Delta _ {u}$라고 하겠습니다.
 
 일반성을 잃지 않고 $\mathrm{dfs}(u) < \mathrm{dfs}(v)$라고 하면 모든 $x \in (z, v]$에 대해 $\mathrm{dfs}(x) \in [\mathrm{dfs}(u) + 1, \mathrm{dfs}(v) - 1]$입니다. 따라서 모든 $\delta _ {u}(p(x), x)$값이 $\Delta _ {u}$에 들어가거나, $\delta _ {v}(p(x), x)$가 $\Delta _ {v}$에 들어가게 됩니다. 두 경우 모두 $d _ {G}(u, v)$를 계산하는 데 문제가 없습니다. 후자의 경우에 식을 $v$ 기준으로 다시 쓰면 되기 때문이죠.
 
@@ -171,8 +171,8 @@ Weight를 균등하게 $\frac{1}{n}$으로 줄 경우, $S$는 $G - S$의 연결 
 이러한 sublinear-separator property 덕에, $O(\sqrt{n} \log n)$ labeling scheme을 바로 만들 수 있습니다.
 
 $G$의 separator $S$를 잡고, $G _ {1}, \cdots, G _ {k}$를 $G - S$의 connected component라고 합시다. 이 때
-- $v \in G _ {i}$이면, $\ell _ {G}(v) = \ell _ {G _ {i}}(v) + \{d(v, u) : u \in S\}$
-- $v \in S$이면, $\ell _ {G}(v) = \{d(v, u) : u \in S\}$
+- $v \in G _ {i}$이면, $\ell _ {G}(v) = \ell _ {G _ {i}}(v) + \lbrace d(v, u) : u \in S\rbrace$
+- $v \in S$이면, $\ell _ {G}(v) = \lbrace d(v, u) : u \in S\rbrace$
 
 와 같이 recursive하게 만들어 주면
 
@@ -191,7 +191,7 @@ Gawrychowski (2016)에서는 이 bound를 $O(\sqrt{n})$으로 발전시켰습니
 
 ### Simple cycle separator
 
-Separator $S$가 simple cycle 형태면 큰 장점이 있는데, $S = \{(u _ {0} = u _ {n}), u _ {1}, \cdots, u _ {n}, (u _ {n+1} = u _ {1})\}$으로 쓰면 모든 정점 $v$에 대해 $\lvert d(v, u _ {i}) - d(v, u _ {i+1}) \rvert \le 1$이 성립하기 때문입니다. 따라서 $d(v, u _ {i})$ 대신 그 변화량을 저장하면 $O(\sqrt{n})$ 길이의 label을 만들 수 있습니다.
+Separator $S$가 simple cycle 형태면 큰 장점이 있는데, $S = \lbrace (u _ {0} = u _ {n}), u _ {1}, \cdots, u _ {n}, (u _ {n+1} = u _ {1})\rbrace$으로 쓰면 모든 정점 $v$에 대해 $\lvert d(v, u _ {i}) - d(v, u _ {i+1}) \rvert \le 1$이 성립하기 때문입니다. 따라서 $d(v, u _ {i})$ 대신 그 변화량을 저장하면 $O(\sqrt{n})$ 길이의 label을 만들 수 있습니다.
 
 하지만 모든 평면그래프에 simple cycle separator가 존재하지는 않습니다. 당장 outer face 하나만 있는 트리를 생각할 수 있습니다. 다행히도, $2$-connected planar graph에는 비슷한 정리가 성립하는 것이 알려져 있습니다. $2$-connected graph란 아무 정점을 하나 제거해도 connectivity가 유지되는 그래프를 말합니다. 모든 Simple cycle은 $2$-connected입니다.
 
@@ -199,7 +199,7 @@ Separator $S$가 simple cycle 형태면 큰 장점이 있는데, $S = \{(u _ {0}
 
 즉, 우리는 기존의 그래프에 정점과 간선을 더해 triangulation한 그래프 $G'$을 찾고, Miller's theorem을 사용하여 $G'$의 simple cycle separator $S'$을 찾습니다. 이 때 $S = V(G) \cap S'$ 역시 $G$의 separator가 됩니다. 물론 $S$는 simple cycle이 아니지만, $\lvert d(v, u _ {i}) - d(v, u _ {i+1}) \rvert \le d(u _ {i}, u _ {i+1})$가 작게 유지되기만 하면 됩니다. 
 
-> **Theorem (Gawrychowski, 2016)** $G \in \mathrm{Planar} _ {n}$에 대해, $\sum _ {i} \log d(u _ {i}, u _ {i+1}) = O(\sqrt{n}))$인 separator $S = \{u _ {1}, \cdots, u _ {n}\}$이 존재한다.
+> **Theorem (Gawrychowski, 2016)** $G \in \mathrm{Planar} _ {n}$에 대해, $\sum _ {i} \log d(u _ {i}, u _ {i+1}) = O(\sqrt{n}))$인 separator $S = \lbrace u _ {1}, \cdots, u _ {n}\rbrace$이 존재한다.
 
 이 정리가 주어져 있으면 $\mathrm{Planar} _ {n}$의 distance labeling problem이 해결되는 것은 명백합니다. 위 정리를 증명하는 것으로 글을 마치겠습니다.
 
