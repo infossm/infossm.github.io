@@ -10,7 +10,7 @@ tags:
 
 그래프 이론과 확률. 왠지 어울리지 않을 것 같은 두 개념을 처음으로 엮은 것은 헝가리의 수학자 폴 에르되시 (Paul Erdős)였습니다. 그는 확률을 이용해서 그래프 이론과 조합론 분야의 정리를 증명하는 "확률론적 방법론" (Probabilistic Method)을 창안했습니다. 이번 글에서는 확률론적 방법론이 어떤 방식의 증명 방법인지 몇 가지 정리를 통해 알아봅시다.
 $
-\newcommand{\Pr}{\mathbf{Pr}}
+\renewcommand{\Pr}{\mathbf{Pr}}
 \newcommand{\Ex}{\mathbf{E}}
 $
 
