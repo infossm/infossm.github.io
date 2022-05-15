@@ -43,7 +43,7 @@ Rasta의 구조는 아래와 같습니다.
 
 MiMC의 구조는 아래와 같습니다.
 
-![](/assets/images/Large-S-box/MiMC.png)
+![](/assets/images/Large-S-box/mimc.png)
 
 MiMC에서는 $F(X) = x^3$이라는 아주 단순한 형태의 S-box를 사용합니다. 그리고 선형 연산은 LowMC에서와 같이 단순히 키와 라운드 상수 $c_i$를 XOR하는 방식으로 이루어집니다. 이러한 구조적인 특성상 SNARK라는 이름의 영지식 증명을 할 때 효율적임을 논문의 주 contribution으로 내세우고 있습니다. 다만 interpolation attack이라는 이름의 대수적 공격으로부터 안전하기 위해 라운드의 수는 70 이상으로 굉장히 큰 편입니다.
 
