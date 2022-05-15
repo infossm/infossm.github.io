@@ -28,7 +28,7 @@ S-box를 필드에 대한 역원으로 두었을 때 암호학적 공격으로�
 
 Rasta의 구조는 아래와 같습니다.
 
-![](/assets/images/Large-S-Box/Rasta.png)
+![](/assets/images/Large-S-box/Rasta.png)
 
 굵은 실선으로 되어있는 부분이 암호화 루틴이고 $A$로 표시된 선형층과 $S$로 표시된 비선형층을 반복해서 지나감을 확인할 수 있습니다. 선형층은 블록의 번호 $i$와 nonce $N$을 가지고 만들어지며, 입력을 $GF(2)$의 길이 $n$ 벡터로 간주하고 미리 정의된 행렬 A와 곱하는 방식입니다.
 
@@ -43,7 +43,7 @@ Rasta의 구조는 아래와 같습니다.
 
 MiMC의 구조는 아래와 같습니다.
 
-![](/assets/images/Large-S-Box/MiMC.png)
+![](/assets/images/Large-S-box/MiMC.png)
 
 MiMC에서는 $F(X) = x^3$이라는 아주 단순한 형태의 S-box를 사용합니다. 그리고 선형 연산은 LowMC에서와 같이 단순히 키와 라운드 상수 $c_i$를 XOR하는 방식으로 이루어집니다. 이러한 구조적인 특성상 SNARK라는 이름의 영지식 증명을 할 때 효율적임을 논문의 주 contribution으로 내세우고 있습니다. 다만 interpolation attack이라는 이름의 대수적 공격으로부터 안전하기 위해 라운드의 수는 70 이상으로 굉장히 큰 편입니다.
 
@@ -51,7 +51,7 @@ MiMC에서는 $F(X) = x^3$이라는 아주 단순한 형태의 S-box를 사용�
 
 ([논문](https://eprint.iacr.org/2021/692.pdf)) Rain은 [영지식 증명 기반 전자서명](http://www.secmem.org/blog/2021/06/20/Improved-Non-Interactive-ZK/)을 효율적으로 만들기 위한 일방향 함수로 제안된 블록 암호입니다. Rain의 구조 또한 굉장히 단순합니다.
 
-![](/assets/images/Large-S-Box/Rain.png)
+![](/assets/images/Large-S-box/Rain.png)
 
 S-box는 $GF(2^n)$에 대한 역원이고, 행렬 곱셈($M_i$)과 키 및 라운드 상수의 XOR을 반복 적용합니다. 라운드 수는 기본적으로 3을 추천하나 더 안전하게 하고 싶으면 4를 사용해도 됩니다.
 
