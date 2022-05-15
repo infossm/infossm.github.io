@@ -135,7 +135,7 @@ $$
 각각의 확률이 절반보다 크므로, $X < \frac{n}{2}$이면서 $\alpha(G) < a$인 그래프 $G$가 존재합니다. $X$개의 짧은 사이클 각각에서 최대 한 개의 정점을 제거하면 길이가 $l$ 이하인 사이클이 없는 그래프 $G'$을 얻을 수 있습니다. 즉, $\lvert V(G')\rvert > \frac{n}{2}$이고 $g(G') > l$입니다. 한편, 정점을 제거하는 것은 최대 독립 집합의 크기를 늘리지 않으므로, $\alpha(G') \le \alpha(G) < a$입니다. 마지막으로 이 그래프의 chromatic number를 계산해 봅시다.
 
 $$
-\chi(G') = \frac{\lvert V(G')\rvert}{\alpha(G')} > \frac{n/2}{a} \ge \frac{n/2}{(3\ln n) / p} = \frac{n/2}{3n^{1-\lambda}\ln n} = \frac{n^\lambda}{6\ln n}.
+\chi(G') \ge \frac{\lvert V(G')\rvert}{\alpha(G')} > \frac{n/2}{a} \ge \frac{n/2}{(3\ln n) / p} = \frac{n/2}{3n^{1-\lambda}\ln n} = \frac{n^\lambda}{6\ln n}.
 $$
 
 이는 $\lambda$가 얼마나 작든, $n \to \infty$일 때 무한대로 발산합니다. 따라서 충분히 큰 $n$을 잡으면 $\chi(G') > k$인 그래프 $G'$를 찾을 수 있습니다. $\blacksquare$
