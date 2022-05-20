@@ -1,5 +1,4 @@
 ---
-
 layout: post
 
 title: "Reverse Engineering of Generative Models"
@@ -7,7 +6,6 @@ title: "Reverse Engineering of Generative Models"
 author: antemrdm
 
 date: 2022-03-20
-
 ---
 
 # Introduction
@@ -64,9 +62,9 @@ date: 2022-03-20
 
 정리하자면, fingerprint의 속성들을 다양하게 파악하기 위해서 다양한 loss function을 사용해서 다양한 fingerprint를 만들었고, 그 (fingerprint, 그를 생성한 모델) 쌍을 model parsing의 학습 데이터 (input)으로 사용합니다.
 
-Model parsing은 추정된 생성 모델의 fingerprint를 사용해서 네트워크의 layer 수, block의 수, 각 block에 사용된 연산의 type 등과 같은 모델의 속성을 의미하는 모델의 hyperparameter들을 예측하는 새로운 문제를 의미합니다. 모델이 생성하는 딥페이크 이미지의 type에 영향을 주는 hyperparameter의 예시 중에는 training loss function이 있습니다. 단연하지만, loss function이 모델이 어떻게 학습될지를 결정하기 때문입니다. 결론적으로 모델의 network architecture와 training loss function 종류는 그 모델의 weight에 영향을 줄 것이고, 따라서 그 모델이 이미지를 생성하는 데 영향을 줄 것입니다. 이는 곁으로 보기에는 같은 모델이지만, hyperparameter에 따라서 각 모델을 구분하는 reverse engineering 접근에 포괄되는 내용입니다.
+Model parsing은 추정된 생성 모델의 fingerprint를 사용해서 네트워크의 layer 수, block의 수, 각 block에 사용된 연산의 type 등과 같은 모델의 속성을 의미하는 모델의 hyperparameter들을 예측하는 새로운 문제를 의미합니다. 모델이 생성하는 딥페이크 이미지의 type에 영향을 주는 hyperparameter의 예시 중에는 training loss function이 있습니다. 당연하지만, loss function이 모델이 어떻게 학습될지를 결정하기 때문입니다. 결론적으로 모델의 network architecture와 training loss function 종류는 그 모델의 weight에 영향을 줄 것이고, 따라서 그 모델이 이미지를 생성하는 데 영향을 줄 것입니다. 이는 곁으로 보기에는 같은 모델이지만, hyperparameter에 따라서 각 모델을 구분하는 reverse engineering 접근에 포괄되는 내용입니다.
 
-본 논문에서는 이러한 model parsing approach를 통해서,  임의의 모델이 딥페이크 이미지를 생성하는 데 사용하는 network architecture와 그 모델의 training loss function을 예측합니다. 연구진은 학습을 쉽게하기 위해 network architecture 내부의 일부 continuous parameter를 normalize했고, 또한 loss function 종류를 classify하기위해 hierarchical learning을 수행했습니다. 생성 모델은 일반적으로 자신의 network architecture와 training loss function으로 서로 구분되기 때문에, 딥페이크 이미지와 같은 생성된 이미지와 hyperparameter space를 mapping하는 것이 딥페이크 이미지를 생성한 모델의 feature를 이해하는 데 큰 도움을 된다는 아이디어의 확장인 것 같습니다. 이러한 접근이 개인적으로 인상깊었던 점이 논문을 소개하게 된 이유 중 하나입니다.
+본 논문에서는 이러한 model parsing approach를 통해서, 임의의 모델이 딥페이크 이미지를 생성하는 데 사용하는 network architecture와 그 모델의 training loss function을 예측합니다. 연구진은 학습을 쉽게하기 위해 network architecture 내부의 일부 continuous parameter를 normalize했고, 또한 loss function 종류를 classify하기위해 hierarchical learning을 수행했습니다. 생성 모델은 일반적으로 자신의 network architecture와 training loss function으로 서로 구분되기 때문에, 딥페이크 이미지와 같은 생성된 이미지와 hyperparameter space를 mapping하는 것이 딥페이크 이미지를 생성한 모델의 feature를 이해하는 데 큰 도움을 된다는 아이디어의 확장인 것 같습니다. 이러한 접근이 개인적으로 인상깊었던 점이 논문을 소개하게 된 이유 중 하나입니다.
 
 이 접근이 실제로 적용 가능한지를 테스트하기 위해서, MSU 연구진은 100개의 공개된 생성 모델로부터 생성된 100,000개의 가짜 이미지 셋을 사용했습니다. 각 생성 모델 당 1000개의 이미지를 사용한 셈입니다. 이때 사용된 각 생성 모델은 오픈 소스이며, 이미 생성된 이미지가 공개된 생성 모델에 대해서는 그 중에서 랜덤하게 1,000개의 이미지를 선택해서 사용했고 그렇지 않은 생성 모델에 대해서는 연구진에서 직접 1,00개의 이미지를 생성해서 사용했습니다. 테스트 이미지가 실제로는 알지 못하는 생성 모델에서 생성될 수 있다는 점을 고려하여, 연구팀은 서로 다른 분할된 데이터 셋을 사용하여 모델을 train하고 evaluate함으로써 cross-validation을 수행했습니다.
 
