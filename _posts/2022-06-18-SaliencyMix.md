@@ -14,9 +14,14 @@ ICLR 2021 논문인 SaliencyMix는, 기본적으로 CutMix를 기반으로 하�
 
 SaliencyMix의 설명에 앞서, 쉬운 이해를 위해 간단히 cutmix에 대해 설명하도록 하겠습니다.
 
-# CutMix
+# [CutMix](https://arxiv.org/abs/1905.04899)
 
-CutMix(
+ICCV 2019 논문인 CutMix는 image data augmentation 분야에서 당시 굉장히 강력하여 augmentation 분야에 엄청난 바람을 불었던 논문입니다. 그 아이디어와 구현 난이도의 간단함에 비해 굉장한 성능의 향상을 보여 당시에 가장 뜨거웠던 [Mixup](https://arxiv.org/abs/1710.09412)과 [Cutout](https://arxiv.org/abs/1708.04552)을 제치고 굉장히 좋은 data augmentation 성능을 보였습니다. 놀랍게도 그 아이디어는 mixup과 cutout이 가지고 있던 아이디어에서 간단한 변형을 준 것이어서 사람들이 쉽게 이해하고 적용할 수 있었습니다.
+
+CutMix는 augmentation 과정에서 랜덤하게 선택된 두 개의 이미지를 섞으려는 시도에서 시작합니다.
+
+기존에 있던 두 개의 이미지를 섞는 기법인 mixup의 경우, 랜덤으로 선택된 두 개의 이미지를 beta distribution에 따라 선택된 비율 $\lambda$에 따라 두 이미지를 pixel-wise 
+
 # [짐 정리 - KOI 2007 지역본선 중등부 4번](https://www.acmicpc.net/problem/2569)
 
 ## 풀이
