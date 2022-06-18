@@ -1,17 +1,22 @@
 ---
 layout: post
-title:  "Data Augmentation 1"
+title:  "SALIENCYMIX: A SALIENCY GUIDED DATA AUGMENTATION STRATEGY FOR BETTER REGULARIZATION"
 date:   2022-06-18 08:00:00
 author: VennTum
 tags: [data-structure, algorithm]
 ---
 
-# Data Augmentation
+# [SALIENCYMIX: A SALIENCY GUIDED DATA AUGMENTATION STRATEGY FOR BETTER REGULARIZATION](https://openreview.net/forum?id=-M0QkvBGTTq)
 
-이번 포스트에서도 '알고리즘 문제 접근 방법' 시리즈에서 진행했듯이 특정 문제를 해결하기 위해 가장 낮은 단계의 접근에서부터 최종 해법까지 해결해나가는 과정을 작성합니다.
+최근에 Data Augmentation 기법과 관련한 논문들을 읽을 일들이 있었습니다. 관련 자료들을 찾다가 saliency map을 이용하여 cutmix와 조합한 saliencymix에 대한 논문을 접했고 해당 논문의 기법을 사용할 일이 있었습니다. 그 내용이 상당히 쉽고 직관적이며 구현 및 사용에도 큰 어려움이 없어 꽤나 유용한데 반해, 이를 번역한 자료가 없는 것 같아 이참에 한글로 정리해보려 합니다.
 
-최대한 다양한 유형의 문제들을 다루어, 많은 문제 유형에서의 접근 방법에 대한 실마리를 드리는 역할을 하려 합니다.
+ICLR 2021 논문인 SaliencyMix는, 기본적으로 CutMix를 기반으로 하고 있습니다. 기존의 CutMix가 가지고 있던 한계점을 saliency detection을 통해 해결하는 방법을 제안하고 있으며, 실제로 CutMix보다 항상 더 나은 결과를 보이게 됩니다. 논문에서 사용된 기법을 읽어보면, 해당 논문이 직관적으로 CutMix가 가지고 있던 한계점을 극복하며, 평균적으로 더 나은 결과를 낼 수 있다는 결론을 이해하기 쉽습니다.
 
+SaliencyMix의 설명에 앞서, 쉬운 이해를 위해 간단히 cutmix에 대해 설명하도록 하겠습니다.
+
+# CutMix
+
+CutMix(
 # [짐 정리 - KOI 2007 지역본선 중등부 4번](https://www.acmicpc.net/problem/2569)
 
 ## 풀이
