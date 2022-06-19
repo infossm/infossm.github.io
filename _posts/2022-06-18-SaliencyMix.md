@@ -113,10 +113,33 @@ bbox의 크기를 선택하는 과정은 beta distribution에 따르는 특정�
 
 beta distribution에 사용하는 beta는 사용자가 직접 넣는 hyper parameter에 의해 결정됩니다.
 
-이렇게 구한 bbox가 실제 이미지의 크기 범위 밖으로 벗어나는 경우, 벗어난 영역만큼 반대로 bbox를 밀이서 이미지 영역을 선택하게 됩니다.
+이렇게 구한 bbox가 실제 이미지의 크기 범위 밖으로 벗어나는 경우, 벗어난 영역만큼 반대로 bbox를 밀어서 이미지 영역을 선택하게 됩니다.
 (해당 과정은 saliencymix code를 읽어보시면 수월하게 이해할 수 있습니다)
 
+## Experiment Result
 
+해당 논문에서는 이렇게 만들어진 saliency mix를 다양한 computer vision task에 적용하여 결과의 향상을 확인하였습니다.
+
+Image classification의 경우, Resnet, WideResNet에 해당하는 model들을 사용하여 학습을 진행하여 CIFAR-10, CIFAR-100, ImageNet 등의 image classfication을 위한 benchmark dataset들을 통해 top-1, top-5 error를 확인하였습니다.
+
+본 포스팅에서는 대략적인 경향과 결과에 대한 설명을 진행할 예정이며, 실험에 사용된 자세한 셋팅 조건은 논문을 참고해주시면 되겠습니다.
+
+![](/assets/images/VennTum/data_augmentation/saliencymix_paper_table_1.PNG)
+
+<center>CIFAR dataset에 대한 여러 data augmentation image classificatino result</center>
+
+위 테이블에서 확인할 수 있듯, CIFAR image dataset에서 saliency mix는 실제로 기존의 cutout과 cutmix에 비해서 더욱 개선된 top-1 error를 보임을 확인할 수 있습니다.
+
+![](/assets/images/VennTum/data_augmentation/saliencymix_paper_table_2.PNG)
+
+<center>ImageNet dataset에 대한 여러 data augmentation image classificatino result</center>
+
+또한 ImageNet에서도 saliency mix는 cutout, mixup, cutmix보다도 더 개선된 top-1, top-5 error를 보인다는 것을 확인할 수 있습니다.
+
+결과적으로 정확도를 기준으로 할 때에는, saliencymix는 기존에 목표로 하던 cutmix의 개선을 잘 이루어냈다는 것을 쉽게 알아볼 수 있습니다.
+또한, 논문에서 확인하게 되면 image classification task 뿐만 아니라, object detection에서도 개선된 성능을 보였으며, adversarial attack에 더욱 robust 해졌다는 점을 확인할 수 있습니다. 
+
+결과의 향상을 visualization을 통해서 확인하기 위해, 논문에서는 saliency mix 및 여러가지 data augmentation 기법들에 대해 CAM을 통해 
 
 ## 풀이
 
