@@ -176,7 +176,7 @@ Adversarial Attack에 대해 간단히 설명하면, image에 의도적인 손�
 
 결과의 향상을 visualization을 통해서 확인하기 위해, 논문에서는 saliency mix 및 여러가지 data augmentation 기법들에 대해 CAM을 통해서 모델이 주어진 이미지에서 특정 label에 해당하는 object를 찾기 위해 어떠한 feature들에 대한 activation이 높게 나타났는지 CAM을 통해 확인하였습니다.
 
-![](/assets/images/VennTum/data_augmentation/saliencymix_paper_table_5.PNG)
+![](/assets/images/VennTum/data_augmentation/saliencymix_paper_figure_4.PNG)
 
 <center>여러 data augmentation을 적용한 model의 CAM result</center>
 
