@@ -14,27 +14,36 @@ ICLR 2021 논문인 SaliencyMix는, 기본적으로 CutMix를 기반으로 하�
 
 SaliencyMix의 설명에 앞서, 쉬운 이해를 위해 간단히 cutmix에 대해 설명하도록 하겠습니다.
 
-# [CutMix](https://arxiv.org/abs/1905.04899)
+# [CutMix (2019)](https://arxiv.org/abs/1905.04899)
 
-ICCV 2019 논문인 CutMix는 image data augmentation 분야에서 당시 굉장히 강력하여 augmentation 분야에 엄청난 바람을 불었던 논문입니다. 그 아이디어와 구현 난이도의 간단함에 비해 굉장한 성능의 향상을 보여 당시에 가장 뜨거웠던 [Mixup](https://arxiv.org/abs/1710.09412)과 [Cutout](https://arxiv.org/abs/1708.04552)을 제치고 굉장히 좋은 data augmentation 성능을 보였습니다. 놀랍게도 그 아이디어는 mixup과 cutout이 가지고 있던 아이디어에서 간단한 변형을 준 것이어서 사람들이 쉽게 이해하고 적용할 수 있었습니다.
+ICCV 2019 논문인 CutMix는 image data augmentation 분야에서 당시 굉장히 강력하여 augmentation 분야에 엄청난 바람을 불었던 논문입니다. 그 아이디어와 구현 난이도의 간단함에 비해 굉장한 성능의 향상을 보여 당시에 가장 뜨거웠던 [Mixup (2017)](https://arxiv.org/abs/1710.09412)과 [Cutout (2017)](https://arxiv.org/abs/1708.04552)을 제치고 굉장히 좋은 data augmentation 성능을 보였습니다. 놀랍게도 그 아이디어는 mixup과 cutout이 가지고 있던 아이디어에서 간단한 변형을 준 것이어서 사람들이 쉽게 이해하고 적용할 수 있었습니다.
 
 CutMix는 augmentation 과정에서 랜덤하게 선택된 두 개의 이미지를 섞으려는 시도에서 시작합니다.
+
+## Mixup
 
 Mixup의 경우, 랜덤으로 선택된 두 개의 이미지를 beta distribution에 따라 선택된 비율 $\lambda$ 에 따라 두 이미지를 $\lambda$ 와 $(1-\lambda)$ 만큼 pixel-wise하게 섞어 새로운 이미지를 만들어 냅니다. 이렇게 만들어진 이미지의 라벨은 기존의 하나의 이미지의 라벨을 갖는 것이 아닌, 사용된 두 개의 이미지의 라벨을 해당 비율만큼 가지게 됩니다.
 이렇게 만들어진 이미지는 모델이 training data들 사이의 linear behavior를 가지게 해주어 overfitting과 adversarial data에 대한 robustness를 가지게 된다는 장점이 있습니다.
 
+## Cutout
+
 Cutout의 경우는 두 개의 이미지를 사용하는 기법은 아닙니다. 많은 기존의 data augmentation 기법들처럼 기존에 존재하는 training data에 변형을 주는 방식으로 새로운 data를 만들어내게 됩니다. 그 아이디어는 상당히 간단한데, 바로 기존에 존재하는 이미지의 특정 영역을 아예 제거해버리는 방법으로 새로운 이미지를 만들어내게 됩니다. 주어진 영역 중 어떤 영역을 선택하고 어떤 모양으로 선택하여 제거할 것인가는 논문에 여러 다양한 방법이 나와 있어 확인해보실 수 있습니다(결과적으로는 '영역의 크기' 이외에는 결과에 큰 차이가 없기는 합니다).
 Cutout이 가지는 의미는 이를 사용하여 학습을 진행한 모델의 activation 영역이 커진다는 점입니다. 즉, 주어진 이미지에서 라벨을 분류하기 위해 이미지에서 더 많은 feature들을 찾아내고 이를 사용하게 된다는 것입니다. 이는 cutout을 해석하는 과정에서 가장 크게 영향을 미치는 점입니다.
-mixup을 포함하여 최근에 많이 연구되는 data augmentation들이 많이 개선을 목표로 했던 점은 바로 모델이 이미지의 특정 영역, 즉, 가장 영향을 크게 미치는 feature에 집중하여 학습을 진행한다는 점이었습니다. 학습하는 과정에서 중요한 feature들에 집중하여 이를 학습하게 되는 경향이 있는데, 이는 조금 덜 중요한 feature들의 경우 덜 집중되거나 무시되는 경향을 만들어내고 결국 주어진 training data에 overfit하게 image robustness가 떨어지는 결과를 낳게 됩니다.
+mixup을 포함하여 최근에 많이 연구되는 data augmentation들이 많이 개선을 목표로 했던 점은 바로 모델이 이미지의 특정 영역, 즉, 가장 영향을 크게 미치는 feature에 집중하여 학습을 진행한다는 점이었습니다. 학습하는 과정에서 중요한 feature들에 집중하여 이를 학습하게 되는 경향이 있는데, 이는 조금 덜 중요한 feature들의 경우 덜 집중되거나 무시되는 경향을 만들어내고 결국 주어진 training data에 overfit하게 되며 robustness가 떨어지는 결과를 낳게 됩니다.
 
 이 과정에서 cutout은 주어진 이미지의 특정 영역을 제거하여, 해당 영역이 가지고 있던 feature를 이미지 상에서 제거하는 역할을 하게 됩니다. 즉, 이 과정에서 모델이 집중하던 feature가 이미지에서 제거되었다면, 나머지 영역들에 있는 feature들에 집중하는 역할을 하게 되며, 이 과정에서 기존 이미지에서는 집중하지 않았던 feature들을 찾아 모델이 학습할 수 있는 결과를 낳게 되어 성능의 향상을 만들어 냅니다.
 
+## CutMix
 
+CutMix는 Cutout을 기반으로 두고 있습니다. 기존의 Cutout의 경우, 특별한 이미지 영역을 선택하고 제거하기 때문에, 그 과정에서 해당 영역은 아예 아무런 정보가 없게 되어 정보의 손실을 일으키게 됩니다. 이를 해결하기 위해 cutout으로 제거한 영역을 training data의 또 다른 이미지 하나를 선택하고, 해당 영역만큼 다른 이미지의 영역으로 대체하여 2개의 이미지를 섞으려는 시도가 바로 CutMix 기법입니다.
 
-Cutout이 
+기존의 mixup의 경우, 두 이미지를 $\lambda$ 비율로 섞는 과정에서 원본 이미지의 객체가 다른 이미지로 덮이면서 실제 이미지의 왜곡이 일어나는 경우가 발생하게 되는 문제점이 있었습니다. 그러나 CutMix의 경우, 각각의 이미지가 존재하는 영역은 다른 이미지의 간섭을 받지 않기 때문에 각 이미지의 객체가 가지는 정보를 그대로 유지할 수 있게 됩니다.
 
+실제로 cutmix를 통해 생성된 이미지에서 각각의 이미지의 object를 잘 확인할 수 있는지 확인하기 위해 [CAM(Class Activation Map)](http://cnnlocalization.csail.mit.edu/Zhou_Learning_Deep_Features_CVPR_2016_paper.pdf)을 통해 확인할 때에, 섞인 이미지의 각각의 영역에서 object를 상당히 잘 구분해낸다는 것을 알 수 있습니다. 이 과정에서 모델은 각각의 object에 해당하는 feature에서 자기가 속한 이미지에서 제외된 영역만큼의 feature가 제거된 이미지가 되고, 이 과정은 해당 영역만큼 제거된 다른 영역들의 feature 집중할 수 있도록 하는 역할을 하게 됩니다.
 
-# [짐 정리 - KOI 2007 지역본선 중등부 4번](https://www.acmicpc.net/problem/2569)
+Cutmix는 여러가지 benchmark dataset들에 대해서 기존의 mixup과 cutout보다 더 나은 결과를 보이며 좋은 성능을 내는 data augmentation 기법이 되었습니다. 
+
+# [SaliencyMix (2020)](https://arxiv.org/abs/2006.01791)
 
 ## 풀이
 
