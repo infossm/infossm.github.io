@@ -89,7 +89,18 @@ saliency map이란 물체에서 시각적으로 중요한 영역, 객체에 해�
 
 <center>cv2를 통해 구한 배 이미지의 SaliencyMap</center>
 
+이러한 Saliency Map을 구하는 방법은 크게 두 가지가 존재합니다. 바로 Bottom-up approach와 Top-down approch입니다.
+각각에 대해 간단히 설명 하고 진행하도록 하겠습니다.
 
+Bottom-up approch의 경우, saliency map을 구하기 위해 고전적으로 사용해오던 unsupervised한 approch입니다. 특정 이미지에서 어떠한 영역이 중요한 영역인지 판단하는 과정을 다른 영역에 비해 pixel 값이 급격하게 변화가 일어나는 위치(밝기, 색상의 변경, 대비의 발생 등)를 찾고 이들을 사용하여 mapping을 진행하게 됩니다. 즉, 이를 위해서 해당 이미지가 어떠한 이미지인지, 어떠한 object를 포함하고 있는지에 대한 정보가 필요없이, 고전적인 계산 기법들을 통해 각 이미지 pixel들의 saliency score를 계산하여 구하게 됩니다. 이로 인해 이미지의 종류에 상관없이 사용할 수 있으며 이미지의 크기 등에 대해서도 robust한 결과를 보입니다.
+
+Top-down approach의 경우, 실제 label을 가진 training data를 통해 neural network를 학습시켜서 만들어내는 supervised-learning을 사용합니다. saliency detection에 대한 task를 해결하는 model을 만들어, 해당 NN을 이미 label이 분류되어 있는 dataset을 통해 학습을 진행합니다. 이렇게 만들어진 model의 경우, 특정 이미지에서 이미 학습을 진행했던 label에 대한 saliency detection을 model의 정확도만큼 잘 수행할 수 있게 됩니다. supervised-learning을 통해 학습 통해 pre-trained 된 model을 사용하기 때문에 기존의 bottom-up approach에 비해 성능이 더 좋은 경우가 많습니다.
+
+Saliencymix에서는 이러한 두 가지 중 bottom-up approach를 사용합니다. Top-down approach의 경우 특정 label들에 대해 학습을 진행해야 하기 때문에, 학습하는 과정에서 사용한 dataset에 대해 더 biased 된 경향을 보일 수 있어, 해당 논문에서는 label에 대한 정보를 알 수 없는 unseen image들에 대해서도 보편적으로 generalize하게 사용할 수 있는 bottom-up approch를 사용합니다.
+
+실제로 해당 논문에서는 OpenCV의 cv2에 내장되어있는 saliency map을 구하는 함수(cv2.saliency)를 통해 saliency map을 구합니다.
+
+(물론 해당 논문에서 bottom-up approch를 사용한 것이지, top-down approch를 통해 saliency map을 구하는 경우도 있습니다. 이에 대한 예시로 [puzzlemix (2020)](https://arxiv.org/abs/2009.06962)가 있습니다)
 
 
 ## 풀이
