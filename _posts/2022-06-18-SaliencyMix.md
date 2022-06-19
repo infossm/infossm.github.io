@@ -102,6 +102,21 @@ Saliencymix에서는 이러한 두 가지 중 bottom-up approach를 사용합니
 
 (물론 해당 논문에서 bottom-up approch를 사용한 것이지, top-down approch를 통해 saliency map을 구하는 경우도 있습니다. 이에 대한 예시로 [puzzlemix (2020)](https://arxiv.org/abs/2009.06962)가 있습니다)
 
+## BBox(Bounding Box)
+
+SaliencyMix는 이렇게 source image에 대한 saliency map을 구하고, 여기에서 bbox를 찾아내어 해당 영역을 target image에 붙여넣는 방식으로 mix를 진행합니다. 이 때, bbox를 구하는 방법은 saliency map에서 가장 큰 interest score를 가진 pixel의 위치를 구한 이후, 해당 위치를 중심으로 하는 특정 크기의 정사각형 영역을 선택하는 방식으로 구하게 됩니다.
+
+bbox의 크기를 선택하는 과정은 beta distribution에 따르는 특정한 랜덤 값 $\lambda$ 에 대해 다음과 같이 구하게 됩니다.
+
+- cut_W = sqrt(1 - $\lambda$) * W
+- cut_H = sqrt(1 - $\lambda$) * H
+
+beta distribution에 사용하는 beta는 사용자가 직접 넣는 hyper parameter에 의해 결정됩니다.
+
+이렇게 구한 bbox가 실제 이미지의 크기 범위 밖으로 벗어나는 경우, 벗어난 영역만큼 반대로 bbox를 밀이서 이미지 영역을 선택하게 됩니다.
+(해당 과정은 saliencymix code를 읽어보시면 수월하게 이해할 수 있습니다)
+
+
 
 ## 풀이
 
