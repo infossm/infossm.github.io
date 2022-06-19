@@ -27,6 +27,8 @@ Mixup의 경우, 랜덤으로 선택된 두 개의 이미지를 beta distributio
 
 ![](/assets/images/VennTum/data_augmentation/mixup_1.png)
 
+<center>고양이와 배 이미지 Mixup</center>
+
 ## Cutout
 
 Cutout의 경우는 두 개의 이미지를 사용하는 기법은 아닙니다. 많은 기존의 data augmentation 기법들처럼 기존에 존재하는 training data에 변형을 주는 방식으로 새로운 data를 만들어내게 됩니다. 그 아이디어는 상당히 간단한데, 바로 기존에 존재하는 이미지의 특정 영역을 아예 제거해버리는 방법으로 새로운 이미지를 만들어내게 됩니다. 주어진 영역 중 어떤 영역을 선택하고 어떤 모양으로 선택하여 제거할 것인가는 논문에 여러 다양한 방법이 나와 있어 확인해보실 수 있습니다(결과적으로는 '영역의 크기' 이외에는 결과에 큰 차이가 없기는 합니다).
@@ -37,6 +39,8 @@ mixup을 포함하여 최근에 많이 연구되는 data augmentation들이 많�
 
 ![](/assets/images/VennTum/data_augmentation/cutout_1.png)
 
+<center>고양이의 특정 영역 Cutout</center>
+
 ## CutMix
 
 CutMix는 Cutout을 기반으로 두고 있습니다. 기존의 Cutout의 경우, 특별한 이미지 영역을 선택하고 제거하기 때문에, 그 과정에서 해당 영역은 아예 아무런 정보가 없게 되어 정보의 손실을 일으키게 됩니다. 이를 해결하기 위해 cutout으로 제거한 영역을 training data의 또 다른 이미지 하나를 선택하고, 해당 영역만큼 다른 이미지의 영역으로 대체하여 2개의 이미지를 섞으려는 시도가 바로 CutMix 기법입니다. 이렇게 만들어진 새로운 이미지의 경우, 합쳐진 이미지에서 각각의 원본의 이미지가 차지하고 있는 영역의 크기의 비에 해당하는 값을 라벨로 가지게 됩니다. 즉, 7:3의 비율로 a와 b 이미지를 cutmix를 통해 섞게 되었다면, 해당 이미지는 0.7a + 0.3b 만큼의 각각의 이미지 라벨을 가지게 됩니다.
@@ -46,6 +50,8 @@ CutMix는 Cutout을 기반으로 두고 있습니다. 기존의 Cutout의 경우
 실제로 cutmix를 통해 생성된 이미지에서 각각의 이미지의 object를 잘 확인할 수 있는지 확인하기 위해 [CAM(Class Activation Map)](http://cnnlocalization.csail.mit.edu/Zhou_Learning_Deep_Features_CVPR_2016_paper.pdf)을 통해 확인할 때에, 섞인 이미지의 각각의 영역에서 object를 상당히 잘 구분해낸다는 것을 알 수 있습니다. 이 과정에서 모델은 각각의 object에 해당하는 feature에서 자기가 속한 이미지에서 제외된 영역만큼의 feature가 제거된 이미지가 되고, 이 과정은 해당 영역만큼 제거된 다른 영역들의 feature 집중할 수 있도록 하는 역할을 하게 됩니다.
 
 ![](/assets/images/VennTum/data_augmentation/cutmix_1.png)
+
+<center>고양이와 배 이미지 CutMix</center>
 
 Cutmix는 여러가지 benchmark dataset들에 대해서 기존의 mixup과 cutout보다 더 나은 결과를 보이며 좋은 성능을 내는 data augmentation 기법이 되었습니다. 
 
@@ -60,7 +66,6 @@ SaliencyMix는 이러한 CutMix를 기반으로 하고 있습니다. Saliencymix
 
 앞선 CutMix에 사용된 이미지를 살펴보도록 하겠습니다.
 
-
 ![](/assets/images/VennTum/data_augmentation/cutmix_1.png)
 
 해당 이미지는 고양이외 배를 섞은 이미지가 되지만, 실제 cutmix를 통해 합성되는 이미지에서 배가 차지하는 영역은 해당 영역의 크기보다 훨씬 더 작다는 것을 알 수 있습니다. 이보다 더한 경우, 만약 cutmix를 진행하는 과정에서 이미지 라벨에 해당하는 객체가 선택되지 않고 배경만 합성된다면, 이렇게 생성된 이미지가 올바른 라벨을 가지게 되는지에 대한 의문에서 부터 SaliencyMix는 시작하게 됩니다.
@@ -68,6 +73,24 @@ SaliencyMix는 이러한 CutMix를 기반으로 하고 있습니다. Saliencymix
 SaliencyMix는 cutmix를 적용하는 과정에서, source image에서 특정 영역을 복사하여 target image에 붙여넣는 과정에서, source image 내에 object가 존재할 가능성이 높은 영역을 선택하여 이를 target image에 붙여넣어 이러한 문제를 해결하려 시도합니다. 이에 만약 해당 과정이 잘 이루어지게 된다면, 아래와 같이 고양이와 배를 mix하는 과정에서 배 object 영역을 잘 찾아내어 고양이 이미지에 붙여넣을 수 있습니다.
 
 ![](/assets/images/VennTum/data_augmentation/saliencymix_1.png)
+
+<center>고양이와 배 이미지 SaliencyMix</center>
+
+## Saliency Map
+
+앞서 saliencymix의 목표를 이루기 위해서, 우리는 특정 이미지 내에서 실제 label에 해당하는 object가 어디에 있는지 찾아내는 것이 중요합니다. 하지만 만약 우리가 특정 label에 해당하는 object가 어디에 있는지 알아낼 수 있다면 쉽겠지만 실제로는 그렇게 쉽지 않습니다. 왜냐하면 이 문제를 해결하는 것 자체가 바로 image segmentation이 되기 때문입니다. Image classfication을 위해 이보다 더 어려운 image segmentation을 사용하는 것은 쉽지 않은 일이 됩니다.
+
+그래서 saliencymix에서는 이와 유사한 방법을 적용하기 위해 saliency map을 사용하게 됩니다.
+
+saliency map이란 물체에서 시각적으로 중요한 영역, 객체에 해당하는 지점들을 찾아서 어떠한 영역들이 시각적으로 중요한 영향을 미치는지 확인하기 위해서 도입된 아이디어입니다.
+이미지를 확인하는 과정에서, 사람은 모든 픽셀들을 확인하는 것이 아닌, 이미지에서 중요한 영역들을 찾아서 먼저 확인하게 됩니다. 이처럼, saliency map은 이미지에서 중요한 영역들이 무엇인지를 각각의 pixel들에 대해 score를 매겨 이를 visualize 하여 보여줍니다.
+
+![](/assets/images/VennTum/data_augmentation/saliencymap_1.png)
+
+<center>cv2를 통해 구한 배 이미지의 SaliencyMap</center>
+
+
+
 
 ## 풀이
 
