@@ -22,6 +22,8 @@ tags: [combinatorics]
 
 ### 3.1. $p$-regular subgraph
 
+$k$-regular graph는 모든 정점의 차수가 $k$인 graph이다. $k$-regular subgraph를 구성하는 것 이전에 존재 여부를 따지는 것 또한 비자명한 문제이다. 이와 관련하여 여러 가지 결과가 제시되어 있는데, 그 중에서 Combinatorial Nullstellensatz를 이용한 결과 한 가지를 소개하겠다.
+
 **Example.** 루프 없는 그래프 $G$의 평균 차수가 $2p-2$ 보다 크고 최대 차수가 $2p - 1$보다 작다면, $G$는 $p$-regular subgraph를 가진다.
 
 *Proof.* 모든 연산은 modulo $p$ 상에서 이루어진다고 가정하자. 각 간선 $e$에 대해 변수 $x_e$를 만들자. $x_e = 1$이면 간선을 택하는 것을, $x_e = 0$이면 그렇지 않는 것을 의미한다. 이제, 다음과 같은 다항식을 생각해보자:
@@ -46,7 +48,7 @@ $\bar x_i = 1$인 간선만 택해서 만든 그래프 $G'$을 생각하자. 각
 
 따라서, Combinatorial Nullstellensatz에 의해 $a \in A$, $b \in B$가 존재하여 $f(a+b) \neq 0$을 만족한다. 이는 $a + b \not \in C$를 의미하므로, $C$의 정의에 모순이다. $\square$
 
-이 부등식을 이용하면, Erdos-Ginzburg-Ziv Theorem을 증명할 수 있다. 이는 프로그래밍 문제들로도 나올 정도로 유명한 정리이다.
+이 부등식을 이용하면, Erdos-Ginzburg-Ziv Theorem을 증명할 수 있다. 이 정리는 여러 방법을 통해 증명할 수 있는데, 대부분의 방법이 먼저 소수인 경우에 대해 해결하고, 합성수인 경우에 대해 구성적인 방법으로 증명한다. 그 가운데 하나는 후술하는 내용과 같다. 참고로, 이는 프로그래밍 문제들로도 나와 있다.
 
 - https://www.acmicpc.net/problem/18790
 - https://www.acmicpc.net/problem/18791
@@ -56,7 +58,22 @@ $\bar x_i = 1$인 간선만 택해서 만든 그래프 $G'$을 생각하자. 각
 
 **Theorem.** $n \ge 2$에 대해 $2n - 1$개의 정수가 있을 때, 이들 중 $n$개를 골라 합한 결과가 $n$의 배수가 되도록 하는 것이 항상 가능하다.
 
-*Proof.* $n$에 대한 귀납법을 적용하자. Base case로 $n$이 소수일 때 성립한다고 가정하자. (이는 추후에 보일 것이다.) $n = ab$라 하면, 귀납 가설로 부터 $2a - 1$개의 수를 뽑으면, 그 중 $a$개의 합이 $a$의 배수가 되도록 할 수 있다. 이렇게, 합이 $a$의 배수인 $a$개의 수로 이루어진 쌍 $2b-1$개들을 묶어낼 수 있다. 이들의 합을 $S_1, S_2, \cdots, S_{2b-1}$이라 하자. 그러면, $S_1/a, S_2/a, \cdots, S_{2b-1}/a$ 가운데 합이 $b$의 배수인 $b$개의 수를 (귀납 가설에 의해) 묶어낼 수 있다. 이렇게 선택된 $S_i/a$ 형태의 수 각각을 원래와 같은 형태로 풀어쓰면, 결국 $ab$개의 수의 합이 $ab$의 배수이게 된다.
+*Proof.* $n$에 대한 귀납법을 적용하자. Base case로 $n$이 소수일 때 성립한다고 가정하자. (이는 추후에 보일 것이다.) $n = ab$라 하면, 귀납 가설로 부터 $2a - 1$개의 수를 뽑으면, 그 중 $a$개의 합이 $a$의 배수가 되도록 할 수 있다. 이렇게, 합이 $a$의 배수인 $a$개의 수로 이루어진 쌍 $2b-1$개들을 묶어낼 수 있다. 이들의 합을 $S_1, S_2, \cdots, S_{2b-1}$이라 하자. 그러면, $S_1/a, S_2/a, \cdots, S_{2b-1}/a$ 가운데 합이 $b$의 배수인 $b$개의 수를 (귀납 가설에 의해) 묶어낼 수 있다. 이렇게 선택된 $S_i/a$ 형태의 수 각각을 원래와 같은 형태로 풀어쓰면, 결국 $ab$개의 수의 합이 $ab$의 배수이게 된다. 이렇게, $n$이 합성수인 경우에 대해 구성적인 형태로 증명하였다.
 
 이제, $n $이 소수인 경우에 대해 보이자. 일단 모든 수들을 modulo $n$으로 생각하자. $a_1 \le a_2 \le \cdots \le a_{2n-1}$라 할 때, $a_i < a_{i+n-1}$을 가정할 수 있다. (아니라면, $a_i + a_{i+1} + \cdots + a_{i + n - 1} \equiv 0 \pmod n$)이 되기 때문이다. 이제, $A_i = \{a_i, a_{i+n-1}\}$로 정의하고, Cauchy-Davenport Inequality를 반복적으로 적용하면 $\lvert A_1 + A_2 + \cdots + A_{n-1}\rvert \ge \min(n, \sum_{i=1}^{n-1} \lvert A_i\rvert - (n-2))= \min(n, 2(n-1) - n - 2) = n$ 이 된다. 따라서, $-a_{2n - 1} \in A_1 + A_2 + \cdots + A_{n-1}$ 이 된다. $\square$
 
+## 4. Constructive?
+
+Permutation $f_n : \{0, 1\}^n \to \{0, 1\}^n$이 one-way permutation임은 rough 하게 말하자면, $f_n$은 쉽게 계산 가능하면서 $f^{-1}(x)$는 쉽게 계산할 수 없음을 의미한다.
+
+$f_n$ 들을 계산하는 circuit을 $A_n$ 이라 했을 때, 고정된 $y$에 대해 다항식 $P_y(x_1, \cdots, x_n) = \prod_{i=1}^n (A_{n, i}(x) + y_i + 1)$ 을 생각해보면, $P_y$는 $x = f_{n}^{-1} (y)$에 대해서만 non-zero의 값을 가진다. 이를 multilinear polynomial로 reduce 해서 생각해보면, constructive 한 형태의 Combinatorial Nullstellensatz가 존재한다면, one-way permutation을 깰 수 있음을 알 수 있다.
+
+## 5. 결론
+
+이 글에서 우리는 Combinatorial Nullstellensatz에 대해 알아보았다. 이를 통해 존재 여부를 보이는 것이 비자명한 조합적인 대상에 대해 존재 여부를 보일 수 있었다. 하지만, 구성적이지 않다는 점에서 Combinatorial Nullstellensatz를 direct 하게 응용하기는 쉽지 않음 또한 알 수 있었다.
+
+하지만, 만약 구성적인 형태의 Combinatorial Nullstellensatz가 있다면, 이의 흥미로운 응용 또한 존재함을 살펴볼 수 있었다.
+
+## References
+
+http://people.cs.uchicago.edu/~adrucker1/combi_tcs%20part%203%20(CNSS%20contd).pdf
