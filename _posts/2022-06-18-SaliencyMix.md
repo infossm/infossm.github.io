@@ -3,7 +3,7 @@ layout: post
 title:  "SALIENCYMIX: A SALIENCY GUIDED DATA AUGMENTATION STRATEGY FOR BETTER REGULARIZATION"
 date:   2022-06-18 08:00:00
 author: VennTum
-tags: [data-structure, algorithm]
+tags: [AI, deep-learning]
 ---
 
 # [SALIENCYMIX: A SALIENCY GUIDED DATA AUGMENTATION STRATEGY FOR BETTER REGULARIZATION](https://openreview.net/forum?id=-M0QkvBGTTq)
