@@ -8,7 +8,7 @@ baseurl: ''
 url: 'http://www.secmem.org'
 
 
-repository: infossm/infossm.github.io
+repository: 4rtiste/4rtiste.github.io
 
 permalink: /blog/:year/:month/:day/:title/
 
