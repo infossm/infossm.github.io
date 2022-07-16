@@ -6,7 +6,7 @@ author: VennTum
 tags: [AI, deep-learning]
 ---
 
-# [Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation](https://arxiv.org/abs/2012.07177)
+# Instance Segmentation
 
 Computer Vision에서 Data Augmentation 기법은 항상 같이 붙어다닐 수밖에 없는 분야입니다. 모델의 성능이 아무리 좋아지더라도, 그것을 학습시키기 위한 충분한 데이터가 없다면 제대로 성능이 나오지 않기 때문입니다. 요새에는 굉장히 많은 양의 데이터들이 쏟아지고, 이를 수집하면서 기업들은 최대한 양질의 많은 데이터를 얻으려고 노력합니다. 하지만 그럼에도 불구하고 데이터를 얻어내는 것이 어려운 분야들이 있죠. 의료나 혹은 수집 동안 굉장히 오랜 시간이 걸리는 분야들은 그 자체로 수집된 데이터의 양이 적기 때문에 항상 어떻게 데이터의 양을 늘릴지 고민하게 됩니다. 이에 지금까지도 계속해서 발전하고 있는 분야가 바로 Data Augmentation입니다.
 
@@ -30,7 +30,29 @@ Instacne Segmentation에서의 data augmentation이 어려운 이유는 바로, 
 
 그러나 실제로는 segmentation에는 굉장히 좋다고 이야기되는 data augmentation을 찾기가 쉽지 않은 편입니다. 가장 큰 이유로는, image classfication에서 사용하는 data augmentation 기법들을 곧 바로 적용하기가 어렵다는 점 때문입니다. 이에 두 가지 이상의 이미지를 mixing하는 최신 image classfication augmentation 기법들을 곧 바로 instance segmentation에 적용하기 어렵습니다.
 
-그러나 두 개 이상의 이미지를 mixing하는 기법이 굉장히 효과적이라는 것이 밝혀진 상황에서, 다른 computer vision task들에서 이를 언제까지 사용하지 않기는 어렵습니다.
+그러나 두 개 이상의 이미지를 mixing하는 기법이 굉장히 효과적이라는 것이 밝혀진 상황에서, 다른 computer vision task들에서도 이를 사용하지 않기는 어렵습니다.
+
+두 개의 이미지를 instance segmentation에서 mixing하려는 시도 중 하나가, 바로 오늘 소개할 'Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation'입니다.
+
+# [Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021)](https://arxiv.org/abs/2012.07177)
+
+위 논문은 정말 제목에서 나와있는 것처럼, 두 개의 instance segmentation을 위한 이미지를 **단순 복사 & 붙여넣기**를 통해 구현합니다. 어떻게 보면 정말로 간단한 아이디어지만, 2021 CVPR에 발표가 된 최신 논문입니다. 해당 논문은 instance segmentation에서 당시 SOTA를 달성하게 만드는 주요 역할을 했습니다.
+
+그렇다면 실제 이 논문은 어떤 식으로 이를 구현하는지 설명하도록 하겠습니다.
+
+## Method
+
+이 논문은 label들로 annotation이 되어있는 instance segmentation train data 두 개를 임의로 선택하여 augmentation을 진행합니다. 이미지를 추출하기 위한 source image를 선택하고, 이를 붙여넣기 위한 target image를 하나 선택합니다.
+
+image classification에서 사용되던 mix 기법들은 모두 특정 bounding box 영역을 통째로 들고와서 target image에 붙여넣는 방식으로 진행되었습니다(cutmix 등). 그러나 해당 논문은 이를 bounding box를 이용하여 구현하지 않고, train data에 나와있는 source image의 object instance 자체를 그대로 복사해서 target image로 이동시킵니다.
+그리고 이 과정에서, 기존에 존재하는 source image에는 해당 source object가 그대로 존재하기 때문에, 이를 원본과 다르게 만들어주기 위해 source object에 'random scale jittering'과 'flipping'을 추가합니다. 즉, 해당 object 자체에도 data augmentation을 적용하는 것으로 원본과 차이를 두게 만듭니다.
+
+이렇게 새롭게 추출된 source object를 target image에 붙여넣습니다.
+그러나 이 과정에서 source object가 target image에 존재하는 instance 영역을 침범할 수 있습니다. 이 때, 해당 논문에서는 우리가 새롭게 붙여넣는 object 자체를 아예 가장 앞에 놓여있는 것으로 간주합니다(즉, 덮어씌웁니다). 이를 통해, 원래 존재하는 target image instance의 ground truth를 source object에 의해 침범된 영역만큼 수정을 시켜줍니다.
+
+![Source - Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021)](/assets/images/VennTum/data_augmentation/copy_paste_1.png)
+
+
 
 최근에 Data Augmentation 기법과 관련한 논문들을 읽을 일들이 있었습니다. 관련 자료들을 찾다가 saliency map을 이용하여 cutmix와 조합한 saliencymix에 대한 논문을 접했고 해당 논문의 기법을 사용할 일이 있었습니다. 그 내용이 상당히 쉽고 직관적이며 구현 및 사용에도 큰 어려움이 없어 꽤나 유용한데 반해, 이를 번역한 자료가 없는 것 같아 이참에 한글로 정리해보려 합니다.
 
