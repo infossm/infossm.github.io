@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  "SALIENCYMIX: A SALIENCY GUIDED DATA AUGMENTATION STRATEGY FOR BETTER REGULARIZATION"
-date:   2022-06-18 08:00:00
+title:  "Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation"
+date:   2022-07-16 08:00:00
 author: VennTum
 tags: [AI, deep-learning]
 ---
 
-# [SALIENCYMIX: A SALIENCY GUIDED DATA AUGMENTATION STRATEGY FOR BETTER REGULARIZATION](https://openreview.net/forum?id=-M0QkvBGTTq)
+# [Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation](https://arxiv.org/abs/2012.07177)
 
 최근에 Data Augmentation 기법과 관련한 논문들을 읽을 일들이 있었습니다. 관련 자료들을 찾다가 saliency map을 이용하여 cutmix와 조합한 saliencymix에 대한 논문을 접했고 해당 논문의 기법을 사용할 일이 있었습니다. 그 내용이 상당히 쉽고 직관적이며 구현 및 사용에도 큰 어려움이 없어 꽤나 유용한데 반해, 이를 번역한 자료가 없는 것 같아 이참에 한글로 정리해보려 합니다.
 
