@@ -6,7 +6,9 @@ author: VennTum
 tags: [AI, deep-learning]
 ---
 
-# Instance Segmentation
+# [Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021)](https://arxiv.org/abs/2012.07177)
+
+## Instance Segmentation
 
 Computer Vision에서 Data Augmentation 기법은 항상 같이 붙어다닐 수밖에 없는 분야입니다. 모델의 성능이 아무리 좋아지더라도, 그것을 학습시키기 위한 충분한 데이터가 없다면 제대로 성능이 나오지 않기 때문입니다. 요새에는 굉장히 많은 양의 데이터들이 쏟아지고, 이를 수집하면서 기업들은 최대한 양질의 많은 데이터를 얻으려고 노력합니다. 하지만 그럼에도 불구하고 데이터를 얻어내는 것이 어려운 분야들이 있죠. 의료나 혹은 수집 동안 굉장히 오랜 시간이 걸리는 분야들은 그 자체로 수집된 데이터의 양이 적기 때문에 항상 어떻게 데이터의 양을 늘릴지 고민하게 됩니다. 이에 지금까지도 계속해서 발전하고 있는 분야가 바로 Data Augmentation입니다.
 
@@ -97,6 +99,8 @@ source object를 선택할 경우, 다른 train data가 이용될 가능성이 �
 
 ## Experiments
 
+experiments로 저자들은 다양한 종류의 강점이 있다는 것을 확인했습니다. 이 중 중요한 몇 가지를 살펴보도록 하겠습니다.
+
 ### Settings
 
 자세한 세팅에 대한 내용을 논문에서 확인할 수 있습니다.
@@ -106,18 +110,47 @@ source object를 선택할 경우, 다른 train data가 이용될 가능성이 �
 
 실험은 118k 개의 train data를 가지고 있는 COCO Dataset을 사용하고, 전이학습을 위해 COCO dataset으로 pre-train한 이후 PASCAL VOC dataset에서 fine-tuning을 거칩니다.
 
-###
+### Copy-Paste is robust to training configurations
 
+Simple copy-paste 기법은 training configuration에 굉장히 robust하다는 것을 실험을 통해 확인합니다. 이는 다음과 같은 사항들에 robust 합니다.
 
+- backbone initialization
 
+Mask R-CNN은 보통 ImageNet으로 사전훈련된 모델로 backbone을 initialize하는 것입니다. 그러나 simple copy-paste을 다른 strong augmentation과 함께 사용하게 될 경우, 오히려 imagenet으로 사전훈련된 모델은 임의의 랜덤 initialize를 한 backbone을 사용하는 것보다 성능이 최대 1AP까지 줄어든다는 것을 확인할 수 있습니다.
 
+- training schedules
 
+보통의 Mask R-CNN을 사용하는 object detection model들은 많은 수의 epochs까지 훈련을 하면 오히려 성능이 저하된다는 문제점이 있어, 최대 46 AP 정도까지만 훈련하는 것이 일반적입니다. 그러나 Simple Copy-Paste 기법을 사용할 경우, 일반적인 train epochs보다도 더 많은 epochs가 증가할수록 성능이 향상되어 더 많은 train을 통해 성능을 향상시킬 수 있습니다.
 
+![Source - SSimple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure 4](/assets/images/VennTum/data_augmentation/copy_paste_5.PNG)
+
+- additive to large scale jittering augmentation
+
+앞서 이야기한 것처럼, large scale jittering에 더욱 좋은 성능을 보이고, 이와 함께 더 많은 수의 train epochs를 갖는 것으로 성능을 향상시킬 수 있습니다.
+
+- works across backbone architectures & image size
+
+Simple Copy-Paste의 경우, ResNet뿐만 아니라 EfficientNet 등 최신 architecture들도 backbone으로 사용할 수 있다는 장점이 있습니다. 즉, 이들 모델이 사용하는 서로 다른 image size에서도 모델을 학습시킬 수 있으며, 이러한 모델들에 모두 평균 0.8~1.3 box AP의 성능 향상을 보입니다.
+
+![Source - SSimple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure 5](/assets/images/VennTum/data_augmentation/copy_paste_6.PNG)
+
+이외에도 다양한 experiments를 통한 simple copy-paste augmentation의 장점을 논문에서 확인 가능합니다.
+
+## Conclusion
+
+결과적으로 simple copy-paste augmentation은 다른 augmentation과의 호환성도 굉장히 높으며, 다양한 종류의 backbone architecture에도 사용 가능하며, train scheduling에서도 강점을 보이는 등 다양한 장점들을 가지고 있습니다.
+
+뿐만 아니라 instance segmentation을 single-stage를 사용해도, two-stage를 사용해도 항상 Copy-Paste를 같이 사용하는 것이 훨씬 더 좋은 결과를 내게 됩니다.
+
+![Source - SSimple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure1](/assets/images/VennTum/data_augmentation/copy_paste_3.PNG)
+<center>COCO dataset에서 다양한 조합을 통한 model의 AP</center>
 
 ![Source - SSimple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure1](/assets/images/VennTum/data_augmentation/copy_paste_3.PNG)
 <center>COCO dataset에서 Copy-Paste Augmentation을 통한 성능 향상</center>
 
 위 그래프에서 확인할 수 있듯, 기본적인 Copy-Paste Augmentation은 다른 augmentation과 함께 적용되었을 때, COCO dataset에서 굉장한 성능 향상을 보였습니다. 일반적으로 사용되는 standard scale jittering보다 data efficiency가 2배 향상되었으며, 훈련 데이터의 10%만 사용할 때 낮은 데이터 영역에서 10 box AP에 해당하는 향상이 있다는 것을 확인할 수 있습니다.
 
-이러한 Copy-Paste 전략은 
+이러한 Data augmentation 전략은 computer vision 분야에서, 특히 instance segmentation에서 굉장히 중요합니다. 특히 본 논문에서 살펴본 Copy-Paste 전략은 굉장히 간단하면서 거의 모든 케이스에 대해 성능을 향상시키고, 굉장히 다양한 종류의 code base에 적용할 수 있으며 여러 종류의 data augmentation과 호환되며 backbone architecture들과도 호환됩니다.
+
+이 논문에서 copy-paste 전략을 다양한 방식으로 살펴본 결과를 통해서, instance segmentation을 진행할 일이 있다면, copy-paste 전략을 자신이 구상한 모델에 어떻게 적용할 것인지 생각해보는 것도 좋을 것입니다.
 
