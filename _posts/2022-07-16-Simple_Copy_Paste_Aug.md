@@ -40,6 +40,15 @@ Instacne Segmentation에서의 data augmentation이 어려운 이유는 바로, 
 
 그렇다면 실제 이 논문은 어떤 식으로 이를 구현하는지 설명하도록 하겠습니다.
 
+기본적으로 이전에도 사용되던 Copy-Paste Augmentation 기법은 세 가지 단계로 구성됩니다.
+
+1. 주어진 train dataset에서 random한 두 개의 이미지를 선택하여 하나를 source로, 하나를 target으로 선택
+2. source image에서 복사할 object instance 선택
+3. soure object를 target image의 어떤 위치에 붙여넣을 것인지 선택
+
+이에 각각의 단계에서, 어떤 방식으로 해당 과정을 개선할 것인지를 따라서 여러가지 연구가 되었습니다. 
+
+
 ## Method
 
 이 논문은 label들로 annotation이 되어있는 instance segmentation train data 두 개를 임의로 선택하여 augmentation을 진행합니다. 이미지를 추출하기 위한 source image를 선택하고, 이를 붙여넣기 위한 target image를 하나 선택합니다.
