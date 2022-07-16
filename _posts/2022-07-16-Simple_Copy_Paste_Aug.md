@@ -28,9 +28,9 @@ Instacne Segmentation에서의 data augmentation이 어려운 이유는 바로, 
 
 이러한 점으로 인해, segmentation을 위한 data augmentation은 굉장히 중요합니다. 기본적인 데이터의 양 자체가 적기 때문에 이를 효과적으로 증강시킬 수 있다면 몇 배의 이득을 보는 것과 마찬가지의 효과가 나기 때문입니다.
 
-그러나 실제로는 segmentation에는 굉장히 좋다고 이야기되는 data augmentation을 찾기가 쉽지 않은 편입니다.
-가장 큰 이유로는, image classfication에서 사용하는 data augmentation 기법들을 적용하기가 어렵다는 점 때문입니다. 앞서 SaliencyMix 게시글에서 이야기했던 Mixup, cutout, cutmix, comix-up 등등, 해당 이미지들을 여러개 섞는 과정에서 label이 중첩되어있기도 하고, 부분을 소실시키기도 하며 여러가지 증강을 적용했습니다.
-그러나 instance segmentation의 경우, 
+그러나 실제로는 segmentation에는 굉장히 좋다고 이야기되는 data augmentation을 찾기가 쉽지 않은 편입니다. 가장 큰 이유로는, image classfication에서 사용하는 data augmentation 기법들을 곧 바로 적용하기가 어렵다는 점 때문입니다. 이에 두 가지 이상의 이미지를 mixing하는 최신 image classfication augmentation 기법들을 곧 바로 instance segmentation에 적용하기 어렵습니다.
+
+그러나 두 개 이상의 이미지를 mixing하는 기법이 굉장히 효과적이라는 것이 밝혀진 상황에서, 다른 computer vision task들에서 이를 언제까지 사용하지 않기는 어렵습니다.
 
 최근에 Data Augmentation 기법과 관련한 논문들을 읽을 일들이 있었습니다. 관련 자료들을 찾다가 saliency map을 이용하여 cutmix와 조합한 saliencymix에 대한 논문을 접했고 해당 논문의 기법을 사용할 일이 있었습니다. 그 내용이 상당히 쉽고 직관적이며 구현 및 사용에도 큰 어려움이 없어 꽤나 유용한데 반해, 이를 번역한 자료가 없는 것 같아 이참에 한글로 정리해보려 합니다.
 
