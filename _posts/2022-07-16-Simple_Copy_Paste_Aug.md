@@ -72,7 +72,7 @@ source object를 선택할 경우, 다른 train data가 이용될 가능성이 �
 
 ![Source - Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure 2](/assets/images/VennTum/data_augmentation/copy_paste_2.PNG)
 
-  <center><Source - Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure 2></center>
+<center><Source - Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure 2></center>
 <center>Simple copy & paste 적용하는 방식</center>
 
 ### Blending Pasted Objects
@@ -89,7 +89,7 @@ source object를 선택할 경우, 다른 train data가 이용될 가능성이 �
 
 ![Source - Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure 3](/assets/images/VennTum/data_augmentation/copy_paste_4.PNG)
 
-    <center><Source - Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure 3></center>
+<center><Source - Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure 3></center>
   
 그러나 대부분의 경우에서는, 주어진 이미지에 scale jittering을 적용할 때에는 standard보다 large scale jittering을 적용하는 것이 더 나아서 본 논문에서는 앞으로 large scale jittering을 사용합니다.
 
@@ -130,7 +130,7 @@ Mask R-CNN은 보통 ImageNet으로 사전훈련된 모델로 backbone을 initia
 
 ![Source - SSimple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure 4](/assets/images/VennTum/data_augmentation/copy_paste_5.PNG)
 
-      <center><Source - Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure 4></center>
+<center><Source - Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure 4></center>
 
 - additive to large scale jittering augmentation
 
@@ -153,12 +153,12 @@ Simple Copy-Paste의 경우, ResNet뿐만 아니라 EfficientNet 등 최신 arch
 
 ![Source - SSimple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) Table](/assets/images/VennTum/data_augmentation/copy_paste_7.PNG)
 
-  <center><Source - Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) Table></center>
+<center><Source - Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) Table></center>
 <center>COCO dataset에서 다양한 조합을 통한 model의 AP</center>
 
 ![Source - SSimple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure 1](/assets/images/VennTum/data_augmentation/copy_paste_3.PNG)
 
-    <center>COCO dataset에서 Copy-Paste Augmentation을 통한 성능 향상</center>
+<center>COCO dataset에서 Copy-Paste Augmentation을 통한 성능 향상</center>
 
 위 그래프에서 확인할 수 있듯, 기본적인 Copy-Paste Augmentation은 다른 augmentation과 함께 적용되었을 때, COCO dataset에서 굉장한 성능 향상을 보였습니다. 일반적으로 사용되는 standard scale jittering보다 data efficiency가 2배 향상되었으며, 훈련 데이터의 10%만 사용할 때 낮은 데이터 영역에서 10 box AP에 해당하는 향상이 있다는 것을 확인할 수 있습니다.
 
