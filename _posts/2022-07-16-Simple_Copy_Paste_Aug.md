@@ -15,7 +15,7 @@ Computer Vision에서 Data Augmentation 기법은 항상 같이 붙어다닐 수
 이에 관련해서, computer vision 분야 중 image classification의 경우, 상당히 성능 좋은 여러가지 augmentation 기법들이 개발되었습니다. 굉장히 다양한 방식으로 증강시키는 기법들이 있고, 그것들의 성능도 꽤 좋은 편입니다.
 그러나, 아직까지 image classificaion과 비슷하지만 다른 몇몇 분야에서는 데이터 자체를 증강시키는 데에 어려움을 겪고 있습니다. 그 중 하나가 바로 'Instance Segmentation'입니다.
 
-![Source - Stanford cs231n 2017 lecture 11, Detection and Segmentation](/assets/images/VennTum/data_augmentation/computer_vision_task.png)
+![Source - Stanford cs231n 2017 lecture 11, Detection and Segmentation](/assets/images/VennTum/data_augmentation/computer_vision_tasks.png)
 <center>아마 컴퓨터 비전을 공부하시는 분들은 많이 보셨을 각 task의 차이점에 대한 사진입니다.</center>
 
 Instacne Segmentation에서의 data augmentation이 어려운 이유는 바로, 이를 위해서는 이미지에서 각각의 object를 수동으로 분류하고, 이에 대한 annotation을 또 다시 해야하기 때문입니다.
