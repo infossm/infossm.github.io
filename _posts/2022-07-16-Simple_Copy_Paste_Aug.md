@@ -8,6 +8,30 @@ tags: [AI, deep-learning]
 
 # [Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation](https://arxiv.org/abs/2012.07177)
 
+Computer Vision에서 Data Augmentation 기법은 항상 같이 붙어다닐 수밖에 없는 분야입니다. 모델의 성능이 아무리 좋아지더라도, 그것을 학습시키기 위한 충분한 데이터가 없다면 제대로 성능이 나오지 않기 때문입니다. 요새에는 굉장히 많은 양의 데이터들이 쏟아지고, 이를 수집하면서 기업들은 최대한 양질의 많은 데이터를 얻으려고 노력합니다. 하지만 그럼에도 불구하고 데이터를 얻어내는 것이 어려운 분야들이 있죠. 의료나 혹은 수집 동안 굉장히 오랜 시간이 걸리는 분야들은 그 자체로 수집된 데이터의 양이 적기 때문에 항상 어떻게 데이터의 양을 늘릴지 고민하게 됩니다. 이에 지금까지도 계속해서 발전하고 있는 분야가 바로 Data Augmentation입니다.
+
+이에 관련해서, computer vision 분야 중 image classification의 경우, 상당히 성능 좋은 여러가지 augmentation 기법들이 개발되었습니다. 굉장히 다양한 방식으로 증강시키는 기법들이 있고, 그것들의 성능도 꽤 좋은 편입니다.
+그러나, 아직까지 image classificaion과 비슷하지만 다른 몇몇 분야에서는 데이터 자체를 증강시키는 데에 어려움을 겪고 있습니다. 그 중 하나가 바로 'Instance Segmentation'입니다.
+
+![Source - Stanford cs231n 2017 lecture 11, Detection and Segmentation](/assets/images/VennTum/data_augmentation/computer_vision_task.png)
+아마 컴퓨터 비전을 공부하시는 분들은 많이 보셨을 각 task의 차이점에 대한 사진입니다.
+
+Instacne Segmentation에서의 data augmentation이 어려운 이유는 바로, 이를 위해서는 이미지에서 각각의 object를 수동으로 분류하고, 이에 대한 annotation을 또 다시 해야하기 때문입니다.
+이전에 다룬 SaliencyMix의 경우, image classification에서 사용하는 augmentation이었습니다. image classification의 경우, 전체 이미지에서 해당 사진이 어떤 것에 대한 사진인지에 대한 labeling만 해주면 되기 때문에, 이를 매치시키는 것은 수동으로 해도 크게 어렵지 않습니다.
+그러나 instance segmentation의 경우, 다음의 두 가지를 수행해야 하기 때문에 훨씬 더 데이터를 만들기가 어렵습니다.
+
+- 주어진 이미지에서 찾고자하는 instance가 어디에 있는지 영역을 정확하게 구분하여 표시하는 것
+- 해당 instance가 어떤 label인지 annotation해주는 것
+
+위 두 가지를 수동으로 해주어야 하기 때문에, 더욱 많은 노동력이 필요하게 됩니다.
+실제로 image classification의 경우 CIFAR, ImageNet 등등 다양한 benchmark dataset들 뿐만 아니라, kaggle에도 굉장히 다양한 카테고리의 dataset들이 있으나, segmentation 분야의 dataset들은 이러한 한계들로 인해 현재 가장 유명한 데이터 셋인 COCO dataset을 주로 사용하며, 자신이 원하는 특정 분야나 instance에 대한 image dataset은 찾기 어려울 수 있습니다.
+
+이러한 점으로 인해, segmentation을 위한 data augmentation은 굉장히 중요합니다. 기본적인 데이터의 양 자체가 적기 때문에 이를 효과적으로 증강시킬 수 있다면 몇 배의 이득을 보는 것과 마찬가지의 효과가 나기 때문입니다.
+
+그러나 실제로는 segmentation에는 굉장히 좋다고 이야기되는 data augmentation을 찾기가 쉽지 않은 편입니다.
+가장 큰 이유로는, image classfication에서 사용하는 data augmentation 기법들을 적용하기가 어렵다는 점 때문입니다. 앞서 SaliencyMix 게시글에서 이야기했던 Mixup, cutout, cutmix, comix-up 등등, 해당 이미지들을 여러개 섞는 과정에서 label이 중첩되어있기도 하고, 부분을 소실시키기도 하며 여러가지 증강을 적용했습니다.
+그러나 instance segmentation의 경우, 
+
 최근에 Data Augmentation 기법과 관련한 논문들을 읽을 일들이 있었습니다. 관련 자료들을 찾다가 saliency map을 이용하여 cutmix와 조합한 saliencymix에 대한 논문을 접했고 해당 논문의 기법을 사용할 일이 있었습니다. 그 내용이 상당히 쉽고 직관적이며 구현 및 사용에도 큰 어려움이 없어 꽤나 유용한데 반해, 이를 번역한 자료가 없는 것 같아 이참에 한글로 정리해보려 합니다.
 
 ICLR 2021 논문인 SaliencyMix는, 기본적으로 CutMix를 기반으로 하고 있습니다. 기존의 CutMix가 가지고 있던 한계점을 saliency detection을 통해 해결하는 방법을 제안하고 있으며, 실제로 CutMix보다 항상 더 나은 결과를 보이게 됩니다. 논문에서 사용된 기법을 읽어보면, 해당 논문이 직관적으로 CutMix가 가지고 있던 한계점을 극복하며, 평균적으로 더 나은 결과를 낼 수 있다는 결론을 이해하기 쉽습니다.
