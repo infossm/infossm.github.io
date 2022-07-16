@@ -142,7 +142,7 @@ Simple Copy-Paste의 경우, ResNet뿐만 아니라 EfficientNet 등 최신 arch
 
 뿐만 아니라 instance segmentation을 single-stage를 사용해도, two-stage를 사용해도 항상 Copy-Paste를 같이 사용하는 것이 훨씬 더 좋은 결과를 내게 됩니다.
 
-![Source - SSimple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure1](/assets/images/VennTum/data_augmentation/copy_paste_3.PNG)
+![Source - SSimple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure1](/assets/images/VennTum/data_augmentation/copy_paste_7.PNG)
 <center>COCO dataset에서 다양한 조합을 통한 model의 AP</center>
 
 ![Source - SSimple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure1](/assets/images/VennTum/data_augmentation/copy_paste_3.PNG)
