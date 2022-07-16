@@ -66,6 +66,9 @@ source object를 선택할 경우, 다른 train data가 이용될 가능성이 �
 
 그러나 이 과정에서 source object가 target image에 존재하는 instance 영역을 침범할 수 있습니다. 이 때, 해당 논문에서는 우리가 새롭게 붙여넣는 object 자체를 아예 가장 앞에 놓여있는 것으로 간주합니다(즉, 덮어씌웁니다). 이를 통해, 원래 존재하는 target image instance의 ground truth를 source object에 의해 침범된 영역만큼 수정을 시켜줍니다. 이렇게 해서 새롭게 만들어진 이미지에서 각각의 instance들이 차지하고 있는 영역과 각 영역의 annotation들을 조정하여 주면 됩니다.
 
+![Source - SSimple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure2](/assets/images/VennTum/data_augmentation/copy_paste_2.PNG)
+<center>Simple copy & paste 적용하는 방식</center>
+
 ### Blending Pasted Objects
 
 이 때, 새로운 object를 붙여 넣는 과정에서, 해당 object의 binary mask를 α라고 할 때, ground-truth annotation은 다음과 같은 식으로 계산됩니다.
@@ -75,12 +78,39 @@ source object를 선택할 경우, 다른 train data가 이용될 가능성이 �
 
 ### Large Scale Jittering
 
+앞서 언급한 것처럼, 이미지에 scale jittering을 적용시켜셔 크기를 임의로 조정하고 잘라내는 과정을 적용합니다.
+본 논문에서는 standard scale과 large scale을 둘 다 적용하여 이 둘 중 어떤 것이 더 나은지 확인합니다.
+
+![Source - SSimple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure 3](/assets/images/VennTum/data_augmentation/copy_paste_4.PNG)
+
+그러나 대부분의 경우에서는, 주어진 이미지에 scale jittering을 적용할 때에는 standard보다 large scale jittering을 적용하는 것이 더 나아서 본 논문에서는 앞으로 large scale jittering을 사용합니다.
+
+### Self-training Copy-Paste
+
+앞서 이야기한 것들은 기본적으로 training data에 instance segmentation이 이미 적용되어, 각각의 object에 대한 annotation과 이들에 대한 ground-truth가 계산되어 있는 것을 가져가 사용했습니다. 그러나 본 논문에서는 이러한 supervised data뿐만 아니라, unlabeled image들에 대해 self-training을 진행하는 실험도 함께 진행합니다.
+
+위 실험은 다음 3가지 단계를 통해 진행됩니다.
+
+1. label이 지정된 data에 대한 copy-paste augmentation을 사용하여 supervised model 학습
+2. label이 지정되지 않은 pseudo label data 생성
+3. 실제 ground-truth instance를 pseudo label 및 supervised labeled image에 각각 붙여넣어 새로운 데이터를 만들어 내고, 이를 사용하여 새롭게 model을 학습
+
+## Experiments
+
+### Settings
+
+자세한 세팅에 대한 내용을 논문에서 확인할 수 있습니다.
+기본적으로는 instance segmentation을 진행하기 위한 Mask R-CNN을 efficientNet과 ResNet을 backbone architecture로 사용하였습니다.
+또한 이외에도 Cascade R-CNN을 사용하는 과정에서 efficientnet B-7을 backbone으로, NAS-FPN을 feature pyramid로 사용하여 가장 강력한 모델을 만들어 성능을 테스트했습니다.
+이외에 여러가지 hyper-parameter를 조정하여 실험을 진행합니다.
+
+실험은 118k 개의 train data를 가지고 있는 COCO Dataset을 사용하고, 전이학습을 위해 COCO dataset으로 pre-train한 이후 PASCAL VOC dataset에서 fine-tuning을 거칩니다.
+
+###
 
 
-![Source - SSimple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (2021) figure2](/assets/images/VennTum/data_augmentation/copy_paste_2.PNG)
-<center>Simple copy & paste 적용하는 방식</center>
 
-## Method - Blending Pasted Objectss
+
 
 
 
