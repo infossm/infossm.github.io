@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "IND-CCA2 Encryption schemes"
+title:  "IND-CCA2 Encryption schemes and Fujisaki-Okamoto transform"
 date:   2022-07-17
 author: ainta
 tags: [Cryptography]
