@@ -156,7 +156,7 @@ EDS에서는 encoder와 decoder를 동시에 학습하며, 3가지 loss function
 
 두 번째 항은 decoder loss입니다. $I_g$는 input guest, 즉 원본 payload image를 나타내고,  $O_d$는 decoded payload image를 나타냅니다. 따라서 encoder loss와 유사하게, 원본 payload image와 decoded payload image의 차이가 작도록 학습시키는 항입니다.
 
-세 번째 항은 network의 weight의 크기를 의미합니다. $W_e$는 encoder의 weight, $W_d$는 decoder의 weight를 나타냅니다. 짧은 식견으로 예상하자면, 임의의 한 convolution layer에서 image가 크게 변환되지 않고, 약간의 변화만을 주도록 학습시키기 위해서 필요한 항이 아닐까 생각합니다.
+세 번째 항은 network의 weight의 크기를 의미합니다. $W_e$는 encoder의 weight, $W_d$는 decoder의 weight를 나타냅니다. 짧은 식견으로 예상하자면, 임의의 한 convolution layer에서 image가 크게 변환되지 않고, 약간의 변화만을 주도록 학습시키기 위해서 필요한 항이 아닐까 생각합니다. (이는 L2 regularization으로 overfitting을 방지하기 위함입니다.)
 
 ## Evaluation
 
