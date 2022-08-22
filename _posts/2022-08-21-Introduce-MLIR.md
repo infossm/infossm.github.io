@@ -17,13 +17,12 @@ MLIR, 즉 Multi-Level Intermediate Representation은 하드웨어에 따른 연�
 ### IR ###
 
 위에서도 언급한 IR은 Intermidate Representation의 약자로, 중간언어 집합을 말합니다. 어떤 source code가 있다고 할 때, compiler는 그것을 target machine에 맞는 target code로 전환시켜주게 됩니다. 이때 compiler는 source code가 어떤 코드인지 이해하고 그것을 저장해놓습니다. (Front-end) 그리고 그 저장된 것을 해석하여, target code로 전환시킵니다. (Back-end)이때, source code와 target code 사이에서 source code가 어떤 의미인지 저장해 놓은 것이 IR입니다.
-IR은 몇 가지 성질을 가집니다. 우선 source language들과 target machine에 대해 독립적입니다. source language로 작성된 code의 기능을 정확히 저장하고 있어야 하므로, semantic analysis를 할 때 편리해야 합니다. 나중에 target machine에 대한 code로 다시 translate해야 하므로, assembly처럼 target machine code로 translate이 쉬워야 합니다.
+IR은 몇 가지 성질을 가집니다. 우선 source language들과 target machine에 대해 독립적입니다. source language로 작성된 code의 기능을 정확히 저장하고 있어야 하므로, semantic analysis를 할 때 편리해야 합니다. 나중에 target machine에 대한 code로 다시 변환해야 하므로, assembly처럼 target machine code로 변환이 쉬워야 합니다.
 
 얼핏 생각했을 때는 중간언어를 따로 저장해 두는 것이 비효율적으로 보일 수도 있습니다. 실제로, IR을 저장할 필요 없이 바로 target machine에 대한 code를 생성할 수도 있습니다. 그럼 왜 굳이, IR code를 생성하는 것일까요?
 다음과 같은 상황을 생각해봅시다. $n$개의 source language가 있고, $m$개의 target machine이 있다고 합시다. 만약 IR이라는 중간 단계 없이 source에서 바로 target machine에 대한 code로 변환시킨다고 하면, 총 $n \times m$개의 compiler가 필요할 것입니다. 그리고 각각에 필요한 최적화 역시 전부 다 다를 것입니다.
 하지만 IR을 도입한다면 상황이 달라집니다. 이제 각 $n$개의 language에 대해 IR로 변환시키는 compiler가 $n$개 필요할 것이고, $m$개의 target machine에 대해서, IR을 target machine에 맞게 최적화하는 compiler가 $m$개 필요합니다. source language와 target machine에 대해서 적당히 결합해서 사용하면 되므로, 총 $n+m$개의 compiler만으로 변환이 가능해집니다.
-
-이렇게 source language, IR, target machine code를 분리했을 때 얻는 이점은 위에 서술한 것이 전부가 아닙니다. 앞서 말했듯 IR의 경우 source language, target machine과 모두 독립적으로 구성됩니다. 다음과 같은 상황을 생각해 봅시다. IR을 특정 machine A에 대한 machine language로 compile하는 compiler를 생각합시다. 만약 그 compiler에 대한 성능 개선을 해서, 1%의 성능 개선을 해냈다고 하면, 어떤 source language를 사용하든지, target machine이 A라고 하면 그 1%의 성능을 개선한 혜택을 모두 누릴 수 있을 것입니다. IR을 사용하지 않는다면, 특정 source language에서만 혜택을 누릴 수 있을 것입니다.
+또, IR의 경우 source language, target machine과 모두 독립적으로 구성됩니다. 다음과 같은 상황을 생각해 봅시다. IR을 특정 machine A에 대한 machine language로 compile하는 compiler를 생각합시다. 만약 그 compiler에 대한 성능 개선을 해서, 1%의 성능 개선을 해냈다고 하면, 어떤 source language를 사용하든지, target machine이 A라고 하면 그 1%의 성능을 개선한 혜택을 모두 누릴 수 있을 것입니다. IR을 사용하지 않는다면, 특정 source language에서만 혜택을 누릴 수 있을 것입니다.
 
 위와 같은 장점 때문에, IR은 다양한 언어에서 채택되어 사용되고 있습니다. 몇 가지 예시를 들면 다음과 같습니다.
 먼저 java에서 쓰는 JVM이 대표적입니다. JVM에서 쓰는 Java bitecode가 IR의 일종입니다. 사실 JVM처럼 virtual machine이나 p-code machine을 target으로 하는 언어들은 IR을 사용하고 있다고 봐도 무방합니다.
@@ -37,7 +36,6 @@ LLVM이란 compiler와 toolchain들의 집합이라고 생각하시면 됩니다
 LLVM은 IR을 생성하고, 그 IR을 최적화하는 LLVM optimizer를 가지고 있습니다. 그래서 LLVM에서는 source language를 target machine code로 만들 때 Front-end, Middle-end, Back-end이 세 단계를 거칩니다. Front-end와 Back-end는 IR에서 설명한 것과 같고, Middle-end는 주어진 IR을 LLVM에 있는 각종 pass들을 사용하여 최적화시킵니다.
 
 LLVM에서는 LLVM-IR이라는 IR을 사용합니다. LLVM-IR은 IR을 설명할 때 설명한 IR의 특성들을 가집니다. 거기에 더해서, 모든 변수들이 SSA form이라는 특징을 가집니다. SSA form (static-single assignment form)이란, 각 변수의 값이 정확히 한번만 assign 된 형태를 말합니다. 다시 말해, 초기값이 한번 정해지면 앞으로 바뀌지 않습니다.
-
 LLVM에서 LLVM-IR을 생성한 후, LLVM에서는 pass들을 통해 최적화를 적용할 수 있습니다. pass들의 목록은 [링크](https://llvm.org/docs/Passes.html)에서 확인 가능합니다. LLVM에서 pass는 IR code를 최적화할 때 사용합니다. 예를 들어, -dce option의 경우, 코드는 있지만 실제로 사용되지는 않는 code들을 제거합니다. pass는 최적화 외에 IR code들을 분석하는 경우에도 사용할 수 있습니다. -print-dom-info option의 경우 dominator에 관련된 정보를 출력합니다. 이 외에도 다양한 option이 있지만, 넘어가도록 하겠습니다.
 
 다양한 언어에서 LLVM을 사용하고 있는데, PS를 하는 분들에게도 익숙하실 clang의 경우 Back-end가 LLVM입니다. 이 외에도 다양한 C++ code들은 물론이고, CUDA나 Rust 등 다양한 언어에 대해서 적용 가능합니다.
@@ -114,13 +112,16 @@ memory에 관련된 Dialect입니다. Memref Dialect에서는 memref type의 변
 
 ## Pass of MLIR ##
 
+앞서 언급한 것처럼, MLIR에서 사용하는 LLVM의 경우 Middle-end가 존재합니다. 따라서, MLIR에서도 IR 단계에서 최적화가 가능할 것이라 생각할 수 있습니다.
+실제로 MLIR에서도 LLVM에서처럼 Pass들이 존재하여 Lowering 및 최적화를 지원합니다. Lowering이란, 한 연산을 High-level의 Dialect에서 동일한 기능을 하는 Lower-level Dialect에 속하는 연산들로 옮기는 것을 의미합니다. 만약에 Dialect를 새로 만들었다면, 이런 Lowering 과정이 사실상 필수적일 것입니다.
 
-
-## Use of MLIR ##
-
+MLIR에서 제공하는 Pass들의 목록은 [링크](https://mlir.llvm.org/docs/Passes/)에서 확인 가능합니다. canonicalize pass의 경우 기존 code를 canonicalize 해줍니다. (dead code elimination 등) 이 외에도 다양한 Pass들을 제공하니 직접 확인해보시기 바랍니다.
+실제로는 MLIR에서 제공하는 Pass들 중에 원하는 기능이 없는 경우가 많기 때문에, 직접 Pass를 생성해서 사용하는 경우가 다수입니다. 이 방법까지 쓰려면 너무 길어지기 때문에, 여기서는 넘어가도록 하겠습니다.
 
 ## 마치며 ##
 
+지금까지 MLIR에 대해 간단한 소개를 했습니다. MLIR은 compiler를 하시지 않는 분이라면 생소한 개념일 것입니다. 사실 MLIR은 훨씬 더 설명할 내용이 많지만, 여기에서는 제가 익숙하고, 중요하다고 생각하는 내용만 간략하게 담았습니다.
+MLIR에 대한 더 많은 정보가 궁금하시다면 [링크](https://mlir.llvm.org/)를 참고하시기 바랍니다. 감사합니다!
 
 ## Reference ##
 
