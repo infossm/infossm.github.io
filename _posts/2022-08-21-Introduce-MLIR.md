@@ -8,7 +8,7 @@ tags: [optimization, MLIR]
 
 ## 들어가기 전에 ##
 
-MLIR, 즉 Multi-Level Intermediate Representation은 하드웨어에 따른 연산들을 지원하는, 중간 언어(Intermediate Representation)에 대한 library라고 보면 됩니다. 아마 꽤 생소할 것 같습니다. 이 글에서는 MLIR에 대한 배경, 구성 요소 등에 대해 소개하고자 합니다.
+MLIR, 즉 Multi-Level Intermediate Representation은 하드웨어에 따른 연산들을 지원하는, 중간 언어(Intermediate Representation)에 대한 library라고 보면 됩니다. 아마 꽤 생소할 것 같습니다. 이 글에서는 MLIR에 대한 배경, 구성 요소 등에 대해 간단히 소개하고자 합니다.
 
 ## BackGround ##
 
@@ -18,7 +18,6 @@ MLIR, 즉 Multi-Level Intermediate Representation은 하드웨어에 따른 연�
 
 위에서도 언급한 IR은 Intermidate Representation의 약자로, 중간언어 집합을 말합니다. 어떤 source code가 있다고 할 때, compiler는 그것을 target machine에 맞는 target code로 전환시켜주게 됩니다. 이때 compiler는 source code가 어떤 코드인지 이해하고 그것을 저장해놓습니다. (Front-end) 그리고 그 저장된 것을 해석하여, target code로 전환시킵니다. (Back-end)이때, source code와 target code 사이에서 source code가 어떤 의미인지 저장해 놓은 것이 IR입니다.
 IR은 몇 가지 성질을 가집니다. 우선 source language들과 target machine에 대해 독립적입니다. source language로 작성된 code의 기능을 정확히 저장하고 있어야 하므로, semantic analysis를 할 때 편리해야 합니다. 나중에 target machine에 대한 code로 다시 translate해야 하므로, assembly처럼 target machine code로 translate이 쉬워야 합니다.
-위의 특징과 더불어, IR은 machine language와 비교해서 몇 가지 차이점을 보입니다. 첫째로 하나의 instruction이 정확히 하나의 fundamental한 연산을 나타냅니다. 둘째로 instruction set에 control flow 관련 정보가 포함되지 않을 수 있습니다. 마지막으로, register의 개수가 제한이 없습니다. 실제 machin들은 register개수에 제한이 있지만, IR에서는 일단 그런 제한을 생각하지 않습니다.
 
 얼핏 생각했을 때는 중간언어를 따로 저장해 두는 것이 비효율적으로 보일 수도 있습니다. 실제로, IR을 저장할 필요 없이 바로 target machine에 대한 code를 생성할 수도 있습니다. 그럼 왜 굳이, IR code를 생성하는 것일까요?
 다음과 같은 상황을 생각해봅시다. $n$개의 source language가 있고, $m$개의 target machine이 있다고 합시다. 만약 IR이라는 중간 단계 없이 source에서 바로 target machine에 대한 code로 변환시킨다고 하면, 총 $n \times m$개의 compiler가 필요할 것입니다. 그리고 각각에 필요한 최적화 역시 전부 다 다를 것입니다.
@@ -45,6 +44,51 @@ LLVM에서 LLVM-IR을 생성한 후, LLVM에서는 pass들을 통해 최적화�
 
 ## What is MLIR? ##
 
+이제 IR과 LLVM에 대해서 설명을 했으니, 본격적으로 MLIR에 대한 설명을 시작하도록 하겠습니다.
+
+### MLIR 탄생 배경 ###
+
+MLIR의 탄생 배경부터 설명을 해보겠습니다. 하나의 machine learning framework의 경우 다양한 compiler들을 가지며, 이 compiler들은 모두 다른 domain에서 작업을 하게 됩니다. 또, 각 언어마다 고유의 high-level IR을 사용하고 있다보니 개발에 있어서 많은 불편함을 만들었습니다. 이런 software fragmentation을 해결하기 위해, 여러 개의 domain에 대해서 공통적으로 적용가능한 IR을 만든 것이 MLIR입니다.
+
+### MLIR의 요소 ###
+
+MLIR은 다음과 같은 요소들로 구성됩니다.
+
+- Operation
+    - 흔히 생각하는 instruction, function, module이 모두 operation에 해당합니다.
+    - operation들은 $0$개 이상의 Value를 결과로 생성할 수 있습니다. 그리고 operand와 attribute가 존재합니다.
+    - 모두 SSA form을 만족해야합니다.
+- Attribute
+    - attribute는 key-value로 구성된 dictionary 형태로 존재합니다.
+    - 각 attribute의 value는 string, integer 등의 type을 가질 수 있습니다.
+- Location information
+    - operation의 위치에 대한 정보를 저장합니다.
+- Regions and Blocks
+    - region과 Block은 코드의 구조에 대한 정보와 관련이 있습니다.
+    - 하나의 region은 여러 개의 Block으로 구성됩니다.
+    - 그리고 하나의 Block은 operation의 list로 구성됩니다. (다른 region을 포함하는 것도 가능합니다.)
+    - 각 block은 terminator operation을 가집니다. (return 등)
+- Value dominance and visibility
+    - 각 Operation은 visible한 Value들만을 사용할 수 있습니다. 즉, control flow 상에서 반드시 이전에 정의돼있는 값만 사용할 수 있습니다.
+    - 위의 정보는 dominance와 관련이 있으며, 어떤 value의 dominance 정보는 control flow에 대한 domiate tree를 통해 얻을 수 있습니다.
+- Symbols and symbol table
+    - C/C++ 처럼 symbol table을 따로 줄 수 있습니다.
+    - symbol table의 symbol은 반드시 SSA form일 필요가 없습니다.
+    - global variable들이나, 재귀함수 같이 SSA form으로 정의하기 힘든 것들을 symbol table을 사용해 symbol을 사용합니다.
+- Dialects
+    - Dialects는 Operation들의 group입니다.
+    - 모든 Operation들을 한번에 하나의 Dialect에 넣는 것도 가능하지만, 실제로 그럴 경우 management 등에서 문제가 생길 수 있어 실제로는 하나의 Operation은 하나의 Dialect에 속하게 됩니다.
+    - MLIR의 Dialect들은 한 code에 여러 개가 공존할 수 있습니다.
+    - MLIR의 Dialect의 종류의 경우 나중에 자세히 설명하도록 하겠습니다.
+- Type System
+    - MLIR의 각 Value들은 type을 가집니다.
+    - MLIR의 type system의 경우 user-extensible하며, llvm::Type이나 clang::Type같이 정의돼있는 걸 가져올 수도 있습니다.
+    - MLIR에서는 strict하게 type checking을 하며, conversion rule을 가지고 있지 않습니다.
+- Standard type
+    - MLIR에서는 정수, 실수, tuple, tensor, multi-dimensional vector 등을 standard type으로 제공합니다.
+- Functions and modules
+    - MLIR은 function, 그리고 module로 구성됩니다.
+    - function과 module 모두 하나의 region을 가지지만, function의 경우 terminator op로 return을 사용하고, module의 경우에는 control flow에 영향을 주지 않는 dummy operation을 사용합니다.
 
 ## MLIR Dialects ##
 
@@ -59,3 +103,8 @@ LLVM에서 LLVM-IR을 생성한 후, LLVM에서는 pass들을 통해 최적화�
 
 ## Reference ##
 
+1. Chris Lattner, Mehdi Amini, Uday Bondhugula, Albert Cohen, Andy Davis, Jacques Pienaar, River Riddle, Tatiana Shpeisman, Nicolas, Vasilache, Oleksandr Zinenko, MLIR: A Compiler Infrastructure for the End of Moore’s Law
+
+2. Princeton COS 320: Compilers, 2003년 2월 4일 수정, 2022년 8월 21일 접속, https://www.cs.princeton.edu/courses/archive/spr03/cs320/notes/IR-trans1.pdf
+
+3. Wikipedia, 2022년 7월 24일 수정, 2022년 8월 21일 접속, https://en.wikipedia.org/wiki/LLVM
