@@ -1,7 +1,8 @@
+---
 layout: post 
 title: "PBFT Consensus Algorithm" 
 author: junis3
-date: 2022-08-19
+date: 2022-08-22
 tags: [blockchain]
 ---
 
