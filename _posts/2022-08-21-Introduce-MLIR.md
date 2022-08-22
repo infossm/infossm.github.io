@@ -92,13 +92,34 @@ MLIR은 다음과 같은 요소들로 구성됩니다.
 
 ## MLIR Dialects ##
 
+MLIR에서 Dialect들은 Operation들의 부분집합입니다. 한 Dialect내의 Operation들은 유사한 기능과 성질을 가집니다. 그렇기 때문에 각 Dialect들의 성질을 이해하면 MLIR을 보다 더 잘 이해할 수 있습니다. MLIR에서는 다양한 Dialect들이 존재하고, Dialect를 직접 정의하고 해당 연산을 구현하는 것도 가능합니다. (이 경우 compile 과정에서 좀 더 lower한 영역의 Dialect들로 구성된 연산으로 Conversion이 일어나게 됩니다.)
 
+여기에서는 MLIR에서 자주 사용하는 Dialect들 중 몇개에 대해 간략히 설명하도록 하겠습니다. 더 많은 Dialect들의 목록은 [링크](https://mlir.llvm.org/docs/Dialects/)에 있습니다.
+
+### Arith Dialect ###
+
+이름 처럼 arithmetic한 연산들을 다룹니다. 정수, 실수들의 덧셈, 곱셈, 그리고 각종 비트 연산들을 포함해 여러 가지 연산들을 다룹니다. scalar 값뿐만 아니라 tensor와 vector도 operand가 될 수 있습니다. 그리고 MLIR에서는 index가 다른 일반적인 정수형과 혼용되는 것이 아니라, index라는 type으로 따로 존재합니다. 그렇기 때문에, Arith Dialect를 다룰 때에는 index와 다른 integer type을 혼용하고 있지 않은지 주의해야 합니다.
+
+### SCF Dialect ###
+
+if-else, for, while 처럼 flow에 관련된 Dialect입니다. SCF는 Structured Control Flow의 줄임말입니다. scf.if, scf.for, scf.while등 C/C++에서 if-else, for, while에 대응되는 연산들이 존재하며, scf.yield라는 terminator도 존재합니다.
+
+### Memref Dialect ###
+
+memory에 관련된 Dialect입니다. Memref Dialect에서는 memref type의 변수를 다룹니다. memref type의 변수의 경우 C/C++에서 사용하는 pointer 처럼 정보들이 저장된 위치를 저장하나, C/C++에서의 pointer와 달리 type casting에 있어서 더 까다로운 제한이 있습니다. Memref Dialect에서는 memref.alloc, memref.memcpy 등 C/C++에서도 볼 수 있는 memref type 변수에 관한 연산을 지원합니다.
+
+### 기타 ###
+
+위에서 언급한 것 외에도, gpu와 관련된 연산을 지원하는 GPU Dialect, tensor들과 관련된 Tensor Dialect, 수학 관련 함수들을 지원하는 Math Dialect 등이 존재합니다.
 
 ## Pass of MLIR ##
 
 
 
 ## Use of MLIR ##
+
+
+## 마치며 ##
 
 
 ## Reference ##
