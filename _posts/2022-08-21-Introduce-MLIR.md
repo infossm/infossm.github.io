@@ -3,7 +3,7 @@ layout: post
 title:  "MLIR 소개"
 date:   2022-08-21-18:00
 author: cs71107
-tags: [optimization, MLIR]
+tags: [compiler, MLIR]
 ---
 
 ## 들어가기 전에 ##
