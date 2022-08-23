@@ -71,17 +71,17 @@ $$BG_{\sigma_{\max}}(z) = \frac{1}{2} \begin{cases} D_{\mathbb{Z}^+, \sigma_{\ma
 
 가 $z$의 분포이니 Rejection Sampling을 하려면
 
-$$ \frac{D*{\mathbb{Z}, \sigma, \mu}(z)}{BG*{\sigma*{\max}}(z)} = \exp \left( \frac{z_0^2}{2\sigma^2*{\max}} - \frac{(z - \mu)^2}{2 \sigma^2} \right) $$
+$$ \frac{D_{\mathbb{Z}, \sigma, \mu}(z)}{BG_{\sigma_{\max}}(z)} = \exp \left( \frac{z_0^2}{2\sigma^2_{\max}} - \frac{(z - \mu)^2}{2 \sigma^2} \right) $$
 
 에 비례하는 확률로 Accept를 해야 합니다. 이를 위해서
 
-$$ x = \frac{z*0^2}{2\sigma^2*{\max}} - \frac{(z - \mu)^2}{2 \sigma^2} $$
+$$ x = \frac{z_0^2}{2\sigma^2_{\max}} - \frac{(z - \mu)^2}{2 \sigma^2} $$
 
 라고 하면, Isochronous 하게 $\exp(x)$를 계산하고 이에 비례하는 확률로 Accept를 하게 됩니다.
 
 이때, Accept 확률은 시도 횟수와 연관되고 이는 다시 실행 시간과 직결되므로, 이 확률을 출력 결과와 독립적이어야 합니다. 이를 위해서 실제로는 성공 확률을
 
-$$ \frac{\sigma\_{\min}}{\sigma} \cdot \exp(x)$$
+$$ \frac{\sigma_{\min}}{\sigma} \cdot \exp(x)$$
 
 으로 두게 됩니다. 이후 Isochronous 하게 Bernoulli Sampling을 하면 (exercise for reader) 끝입니다.
 
@@ -107,7 +107,7 @@ BaseSampler, Exponential이 모두 Isochronous 하므로, Rejection Sampling의 
 
 성공 확률을 열심히 계산해보면
 
-$$ \frac{ \sigma*{\min} \cdot \sum*{z \in \mathbb{Z}} \rho*{\sigma, \mu}(z)}{2 \cdot \sigma \cdot \sum*{z \in \mathbb{Z}^+} \rho*{\sigma*{\max}, 0}(z)}$$
+$$ \frac{ \sigma_{\min} \cdot \sum_{z \in \mathbb{Z}} \rho_{\sigma, \mu}(z)}{2 \cdot \sigma \cdot \sum_{z \in \mathbb{Z}^+} \rho_{\sigma_{\max}, 0}(z)}$$
 
 가 됨을 알 수 있습니다. 여기서
 
@@ -117,7 +117,7 @@ $$ \frac{ \sigma*{\min} \cdot \sum*{z \in \mathbb{Z}} \rho*{\sigma, \mu}(z)}{2 \
 
 를 합치면 결론적으로 위 확률이
 
-$$ \frac{\sigma*{\min} \cdot \sqrt{2 \pi}}{2 \cdot \sum*{z \in \mathbb{Z}^+} \rho*{\sigma*{\max}, 0}} \cdot \left[ 1, 1 + \frac{(1 + 2^{-80}) \epsilon}{n} \right]$$
+$$ \frac{\sigma_{\min} \cdot \sqrt{2 \pi}}{2 \cdot \sum_{z \in \mathbb{Z}^+} \rho_{\sigma_{\max}, 0}} \cdot \left[ 1, 1 + \frac{(1 + 2^{-80}) \epsilon}{n} \right]$$
 
 에 속하게 됨을 알 수 있습니다. 여기서 $\epsilon, n$에 대해서는 설명하지 않았으나 FALCON의 context에서는 적당합니다.
 
