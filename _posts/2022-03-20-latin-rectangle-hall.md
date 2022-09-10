@@ -123,27 +123,28 @@ $G'$이 홀의 조건을 만족하지 않는다고 가정합시다. 즉, $\vert 
 
 ---
 
-주어진 이분 그래프 $G(X, Y, E)$가 $k$-정규 그래프라고 합시다. 임의의 부분 집합 $S\subseteq X$에 대해, $S$에 연결된 간선의 개수 $e(S)$는 $S$의 각 정점의 차수인 $k$를 정점 개수만큼 합한 것과 같습니다. 한편, $S$에 연결된 간선의 집합은 다시 말하면 $N_G(S)$에 연결된 간선의 집합이라고도 말할 수 있습니다. 따라서,
+이분 그래프 $G(X, Y, E)$가 $k$-정규 그래프라고 합시다. 임의의 부분 집합 $S\subseteq X$에 대해, $S$에 연결된 간선의 집합을 $E_S$라고 하면 $E_S$의 크기는 정점 개수 $\vert S \vert$에 정점의 차수 $k$를 곱한 것과 같습니다. 한편, $S$에 연결된 간선은 $N_G(S)$에도 연결되어 있으므로 $E_S \subseteq E_{N_G(S)}$를 만족합니다. 따라서,
 
 $$
-e(S) = k\vert S\vert = k\vert N_G(S)\vert
+E_S = k\vert S\vert \leq k\vert N_G(S)\vert = E_{N_G(S)}
 $$
 
-이므로 $\vert S\vert = \vert N_G(S)\vert$가 성립합니다! 홀의 정리를 적용하면 모든 $k$-정규 이분 그래프는 완벽 매칭을 갖는다는 결론을 얻을 수 있습니다. $\square$
+이므로 부등식의 양 변을 $k$로 나누면 $\vert S\vert \leq \vert N_G(S)\vert$가 성립합니다! 홀의 정리를 적용하면 모든 $k$-정규 이분 그래프는 완벽 매칭을 갖는다는 결론을 얻을 수 있습니다. $\square$
 
 다시 라틴 직사각형 이야기로 돌아와서 이야기를 마무리해 봅시다. $r\times n$ 라틴 직사각형에 행 하나를 추가하는 문제는 $(n-r)$-정규 이분 그래프에서 완벽 매칭을 찾는 문제와 동치이므로, 어떤 $r\times n$ 라틴 직사각형이 주어지든 항상 $(r+1)\times n$ 라틴 직사각형으로, 더 나아가서 $n\times n$ 라진 방진으로 확장할 수 있게 됩니다.
 
 행을 확장할 때에는 최대 이분 매칭 알고리즘을 이용하면 항상 완벽 이분 매칭을 찾을 수 있으므로, 포드-풀커슨 알고리즘 (Ford-Fulkerson Algorithm)이나 호프크로프트-카프 알고리즘 (Hopcroft–Karp Algorithm) 등 최대 이분 매칭을 구하는 알고리즘을 반복하면 $n\times n$ 라틴 방진을 복구하는 것이 가능합니다.
 
-한 행씩 확장하는 것보다 빠른 방법들도 있지만, 이 글의 범위에서 벗어나므로 다루지는 않겠습니다. 관심 있는 독자들은 이분 그래프의 최소 변 색칠 문제 (Minimum Edge Coloring)에 대해 찾아 보시기 바랍니다.
+한 행씩 확장하는 것보다 빠른 방법들도 있지만, 이 글의 범위에서 벗어나므로 다루지는 않겠습니다. 관심 있는 독자들은 이분 그래프의 최소 간선 색칠 문제 (Minimum Edge Coloring)에 대해 찾아 보시기 바랍니다. (관련 글: [그래프의 간선 색칠 문제](https://koosaga.com/251))
 
 ![3×5 라틴 직사각형을 확장하여 완성한 5×5 라틴 방진](/assets/images/latin-rectangle-hall/latin-05.png)
 
 ## 연습 문제
 
-1. $n\times n$ 행렬에 $1$부터 $k$까지의 수를 각각 $n$개씩 채워 넣은 부분 라틴 방진을 생각합시다. $(1 ≤ k ≤ n)$ 이러한 부분 라틴 방진을 반-라틴 방진 (Semi-Latin Sqaure)이라고 부릅니다. 반-라틴 방진의 빈 칸을 채워서 항상 라틴 방진을 만들 수 있음을 보이세요.
-2. [Incidium](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd27/0000000000209aa0#problem) (Google Code Jam 2020 예선 5번): 라틴 방진을 주제로 한 문제입니다. **Lemma 1**의 증명 과정과 비슷하게 홀의 정리를 적용해야 하는 문제입니다.
-3. [링월드](https://www.acmicpc.net/problem/9208) (GCPC 2013 G번 Ringworld): 홀의 정리 응용 문제입니다. 삼성 소프트웨어 멤버십 블로그에도 [풀이 글](https://www.secmem.org/blog/2019/11/15/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C-%ED%92%80%EC%9D%B47/)이 있습니다.
+1. [Superdoku](https://www.acmicpc.net/problem/16635) (ACM-ICPC North America Qualifier 2018 L번): 글에서 설명한 내용과 동일한 문제입니다.
+2. $n\times n$ 행렬에 $1$부터 $k$까지의 수를 각각 $n$개씩 채워 넣은 부분 라틴 방진을 생각합시다. $(1 ≤ k ≤ n)$ 이러한 부분 라틴 방진을 반-라틴 방진 (Semi-Latin Sqaure)이라고 부릅니다. 반-라틴 방진의 빈 칸을 채워서 항상 라틴 방진을 만들 수 있음을 보이세요.
+3. [Incidium](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd27/0000000000209aa0#problem) (Google Code Jam 2020 예선 5번): 라틴 방진을 주제로 한 문제입니다. **Lemma 1**의 증명 과정과 비슷하게 홀의 정리를 적용해야 하는 문제입니다.
+4. [링월드](https://www.acmicpc.net/problem/9208) (GCPC 2013 G번 Ringworld): 홀의 정리 응용 문제입니다. 삼성 소프트웨어 멤버십 블로그에도 [풀이 글](https://www.secmem.org/blog/2019/11/15/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C-%ED%92%80%EC%9D%B47/)이 있습니다.
 
 ## 참고 자료
 
