@@ -298,134 +298,112 @@ F의 식은 모두 $O(1)$만에 처리가 가능하기 때문에, 총 시간 복
 
 # 코드
 
-## Musical Notes 1
+## Two Machines
 
 ```cpp
 #include <bits/stdc++.h>
+#define INF 1e9
 using namespace std;
 
-int n, m;
-int arr[50010];
+int n, res = 1e9;
+int dp[300][70000];
 
 int main(){
-	int i, a, sum = 0;
-	scanf("%d %d", &n, &m);
-	for(i = 0; i < n; i++){
-		scanf("%d", &a);
-		sum += a;
-		arr[i] = sum;
+	int i, j, k, a, s;
+	scanf("%d", &n);
+	for(i = 1; i <= n; i++){
+		scanf("%d %d", &a, &s);
+		for(j = 0; j <= 250 * i; j++){
+			dp[i][j] = dp[i-1][j] + s;
+			if(j - a >= 0) dp[i][j] = min(dp[i][j], dp[i-1][j-a]);
+		}
 	}
-	for(i = 0; i < m; i++){
-		scanf("%d", &a);
-		printf("%d\n", upper_bound(arr, arr + n, a) - arr + 1);
-	}
+	for(i = 0; i <= 250 * n; i++) res = min(res, max(dp[n][i], i));
+	printf("%d", res);
 	return 0;
 }
 ```
 
-## Musical Notes 2
-
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-struct Data{ int x, idx, v; };
-
-int n, m;
-int arr[50010];
-Data marr[50010];
-
-bool compare1(Data d1, Data d2){
-	return d1.x < d2.x;
-}
-bool compare2(Data d1, Data d2){
-	return d1.idx < d2.idx;
-}
-int main(){
-	int i, a, sum = 0;
-	scanf("%d %d", &n, &m);
-	for(i = 0; i < n; i++){
-		scanf("%d", &a);
-		sum += a;
-		arr[i] = sum;
-	}
-	for(i = 0; i < m; i++){
-		scanf("%d", &a);
-		marr[i] = (Data){a, i, -1};
-	}
-	sort(marr, marr + m, compare1);
-	a = 0;
-	for(i = 0; i < m; i++){
-		while(a < n && arr[a] <= marr[i].x) a++;
-		marr[i].v = a + 1;
-	}
-	sort(marr, marr + m, compare2);
-	for(i = 0; i < m; i++) printf("%d\n", marr[i].v);
-	return 0;
-}
-```
-
-## 곱셈
+## Byte Coin
 
 ```cpp
 #include <bits/stdc++.h>
 #define ll long long
 using namespace std;
 
-ll c;
-
-ll f(ll a, ll b){
-	ll now;
-	if(b == 1) return a % c;
-	now = f(a, b / 2);
-	return now * now % c * ((b % 2 == 1) ? a : 1) % c;
-}
-int main(){
-	ll a, b;
-	scanf("%lld %lld %lld", &a, &b, &c);
-	printf("%lld", f(a, b));
-	return 0;
-}
-```
-
-## 달팽이는 올라가고 싶다
-
-```cpp
-#include <bits/stdc++.h>
-#define ll long long
-using namespace std;
-
-ll a, b, v;
-
-int main(){
-	ll now = 1;
-	scanf("%lld %lld %lld", &a, &b, &v);
-	v -= a;
-	printf("%lld", now + max(0ll, (v / (a - b) + ((v % (a - b) && v > 0) ? 1 : 0))));
-	return 0;
-}
-```
-
-## 최고의 피자
-
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-int n, a, b, c, max1, sum;
-int arr[110];
+int n;
+ll w, a, c = 1e9;
 
 int main(){
 	int i;
-	scanf("%d %d %d %d", &n, &a, &b, &c);
-	for(i = 0; i < n; i++) scanf("%d", &arr[i]);
-	sort(arr, arr + n);
-	max1 = c / a;
-	for(i = n - 1; i >= 0; i--){
-		sum += arr[i];
-		max1 = max(max1, (c + sum) / (a + (n - i) * b));
+	scanf("%d %lld", &n, &w);
+	for(i = 0; i < n; i++){
+		scanf("%lld", &a);
+		if(a > c) w = (w / c) * a + w % c;
+		c = a;
 	}
-	printf("%d", max1);
+	printf("%lld", w);
+}
+```
+
+## 보석 도둑
+
+```cpp
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+
+struct data{int m,v;};
+ll sum;
+
+int n,k;
+int carr[300010];
+data arr[300010];
+bool compare(data d1,data d2){
+    return d1.m<d2.m;
+}
+priority_queue <int,vector<int>,less<int>> pq;
+int main(void){
+    int j=0;
+    scanf("%d %d",&n,&k);
+    for(int i=0;i<n;i++)scanf("%d %d",&arr[i].m,&arr[i].v);
+    for(int i=0;i<k;i++)scanf("%d",&carr[i]);
+    sort(arr,arr+n,compare);
+    sort(carr,carr+k);
+    for(int i=0;i<k;i++){
+        while(j<n&&arr[j].m<=carr[i]){
+            pq.push(arr[j++].v);
+
+        }
+        if(!pq.empty())sum+=pq.top(),pq.pop();
+    }
+    printf("%lld",sum);
+    return 0;
+}
+```
+
+## 개미
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int T, l, n;
+
+int main(){
+	int i, min1, max1, a;
+	scanf("%d", &T);
+	while(T){
+		scanf("%d %d", &l, &n); min1 = 0; max1 = 0;
+		for(i = 0; i < n; i++){
+			scanf("%d", &a);
+			min1 = max(min1, min(a, l - a));
+			max1 = max(max1, max(a, l - a));
+		}
+		printf("%d %d\n", min1, max1);
+		T--;
+	}
 	return 0;
 }
 ```
