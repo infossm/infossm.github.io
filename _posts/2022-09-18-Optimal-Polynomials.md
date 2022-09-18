@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  "Low degree optimal polynomial의 계산기하적 접근"
-date:   2022-08-21
+date:   2022-09-18
 author: ainta
-tags: [algorithm, FFT]
+tags: [algorithm, geometry]
 ---
 
 
