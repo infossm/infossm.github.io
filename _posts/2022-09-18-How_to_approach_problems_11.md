@@ -29,7 +29,9 @@ tags: [data-structure, algorithm]
 
 
 ![](/assets/images/VennTum/How_to_approach/How_to_approach_problems_11_1.PNG)
+
 <center>만약 할당된 시간과 작업이 위와 같이 주어진다면</center>
+
 ![](/assets/images/VennTum/How_to_approach/How_to_approach_problems_11_2.PNG)
 
 위 작업을 B에 할당시켜주는 것이 좋다
