@@ -8,7 +8,14 @@ tags: [AI, deep-learning]
 
 # [RandomMix: A mixed sample data augmentation method with multiple mixed modes](https://arxiv.org/abs/2205.08728)
 
-RandomMix는 2022년도 5월 arxiv에 공개된 data augmentation 논문입니다. 
+RandomMix는 2022년도 5월 난징대에서 연구하여 arxiv에 공개된 data augmentation 논문입니다. 꽤나 최근에 나온 논문으로, 논문 자체의 내용이 크게 어렵지 않으면서도 지금까지 발표된 여러가지 mixed sample data augmentation들에 비해 높은 성능을 보여 SOTA를 달성했습니다. 뿐만 아니라 이미지의 robustness, diversity, cost의 관점에서도 좋은 향상을 보여주어 살펴볼 필요가 있는 논문입니다.
+
+들어가기에 앞서, 본 글은 해당 논문을 그대로 번역하는 것이 아닌 관련된 다른 논문들의 설명을 추가하며 RandomMix 및 여러 data augmentation과의 비교 및 동향등을 함께 정리한다는 점을 말씀드립니다.
+
+# Abstract
+
+Data augmentation 기법은 뉴럴 네트워크의 generalization을 높여주어 학습 과정에서 학습 데이터 세트에 overfitting하는 경우를 막아주는 역할을 한다는 것이 실험적으로 보여져왔습니다. 특히, Mixup의 등장으로 두 가지 이상의 이미지를 섞어내는 Mixed Sample Data Augmentation(MSDA)가 화두가 되었으며, 굉장히 높은 성능을 보여 주목을 끌었습니다. 이 과정에서 두 이미지를 라벨 비율대로 섞는 Mixup, source image에 target image를 섞는 Cutmix 등이 가장 많은 주목을 받아왔습니다. 
+
 최근에 Data Augmentation 기법과 관련한 논문들을 읽을 일들이 있었습니다. 관련 자료들을 찾다가 saliency map을 이용하여 cutmix와 조합한 saliencymix에 대한 논문을 접했고 해당 논문의 기법을 사용할 일이 있었습니다. 그 내용이 상당히 쉽고 직관적이며 구현 및 사용에도 큰 어려움이 없어 꽤나 유용한데 반해, 이를 번역한 자료가 없는 것 같아 이참에 한글로 정리해보려 합니다.
 
 ICLR 2021 논문인 SaliencyMix는, 기본적으로 CutMix를 기반으로 하고 있습니다. 기존의 CutMix가 가지고 있던 한계점을 saliency detection을 통해 해결하는 방법을 제안하고 있으며, 실제로 CutMix보다 항상 더 나은 결과를 보이게 됩니다. 논문에서 사용된 기법을 읽어보면, 해당 논문이 직관적으로 CutMix가 가지고 있던 한계점을 극복하며, 평균적으로 더 나은 결과를 낼 수 있다는 결론을 이해하기 쉽습니다.
