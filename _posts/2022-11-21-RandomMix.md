@@ -26,6 +26,7 @@ Data augmentation 기법은 뉴럴 네트워크의 generalization을 높여주�
 그러나 최근에 등장한 기법들은 달랐습니다. 기본적으로 Saliency information을 구하기 위해서 pre-trained된 모델을 사용하여 주어진 이미지의 saliency map을 구하고, 이 중 어떤 영역이 saliency한지 saliency area를 찾아내야 했습니다. 이전에 다루었던 SaliencyMix 또한 이를 구해야하는 점으로 인해 기존의 방법들보다 time efficiency가 조금 떨어진다는 점이 논문에 나와있었습니다.
 
 ![](/assets/images/VennTum/data_augmentation/randommix_1.png)
+
 <center>SaliencyMix Table 5 - 학습에 걸린 시간 비교</center>
 
 그러나 SaliencyMix는 Saliency Map을 구하는 과정에만 시간을 조금 사용하고, 이후에는 주어진 Saliency Map에서 가장 높은 값을 가지는 위치를 argmax를 통해 얻어내어, 해당 좌표를 이용하는 CutMix와 동일하게 진행되기 때문에, 다른 시간은 많이 필요하지 않아서 꽤나 빠른 편에 속합니다.
@@ -72,6 +73,7 @@ source image/target image의 patch를 선정하는 과정에서
 이렇게 3가지 경우로 나누어서 각각의 경우들을 매칭하면서 결과를 확인합니다. 이를 통해 얻은 결과는 우리의 예상과는 다르게도, random한 영역의 target patch를 random한 영역의 source patch에 붙여넣을 때가 가장 성능이 좋다는 것을 보여주면서, saliency information을 활용하는 것이 크게 의미없다는 것을 실험적으로 보여줍니다.
 
 ![](/assets/images/VennTum/data_augmentation/randommix_2.png)
+
 <center>ResizeMix Table 1 - CIFAR-100에서 Salient region의 중요성 실험 결과</center>
 
 이를 통해, ResizeMix의 저자들은 Saliency information을 활용하려는 시도들이 MSDA에서 크게 중요하지 않다는 것을 주장합니다.
@@ -82,6 +84,7 @@ source image/target image의 patch를 선정하는 과정에서
 실제 실험 결과에서 ResizeMix는 SaliencyMix, PuzzleMix보다도 더 높은 Top-1 accuracy를 보이면서 성능이 향상되었다는 점을 저자들은 주장합니다.
 
 ![](/assets/images/VennTum/data_augmentation/randommix_3.png)
+
 <center>ResizeMix Table 3,4 - CIFAR-100/ImageNet에서 ResizeMix Top-1 accuracy</center>
 
 ## [FMix](https://arxiv.org/abs/2002.12047)
@@ -100,6 +103,7 @@ FMix 논문은 결과적으로, CutMix의 경우 cutting할 image patch를 결�
 결과적으로 FMix의 형태가 어떤 식으로 합성되는지 이미지를 보여드리는 것으로 넘어가겠습니다.
 
 ![](/assets/images/VennTum/data_augmentation/randommix_4.png)
+
 <center>FMix - examples</center>
 
 ## RandomMix
@@ -121,6 +125,7 @@ RandomMix의 목적은 모델이 adversarial attack들에 대한 robustness를 �
 이제 이러한 기법을 적용한 RandomMix의 결과를 살펴보겠습니다.
 
 ![](/assets/images/VennTum/data_augmentation/randommix_5.png)
+
 <center>RandomMix Figure1 - RandomMix examples</center>
 
 # Experiment
@@ -153,6 +158,7 @@ WideResNet-28-10의 경우, (Mixup, CutMix, ResizeMix, FMix)의 weight를 (3, 1,
 이러한 조건 아래에 실험 결과는 다음과 같습니다.
 
 ![](/assets/images/VennTum/data_augmentation/randommix_6.png)
+
 <center>RandomMix Table1 - RandomMix CIFAR-10/100 test accuracy table</center>
 
 결과를 살펴보면 RandomMix가 기존의 굉장히 성능이 높았었던 여러 MSDA 기법들보다 성능이 꽤나 많이 향상되었다는 것을 볼 수 있습니다.
@@ -167,6 +173,7 @@ WideResNet-28-10의 경우, (Mixup, CutMix, ResizeMix, FMix)의 weight를 (3, 1,
 ImageNet experiment에서도 앞선 configuration과 동일한 셋팅을 사용합니다. 다만 학습하는 모델이 이번에는 PreAct-ResNet18만 사용한다는 차이점이 존재합니다. 각각의 4가지 MSDA의 적용 비율도 기존과 동일합니다.
 
 ![](/assets/images/VennTum/data_augmentation/randommix_7.png)
+
 <center>RandomMix Table2 - RandomMix ImageNet test accuracy table</center>
 
 ImageNet test에서도 다른 MSDA들에 비해서 성능 차이가 꽤나 유의미하게 난다는 사실을 볼 수 있습니다. RandomMix에 적용한 4개의 data augmentation 기법들보다도 더욱 성능이 향상되었다는 것이, 여러개의 data augmentation 기법을 랜덤하게 사용하는 것이 효과가 있다는 것을 실험적으로 보여준다고 볼 수 있습니다.
@@ -189,6 +196,7 @@ Occlusion robustness를 측정하기 위해 0으로 채워진 random occlusion b
 이에 대한 각각의 결과는 다음과 같습니다.
 
 ![](/assets/images/VennTum/data_augmentation/randommix_8.png)
+
 <center>RandomMix Table4, 5 - RandomMix Robustness experiment result</center>
 
 해당 표에서 설명하는 Mixed Mode란 mixing하는 과정에서 lienar mixed mode를 하는지 아니면 masked mixed mode를 하는지에 대한 부분입니다.
@@ -211,6 +219,7 @@ Diversity에 대한 측정은 기본적으로 mixing을 할 때에 얼마나 많
 실험 결과는 다음과 같습니다.
 
 ![](/assets/images/VennTum/data_augmentation/randommix_9.png)
+
 <center>RandomMix Table6 - RandomMix Diversity experiment result</center>
 
 여기에서 denote를 설명한 대로, candidates는 Mixup, CutMit, ResizeMix, FMix를 의미합니다. 이들의 조합에 따라서도 달라지는 Top-1 performance에 대한 측정을 보여주고 있습니다.
