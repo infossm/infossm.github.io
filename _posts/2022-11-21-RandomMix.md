@@ -120,11 +120,60 @@ RandomMix의 목적은 모델이 adversarial attack들에 대한 robustness를 �
 
 이제 이러한 기법을 적용한 RandomMix의 결과를 살펴보겠습니다.
 
-
 ![](/assets/images/VennTum/data_augmentation/randommix_5.png)
 <center>RandomMix Figure1 - RandomMix examples</center>
 
-## Mixup
+# Experiment
+
+실험은 다음과 같은 2개의 파트로 나누어서 진행됩니다.
+
+- CIFAR / ImageNet Dataset에 대한 Generalization Performance
+- CIFAR-100에서의 Robustness Test 및 Tiny-ImageNet에 대한 Diversity experiment
+
+## Generalization Performance
+
+### CIFAR-10/100
+
+32x32 픽셀의 이미지들로 구성된 CIFAR-10과 CIFAR-100 dataset에 대해서는 PreAct-ResNet18과 WideResNet-28-10 모델을 사용하여 학습을 진행합니다.
+실험 조건은 두 데이터 셋에 대해 모두 동일하게 했으나, 사용한 모델에 따라서 4가지 MSDA의 선택 weight를 다르게 주었습니다.
+
+공통된 실험 조건은 다음과 같습니다.
+
+- 200epochs train
+- 256 batch size
+- SGD optimizer
+- 0.1 learning rate
+- 0.9 momentum
+- 5e-4 weight decay
+- α = 1
+
+그리고 PreAct-ResNet18의 경우, (Mixup, CutMix, ResizeMix, FMix)의 weight를 모두 (1, 1, 1, 1)로 주었으나,
+WideResNet-28-10의 경우, (Mixup, CutMix, ResizeMix, FMix)의 weight를 (3, 1, 1, 1)로 주어, 50%로 Mixup을, 50%로 나머지 augmentation 방법들이 동일한 비율로 선택되게끔 만들었습니다.
+
+이러한 조건 아래에 실험 결과는 다음과 같습니다.
+
+![](/assets/images/VennTum/data_augmentation/randommix_6.png)
+<center>RandomMix Table1 - RandomMix CIFAR-10/100 test accuracy table</center>
+
+결과를 살펴보면 RandomMix가 기존의 굉장히 성능이 높았었던 여러 MSDA 기법들보다 성능이 꽤나 많이 향상되었다는 것을 볼 수 있습니다.
+그러나 해석하는 과정에서 우리는 각 논문들이 도출해낸 결과도 함께 살펴봐야 합니다. 예를 들어, ResizeMix의 경우 해당 논문에서는 PuzzleMix보다도 좋은 결과를 냈다는 결과를 보여주었지만, RandomMix 논문에서는 PuzzleMix보다 모든 부분이 좋지 않다는 점 등이 있습니다. 이는 실험에서의 configuration 등에 대한 부분이 달라서일 수도 있으나, 결과의 신빙성 등에 대해서도 우리가 심도있게 살펴볼 필요가 있음을 시사합니다.
+
+일단 해당 논문의 결과만 살펴본다면 PuzzleMix보다는 좋은 결과를 냈다는 것을 확인할 수 있습니다.
+왜 original author의 결과를 보여줄 때에는 Co-mixup이 들어가 있는데, reproduced result를 공유할 때에는 넣지 않았는지 의문이기는 합니다.
+그러나 전반적으로는, 굉장히 단순한 관찰과 아이디어를 사용했는데 결과의 향상이 보인다는 점이 긍정적입니다.
+
+### ImageNet/Tiny-ImageNet
+
+ImageNet experiment에서도 앞선 configuration과 동일한 셋팅을 사용합니다. 다만 학습하는 모델이 이번에는 PreAct-ResNet18만 사용한다는 차이점이 존재합니다. 각각의 4가지 MSDA의 적용 비율도 기존과 동일합니다.
+
+![](/assets/images/VennTum/data_augmentation/randommix_7.png)
+<center>RandomMix Table2 - RandomMix ImageNet test accuracy table</center>
+
+ImageNet test에서도 다른 MSDA들에 비해서 성능 차이가 꽤나 유의미하게 난다는 사실을 볼 수 있습니다. RandomMix에 적용한 4개의 data augmentation 기법들보다도 더욱 성능이 향상되었다는 것이, 여러개의 data augmentation 기법을 랜덤하게 사용하는 것이 효과가 있다는 것을 실험적으로 보여준다고 볼 수 있습니다.
+
+또한 해당 표에는 Cost에 대한 부분의 비교도 들어있음을 확인할 수 있습니다.
+Cost에 대한 항목은 바로 time cost에 대한 내용으로, 기존 baseline에 비해 얼마나 느리게 동작했는지 비율을 보여줍니다.
+PuzzleMix의 경우, baseline 대비 2배 이상 느린 것을 확인할 수 있으나, RandomMix는 1.01배로 기존과 거의 동일하다는 것을 알 수 있어, 시간 효율도 높다는 것을 확인할 수 있습니다.
 
 Mixup의 경우, 랜덤으로 선택된 두 개의 이미지를 beta distribution에 따라 선택된 비율 $\lambda$ 에 따라 두 이미지를 $\lambda$ 와 $(1-\lambda)$ 만큼 pixel-wise하게 섞어 새로운 이미지를 만들어 냅니다. 이렇게 만들어진 이미지의 라벨은 기존의 하나의 이미지의 라벨을 갖는 것이 아닌, 사용된 두 개의 이미지의 라벨을 해당 비율만큼 가지게 됩니다.
 이렇게 만들어진 이미지는 모델이 training data들 사이의 linear behavior를 가지게 해주어 overfitting과 adversarial data에 대한 robustness를 가지게 된다는 장점이 있습니다.
