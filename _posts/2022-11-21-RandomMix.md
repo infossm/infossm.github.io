@@ -41,17 +41,46 @@ Data augmentation 기법은 뉴럴 네트워크의 generalization을 높여주�
 이러한 상황 속에서, 저자들은 자신들이 기존의 Saliency information을 사용하는 논문들에 비해 굉장히 빠르게 동작하면서도, accuracy, robustness, diversity 등 여러 방면에서 기존보다 효율적인 RandomMix를 제안합니다. 심지어 논문에서 말하는 table만 확인하면, 기존의 PuzzleMix, 심지어 Co-Mixup보다도 더 성능이 뛰어나다고 이야기합니다.
 더욱이 RandomMix는 이미지를 mixing하는 파이프라인이 굉장히 간단하여 어떤 모델들에서도 매우 쉽게 적용할 수 있다는 강점을 가지고 있음을 말합니다.
 
-최근에 Data Augmentation 기법과 관련한 논문들을 읽을 일들이 있었습니다. 관련 자료들을 찾다가 saliency map을 이용하여 cutmix와 조합한 saliencymix에 대한 논문을 접했고 해당 논문의 기법을 사용할 일이 있었습니다. 그 내용이 상당히 쉽고 직관적이며 구현 및 사용에도 큰 어려움이 없어 꽤나 유용한데 반해, 이를 번역한 자료가 없는 것 같아 이참에 한글로 정리해보려 합니다.
+# Method
 
-ICLR 2021 논문인 SaliencyMix는, 기본적으로 CutMix를 기반으로 하고 있습니다. 기존의 CutMix가 가지고 있던 한계점을 saliency detection을 통해 해결하는 방법을 제안하고 있으며, 실제로 CutMix보다 항상 더 나은 결과를 보이게 됩니다. 논문에서 사용된 기법을 읽어보면, 해당 논문이 직관적으로 CutMix가 가지고 있던 한계점을 극복하며, 평균적으로 더 나은 결과를 낼 수 있다는 결론을 이해하기 쉽습니다.
+기존의 Mixup의 경우, 두 개의 source image와 target image를 준비하여, beta distribution에서 얻은 lambda 값에 비례하여 각각의 이미지를 pixel-wise하게 비율대로 섞는 방식으로 구현됩니다.
 
-SaliencyMix의 설명에 앞서, 쉬운 이해를 위해 간단히 cutmix에 대해 설명하도록 하겠습니다.
+그리고 CutMix의 경우, 이러한 Mixup의 방식과 특정 영역을 모두 black으로 바꿔버리는 Cutout을 합친 방식으로, target image의 영역을 source image의 랜덤한 위치에 삽입하는 방식으로 새로운 이미지를 만들어냅니다.
 
-# [CutMix (2019)](https://arxiv.org/abs/1905.04899)
+그리고 여기서 CutMix가 가진 단점을 보완하는 논문인 ResizeMix(2020), FMix(2021)에 대해서도 알아야합니다.
 
-ICCV 2019 논문인 CutMix는 image data augmentation 분야에서 당시 굉장히 강력하여 augmentation 분야에 엄청난 바람을 불었던 논문입니다. 그 아이디어와 구현 난이도의 간단함에 비해 굉장한 성능의 향상을 보여 당시에 가장 뜨거웠던 [Mixup (2017)](https://arxiv.org/abs/1710.09412)과 [Cutout (2017)](https://arxiv.org/abs/1708.04552)을 제치고 굉장히 좋은 data augmentation 성능을 보였습니다. 놀랍게도 그 아이디어는 mixup과 cutout이 가지고 있던 아이디어에서 간단한 변형을 준 것이어서 사람들이 쉽게 이해하고 적용할 수 있었습니다.
+사실 RandomMix가 가지는 가장 큰 contribution을 이해하는 것에는 위 논문들을 정확하게 이해해야 하는 것과는 거리가 있기 때문에, 간단히 설명하고 넘어가도록 하겠습니다.
 
-CutMix는 augmentation 과정에서 랜덤하게 선택된 두 개의 이미지를 섞으려는 시도에서 시작합니다.
+## [ResizeMix](https://arxiv.org/abs/2012.11101)
+
+ResizeMix는 CutMix가 가진 가장 큰 단점을 해결하려는 노력에서부터 아이디어가 시작합니다. 이전 SaliencyMix의 경우, CutMix를 개선할 때에 기여한 가장 큰 contibution은 다음과 같습니다.
+
+- 기존의 CutMix의 경우, target image에서 엉뚱한 영역을 잘라서 source image에 붙일 경우, 의미없는 이미지 mixing이 일어남과 동시에 label ratio도 망가진다.
+
+SaliencyMix는 이 점을 target image에서 Saliency한 영역을 찾아서 이미지를 잘라내는 방식으로 CutMix의 단점을 개선하였습니다.
+
+그러나 ResizeMix는 CutMix를 진행하는 과정에서, target image에서 잘못 이미지를 잘라내는 경우를 방지하기 위해서, source image의 Cutout된 영역 자체에 target image 자체를 해당 크기대로 resize하여 붙여넣는 방식을 제안합니다.
+
+이 과정에서 ResizeMix는 기존의 MSDA 기법들이 중시하던 Saliency information을 활용한다는 것이 과연 중요한 것일지부터 확인하면서 시작합니다. 기존의 문제가 되었던 부분들을 실제로 다음과 같은 영역들로 구분하면서 실험을 진행합니다.
+
+source image/target image의 patch를 선정하는 과정에서
+
+- Non-saliency region
+- Saliency region
+- Random region
+
+이렇게 3가지 경우로 나누어서 각각의 경우들을 매칭하면서 결과를 확인합니다. 이를 통해 얻은 결과는 우리의 예상과는 다르게도, random한 영역의 target patch를 random한 영역의 source patch에 붙여넣을 때가 가장 성능이 좋다는 것을 보여주면서, saliency information을 활용하는 것이 크게 의미없다는 것을 실험적으로 보여줍니다.
+
+이를 통해, ResizeMix의 저자들은 Saliency information을 활용하려는 시도들이 MSDA에서 크게 중요하지 않다는 것을 주장합니다.
+그러나 실험 결과에서, Non-saliency region을 사용하게 되는 경우는 label의 misallocation을 유발하게 되어, 결과적으로 no labeled object에 label을 부여하는 경우가 발생할 수 있어서 결과에 악영향을 줄 수 있다는 점을 이야기합니다.
+
+그 결과, CutMix를 진행하되, 정보가 없는 영역이 mixing되는 것을 예방하면서 굳이 saliency area를 선정하지 않아도 된다는 점을 착안해, target image를 그대로 resize하여 모든 정보를 source image patch에 넣어주는 방식인 ResizeMix를 제안합니다.
+
+실제 실험 결과에서 ResizeMix는 SaliencyMix, PuzzleMix보다도 더 높은 Top-1 accuracy를 보이면서 성능이 향상되었다는 점을 저자들은 주장합니다.
+
+## [FMix](https://arxiv.org/abs/2002.12047)
+
+
 
 ## Mixup
 
