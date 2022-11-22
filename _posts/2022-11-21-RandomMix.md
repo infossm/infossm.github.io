@@ -28,6 +28,19 @@ Data augmentation 기법은 뉴럴 네트워크의 generalization을 높여주�
 ![](/assets/images/VennTum/data_augmentation/randommix_1.png)
 <center>SaliencyMix Table 5 - 학습에 걸린 시간 비교</center>
 
+그러나 SaliencyMix는 Saliency Map을 구하는 과정에만 시간을 조금 사용하고, 이후에는 주어진 Saliency Map에서 가장 높은 값을 가지는 위치를 argmax를 통해 얻어내어, 해당 좌표를 이용하는 CutMix와 동일하게 진행되기 때문에, 다른 시간은 많이 필요하지 않아서 꽤나 빠른 편에 속합니다.
+
+더욱 높은 성능을 보여주면서 Saliency information을 사용하는 논문들로는 PuzzleMix(ICML 2020)와 Co-Mixup(ICLR 2021 Oral) 등의 논문이 있습니다. 위 논문들은 그냥 Saliency Map을 구하여 해당 정보를 사용하는 것 뿐만 아닌, image를 mixing하는 과정에서 saliency area의 손실, 영역의 겹침 등을 고려하여 최대한 saliency area를 살리면서 새로운 mixed image를 생성합니다.
+또한 Co-Mixup의 경우, 기존의 방법들처럼 두 개의 이미지를 섞는 방식이 아닌, 3개 이상의 이미지를 섞을 때에도 saliency information을 고려하면서 섞을 수 있는 알고리즘을 고안하였고, 그 결과 앞선 여러 MSDA 기법들에 비해서 뚜렷한 성능 향상을 보여주며 해당 시점의 SOTA를 찍어 ICLR 2021의 Oral presentation으로 선정되는 결과를 보여주기도 하였습니다.
+(두 논문의 자세한 동작 원리 및 contribution은 더 있으나, 지금은 Saliency information을 활용한 기법이라는 점에 초점을 맞추도록 하겠습니다. 자세한 내용은 논문을 살펴보시면 좋습니다)
+
+그러나 해당 논문들은 이미지를 섞는 과정에서 정보의 손실을 최대한 줄이기 위해 많은 time cost가 사용된다는 단점이 있습니다(실제로 해당 기법들을 사용해보았을 때, PuzzleMix는 Mixup 대비 약 2배 정도, Co-mixup은 2~3배 정도의 시간이 소요되었습니다). 물론 Co-Mixup 등의 논문에서도 time efficiency가 떨어진다는 점을 인지하고, 해당 알고리즘을 brute-force하게 구현하는 것보다는 훨씬 더 빠르도록 optimize를 거쳐 소요 시간을 줄였으나 단순한 형태의 mixing보다는 느릴 수 밖에 없었습니다.
+
+이러한 관점들에서 최근에는 cost efficiency를 추구하는 형태의 여러 논문들이 게시되기도 하였으나, 꽤나 많은 수의 논문들이 기존의 mixup, cutmix 혹은 단순한 형태의 enhanced MSDA보다는 성능이 높으면서 빠르게 동작하는 것을 보여주고, 자신들이 가진 논문의 contribution으로 성능의 SOTA보다는 이외의 것들에 초점을 맞추어 설명하는 경우들이 있었습니다. 즉, Co-Mixup보다도 더 성능이 좋으면서 빠른 논문들을 찾아보기가 쉽지는 않았습니다.
+
+이러한 상황 속에서, 저자들은 자신들이 기존의 Saliency information을 사용하는 논문들에 비해 굉장히 빠르게 동작하면서도, accuracy, robustness, diversity 등 여러 방면에서 기존보다 효율적인 RandomMix를 제안합니다. 심지어 논문에서 말하는 table만 확인하면, 기존의 PuzzleMix, 심지어 Co-Mixup보다도 더 성능이 뛰어나다고 이야기합니다.
+더욱이 RandomMix는 이미지를 mixing하는 파이프라인이 굉장히 간단하여 어떤 모델들에서도 매우 쉽게 적용할 수 있다는 강점을 가지고 있음을 말합니다.
+
 최근에 Data Augmentation 기법과 관련한 논문들을 읽을 일들이 있었습니다. 관련 자료들을 찾다가 saliency map을 이용하여 cutmix와 조합한 saliencymix에 대한 논문을 접했고 해당 논문의 기법을 사용할 일이 있었습니다. 그 내용이 상당히 쉽고 직관적이며 구현 및 사용에도 큰 어려움이 없어 꽤나 유용한데 반해, 이를 번역한 자료가 없는 것 같아 이참에 한글로 정리해보려 합니다.
 
 ICLR 2021 논문인 SaliencyMix는, 기본적으로 CutMix를 기반으로 하고 있습니다. 기존의 CutMix가 가지고 있던 한계점을 saliency detection을 통해 해결하는 방법을 제안하고 있으며, 실제로 CutMix보다 항상 더 나은 결과를 보이게 됩니다. 논문에서 사용된 기법을 읽어보면, 해당 논문이 직관적으로 CutMix가 가지고 있던 한계점을 극복하며, 평균적으로 더 나은 결과를 낼 수 있다는 결론을 이해하기 쉽습니다.
