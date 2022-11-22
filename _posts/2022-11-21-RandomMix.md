@@ -252,3 +252,4 @@ Diversity에 대한 측정은 기본적으로 mixing을 할 때에 얼마나 많
 [4. Puzzle Mix: Exploiting Saliency and Local Statistics for Optimal Mixup](https://arxiv.org/abs/2009.06962)
 
 [5. Co-Mixup: Saliency Guided Joint Mixup with Supermodular Diversity](https://openreview.net/forum?id=gvxJzw8kW4b)
+
