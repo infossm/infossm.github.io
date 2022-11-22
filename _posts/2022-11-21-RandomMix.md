@@ -222,3 +222,20 @@ Diversity에 대한 측정은 기본적으로 mixing을 할 때에 얼마나 많
 
 # 마치며
 
+이번 포스트에서는 올해 5월에 arxiv에 올라온 RandomMix에 대한 논문을 다루어보았습니다.
+실제로 요새 많은 논문에서는 무작정 performance를 향상시키는 형태의 MSDA 논문들이 나온다기 보다는, 특정 영역에서 기존보다 더 나은 형태의 MSDA 논문들이 많이 나오고 있습니다.
+또한 기존의 MSDA 논문들이 수학적, 통합적으로 증명된 바가 없다는 점에서 많은 의구심을 가진 목소리가 나오기도 하고, 이를 증명하는 형태의 논문이 발표되기도 하면서 기존과 같은 방식의 data augmentation paper는 쉽게 받아들여지기 어려울 수 있습니다.
+
+또한 MSDA와 관련된 논문을 읽을 때에 주의 깊게 살펴봐야하는 점은, configuration, dataset, model등을 변경하는 것으로 논문들마다 table에 기재된 성능이 재각각일 수 있다는 점입니다. 이를 통해 특정 문제 상황에서는 오히려 좋지 않을 결과가 나올 수도 있음을 염두해두고 날카로운 시선으로 논문을 봐야할 것 같습니다.
+
+소개한 RandomMix의 경우, 굉장히 단순한 형태의 기법을 적용하는 것으로 많은 부분에서 굉장히 좋은 퍼포먼스를 보여주고 있고, 이를 다루면서 알려드릴 수 있는 다양한 종류의 MSDA 기법들이 있어서 정리해보았습니다.
+
+관심이 있으시다면 해당 논문을 직접 읽어보시는 것을 추천합니다.
+
+# Related Paper
+
+[1. RandomMix: A mixed sample data augmentation method with multiple mixed modes](https://arxiv.org/abs/2205.08728)
+[2. ResizeMix: Mixing Data with Preserved Object Information and True Labels](https://arxiv.org/abs/2012.11101)
+[3. FMix: Enhancing Mixed Sample Data Augmentation](https://arxiv.org/abs/2002.12047)
+[4. Puzzle Mix: Exploiting Saliency and Local Statistics for Optimal Mixup](https://arxiv.org/abs/2009.06962)
+[5. Co-Mixup: Saliency Guided Joint Mixup with Supermodular Diversity](https://openreview.net/forum?id=gvxJzw8kW4b)
