@@ -14,7 +14,7 @@ RandomMix는 2022년도 5월 난징대에서 연구하여 arxiv에 공개된 dat
 
 # Abstract
 
-Data augmentation 기법은 뉴럴 네트워크의 generalization을 높여주어 학습 과정에서 학습 데이터 세트에 overfitting하는 경우를 막아주는 역할을 한다는 것이 실험적으로 보여져왔습니다. 특히, Mixup의 등장으로 두 가지 이상의 이미지를 섞어내는 Mixed Sample Data Augmentation(MSDA)가 화두가 되었으며, 굉장히 높은 성능을 보여 주목을 끌었습니다. 이 과정에서 두 이미지를 라벨 비율대로 섞는 Mixup(2017), source image에 target image를 섞는 Cutmix(2019) 등이 굉장히 큰 주목을 받아왔습니다(Mixup, Cutmix에 대한 간단한 설명은 이전에 포스팅한 [SaliencyMix]()에서 확인하실 수 있습니다).
+Data augmentation 기법은 뉴럴 네트워크의 generalization을 높여주어 학습 과정에서 학습 데이터 세트에 overfitting하는 경우를 막아주는 역할을 한다는 것이 실험적으로 보여져왔습니다. 특히, Mixup의 등장으로 두 가지 이상의 이미지를 섞어내는 Mixed Sample Data Augmentation(MSDA)가 화두가 되었으며, 굉장히 높은 성능을 보여 주목을 끌었습니다. 이 과정에서 두 이미지를 라벨 비율대로 섞는 Mixup(2017), source image에 target image를 섞는 Cutmix(2019) 등이 굉장히 큰 주목을 받아왔습니다(Mixup, Cutmix에 대한 간단한 설명은 이전에 포스팅한 SaliencyMix에서 확인하실 수 있습니다).
 
 이러한 MSDA 기법의 성능을 향상하기 위해서 최근 논문들에서는 이미지의 saliency region을 확인하고, 해당 영역들을 mixed image에 최대한 남기려는 형태의 노력이 많이 이루어졌습니다. 이전에 제가 소개했던 SaliencyMix도 같은 이유로 saliency area를 남기는 형태로 mixing하고, cutmix의 label mix 방식을 따르는 방식이었죠.
 최근에는 Saliency Map을 이용하는 것 뿐만 아니라, Class Activation Map(CAM)을 활용하는 형태의 논문이 나오기도 했습니다(SnapMix, 2021). 결국에 이러한 시도들도 모두 기존에 제시되었던 MSDA 기법들의 label mixing 및 image mixing에서 납득되지 않는 mixing 결과를 개선하기 위한 형태로 적용된 것으로 볼 수 있습니다.
@@ -101,6 +101,28 @@ FMix 논문은 결과적으로, CutMix의 경우 cutting할 image patch를 결�
 
 ![](/assets/images/VennTum/data_augmentation/randommix_4.png)
 <center>FMix - examples</center>
+
+## RandomMix
+
+이제 대방의 RandomMix가 적용되는 방법론에 대한 이야기를 할 차례입니다. 사실 어떻게 보면, 제가 확인한 바에 의하면 RandomMix의 경우도 conference 등에 제출되거나 peer review를 받은 상태가 아닌 것으로 알고 있습니다. 그 이야기는 곧, 과연 이 논문에서 다루는 내용의 증거 및 신빙성과도 연결될 수 있다고 볼 수 있겠습니다.
+
+그러나 해당 논문에서 기여하는 알고리즘 자체가 굉장히 단순하면서도 결과적으로 지금까지 보여준 여러 높은 성능의 논문들보다 훨씬 좋은 결과를 보여주고 있습니다. 비단 accuracy 뿐만 아니라, robustness, time cost, diversity 등 다양한 관점에서 굉장히 좋은 성능을 보여주면서 기존의 MSDA 논문들의 연구 방향성을 다시 고려해볼 수 있도록 해주는 논문이기에 해당 내용을 알려드릴 필요성이 있다고 생각합니다.
+
+RandomMix의 목적은 모델이 adversarial attack들에 대한 robustness를 가지고, 동시에 training 과정에서 우리가 앞서서 이야기했던 Mixup, CutMix, ResizeMix, FMix 총 4가지의 방법들을 통해 만들어진 이미지 데이터 셋을 사용하는 걸 통해 훈련 데이터의 diversity를 증가시키겠다는 것입니다.
+
+그 과정은 다음과 같습니다.
+
+- RandomMix를 하는 과정에서, Mixup, CutMix, ResizeMix, FMix를 확률적으로 선택하고 선택된 data augmentation을 적용한다.
+
+굉장히 심플하고도 간단합니다. 물론 이 과정에서 각각의 augmentation을 선택할 확률을 어떻게 주냐는 문제를 고민할 수 있겠으나, RandomMix 논문에서는 각각의 weight를 모두 1로 주었습니다. 이를 통해 random하게 선택된 augmentation을 적용하면서 학습 과정에서 이미지들에 서로 다른 data augmentation을 확률적으로 적용하겠다는 것이 RandomMix의 목표입니다.
+
+이를 통해 더욱 다양한 형태의 train image들이 만들어지면서 diversity가 증가하게 되는 결과를 낳고, 이를 통해 robustness와 accuracy의 향상도 기대하면서 RandomMix의 실험이 진행됩니다. 또한 저자들이 선택한 4개의 방법론 모두 time cost가 거의 없기 때문에, RandomMix의 경우도 굉장히 빠르게 동작한다는 것을 알 수 있고, 특별히 계산하거나 적용해야하는 제한 조건이 없기 때문에, 어떠한 모델과 파이프라인에도 적용할 수 있다는 장점이 있습니다.
+
+이제 이러한 기법을 적용한 RandomMix의 결과를 살펴보겠습니다.
+
+
+![](/assets/images/VennTum/data_augmentation/randommix_5.png)
+<center>RandomMix Figure1 - RandomMix examples</center>
 
 ## Mixup
 
