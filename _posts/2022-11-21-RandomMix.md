@@ -14,7 +14,19 @@ RandomMix는 2022년도 5월 난징대에서 연구하여 arxiv에 공개된 dat
 
 # Abstract
 
-Data augmentation 기법은 뉴럴 네트워크의 generalization을 높여주어 학습 과정에서 학습 데이터 세트에 overfitting하는 경우를 막아주는 역할을 한다는 것이 실험적으로 보여져왔습니다. 특히, Mixup의 등장으로 두 가지 이상의 이미지를 섞어내는 Mixed Sample Data Augmentation(MSDA)가 화두가 되었으며, 굉장히 높은 성능을 보여 주목을 끌었습니다. 이 과정에서 두 이미지를 라벨 비율대로 섞는 Mixup, source image에 target image를 섞는 Cutmix 등이 가장 많은 주목을 받아왔습니다. 
+Data augmentation 기법은 뉴럴 네트워크의 generalization을 높여주어 학습 과정에서 학습 데이터 세트에 overfitting하는 경우를 막아주는 역할을 한다는 것이 실험적으로 보여져왔습니다. 특히, Mixup의 등장으로 두 가지 이상의 이미지를 섞어내는 Mixed Sample Data Augmentation(MSDA)가 화두가 되었으며, 굉장히 높은 성능을 보여 주목을 끌었습니다. 이 과정에서 두 이미지를 라벨 비율대로 섞는 Mixup(2017), source image에 target image를 섞는 Cutmix(2019) 등이 굉장히 큰 주목을 받아왔습니다(Mixup, Cutmix에 대한 간단한 설명은 이전에 포스팅한 [SaliencyMix]()에서 확인하실 수 있습니다).
+
+이러한 MSDA 기법의 성능을 향상하기 위해서 최근 논문들에서는 이미지의 saliency region을 확인하고, 해당 영역들을 mixed image에 최대한 남기려는 형태의 노력이 많이 이루어졌습니다. 이전에 제가 소개했던 SaliencyMix도 같은 이유로 saliency area를 남기는 형태로 mixing하고, cutmix의 label mix 방식을 따르는 방식이었죠.
+최근에는 Saliency Map을 이용하는 것 뿐만 아니라, Class Activation Map(CAM)을 활용하는 형태의 논문이 나오기도 했습니다(SnapMix, 2021). 결국에 이러한 시도들도 모두 기존에 제시되었던 MSDA 기법들의 label mixing 및 image mixing에서 납득되지 않는 mixing 결과를 개선하기 위한 형태로 적용된 것으로 볼 수 있습니다.
+
+그러나 이 논문은 MSDA의 최근 동향인 saliency information을 이용하는 형태의 기법들의 cost에 주목합니다.
+기존의 Mixup의 경우는 두 이미지를 얼마의 label 비율로 섞을 것인지에 대한 lambda를 beta distribution을 통해 구하기만 하면 바로 mixing이 가능해서 이미지 크기만큼의 시간으로 바로 구할 수 있어 전체 학습 시간에 영향을 거의 미치지 않았습니다.
+마찬가지로, CutMix의 경우도 주어진 target image를 어느 영역을 사용할 것인지, source image도 어느 영역을 사용할 것인지에 대한 random한 좌표만 정해지고나면 mixing에서는 큰 시간이 들지 않아서, 적용하더라도 학습 시간이 달라지지는 않는 장점이 있었죠.
+
+그러나 최근에 등장한 기법들은 달랐습니다. 기본적으로 Saliency information을 구하기 위해서 pre-trained된 모델을 사용하여 주어진 이미지의 saliency map을 구하고, 이 중 어떤 영역이 saliency한지 saliency area를 찾아내야 했습니다. 이전에 다루었던 SaliencyMix 또한 이를 구해야하는 점으로 인해 기존의 방법들보다 time efficiency가 조금 떨어진다는 점이 논문에 나와있었습니다.
+
+![](/assets/images/VennTum/data_augmentation/randommix_1.png)
+<center>SaliencyMix Table 5 - 학습에 걸린 시간 비교</center>
 
 최근에 Data Augmentation 기법과 관련한 논문들을 읽을 일들이 있었습니다. 관련 자료들을 찾다가 saliency map을 이용하여 cutmix와 조합한 saliencymix에 대한 논문을 접했고 해당 논문의 기법을 사용할 일이 있었습니다. 그 내용이 상당히 쉽고 직관적이며 구현 및 사용에도 큰 어려움이 없어 꽤나 유용한데 반해, 이를 번역한 자료가 없는 것 같아 이참에 한글로 정리해보려 합니다.
 
