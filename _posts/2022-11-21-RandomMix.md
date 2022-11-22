@@ -235,7 +235,11 @@ Diversity에 대한 측정은 기본적으로 mixing을 할 때에 얼마나 많
 # Related Paper
 
 [1. RandomMix: A mixed sample data augmentation method with multiple mixed modes](https://arxiv.org/abs/2205.08728)
+
 [2. ResizeMix: Mixing Data with Preserved Object Information and True Labels](https://arxiv.org/abs/2012.11101)
+
 [3. FMix: Enhancing Mixed Sample Data Augmentation](https://arxiv.org/abs/2002.12047)
+
 [4. Puzzle Mix: Exploiting Saliency and Local Statistics for Optimal Mixup](https://arxiv.org/abs/2009.06962)
+
 [5. Co-Mixup: Saliency Guided Joint Mixup with Supermodular Diversity](https://openreview.net/forum?id=gvxJzw8kW4b)
