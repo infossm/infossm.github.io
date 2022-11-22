@@ -86,7 +86,21 @@ source image/target image의 patch를 선정하는 과정에서
 
 ## [FMix](https://arxiv.org/abs/2002.12047)
 
+FMix는 2020년도에 arxiv에 등록된 논문입니다.
+사실 FMix는 그 자체를 모두 이야기하기에는 다루어야하는 내용이 꽤나 많은 논문입니다. 저자들의 기존의 MSDA에 대한 문제 인식 및 동기, 그리고 contribution에 대해서 이야기할 거리가 많습니다.
+그러나 본 포스트에서는 RandomMix에서 사용하는 기법 중 하나라는 것 이외에는 FMix에 대해서 크게 다루지는 않을 예정입니다. 그 이유는 제가 처음 FMix를 읽을 때에도 의심되는 부분이었으며, 결과적으로 FMix가 ICLR 2021 blind submission에서 reject 되기도 한 이유인 성능의 개선 및 결과 분석의 신빙성 때문입니다. 물론 FMix가 가지는 contribution이 굉장히 중요하고 큰 의미를 가질 수도 있습니다. 그러나 많은 리뷰어들이 성능의 개선이 크지 않다는 점, 방법론과 결과 분석의 논리적 연결이 약하다는 점을 의심했고, 결과적으로 분석 과정의 근거 및 설득력에 의구심을 가져 reject를 받았습니다. 물론 아닐 수도 있으나, 검증이 크게 되지 않고 성능 또한 크게 개선되지 않은 논문을 다루는 것이 큰 의미가 있을지에 대해 확신할 수 없기 때문에, FMix의 방법론 정도만 다룬 후 넘어가겠습니다.
 
+FMix 논문은 결과적으로, CutMix의 경우 cutting할 image patch를 결정할 때 정사각형 혹은 직사각형의 모양으로 잘라서 붙여넣게 됩니다. 그러나 FMix의 저자들은 CutMix의 기존 방식처럼 사각형 모양으로 자르는 것이 아닌 임의의 mask를 만들어서 해당 mask대로 source와 target image를 mixing하는 방법을 제안합니다.
+
+이 때, 만들게 되는 임의의 마스크는 Fourier 공간에서 샘플링된 low frequency image에 임계값을 적용하여 얻는 임의의 이진 마스크를 사용합니다.
+이러한 형태의 마스크는 결과적으로 다양한 형태로 만들어지고 데이터의 차원에 상관없이 적용 가능하다는 장점과 해당 마스크를 구하는 과정에서 특별한 time cost가 발생하지 않는다는 장점이 있어, 매 훈련마다 다양한 형태의 이진 마스크를 만들어서 여러가지 adversarial attack에 대해 강건성을 가질 수 있다고 이야기합니다.
+
+이러한 접근은 기존의 네모난 형태의 mask를smooth하게 만들어서 모델의 robustness를 증가시키려는 노력을 한 SmoothMix과 비슷하게 느껴질 수도 있습니다.
+
+결과적으로 FMix의 형태가 어떤 식으로 합성되는지 이미지를 보여드리는 것으로 넘어가겠습니다.
+
+![](/assets/images/VennTum/data_augmentation/randommix_4.png)
+<center>FMix - examples</center>
 
 ## Mixup
 
