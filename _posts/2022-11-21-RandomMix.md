@@ -71,12 +71,18 @@ source image/target image의 patch를 선정하는 과정에서
 
 이렇게 3가지 경우로 나누어서 각각의 경우들을 매칭하면서 결과를 확인합니다. 이를 통해 얻은 결과는 우리의 예상과는 다르게도, random한 영역의 target patch를 random한 영역의 source patch에 붙여넣을 때가 가장 성능이 좋다는 것을 보여주면서, saliency information을 활용하는 것이 크게 의미없다는 것을 실험적으로 보여줍니다.
 
+![](/assets/images/VennTum/data_augmentation/randommix_2.png)
+<center>ResizeMix Table 1 - CIFAR-100에서 Salient region의 중요성 실험 결과</center>
+
 이를 통해, ResizeMix의 저자들은 Saliency information을 활용하려는 시도들이 MSDA에서 크게 중요하지 않다는 것을 주장합니다.
 그러나 실험 결과에서, Non-saliency region을 사용하게 되는 경우는 label의 misallocation을 유발하게 되어, 결과적으로 no labeled object에 label을 부여하는 경우가 발생할 수 있어서 결과에 악영향을 줄 수 있다는 점을 이야기합니다.
 
 그 결과, CutMix를 진행하되, 정보가 없는 영역이 mixing되는 것을 예방하면서 굳이 saliency area를 선정하지 않아도 된다는 점을 착안해, target image를 그대로 resize하여 모든 정보를 source image patch에 넣어주는 방식인 ResizeMix를 제안합니다.
 
 실제 실험 결과에서 ResizeMix는 SaliencyMix, PuzzleMix보다도 더 높은 Top-1 accuracy를 보이면서 성능이 향상되었다는 점을 저자들은 주장합니다.
+
+![](/assets/images/VennTum/data_augmentation/randommix_3.png)
+<center>ResizeMix Table 3,4 - CIFAR-100/ImageNet에서 ResizeMix Top-1 accuracy</center>
 
 ## [FMix](https://arxiv.org/abs/2002.12047)
 
