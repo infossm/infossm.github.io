@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "RandomMix: A mixed sample data augmentation method with multiple mixed modes"
-date:   2022-11-21 08:00:00
+date:   2022-11-22 08:00:00
 author: VennTum
 tags: [AI, deep-learning]
 ---
