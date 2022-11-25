@@ -39,7 +39,11 @@ $r$-torsion이란, $[r]P = \mathcal{O}$를 만족하는 $P$의 집합입니다.
 
 $$ \lvert \#E(\mathbb{F}_q) - (q + 1) \rvert \le 2 \sqrt{q} $$
 
-가 성립하고, 이때 $t = q + 1 - \#E(\mathbb{F}_q)$를 trace of Frobenius라고 부릅니다. 또한, 이 경우 Hasse Bound를 만족하는 모든 $n$에 대하여 원소의 개수가 $n$인 elliptic curve over $\mathbb{F}_q$가 존재합니다. 이때 $q$는 소수. 
+가 성립하고, 이때 
+
+$$t = q + 1 - \#E(\mathbb{F}_q)$$
+
+를 trace of Frobenius라고 부릅니다. 또한, 이 경우 Hasse Bound를 만족하는 모든 $n$에 대하여 원소의 개수가 $n$인 elliptic curve over $\mathbb{F}_q$가 존재합니다. 이때 $q$는 소수. 
 
 $E$에서 $E$로 가는 endomorphism들은 매우 중요한 연구 대상 중 하나인데, 그 중 가장 대표적인 것이 Frobenius Endomorphism 
 
@@ -47,7 +51,11 @@ $$\pi : E \rightarrow E, \quad (x, y) \rightarrow (x^q, y^q)$$
 
 입니다. 이는 $E(\overline{\mathbb{F}_q})$에 있는 원소를 그대로 $E(\overline{\mathbb{F}_q})$로 보내며, 이는 Frobenius map의 성질을 생각해보면 쉽게 보일 수 있습니다. 특히, $\pi$가 $E(\mathbb{F}_q)$에서만 trivial 하게 작동함은 $\mathbb{F}_q$의 정의에서 알 수 있습니다. 
 
-여기서 $\#E(\mathbb{F}_q) = \# \ker ([1] - \pi)$임을 얻을 수 있고, $[1] - \pi$의 degree에 대한 bound를 Cauchy-Schwarz로 얻어내면 Hasse Bound를 증명할 수 있습니다. 세부적인 과정은 Silverman의 책에 나옵니다. 
+여기서 
+
+$$\#E(\mathbb{F}_q) = \# \ker ([1] - \pi)$$
+
+임을 얻을 수 있고, $[1] - \pi$의 degree에 대한 bound를 Cauchy-Schwarz로 얻어내면 Hasse Bound를 증명할 수 있습니다. 세부적인 과정은 Silverman의 책에 나옵니다. 
 
 $\text{End}(E)$가 $\mathbb{Z}$보다 크다면, 즉, $P \rightarrow [m]P$ 형태가 아닌 endomorphism이 있다면, $E$가 complex multiplication을 가지고 있다고 합니다. 
 
@@ -63,7 +71,13 @@ $$\pi^2 - [t] \circ \pi + [q] = 0$$
 
 $$(x^{q^2}, y^{q^2}) - [t \bmod l](x^q, y^q) + [q \bmod l](x, y) = \mathcal{O}$$
 
-를 얻습니다. 여기서 $(x, y)$가 $l$-torsion에 있다는 조건을 추가하기 위해서 division polynomial을 가져옵니다. 단순하게 말하면, $[l](x, y) = \mathcal{O}$라는 조건을 $x$에 대한 식으로 표현하고, ($l$이 홀수면 가능) $y^2 = x^3 + ax + b$라는 제약 조건을 추가해서 $\mathbb{F}_q[x, y]$의 다항식들을 reduce 시키는 겁니다. 이제 적당한 brute force로 $t \bmod l$을 얻을 수 있고 이를 모으면 $t$까지 얻을 수 있습니다. 
+를 얻습니다. 여기서 $(x, y)$가 $l$-torsion에 있다는 조건을 추가하기 위해서 division polynomial을 가져옵니다. 
+
+단순하게 말하면, 
+
+$$[l](x, y) = \mathcal{O}$$
+
+라는 조건을 $x$에 대한 식으로 표현하고, ($l$이 홀수면 가능) $y^2 = x^3 + ax + b$라는 제약 조건을 추가해서 $\mathbb{F}_q [x, y]$의 다항식들을 reduce 시키는 겁니다. 이제 적당한 brute force로 $t \bmod l$을 얻을 수 있습니다. 
 
 ## Divisors
 
@@ -150,7 +164,11 @@ $$Tr(P) = \sum_{i=0}^{k-1} \pi^i (P)$$
 
 라고 하면 이는 $E(\mathbb{F}_q)$의 원소가 됩니다. 특히, 이는 group homomorphism임을 쉽게 알 수 있습니다. 
 
-이제 $n = \#E(\mathbb{F}_q)$라 하고, $v_r(n) = 1$이라 합시다. 또한, embedding degree $k > 1$이라 합시다. 이러면 일단 $E(\mathbb{F}_q)$에는 크기 $r$ subgroup이 하나 존재하며, 이를 $\mathcal{G}_1 = E[r] \cap \ker([1] - \pi)$로 둘 수 있습니다. 
+이제 
+
+$$n = \#E(\mathbb{F}_q)$$
+
+라 하고, $v_r(n) = 1$이라 합시다. 또한, embedding degree $k > 1$이라 합시다. 이러면 일단 $E(\mathbb{F}_q)$에는 크기 $r$ subgroup이 하나 존재하며, 이를 $\mathcal{G}_1 = E[r] \cap \ker([1] - \pi)$로 둘 수 있습니다. 
 
 또 다른 크기 $r$ subgroup은 $\mathcal{G}_2 = E[r] \cap \ker([q] - \pi)$인데, 여기도 마찬가지로 $\pi$의 eigenspace라고 볼 수 있습니다. 특히, $P \in \mathcal{G}_2$면 $Tr(P) = \mathcal{O}$임을 보일 수 있습니다. 그래서 $\mathcal{G}_2$를 trace zero subgroup이라고 부릅니다. 
 
@@ -165,7 +183,15 @@ $$aTr : P \rightarrow [k]P - Tr(P)$$
 - Type 3: $G_2 = \mathcal{G}_2$입니다. 이러면 $G_2$로 hashing 하는 것은 어렵지 않으나, $G_2 \rightarrow G_1$으로 가는 isomorphism을 계산하는 것이 어렵습니다. 
 - Type 4: $G_2 = E[r]$로 두는 방법이 있습니다. 
 
-한편, twist를 사용하여 $E(\mathbb{F}_{q^k})$에서 작업하는 대신 $E(\mathbb{F}_{q^{k/d}})$에서 작업하는 최적화가 가능합니다. 이는 나중에 BLS12-381을 소개할 때 본격적으로 다루도록 하겠습니다. 
+한편, twist를 사용하여 
+
+$$E(\mathbb{F}_{q^k})$$
+
+에서 작업하는 대신 
+
+$$E(\mathbb{F}_{q^{k/d}})$$
+
+에서 작업하는 최적화가 가능합니다. 이는 나중에 BLS12-381을 소개할 때 본격적으로 다루도록 하겠습니다. 
 
 ## Weil Pairing
 
@@ -217,11 +243,19 @@ $$w_r(P, Q)^r = \frac{f(rD_Q)}{g(rD_P)} = \frac{f((g))}{g((f))} = 1$$
 
 ## Tate Pairing
 
-마찬가지로 $P \in \mathbb{E}(\mathbb{F}_{q^k})$라 하고, $r$-torsion에 있다고 합시다. $Q$는 $\mathbb{E}(\mathbb{F}_{q^k})/rE(\mathbb{F}_{q^k})$에 속하는 원소이며, $D_Q$는 $(Q) - (\mathcal{O})$와 Picard에서 equivalent한 divisor입니다. 또한, $(f) = r(P) - r(\mathcal{O})$인 함수 $f$가 있으며, $(f)$와 $D_Q$는 disjoint support를 갖도록 합니다. 이때, Tate Pairing $t_r$은 
+마찬가지로 $P \in \mathbb{E}(\mathbb{F}_{q^k})$라 하고, $r$-torsion에 있다고 합시다. $Q$는 
+
+$$\mathbb{E}(\mathbb{F}_{q^k})/rE(\mathbb{F}_{q^k})$$
+
+에 속하는 원소이며, $D_Q$는 $(Q) - (\mathcal{O})$와 Picard에서 equivalent한 divisor입니다. 또한, $(f) = r(P) - r(\mathcal{O})$인 함수 $f$가 있으며, $(f)$와 $D_Q$는 disjoint support를 갖도록 합니다. 이때, Tate Pairing $t_r$은 
 
 $$t_r(P, Q) = f(D_Q) \in \mathbb{F}^\star_{q^k} / (\mathbb{F}^\star_{q^k})^r$$
 
-로 정의됩니다. 한편, $v_r(\#E(\mathbb{F}_{q^k})) = 2$인 경우에는 $E[r]$ 자체가 $E/rE$를 represent 할 수 있게 되어, Tate Pairing을 정의하기가 조금 더 간편해집니다. 
+로 정의됩니다. 한편, 
+
+$$v_r(\#E(\mathbb{F}_{q^k})) = 2$$
+
+인 경우에는 $E[r]$ 자체가 $E/rE$를 represent 할 수 있게 되어, Tate Pairing을 정의하기가 조금 더 간편해집니다. 
 
 물론, 여기에 $(q^k - 1) / r$승을 추가하여 $\mu_r$로 보내는 것도 충분히 가능합니다. 이러면 reduced Tate Pairing이 완성됩니다. 보통 이걸 Tate Pairing이라고 하기도 합니다. 
 
@@ -315,7 +349,15 @@ $$f_{2m, P} = f_{m, P}^2 \cdot \frac{l_{[m]P, [m]P}}{v_{[2m]P}}$$
 
 만약 $k > 1$이라면, $r$은 $q-1$과 서로소일 것이니 $(q^k - 1) / r$은 $q - 1$의 배수가 됩니다. 이 말은 즉 $\mathbb{F}_q$에 속하는 값들이 더 곱해지거나 덜 곱해져도 상관없다는 것입니다. $(q^k - 1) / r$승을 취하면 결국 $1$이 되버리니까요. 
 
-이 논리를 확장하면, 결국 $k$가 짝수인 경우에는 Miller Loop를 계산할 때 나오는 분모를 전부 무시해도 된다는 결론이 나옵니다. 대충 $k = 2l$이라고 하면 점들의 $x$ 좌표가 전부 $\mathbb{F}_{q^l}$에 속하도록 할 수 있고, 그러면 분모들이 전부 $\mathbb{F}_{q^l}$에 속할 것이므로 $(q^{k} - 1) / r$승을 하면 위 논리와 마찬가지로 $1$이 되기 때문입니다. 
+이 논리를 확장하면, 결국 $k$가 짝수인 경우에는 Miller Loop를 계산할 때 나오는 분모를 전부 무시해도 된다는 결론이 나옵니다. 대충 $k = 2l$이라고 하면 점들의 $x$ 좌표가 전부 
+
+$$\mathbb{F}_{q^l}$$
+
+에 속하도록 할 수 있고, 그러면 분모들이 전부 
+
+$$\mathbb{F}_{q^l}$$
+
+에 속할 것이므로 $(q^{k} - 1) / r$승을 하면 위 논리와 마찬가지로 $1$이 되기 때문입니다. 
 
 특히 여기서 evaluation을 $D_Q$에서 하는 게 아니라 그냥 $Q$에서 해도 됨을 알 수 있습니다.
 
@@ -325,7 +367,25 @@ Elliptic Curve operation들을 projective coordinate에서 하면서 division-fr
 
 ### 3. Towered Extension Fields
 
-$\mathbb{F}_{q^k}$를 정의하기 위해서 $k$차 irreducible polynomial을 정의하는 게 아니라, extension field의 정의를 쪼개서 tower 형태로 만드는 것이 더 효율적입니다. 예를 들어, $k = 12$라고 하면, $\mathbb{F}_q$에서 2차 기약다항식을 가져와 $\mathbb{F}_{q^2}$을 만들고, 다시 거기서 3차 기약다항식을 가져와 $\mathbb{F}_{q^6}$을 만들고, 다시 거기서 2차 기약다항식을 가져와 $\mathbb{F}_{q^{12}}$를 만드는 것이 더 효율적입니다. BLS12-381에서 많이 보게 되는 구조입니다. 
+$$\mathbb{F}_{q^k}$$
+
+를 정의하기 위해서 $k$차 irreducible polynomial을 정의하는 게 아니라, extension field의 정의를 쪼개서 tower 형태로 만드는 것이 더 효율적입니다. 예를 들어, $k = 12$라고 하면, 
+
+$$\mathbb{F}_q$$
+
+에서 2차 기약다항식을 가져와 
+
+$$\mathbb{F}_{q^2}$$
+
+을 만들고, 다시 거기서 3차 기약다항식을 가져와 
+
+$$\mathbb{F}_{q^6}$$
+
+을 만들고, 다시 거기서 2차 기약다항식을 가져와 
+
+$$\mathbb{F}_{q^{12}}$$
+
+를 만드는 것이 더 효율적입니다. BLS12-381, BN254에서 많이 보게 되는 구조입니다. 
 
 ### 4. Low Hamming Weight
 
