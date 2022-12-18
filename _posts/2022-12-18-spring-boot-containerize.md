@@ -59,11 +59,11 @@ ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
 
 Jib은 Docker daemon 없이도 컨테이너 이미지를 만들 수 있도록 도와주는 도구이다.
 
-![Docker bulid flow](../assets/images/spring-boot-containerize/docker_build_flowrc1o.max-600x600.png)
+![Docker bulid flow](/assets/images/spring-boot-containerize/docker_build_flowrc1o.max-600x600.png)
 
 Dockerfile 문단에서 살펴보았던 빌드 과정이 위와 같다면 Jib를 사용하면 다음과 같아진다.
 
-![Jib build flow](../assets/images/spring-boot-containerize/jib_build_flowb135.max-600x600.png)
+![Jib build flow](/assets/images/spring-boot-containerize/jib_build_flowb135.max-600x600.png)
 
 Gradle plugin으로 제공되며, DSL을 제공하여 간단하게 설정할 수 있다.
 
@@ -159,11 +159,11 @@ Apache POI SXSSF 등 특정 상황에서 컨테이너 이미지 안에 일부 �
 
 Buildpack은 컨테이너 이미지를 만들기 위해 필요한 단계들을 감지하고 각 레이어를 '기여'하는 방식으로 작동한다.
 
-![Buildpacks transform your source code into OCI images](../assets/images/spring-boot-containerize/buildpack-equation.svg)
+![Buildpacks transform your source code into OCI images](/assets/images/spring-boot-containerize/buildpack-equation.svg)
 
 예를 들어 Node.js 애플리케이션을 개발했다고 하면 이 런타임도 필요하고, node_modules 내용도 채워야 하고, 실제 기동을 위해 `node server.js`와 같은 진입점 설정도 필요하다. 이를 다음과 같이 해준다.
 
-![Final app image](../assets/images/spring-boot-containerize/docs-buildpacks-app-image.png)
+![Final app image](/assets/images/spring-boot-containerize/docs-buildpacks-app-image.png)
 
 Java의 경우 기존 메모리 모델이 컨테이너 환경을 고려하지 않고 만들어져 처음에 설정하는 데에 어려움을 겪는 경우가 많은데, 이를 휴리스틱 기반 권장값으로 설정해주므로 편하게 사용할 수 있다.
 
