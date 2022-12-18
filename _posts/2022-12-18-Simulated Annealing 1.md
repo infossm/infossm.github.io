@@ -6,7 +6,7 @@ author: VennTum
 tags: [algorithm]
 ---
 
-# Exploring Simulated Annealing for Derivative-free Optimization
+# Exploring Simulated Annealing for Derivative-free Optimization 1
 
 현대 과학 및 수학에서, 많은 종류의 하이퍼파라미터를 갖는 문제의 최적의 솔루션을 찾는 것은 매우 중요한 문제입니다. 특히, 머신러닝, 딥러닝의 등장으로, 굉장히 어려운 형태의 최적화 문제의 좋은 솔루션을 구하는 것은 모델의 품질 향상과 밀접한 연관을 갖게 됩니다. 이 과정에서 다양한 종류의 optimizatino problem을 해결하게 되고, 그 과정에서 gradient 기반 접근 방법이 굉장히 많이 사용되고 있습니다.
 
