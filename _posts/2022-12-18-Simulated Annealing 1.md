@@ -78,7 +78,7 @@ y_{k} \ with \ probability \ p_{k}\\
 x_{k} \ with \ probability \ 1 - p_{k}
 \end{cases}$
 
-- $y_{k} ~ G(x, dy)$, when G is Markov kernel to generate a neighbor point
+- $y_{k} \sim G(x, dy)$, when G is Markov kernel to generate a neighbor point
 
 이 때, 정의되는 E(x)는 x state에 대한 objective function의 value입니다. 해당 objective function에 따라서 E가 결정되며, 이 때의 energy를 계산하기 위해 특별히 objective function이 수정될 수도 있습니다.
 
