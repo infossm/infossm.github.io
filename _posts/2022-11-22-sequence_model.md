@@ -2,7 +2,7 @@
 layout: post
 title: "Sequence model: from RNN to Attention"
 author: antemrdm
-date: 2022-10-20
+date: 2022-11-21
 tags: [machine-learning]
 ---
 
