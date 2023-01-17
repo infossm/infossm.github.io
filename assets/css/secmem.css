@@ -1,0 +1,112 @@
+---
+---
+
+table td, table th, table {
+	border : 0 none;
+}
+.ssm .sec {padding:50px 5%; border-top:1px solid #e2e2e2; background: white;}
+.ssm h2 {padding:0 0 13px 0; background:url('{{ "/assets/images/ssm_title_bar.png" | relative_url }}') no-repeat 50% 100%; background-size:23px 3px; text-align:center; font-size:1.8em; font-weight:normal; color:#2b2b2b;}
+/* ssm - selection_step */
+.ssm .selection_step {background:#fff;}
+.ssm .selection_step dl {margin:10px 0 0; color:#2b2b2b;}
+.ssm .selection_step dl.coding {margin:35px 0 0;}
+.ssm .selection_step dl dt {width:75%; padding:0 0 10px; border-bottom:1px solid #2b2b2b; color:#b5b5b5;}
+.ssm .selection_step dl dt strong {display:block; padding:5px 0 0; font-size:1.2em; color:#2b2b2b;}
+.ssm .selection_step dl dd {padding:20px 0 0; line-height:1.5;}
+.ssm .selection_step dl.coding table {font-size:0.85em; border-top:2px solid #95989a; border-bottom:1px solid #95989a;}
+.ssm .selection_step dl.coding table th {padding:7px 0; border-bottom:1px solid #95989a; font-weight:normal;}
+.ssm .selection_step dl.coding table td {padding:10px 0; text-align:center; border-bottom:1px solid #95989a;}
+.ssm .selection_step dl.coding table td.library {padding:10px 15px; text-align:left; line-height:1.7;}
+.ssm .selection_step dl.coding table td.library strong {position:relative; left:-3px;}
+.ssm .selection_step dl.coding .txt {padding:5px 0 0; font-size:0.9em;}
+
+/* ssm - right_people */
+.ssm .right_people .young_creators {padding:40px 0; text-align:center; font-weight:bold; font-size:1.4em;}
+.ssm .right_people ul.three {overflow:hidden; text-align:center;}
+.ssm .right_people ul.three li {display:inline-block; margin:0 2%;}
+.ssm .right_people ul.three li span {display:inline-block; width:80px; height:60px; padding:20px 0 0; background:#2b2b2b; border-radius:45px; color:#fff; font-size:0.9em; box-sizing: content-box;}
+.ssm .right_people ul.three li span strong {display:block; padding:0 0 5px; font-size:1.3em;}
+
+/* ssm - article */
+.ssm .article_cont .article {margin:50px 0;}
+.ssm .article_cont .article:first-child {margin-top:0;}
+.ssm .article_cont .hgroup {margin:0 5%; background:url('{{ "/assets/images/ssm_article_bar.png" | relative_url }}') no-repeat 100% 6px; background-size:100% 2px;}
+.ssm .article_cont .hgroup p {display:inline-block; padding:0 10px 0 0; background:#fff; color:#b5b5b5;}
+.ssm .article_cont .hgroup h3 {padding:10px 0 0; font-size:1.5em; font-weight:bold;}
+.ssm .article_cont .txt {padding:25px 5%; line-height:1.5; color:#505050;}
+
+@media all and (min-width:640px) {
+	.ssm .sec {padding:70px 5%;}
+	.ssm h2 { background-size:30px 4px; font-size:2em;}
+
+	/* ssm - selection_step */
+	.ssm .selection_step dl dt {padding:0 0 15px; font-size:1.2em;}
+	.ssm .selection_step dl dt strong {padding:8px 0 0;}
+	.ssm .selection_step dl dd {padding:25px 0 0; font-size:1.2em;}
+	.ssm .selection_step dl.coding {margin:50px 0 0;}
+	.ssm .selection_step dl.coding table td.library {padding:10px 25px;}
+
+	/* ssm - right_people */
+	.ssm .right_people ul.three li {margin:0 5%;}
+	.ssm .right_people ul.three li span {width:130px; height:90px; padding:40px 0 0; border-radius:70px; font-size:1em;}
+	.ssm .right_people ul.three li span strong {padding:0 0 8px; font-size:1.5em;}
+
+	/* ssm - article_cont */
+	.ssm .article_cont .hgroup p {font-size:1.2em;}
+	.ssm .article_cont .hgroup h3 {font-size:2em;}
+	.ssm .article_cont .txt {padding:35px 5%; font-size:1.1em; line-height:1.6;}
+	.ssm .article_cont .article {margin:70px 0;}
+}
+
+
+@media all and (min-width:900px) {
+	.ssm .sec {padding:80px 10%;}
+
+	/* ssm - selection_step */
+	.ssm .selection_step dl {overflow:hidden; margin:60px 0 0;}
+	.ssm .selection_step dl dt {float:left; width:auto; border:0 none; font-size:1.4em;}
+	.ssm .selection_step dl dt strong {padding:8px 0 0; font-weight:normal;}
+	.ssm .selection_step dl dd {float:right; width:75%; padding:25px 0 0; border-top:2px solid #2b2b2b; font-size:1.2em;}
+	.ssm .selection_step dl.coding {margin:80px 0 0;}
+	.ssm .selection_step dl.coding dd {padding:0;}
+	.ssm .selection_step dl.coding table {border-top:0 none; border-bottom-color:#2b2b2b; font-size:1em;}
+	.ssm .selection_step dl.coding table th {padding:15px 0;}
+	.ssm .selection_step dl.coding table td.library {padding:15px 30px;}
+	.ssm .selection_step dl.coding .txt {padding:10px 0 0;}
+}
+
+
+@media all and (min-width:1200px) {
+	/* ssm - selection_step */
+	.ssm .selection_step {padding:100px 15%;}
+	.ssm .selection_step dl {margin:80px 0 0;}
+	.ssm .selection_step dl dd {width:70%; padding:30px 0 0; font-size:1.3em; line-height:1.7;}
+
+	/* ssm - right_people */
+	.ssm .right_people {padding:120px 10%;}
+	.ssm .right_people .young_creators {padding:60px 0;}
+	.ssm .right_people ul.three li span {width:150px; height:100px; padding:50px 0 0; border-radius:100px; font-size:1.2em;}
+
+	/* ssm - article_cont */
+	.ssm .article_cont {overflow:hidden; padding:100px 0;}
+	.ssm .article_cont .article {position:relative; overflow:hidden; margin:100px 0; padding:100px 0 0; border-top:1px solid #e2e2e2;}
+	.ssm .article_cont .article:first-child {padding:0; border-top:0 none;}
+	.ssm .article_cont .area {position:absolute; top:100px; right:730px; width:28%;}
+	.ssm .article_cont .article:first-child .area {top:0;}
+	.ssm .article_cont .hgroup {margin:10px 0 0; background-position:100% 9px; background-size:100% 4px;}
+	.ssm .article_cont .hgroup p {font-size:1.4em;}
+	.ssm .article_cont .hgroup h3 {padding:15px 0 0; font-size:2.6em;}
+	.ssm .article_cont .txt {padding:40px 0 0;}
+	.ssm .article_cont .image {float:right; width:700px;}
+	.ssm .article_cont .article.left .area {left:730px; right:auto;}
+	.ssm .article_cont .article.left .image {float:left;}
+}
+
+@media all and (min-width:1500px) {
+	.ssm .article_cont .area {right:950px; width:28%;}
+	.ssm .article_cont .article:first-child .area {top:0;}
+	.ssm .article_cont .txt {padding:60px 0 0; font-size:1.3em;}
+	.ssm .article_cont .image {width:900px;}
+	.ssm .article_cont .article.left .area {left:950px; right:auto;}
+	.ssm .article_cont .article.left .image {float:left;}
+}

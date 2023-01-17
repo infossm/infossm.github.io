@@ -1,0 +1,4 @@
+---
+name: automata
+title: 'automata'
+---

@@ -1,0 +1,66 @@
+---
+layout: default
+---
+<!-- <div id="navbar" class="container">
+    <h5><a id="link-back" href="/">Back to Posts</a></h5>
+    {% include share.html page=page %}
+</div>
+ -->
+
+<div id="content" class="container post" role="main">
+        <div id="post-footer">
+            <a id="post-author" href="{{ "authors/" | append: page.author | relative_url }}">
+            {% assign author = site.authors | where: 'name', page.author | first %}
+                <div id="author-image" {% if author.image %}style="background-image:url({{ author.image | relative_url }});"{% endif %}>
+                    <span class="sr-only">{{ author.name }}'s profile image</span>
+                </div>
+                <p id="author-name">{{ author.name }}</p>
+            </a>
+            <p id="post-date">{{ page.date | date: '%B %-d, %Y %H:%M' }}</p>
+        </div>
+    <div id="cover" class="container"
+         {% if page.image %}style="background-image: url({{ page.image | relative_url }});"{% endif %}>
+        <div>
+            <h1>{{ page.title }}</h1>
+            <p>
+                {% for tag in page.tags %}
+                    <a href="{{ site.baseurl }}/tags/{{ tag }}">{{ tag }}</a>
+                    {% unless forloop.last %},{% endunless %}
+                {% endfor %}
+            </p>
+            {% include cover_link.html cover=page.cover %}
+        </div>
+    </div>
+    {% assign asseturl = site.asset_url | relative_url %}
+    <div id="post-content">{{ content | replace: site.asset_url, asseturl }}</div>
+</div>
+
+
+<div id="post-links" class="container">
+    {% assign prev = page.previous %}
+    {% if prev %}
+        <div id="post-prev"
+             {% if prev.image %}style="background-image: url({{ prev.image | relative_url }});"{% endif %}>
+            <div>
+                <h3><a href="{{ prev.url | relative_url }}">{{ prev.title }}</a></h3>
+                <p>YOU MIGHT ENJOY</p>
+            </div>
+        </div>
+    {% endif %}
+    {% assign next = page.next %}
+    {% if next %}
+        <div id="post-next"
+             {% if next.image %}style="background-image: url({{ next.image | relative_url }});"{% endif %}>
+            <div>
+                <h3><a href="{{ next.url | relative_url }}">{{ next.title }}</a></h3>
+                <p>NEXT POST</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<div id="lightbox">
+    <div id="lightbox-image"></div>
+</div>
+
+{% include text-expand.html %}

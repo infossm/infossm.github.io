@@ -1,0 +1,27 @@
+---
+layout: default
+---
+<div id="cover" class="container-fluid"
+     {% if page.cover %}style="background-image: url({{ page.cover | relative_url }});"{% endif %}>
+    <div>
+        <div id="cover-author-image"
+             {% if page.image %}style="background-image:url({{ page.image | relative_url }});"{% endif %}>
+            <span class="sr-only">{{ page.name }}'s profile image</span>
+        </div>
+        <h1>{{ page.title | default: page.name }}</h1>
+        <p>All Posts by <em>{{ page.name }}</em></p>
+    </div>
+</div>
+
+<div id="content" class="container">
+    <div id="author-content" role="main">
+        <ul id="post-list">
+            {% for post in site.posts %}
+                {% if post.author == page.name %}
+                    {% include item.html %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% include pagination.html %}
+    </div>
+</div>

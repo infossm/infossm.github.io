@@ -1,0 +1,69 @@
+title: Samsung Software Membership
+email: infossm@samsung.com
+description: |
+  Playground for your Creativity
+  소프트웨어 개발자, 그꿈이 시작되는 곳
+  삼성소프트웨어멤버십
+baseurl: ''
+url: 'http://www.secmem.org'
+
+
+repository: infossm/infossm.github.io
+
+permalink: /blog/:year/:month/:day/:title/
+
+excerpt_separator: <!--more-->
+
+markdown: kramdown
+
+krandown:
+  input: GFM
+  highlighter: rouge
+
+plugins:
+  - jekyll-paginate
+
+paginate: 5
+paginate_path: '/blog/page/:num/'
+
+collections:
+  authors:
+    output: true
+    permalink: /authors/:path/
+  tags:
+    output: true
+    permalink: /tags/:path/
+
+defaults:
+  - scope:
+      path: ''
+      type: authors
+    values:
+      layout: author
+  - scope:
+      path: ''
+      type: tags
+    values:
+      layout: tag
+
+exclude: [README.md, Gemfile, Gemfile.lock]
+
+keep_files: [assets, files]
+github: [metadata]
+# iolo's custom
+author: infossm@samsung.com
+image: '/assets/images/main_home_bg_wide.png'
+asset_url: /assets
+#asset_url: //meta-kage.kakaocdn.net/dn/osa/blog/assets
+#asset_url: //t1.daumcdn.net/osa/blog/assets
+#google_analytics:
+#  ua: 'UA-72007721-1'
+facebook:
+#  app_id: '1204347326263800'
+  username: secmem
+github_url:
+  username: infossm
+youtube:
+  username: SamsungSWMem
+instagram:
+  username: info_ssm

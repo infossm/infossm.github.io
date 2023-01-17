@@ -1,0 +1,31 @@
+<script type='text/javascript'>
+    //<![CDATA[
+    // // 사용할 앱의 JavaScript 키를 설정해 주세요.
+    Kakao.init('65d48e116d8b9409e08960c4800c3017');
+    // // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
+    var ogImg = $('meta[property="og:image"]').attr('content').replace("tech.kakao.com", "kakao.github.io");
+    var ogTitle = $('meta[property="og:title"]').attr('content');
+    var ogUrl = $('meta[property="og:url"]').attr('content');
+    Kakao.Link.createTalkLinkButton({
+        container: '#kakao-link-btn',
+        label: ogTitle,
+        image: {
+            src: ogImg,
+            width: '300',
+            height: '200'
+        },
+        webButton: {
+            text: '카카오 기술블로그',
+            url: ogUrl // 앱 설정의 웹 플랫폼에 등록한 도메인의 URL이어야 합니다.
+        },
+        forwardable: true
+    });
+    //]]>
+</script>
+<script>
+    var _ua = navigator.userAgent.toLowerCase().match(/iphone|ipod|ipad|android/);
+    var sb = document.getElementById("shares").getElementsByTagName("li");
+    if (_ua) {
+        sb[0].style.display = "inline";
+    }
+</script>

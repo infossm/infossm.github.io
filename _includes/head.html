@@ -1,0 +1,69 @@
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no"/>
+{% if page.layout == 'post' or page.layout == 'page' %}
+{% assign meta_title = page.title %}
+{% assign meta_author = page.author | default: site.author %}
+{% assign meta_description = page.excerpt | strip_html | truncatewords: 75 %}
+{% assign meta_url = page.url | absolute_url %}
+{% assign meta_image = page.image | default: site.image %}
+{% assign meta_type = 'article' %}
+{% else %}
+{% assign meta_title = site.title %}
+{% assign meta_author = site.author %}
+{% assign meta_description = site.description | strip_html %}
+{% assign meta_url = site.url %}
+{% assign meta_image = site.image %}
+{% assign meta_type = 'website' %}
+{% endif %}
+{% unless meta_image contains '://' %}
+{% assign meta_image = meta_image | absolute_url %}
+{% endunless %}
+<title>{{ meta_title }}</title>
+<meta name="title" content="{{ meta_title }}" />
+<meta name="author" content="{{ meta_author }}"/>
+<meta name="description" content="{{ meta_description }}"/>
+{% if site.facebook.app_id %}
+<meta property="fb:app_id" content="{{ site.facebook.app_id }}"/>
+{% endif %}
+<meta property="og:site_name" content="{{ site.title }}"/>
+<meta property="og:type" content="{{ meta_type }}"/>
+<meta property="og:title" content="{{ meta_title }}"/>
+<meta property="og:description" content="{{ meta_description }}"/>
+<meta property="og:url" content="{{ meta_url }}"/>
+<meta property="og:image" content="{{ meta_image }}"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="{{ meta_title }}"/>
+<meta name="twitter:description" content="{{ meta_description }}"/>
+<meta name="twitter:label1" content="Written by"/>
+<meta name="twitter:data1" content="{{ meta_author }}"/>
+<meta name="twitter:image:src" content="{{ meta_image }}"/>
+{% if page.tags %}
+<meta name="twitter:label2" content="Filed under"/>
+<meta name="twitter:data2" content="{{ page.tags | join: ','}}"/>
+{% for tag in page.tags %}
+<meta property="article:tag" content="{{ tag }}"/>
+{% endfor %}
+{% endif %}
+{% if page.date %}
+<meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}"/>
+{% endif %}
+{% if page.author %}
+<meta property="article:author" content="{{ "authors/" | append: page.author | absolute_url }}"/>
+{% endif %}
+<link href="{{ site.url }}/rss/" rel="alternate" type="application/rss+xml" title="RSS"/>
+<link href="{{ site.asset_url | relative_url }}/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
+<link href="{{ site.asset_url | relative_url }}/apple-touch-icon.png" rel="apple-touch-icon" type="image/png"/>
+<link href="{{ site.asset_url | relative_url }}/apple-touch-icon.png" rel="apple-touch-icon-precomposed" type="image/png"/>
+<link href="{{ site.asset_url | relative_url }}/lib/normalize.css" rel="stylesheet" type="text/css"/>
+<link href="{{ site.asset_url | relative_url }}/css/monokai.css" rel="stylesheet" type="text/css"/> 
+<link href="{{ site.asset_url | relative_url }}/lib/magnific-popup.min.css" rel="stylesheet" type="text/css"/>
+<link href="{{ site.asset_url | relative_url }}/css/initialize.css" rel="stylesheet" type="text/css"/>
+<link href="{{ site.asset_url | relative_url }}/css/secmem.css" rel="stylesheet" type="text/css"/>
+<link href="{{ site.asset_url | relative_url }}/css/screen.css" rel="stylesheet" type="text/css"/>
+<!-- <script>
+    if (window.location.host.indexOf('tech.kakao.com') > -1 && window.location.protocol == "https:"){
+        window.location = window.location.toString().replace(/^https:/, "http:");
+    }
+</script> -->
+

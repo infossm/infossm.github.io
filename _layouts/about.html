@@ -1,0 +1,144 @@
+---
+layout: default
+---
+<div id="cover" class="container-fluid"
+     {% if page.image %}style="background-image: url({{ page.image | relative_url }});"{% endif %}>
+    <div>
+        <h1>{{ page.title }}</h1>
+        <p>{{ page.description | newline_to_br }}</p>
+    </div>
+</div>
+<div id="container" class="ssm container-fluid">
+
+	<!-- 선발과정 -->
+	<div class="sec selection_step">
+		<h2>선발 과정</h2>
+		<dl>
+			<dt>01 <strong>지원자격</strong></dt>
+			<dd>
+				<strong>국내 정규 4년제 대학(원)생</strong><br>
+				<strong>졸업 전 최소 6개월 이상 활동 가능자</strong>
+			</dd>
+		</dl>
+		<dl>
+			<dt>02 <strong>상시모집</strong></dt>
+			<dd>
+				<strong>삼성전자 주관 상시검정 C형 통과자</strong><br>
+				<strong>또는 SCPC(삼성전자 대학생 프로그래밍 경진대회) 수상자</strong><br>
+				<strong>상시검정 신청 사이트 : 
+					<a href="https://swexpertacademy.com" style="color: black"
+						>https://swexpertacademy.com</a>
+				</strong>
+			</dd>
+		</dl>
+		<dl class="coding">
+			<dt>03 <strong>상시검정</strong></dt>
+			<dd>
+				<table width="100%" cellspacing="0" cellpadding="0" border="1">
+				<colgroup>
+					<col width="15%">
+					<col width="15%">
+					<col width="25%">
+					<col width="45%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th>구분 / 형태</th>
+						<th>검정 시간</th>
+						<th>지원 언어</th>
+						<th>사용 가능한 라이브러리</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>A형</td>
+						<td>3시간</td>
+						<td>C/C++, Java, Python</td>
+						<td>
+							제한 없음
+						</td>
+					</tr>
+					<tr>
+						<td>B형</td>
+						<td>4시간</td>
+						<td>C/C++/Java</td>
+						<td>
+							라이브러리 사용 불가
+						</td>
+					</tr>
+					<tr>
+						<td>C형</td>
+						<td>4시간</td>
+						<td>C/C++</td>
+						<td>
+							라이브러리 사용 불가
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				<p class="txt">* 지원 언어 중 선택하여 사용 가능</p>
+			</dd>
+		</dl>
+	</div>
+	<!-- //선발과정 -->
+
+	<!-- 인재상 -->
+	<div class="sec right_people">
+		<h2>인재상</h2>
+		<p class="young_creators">Young creators with,</p>
+		<ul class="three">
+			<li><span><strong>열정</strong> Passion</span></li>
+			<li><span><strong>창의</strong> Creativity</span></li>
+			<li><span><strong>도전</strong> Challenge</span></li>
+		</ul>
+	</div>
+	<!-- //인재상 -->
+
+	
+	<div class="sec article_cont">
+		<div class="article">
+			<div class="area">
+				<hgroup class="hgroup">
+					<p>새로움을 배우다.</p>
+					<h3>Passion inside you</h3>
+				</hgroup>
+				<p class="txt">
+					삼성소프트웨어멤버십은 여러분이 호기심을 가지고 있는 다양한 기술적인 이슈들에 대한 주기적인 교육을 진행하고 있습니다. 다양한 교육 커리큘럼을 직접 선택하고 투표하여 여러분의 커리어에 맞는 기술 교육을 진행하고 있습니다.<br>
+					또 해외 대회와 컨퍼런스등의 기회를 통하여 열정의 불이 사그라지지 않게, 꾸준히 기회의 폭을 확대하고 있습니다. 
+				</p>
+			</div>
+			<div class="image">
+				<img src="/assets/images/ssm_article_1.png" alt="">
+			</div>
+		</div>
+		<div class="article left">
+			<div class="area">
+				<hgroup class="hgroup">
+					<p>생각을 실현하다.</p>
+					<h3>Explode your creativity</h3>
+				</hgroup>
+				<p class="txt">
+					다양한 창의 과제와 능력있는 조원들과의 콜라보레이션! 삼성소프트웨어멤버십에서는 여러분이 평소에 구현하고 싶었던 기술들을 실제 과제로 진행할 수 있도록 다양한 기술적, 인적, 교육적 지원을 아끼지 않고 있습니다. 또한 실제 삼성 임직원들이 진행하고 있는 과제에 참여하여 생각을 유형화해나가는 경험을 제공합니다.
+				</p>
+			</div>
+			<div class="image">
+				<img src="/assets/images/ssm_article_2.png" alt="">
+			</div>
+		</div>
+		<div class="article">
+			<div class="area">
+				<hgroup class="hgroup">
+					<p>세상을 향한 도전을 시작하다.</p>
+					<h3>Challenge for your career</h3>
+				</hgroup>
+				<p class="txt">
+					실무를 시작하기 전에 다양한 과제와 활동, 컨퍼런스, 그리고 동료들과 함께 여러분의 꿈을 실현하세요. 넓은 세상을 향한 여러분의 도전을 삼성소프트웨어멤버십이 지원합니다.
+				</p>
+			</div>
+			<div class="image">
+				<img src="/assets//images/ssm_article_3.png" alt="">
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,4 @@
+---
+name: palindrome
+title: 'palindrome'
+---
