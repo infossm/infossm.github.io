@@ -744,8 +744,11 @@ iplot
 #### Result
 
 SA - best score: 0.2700104447703194 / point (x, y) = (1.4847681534051314, 2.185825434596596)
+
 FSA - best score: 0.46821023512643345 / point (x, y) = (1.6705793344001245, 2.804449125878089)
+
 SMCSA - best score: 0.15545297338207104 / point (x, y) = (0.6769967144545007, 0.4357144096513451)
+
 CSA - best score: 0.2516899318566773 / point (x, y) = (1.4993199325898567, 2.2528280490561143)
 
 ![](/assets/images/VennTum/simulated_annealing/sa_7.png)
