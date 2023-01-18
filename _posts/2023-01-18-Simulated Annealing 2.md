@@ -371,7 +371,7 @@ Curious SA의 convergence를 보장하는 것은 앞서 이야기한 FSA와 SMC-
 
 - $E[μ_{k}(S_{\epsilon})| ℱ_{k-1}] >=  1 - \frac{C_{\epsilon}}{(k+1)^{\gamma}}$
 
-또한, ${x_{k}}가 CSA로부터 생성도니 포인트 집합이라 할 때,
+또한, ${x_{k}}가 CSA로부터 생성된 포인트 집합이라 할 때,
 
 - $E[μ_{k}(S_{\epsilon})| ℱ_{k-1}] >= P(x_{k})$
 
