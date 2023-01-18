@@ -769,7 +769,7 @@ CSA - best score: 0.2516899318566773 / point (x, y) = (1.4993199325898567, 2.252
 
 [3. DS. JOHNSON, et al. OPTIMIZATION BY SIMULATED ANNEALING: AN EXPERIMENTAL EVALUATION, Operations research, 1989.](https://faculty.washington.edu/aragon/pubs/annealing-pt1.pdf)
 
-[4. H. Szu, R. Hartley. Fast simulated annealing, Physics Letters A, 2009.](https://www.sciencedirect.com/science/article/pii/0375960187907961)
+[4. H. Szu, R. Hartley. Fast simulated annealing, Physics Letters A, 1987.](https://www.sciencedirect.com/science/article/pii/0375960187907961)
 
 [5. E.Zhouand X.Chen. Sequential Monte Carlo simulated annealing. Journal of Global Optimization, 2013.](https://link.springer.com/article/10.1007/s10898-011-9838-3)
 
