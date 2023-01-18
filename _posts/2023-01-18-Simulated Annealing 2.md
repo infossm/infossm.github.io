@@ -31,11 +31,14 @@ tags: [algorithm]
 
 ### Convergence of FSA
 
-Let f has a finite number of isolated global optimal point in the interior of X, and f is locally $C^{3}$ and its Hessian is positive definite then, for $\gamma \in (0, 1], $
+f를 주어진 범위 X 내에 위치하는 고립된 전역 최적값 집합이라 가정하겠습니다. 또한, f가 국지적으로 $C^{3}$이며 f의 Hessian이 positive definite일 때, $\gamma \in (0, 1], $에 대해
 
 - $T_{k} = \frac{1}{(k+1)^{\gamma}log( (k+1)^{ \gamma } )}$
 
-Then, under suitable ergodicity assumptions on G and for the function $q(x) = \frac{1}{1 + x}$, there exists $C_{\epsilon} > 0$ s.t.
+를 만족합니다.
+
+또한, 특정 포인트의 neighbor point를 생성하는 마르코브 커널 G가 ergodicity를 만족한다고 가정할 때, 
+for $q(x) = \frac{1}{1 + x}$, there exists $C_{\epsilon} > 0$ s.t.
 
 - $P(x_{k}) >= 1 - \frac{C_{\epsilon}}{(k+1)^{\gamma}}$
 
@@ -92,15 +95,15 @@ SMC-SA의 경우 다음과 같이 동작합니다. 만약, 우리가 전체 K번
 
 ### Convergence of SMC-SA
 
-Under ergodicity hypothesis on G, and $ℱ_{k}$ the history of all past samples until iteration k, there exists a sequence ${c_{k}} \to 0$ s.t. for any bounded function $\phi$
+특정 포인트의 neighbor point를 생성하는 마르코브 커널 G가 ergodicity를 만족한다고 가정하고, $ℱ_{k}$가 k번의 iteration 동안에 생성도니 모든 샘플들의 히스토리라고 할 때, there exists a sequence ${c_{k}} \to 0$ s.t. for any bounded function $\phi$
 
 - $E[|μ_{k}(\phi) - π_{k}(\phi) || ℱ_{k-1}] <= c_{k}||\phi||_{∞}$
 
-위 식이 의미하는 바는, 주어지는 temperature decaying에 따라서, μ와 π가 점점 더 가까워지면서, 결국에는 최종적으로 도달하게 되는 후보지들이 optimal solution에 가까워진다는 것을 의미한다. 기존의 SA에서 둘의 차의 limit가 0으로 수렴한다는 것을 의미하는 것처럼 converge할 수 있다는 것을 말하는 것이다.
+위 식이 의미하는 바는, 주어지는 temperature decaying에 따라서, μ와 π가 점점 더 가까워지면서, 결국에는 최종적으로 도달하게 되는 후보지들이 optimal solution에 가까워진다는 것을 의미합니다. 기존의 SA에서 둘의 차의 limit가 0으로 수렴한다는 것을 의미하는 것처럼 converge할 수 있다는 것을 말합니다.
 
-위의 식은 이론적으로 다음과 같은 c를 설정할 수 있을 때에 converge한다는 것을 보일 수 있으나 실질적으로 기존의 SA보다 더 낫다는 것을 이론적으로 보이기는 쉽지 않을 수도 있다.
+위의 식은 이론적으로 다음과 같은 c를 설정할 수 있을 때에 converge한다는 것을 보일 수 있으나 실질적으로 기존의 SA보다 더 낫다는 것을 이론적으로 보이기는 쉽지 않을 수도 있습니다.
 
-그러나 많은 실험적 결과들이, 위와 같은 SMC-SA가 대다수의 경우 기존의 SA보다 낫다는 것을 emperical하게 보여준다.
+그러나 많은 실험적 결과들이, 위와 같은 SMC-SA가 대다수의 경우 기존의 SA보다 낫다는 것을 emperical하게 보여줍니다.
 
 ## Curious Simulated Annealing
 
