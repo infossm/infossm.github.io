@@ -765,14 +765,14 @@ CSA - best score: 0.2516899318566773 / point (x, y) = (1.4993199325898567, 2.252
 
 [1. Rosenbrock, H.H. "An automatic method for finding the greatest or least value of a function". The Computer Journal, 1960.](https://academic.oup.com/comjnl/article/3/3/175/345501)
 
-[2. D Bertsimas, et al. Simulated annealing. Statistical Science, 1993.](https://projecteuclid.org/journals/statistical-science/volume-8/issue-1/Simulated-Annealing/10.1214/ss/1177011077.full)
+[2. D. Bertsimas, et al. Simulated annealing. Statistical Science, 1993.](https://projecteuclid.org/journals/statistical-science/volume-8/issue-1/Simulated-Annealing/10.1214/ss/1177011077.full)
 
-[3. DS JOHNSON, et al. OPTIMIZATION BY SIMULATED ANNEALING: AN EXPERIMENTAL EVALUATION, Operations research, 1989.](https://faculty.washington.edu/aragon/pubs/annealing-pt1.pdf)
+[3. DS. JOHNSON, et al. OPTIMIZATION BY SIMULATED ANNEALING: AN EXPERIMENTAL EVALUATION, Operations research, 1989.](https://faculty.washington.edu/aragon/pubs/annealing-pt1.pdf)
 
-[4. S. Rubenthaler, T. Ryd´en, and M. Wiktorsson. Fast simulated annealing in Rd with an application to maximum likelihood estimation in state-space models. Stochastic Processes and their Applications, 2009.]
+[4. H. Szu, R. Hartley. Fast simulated annealing, Physics Letters A, 2009.](https://www.sciencedirect.com/science/article/pii/0375960187907961)
 
-[5. E.ZhouandX.Chen. Sequential Monte Carlo simulated annealing. Journal of Global Optimization, 2013.]
+[5. E.Zhouand X.Chen. Sequential Monte Carlo simulated annealing. Journal of Global Optimization, 2013.](https://link.springer.com/article/10.1007/s10898-011-9838-3)
 
-[6. Thomas Guilmeau, Emilie Chouzenoux, Víctor Elvira. Simulated annealing: a review and a new scheme, HAL open science, 2021.]
+[6. Thomas Guilmeau, Emilie Chouzenoux, Víctor Elvira. Simulated annealing: a review and a new scheme, HAL open science, 2021.](https://hal.science/hal-03275401)
 
-[7. A. Dekkers and E. Aarts. Global optimization and simulated annealing. Mathematical Programming, 1991.]
+[7. A. Dekkers and E. Aarts. Global optimization and simulated annealing. Mathematical Programming, 1991.](https://link.springer.com/article/10.1007/BF01594945)
