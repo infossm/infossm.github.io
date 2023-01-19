@@ -110,6 +110,7 @@ $$
 그렇다면 단순히 $S(\rho ; N)$를 구성한 뒤 아래처럼 $tr(O_i\rho)$를 추정하면 안되는 것일까?
 
 $$
+<<<<<<< HEAD
 \hat o_i = \frac{1}{N} \sum_{j-1}^{N} tr(O_i \hat{\rho_j})
 $$
 
@@ -139,6 +140,9 @@ $$
 
 $$
 Var[\hat o]=\mathbb{E}[(\hat o - \mathbb{E}[\hat o])^2] \leq \left\|O-\frac{tr(O)}{2^n}\mathbb{I} \right\|^2_{shadow}
+=======
+b_i = \frac{1}{N} \sum_{jN=1}^{j=1} tr(O_i \hat{\rho_j})
+>>>>>>> 2a352fc03a5800c5971e4683196b611b24f3aa2d
 $$
 
 위의 식에서 $\left\|O \right\|_{shadow}$ 은 값이 항상 0 이상이며 homogeneous하므로 norm이다. 바로 위에서 설명하였듯이 upper bound를 찾기 위해 값을 최대로 만드는 $\ket{b}$, $\sigma$를 대입하여 얻은 것이다. 수식으로는 아래와 같다.
@@ -152,7 +156,20 @@ $$
 NK=\mathcal{O}\left (\frac{\log M}{\epsilon^2} \underset{1 \leq i \leq M}{max}\left\|O-\frac{tr(O)}{2^n}\mathbb{I} \right\|^2_{shadow} \right )
 $$
 
+<<<<<<< HEAD
 ## Discussion
+=======
+NK개의 원소가 있을때 한번에 NK개의 평균을 구하는 것이 아니라, K개의 집합으로 나누어 각각 평균을 구한 뒤 중앙값을 취하는 것이다. 이를 수식으로 표현하면
+
+$$
+b_i = \underset{1 \leq k \leq K}{Median} \{\frac{1}{N} \sum_{j=1}^{N} tr(O_{k,j} \hat{\rho_{k,j}}\}
+$$
+
+이렇게 만들면 중앙값의 성질로 인해 $b_i$가 $tr(O_i\rho)$에서 $\epsilon$ 초과하여 차이나기 위해서는 K/2개 이상의 집합이 모두 $\epsilon$ 초과로 차이나야 한다. 이 아이디어를 통해 오류가 날 확률이 버킷의 개수에 따라 exponential하게 줄어든다.
+
+
+### complexity
+>>>>>>> 2a352fc03a5800c5971e4683196b611b24f3aa2d
 
 논문에서는 linear function뿐만 아니라 quadratic function $tr(O\rho \otimes \rho)$ 이라던가 fidelity, entanglement entropy등도 전부 계산하였는데, 본 글에서는 제일 단순한 예시인 linear function만 예시로 들었다. 나머지 함수값을 계산하는 것 또한 유사한 원리이다.
 
