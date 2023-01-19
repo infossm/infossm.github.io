@@ -110,10 +110,19 @@ $$
 그렇다면 단순히 $S(\rho ; N)$를 구성한 뒤 아래처럼 $tr(O_i\rho)$를 추정하면 안되는 것일까?
 
 $$
-b_i = \frac{1}{N} \sum_{N}^{j=1} tr(O_i \hat{\rho_j})
+b_i = \frac{1}{N} \sum_{jN=1}^{j=1} tr(O_i \hat{\rho_j})
 $$
 
 가능은 하나, $|b_i - tr(O_i \rho)| \leq \epsilon$ 을 만족시키기 위해 필요한 N의 개수가 커지게 된다. 따라서 논문에서는 중앙값을 이용한 간단한 아이디어인 *Median of means*알고리즘을 적용하여 좀 더 효율적으로 개선한다.
+
+NK개의 원소가 있을때 한번에 NK개의 평균을 구하는 것이 아니라, K개의 집합으로 나누어 각각 평균을 구한 뒤 중앙값을 취하는 것이다. 이를 수식으로 표현하면
+
+$$
+b_i = \underset{1 \leq k \leq K}{Median} \{\frac{1}{N} \sum_{j=1}^{N} tr(O_{k,j} \hat{\rho_{k,j}}\}
+$$
+
+이렇게 만들면 중앙값의 성질로 인해 $b_i$가 $tr(O_i\rho)$에서 $\epsilon$ 초과하여 차이나기 위해서는 K/2개 이상의 집합이 모두 $\epsilon$ 초과로 차이나야 한다. 이 아이디어를 통해 오류가 날 확률이 버킷의 개수에 따라 exponential하게 줄어든다.
+
 
 ### complexity
 
