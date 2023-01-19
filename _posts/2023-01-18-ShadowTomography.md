@@ -66,14 +66,64 @@ n-qubit density matrix $\rho$를 알아내는 최소한의 측정횟수는 O($ra
 
 ## 서론
 
-이제부터는 $D \times D$ density matrix $\rho$를 알아내는 것이 아닌 다른 것에 집중해볼 것이다. Aaronson은 POVM elements $\{E_1,E_2,...,E_m\}$가 주어졌을때 $tr(E_i \rho)$값을 알아내는 것은 굉장히 적은 수의 측정으로 가능하다는 점을 알아냈다[4]. $O(D^2)$또는 $O(M)$방식은 trivial 하지만 poly(logM, logD)만에 가능하다는 것을 보인 것이다. 
+이제부터는 $D \times D$ density matrix $\rho$를 알아내는 것이 아닌 다른 것에 집중해볼 것이다. Aaronson은 POVM elements $\{E_1,E_2,...,E_m\}$가 주어졌을때 $tr(E_i \rho)$값을 알아내는 것은 굉장히 적은 수의 측정으로 가능하다는 점을 알아냈다[4]. $O(D^2)$또는 $O(M)$방식은 trivial 하지만 poly(logM, logD)만에 가능하다는 것을 보인 것이다. 하지만 이 방식은 너무 복잡하므로 이후 더 개선된 방식인 *classical shadow*를 소개하고자 한다.
+
+## classical shadow - 목적
+
+양자상태 $\rho$자체를 알아내는것이 목적이 아니라 $\rho$의 여러 속성들을 알아내는 것이 목적이다. 그 중에서 제일 쉬운 예시인 linear function의 값 tr($O_i \rho$) 를 알아내는것을 예시로 들어 설명하고자 한다. 이 방식을 응용하면 임의의 다항식 값이나 비선형 함수의 값도 추정할 수 있다. 
+
+> **Calculating linear function tr($O_i \rho$)**
+  Given an unknown quantum mixed state $\rho$ of dimension D, as well as linear functions $O_1, ..., O_M$,  output numbers $b_1, ..., b_M$ such that
+  $$
+  |b_i - tr(O_i \rho)| \leq \epsilon
+  $$
+  for all i, with success probability at least $1-\delta$. Do this via a measurment of $k$ copies of $\rho$, where $k = k(D, M, \epsilon, \delta)$ is as small as possible
+
+## Procedure
+
+간단한 프로세스를 1~4를 반복하여 snapshot들의 집합을 얻는다.
+
+1. $\rho$에 랜덤한 유니터리 회전을 적용하여 $\rho \rightarrow U \rho U^\dagger$ 로 변환한다.
+2. n개의 큐빗을 모두 측정하여 $\ket{\hat b}$를 구하고 $U^\dagger\ \ket{\hat b}\bra{\hat b}U$를 계산하여 저장한다.
+3. $\rho \rightarrow 𝔼[U^\dagger \ket{\hat b} \bra{\hat b} U]$ 로 변환하는 quantum channel $M(\rho)=𝔼[U^\dagger \ket{\hat b} \bra{\hat b} U]$ 를 정의.
+4. 역변환에 저장된 값을 대입하면 *single snapshot* $M^{-1}(U^\dagger\ \ket{\hat b}\bra{\hat b}U)=\hat \rho$를 얻는다.
+5. 위 과정을 N번 반복하여 $S(\rho ; N)=\{\hat{\rho_1}, ... , \hat{\rho_N}\}$를 얻는다. 이 집합을 ***classical shadow*** of size N이라 한다.
+
+참고로, M과 그 역이 물리적으로 구현 가능할 필요는 없다. 어차피 고전적으로 계산할 것이기 때문이다. 해당 양자 채널의 역변환은 과정 1에서 적용한 유니터리 연산자의 앙상블이 tomographically complete하면 존재한다.
+
+요약하자면 single snapshot $\hat{\rho}$ 를 많이 찍어내서 $\rho$의 속성을 추정하는데 사용하는 것이다. 여기서 $\hat \rho$는 density matrix가 아닌데, 그 이유는 positive semidefinite하지 않을 수 있기 때문이다. 제일 앞에서 살펴보았던 linear inversion결과와 비슷하다. $\hat \rho$가 유용한 이유는 아래 성질 덕분이다.
+
+$$
+𝔼[\hat \rho]=𝔼[M^{-1}(U^\dagger\ \ket{\hat b}\bra{\hat b}U)] = M^{-1}(𝔼[U^\dagger\ \ket{\hat b}\bra{\hat b}U])=\rho
+$$
+
+따라서 $\hat \rho$각각은 density matrix가 아닐 수 있지만, 그 기댓값은 $\rho$이다. 그리고 snapshots를 모아놓은 집합을 ***classical shadow*** 라고 하며, 이를 이용해서 다양한 함수값을 추정하는데 사용한다.
+
+## Median of means algorithm
+
+$𝔼[\hat \rho] = \rho$를 만족하므로, linear function의 경우 아래 식이 성립한다.
+
+$$
+𝔼[tr(O\hat \rho)]=tr(𝔼[O\hat \rho])=tr([O𝔼[\hat \rho])=tr(O\rho)
+$$
+
+그렇다면 단순히 $S(\rho ; N)$를 구성한 뒤 아래처럼 $tr(O_i\rho)$를 추정하면 안되는 것일까?
+
+$$
+b_i = \frac{1}{N} \sum_{N}^{j=1} tr(O_i \hat{\rho_j})
+$$
+
+가능은 하나, $|b_i - tr(O_i \rho)| \leq \epsilon$ 을 만족시키기 위해 필요한 N의 개수가 커지게 된다. 따라서 논문에서는 중앙값을 이용한 간단한 아이디어인 *Median of means*알고리즘을 적용하여 좀 더 효율적으로 개선한다.
+
+### complexity
+
+$\rho$의 속성(함수값)들을 $\hat \rho$들을 이용하여 알아내는 것은 마치 모집단의 속성을 표본추출을 통해 알아내는 것과 유사하다. 여기서 중요한 점은 구하고자 하는 속성이 불편추정량인 것과, error bound $\epsilon$ 이내로 맞추기 위한 표본의 개수 $N$이 얼마나 필요한지이다. 지금 예시로 들고 있는 linear function은 $𝔼[tr(O\hat \rho)]=tr(𝔼[O\hat \rho])=tr([O𝔼[\hat \rho])=tr(O\rho)$ 를 만족하므로, 표본의 개수가 얼마나 필요한지만 파악하면 된다. 이는 분산과 관련되어 있으므로 $Var(tr(O\hat \rho))$을 조사하자.
+
 
 
 ## Reference
 
-> Nielsen, M.A. & Chuang, I.L., 2011. Quantum Computation and Quantum Information: 10th Anniversary Edition, Cambridge University Press 책은 QCQI라고 줄여서 부르자
-
- [1] QCQI 2.2.4장
+ [1] Nielsen, M.A. & Chuang, I.L., 2011. Quantum Computation and Quantum Information: 10th Anniversary Edition, Cambridge University Press
  
  [2] Huang, H.-Y., Kueng, R., & Preskill, J. (2020). Predicting many properties of a quantum system from very few measurements. Nature Physics, 16(10), 1050–1057.
 
