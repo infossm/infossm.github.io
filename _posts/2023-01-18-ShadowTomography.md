@@ -60,7 +60,7 @@ P(E_3|\rho) \\
 
 ## Quantum shadow tomography의 다른 방식들
 
-n-qubit density matrix $\rho$를 알아내는 최소한의 측정횟수는 O($rank(\rho)2^n$)이라는 점을 밝혔다. 이는, 모든 copies들에 동시에 작용하는 measurements를 구현한다면 O($rank(\rho)2^n$)번으로 가능함이 밝혀져 있다[3]. 같은 연구에서는 좀 더 실현 가능한 O($rank(\rho)^2 2^n$)방식도 연구하였으니 궁금하다면 원리를 찾아보는것도 좋을 것 같다.
+n-qubit density matrix $\rho$를 알아내는 최소한의 측정횟수는 O($rank(\rho)2^n$)이라는 점이 밝혀져 있다. 실제로 모든 copies들에 동시에 작용하는 measurements을 구현할 수 있다면 O($rank(\rho)2^n$)번의 측정으로 가능함이 밝혀져 있다[3]. 같은 연구에서 좀 더 실현 가능한 O($rank(\rho)^2 2^n$)방식도 연구하였으니 궁금하다면 원리를 찾아보는것도 좋을 것 같다.
 
 # Classical shadow[2]
 
@@ -127,7 +127,7 @@ $$
 
 $\rho$의 속성(함수값)들을 $\hat \rho$들을 이용하여 알아내는 것은 마치 모집단의 속성을 표본추출을 통해 알아내는 것과 유사하다. 여기서 중요한 점은 구하고자 하는 속성이 불편추정량인 것과, error bound $\epsilon$ 이내로 맞추기 위한 표본의 개수 $N$ 이 얼마나 필요한지이다. 지금 예시로 들고 있는 linear function은 $\mathbb{E}[\hat o]=\mathbb{E}[tr(O\hat \rho)]=tr(\mathbb{E}[O\hat \rho])=tr([O\mathbb{E}[\hat \rho])=tr(O\rho)$ 를 만족하므로, 표본의 개수가 얼마나 필요한지만 파악하면 된다. 간단하게 생각하면, 표본의 크기가 커질수록 표본평균의 분산은 줄어들 것이므로 자연스럽게 $\epsilon$ 이내로 들어올 확률이 커진다. 따라서 $Var(\hat o)$를 조사해야 한다.
 
-#### 증명
+### 증명
 
 증명 과정에서 앞으로는 $O$의 **traceless matrix**인 $O_o=O-\frac{tr(O)}{2^n}\mathbb{I}$ 만 고려할 것인데, $\hat o - \mathbb{E}[\hat o]=tr(O\hat \rho)-tr(O\rho)=tr(O_o\hat\rho)-tr(O_o\rho)$ 를 만족하기 때문이다.
 
