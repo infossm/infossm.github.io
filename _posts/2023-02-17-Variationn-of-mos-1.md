@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Variation of Mo's Algorithm 1"
-date: 2023-02-16 12:00
+date: 2023-02-17 23:00
 author: jthis
 tags: [algorithm]
 ---
