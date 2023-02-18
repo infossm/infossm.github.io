@@ -50,7 +50,7 @@ $<$연산자와 $\leq$연산자 둘 중 하나만 정의되어도 나머지 하�
 
 ![](/assets/images/knon0501/딜워스의정리증명.png)
 
-## Application
+## Applications
 
 ### [Nested Dolls](https://www.acmicpc.net/problem/5058)(NCPC 2007 G번)
 
