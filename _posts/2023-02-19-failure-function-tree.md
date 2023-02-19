@@ -1,8 +1,14 @@
-# 2023년 2월 과제
+---
+layout: post
+title: "A Tree Representation for Failure Function of a String"
+date: 2023-02-19 17:00:00
+author: karuna
+tags: []
+---
 
-## A tree representation for failure function of a string
+# A Tree Representation for Failure Function of a String
 
-### Introduction
+## Introduction
 
 KMP(Knuth-Morris-Pratt) 알고리즘은 주어진 문자열에서 패턴 문자열을 검색하는 전통적인 선형 시간 알고리즘이다. 알고리즘 대회 분야에서도 KMP 알고리즘을 응용하여 해결할 수 있는 문제는 꾸준히 출제되고 있으며, 한국 리저널만 보더라도 [2017 Preliminary J번](https://www.acmicpc.net/problem/14755), [2021 Regional K번](https://www.acmicpc.net/problem/23576) 등에서 등장한 바가 있다.
 
@@ -10,7 +16,7 @@ KMP 알고리즘을 응용하여 해결하는 문제들은 많은 경우 KMP 알
 
 이 글에서는 실패 함수의 성질과 이로부터 자연스럽게 파생되는 트리 구조에 대해서 설명한다. 실패 함수의 정의와 이를 $\mathcal{O}(N)$ 시간에 계산하는 방법을 미리 알고 있다는 가정 하에 설명한다. 
 
-### Graph Representation
+## Graph Representation
 
 문자열 $S = “abcababcb”$ 가 주어진 상황을 생각하자. 이때 $S$의 실패 함수는 $F = [0, 0, 0, 1, 2, 1, 2, 3, 0]$과 같이 계산된다.
 
@@ -32,7 +38,7 @@ KMP 알고리즘을 응용하여 해결하는 문제들은 많은 경우 KMP 알
 
 각각을 $|S|$개의 정점을 가진 그래프에서의 간선이라고 생각하면, 실패 함수가 주는 정보를 두 가지 종류의 간선을 가진 그래프로 생각할 수 있다.
 
-### Recursive structure
+## Recursive structure
 
 실패 함수에 대응하는 그래프 표현을 찾았으니, 이제 모든 그래프에 대해서 대응하는 실패 함수가 존재하는 지 물어볼 수도 있겠다. 그런데 조금만 생각해보면 이는 사실이 아님을 알 수 있다. 
 
@@ -48,11 +54,11 @@ KMP 알고리즘을 응용하여 해결하는 문제들은 많은 경우 KMP 알
 
 이때 $0\leq F[i - 1] < i$이 항상 성립하므로, 이 그래프는 정확히 $0$번 정점을 루트로 하는 트리 구조를 가진다. 이때 앞서 설계한 그래프의 간선들은 이 트리에서는 각 정점 $i$에 대해 방향 간선을 따라 올라가면서 어느 시점 이전까지 만나는 점들을 $i$랑 이어주는 형태로 나타난다.
 
-![kmp1.png](assets/failure-function-tree/kmp1.png)
+![kmp1.png](/assets/images/failure-function-tree/kmp1.png)
 
 $S[i] = S[j]$인 관계를 파란색 간선, $S[i] \neq S[j]$인 관계를 빨간색 간선으로 표현하였다.
 
-### Tree structure
+## Tree structure
 
 그래프를 트리 위에 올려놓고 보면, 다음 사실을 관찰할 수 있다.
 
@@ -69,14 +75,14 @@ $0$번 정점을 만나거나 $S[i] = S[j]$인 $i$의 조상 $j$을 찾을 때�
 
 따라서 이 사실을 바탕으로 트리를 다음 그림과 같이 *압축*할 수 있다.
 
-![kmp2.png](assets/failure-function-tree/kmp2.png)
+![kmp2.png](/assets/images/failure-function-tree/kmp2.png)
 
 오른쪽 그림에서 점선으로 구분된 구역 안의 점은 파란색 간선들로 연결되어 있는 정점들이다. 이제 이 트리에 유일하게 남아있는 조건은 다음과 같다.
 
 - 각 점선 구역 내부의 점들에 대해서 $S[i] = S[j]$가 성립한다.
 - 조상-자손 관계에 놓여있는 두 점선 구역에 대해서 $S[i] \neq S[j]$가 성립한다.
 
-### Conclusion
+## Conclusion
 
 실패 함수에 대한 논의에서 위 트리를 만드는 것만으로도 할 수 있는 얘기가 있다. 실패 함수가 주어졌을 때의 원본 문자열들에 대한 질문은, 위의 트리에서 조상-자손 사이의 색깔이 전부 다른 색칠에 대한 질문으로 환원할 수 있다. 이는 복잡한 문자열 문제를 트리와 연관지어 생각할 수 있는 좋은 도구가 된다.
 
@@ -84,7 +90,7 @@ $0$번 정점을 만나거나 $S[i] = S[j]$인 $i$의 조상 $j$을 찾을 때�
 
 애석하게도 정점에 번호가 존재하는 임의의 트리를 가져왔을 때, 해당 트리에 대응하는 문자열이 존재하는 것은 아니다. 이는 여전히 해당 구조가 실패 함수의 구조를 완벽히 담고 있지 않다는 것을 의미하고, 문자열의 suffix structure과 연관이 되어있는 것으로 보인다. suffix automaton과 같은 해당 구조에 대한 좋은 표현법들과 같이 이해한다면 문자열 문제를 해결하는 좋은 도구를 얻을 수 있을 것이라고 생각된다.
 
-### Addendum
+## Addendum
 
 본문의 내용을 이용하여 다음 문제를 쉽게 해결할 수 있다.
 
