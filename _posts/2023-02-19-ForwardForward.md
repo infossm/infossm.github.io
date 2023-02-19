@@ -55,7 +55,23 @@ MNIST의 경우로 예시를 들어보자. 숫자 5가 5라고 제시하는 data
 
 ## Positive & Negative Data
 
-Positive data, Negative data 비교하여 설명하자. 사진도 첨부하자.
+FF에서 사용하는 데이터는 두 가지 종류로 구분된다.
+
+Positive data는 *올바른 데이터*라고 생각하는게 이해하는데 편하다. MNIST의 경우엔 사진과 라벨이 일치하는 데이터 쌍에 해당한다.
+
+Negative data는 위와 대조적으로 *잘못된 데이터*라고 생각하면 된다. MNIST에서는 사진과 라벨이 일치하지 않는 데이터 쌍에 해당한다.
+
+Positive data는 쉽게 제작할 수 있지만 Negative data를 만드는 것은 고민해보아야 할 문제이다. 논문에서는 Unsupervised FF와 Supervised FF 각각의 경우에 대하여 Negative data를 만드는 방법을 소개한다.
+
+### Negative Data in Unsupervised FF
+
+이미지 변형
+
+### Negative Data in Supervised FF
+
+라벨 임베딩
+
+**Positive data, Negative data 비교하여 설명하자. 사진도 첨부하자.**
 
 ## Goodness Function
 
