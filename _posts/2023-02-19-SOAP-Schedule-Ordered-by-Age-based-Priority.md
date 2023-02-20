@@ -224,6 +224,13 @@ $X^{new}[r] := \min( X, c[r])$은 $r$은 12 이하이므로 $X^{new}[r] = c[r]$�
 
 그리고 optimal하다고 알려진 Gittins에 대해서도 마찬가지로 계산하면 Gittins의 $E[T]$가 조금 더 작은 것을 확인할 수 있습니다.
 
+# Conclusion
+
+이상으로, sceduling policy들과 analysis하고자 하는 일반적인 세팅인 M/G/1 Queue와 같은 개념을 먼저 알아보고, rank로 정의되는 SOAP policy가 무엇인지 그리고 rank function을 어떻게 주느냐에 따라 어떤 policy가 나올수 있는지에 대해 알아보았습니다. 나아가 analysis에 이용되는 Pessimism Principle, 그리고 SOAP policy의 mean response time을 구하는 일반적인 식에 대해서까지 알아보고, 실제로 예시를 통해 확인해보기도 했습니다.
+
+앞서 살펴보았듯이 현재 우리가 사용하는 컴퓨터와 같은 경우 여러개의 코어를 가지고 있으므로 M/G/1 Queue 모델이 아니라 M/G/k 모델에 가깝다고 할 수 있습니다. 여러 server가 존재하는 M/G/k 모델에 대해 analysis할 수 있는 도구로는 WINE이라는 개념이 있습니다. 이 역시 SOAP를 도입한 Ziv Scully의 [thesis](https://ziv.codes/pdf/scully-thesis.pdf) 에서 찾아볼 수 있으므로 혹시 scheduling, queueing theory에 관심이 있거나 이 글보다 더 자세한 내용에 대해 알고싶으신 분들은 해당 글에서 좀더 심화된 내용을 이해해 볼 수 있을 것입니다.
+
+
 ## References
 
 - [Ziv Scully, SOAP: One Clean Analysis of All
