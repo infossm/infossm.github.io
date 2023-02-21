@@ -3,7 +3,7 @@ layout: post
 
 title: "SOAP: Schedule Ordered by Age-based Priority"
 
-date: 2023-01-18
+date: 2023-02-19
 
 author: ainta
 
@@ -356,3 +356,5 @@ $X = 2$인 경우에는 $[0,2]$ 구간에서 rank function이 12가 아닌 4가 
 
 - [Ziv Scully, SOAP: One Clean Analysis of All
 Age-Based Scheduling Policies](https://ziv.codes/pdf/sigmetrics2018-scully.pdf)
+
+- [Ziv Scully, A New Toolbox for Scheduling Theory](https://ziv.codes/pdf/scully-thesis.pdf)
