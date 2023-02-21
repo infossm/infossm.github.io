@@ -135,7 +135,7 @@ monotone하지 않은 rank function을 가지는 policy의 $E[T]$를 분석하�
 
 non-increasing rank function을 가지는 policy의 경우, arrival부터 처음으로 age가 증가하기 시작할때까지의 waiting time과 그 뒤부터 완료되기까지의 residence time으로 나누어 분석하면 residence time에 delay되는 경우는 rank가 더 낮은 새로운 job이 들어와 끝까지 수행되는 경우만 존재하기 때문에 이를 이용하면 $E[T]$에 대한 analysis가 어렵지 않게 가능함이 알려져 있습니다.
 
-## Pessimism Principle: Make rank function monotone!
+## Pessimism Principle
 
 지금부터는 하나의 job에 대해 집중하여 보겠습니다. job의 rank를 worst future rank로 replace한다면 해당 job의 response time에는 어떤 영향을 미칠까요?
 
@@ -145,7 +145,7 @@ non-increasing rank function을 가지는 policy의 경우, arrival부터 처음
     Figure 4. Rank function(blue line) and replaced rank function via pessimism principle(red line)
 </p>
 
-즉, 위 그림처럼 descriptor가 $d$인 job $J$의 size가 $x$일 때 (이것이 주어지는 information일 필요는 없습니다) $J$의 rank function  $r_J(a)$를 $sup_{t \in [a,x]} r(d,t)$로 replace했다고 가정해봅시다. 
+즉, 위 그림처럼 descriptor가 $d$인 job $J$의 size가 $x$일 때 (이것이 주어지는 information일 필요는 없습니다) $J$의 rank function  $r_J(a)$를 $r_{d,x}^{worst}(a) := sup_{t \in [a,x]} r(d,t)$로 replace했다고 가정해봅시다. 
 
 **Theorem 1.** job $J$의 response time은 rank function을 replace하기 전과 후가 동일합니다.
 
@@ -157,9 +157,9 @@ $I$가 $J$의 처리가 시작되고 나서 arrive한 경우, arrive한 시점�
 
 하나의 job에 대해 rank function을 위와 같이 증가시켰을 때 해당 job의 response time은 일정하고 다른 job의 response time은 적어도 증가하지 않음이 보장됩니다.
 
-## Mean Response Time
+## A Formula for Mean Response Time
 
-앞서 SEPRT, Discrete SPRT, Gittins 등의 policy에 대해 mean response time $E[T]$의 analysis가 이루어지지 못했다는 말씀을 드렸습니다. 하지만 Ziv Scully는 [이 논문](https://ziv.codes/pdf/sigmetrics2018-scully.pdf) general하게 모든 SOAP policies에 대해서 적용할 수 있는 $E[T]$에 대한 식을 제시했습니다. 해당 식의 유도는 확률론적 지식 및 Laplace-Stieltjes transform을 이용하므로 자세한 과정은 생략하고, 식에 사용되는 정의와 식만을 소개하도록 하겠습니다.
+앞서 SEPRT, Discrete SPRT, Gittins 등의 policy에 대해 mean response time $E[T]$의 analysis가 이루어지지 못했다는 말씀을 드렸습니다. 하지만 Ziv Scully는 [이 논문](https://ziv.codes/pdf/sigmetrics2018-scully.pdf)에서 general하게 모든 SOAP policies에 대해서 적용할 수 있는 $E[T]$에 대한 식을 제시했습니다. 해당 식의 유도는 앞서 말씀드린 Pessimism Principle을 이용하여 각 Job의 delay time을 계산할 수 있도록 만드는 아이디어를 사용합니다. 그러나 식의 계산 도중 확률론적 지식 및 Laplace-Stieltjes transform을 이용하므로 자세한 과정은 생략하고, 식에 사용되는 정의와 결과 자체만을 소개하도록 하겠습니다.
 
 **Definitions**
 
@@ -169,7 +169,7 @@ $c_d[r] := \inf( a \ge 0 \mid r(d,a) \ge r)$
 $X_d^{new}[r] := \min( X_d, c_d[r])$
 
 
-$(b_{i,d}[r], c_{i,d}[r]) := i\text{-th range of } a \text{ which satisfies } r(a,d) < r$
+$(b_{i,d}[r], c_{i,d}[r]) := i\text{-th range of } a \text{ which satisfies } r(a,d) \le r$
 
 <p align="center">
     <img src="/assets/images/SOAP-Schedule-Ordered-by-Age-based-Priority/fig5.png" width="550"/>
@@ -191,12 +191,13 @@ $\rho_{i}^{old}[r] = \lambda E[X_i^{old}[r]]$
 
 이 때, 다음이 성립합니다.
 
-**Theorem.** descriptor $d$, size $x$인 job의 mean response time은 아래 식과 동일합니다.
+**Theorem.** descriptor $d$, size $x$인 job의 mean response time은 아래 식과 동일합니다. (단, $r(a) = r_{d,x}^{worst}(a)$ and $r = r_{d,x}^{worst}(0)$)
 
-$$E[T_{d,x}] = \frac{\lambda \sum_{i=0}^{\infty} E[X_{i,d}^{old}[r]] }{2(1-\rho_0^{old}[r])(1-\rho^{new}[r])} + \int_{0}^{x} \frac{1}{1 - \rho^{new}[r(a)]}$$
+$$E[T_{d,x}] = \frac{\lambda \sum_{i=0}^{\infty} E[(X_{i,d}^{old}[r])^2] }{2(1-\rho_0^{old}[r])(1-\rho^{new}[r])} + \int_{0}^{x} \frac{da}{1 - \rho^{new}[r(a)]}$$
 
 
 위 식이 어떤 의미인지 알기는 쉽지 않습니다. 예시를 통해 이 analysis로 어떤 model을 해석할 수 있는지 알아봅시다.
+
 
 
 <p align="center">
@@ -214,19 +215,139 @@ $c[r] := \inf( a \ge 0 \mid r(a) \ge r)$
 
 $X^{new}[r] := \min( X, c[r])$은 $r$은 12 이하이므로 $X^{new}[r] = c[r]$이 됩니다.
 
-또한, $X_{i}^{old}$는 다음과 같이 계산됩니다.
+또한 다음이 성립합니다.
+
+- $X = 2$인 경우, $r = r_{d,x}^{worst}(0) = 8$
+- $X = 14$인 경우, $r = r_{d,x}^{worst}(0) = 12$
+
+그러면 $X_{i}^{old}[r]$의 계산을 위해서는 $r = 8$ 또는 $r = 12$인 경우에 대해서만 계산해주면 됩니다.
+
+$r = 8$인 경우, 위 그래프에서 8 이하인 부분을 생각해보면 $b_0[r] = 0, c_0[r] = 2, b_1[r] = 6, c_1[r] = \infty$임을 알 수 있습니다. 따라서,
 - $X_{0}^{old}[8] = 2$
+- $X_{1}^{old}[8] = \text{CoinFlip}(0,8)$  ($X=2$일 때 0, $X=14$일 때 8)
+- $X_{i}^{old}[8] = 0 (i \ge 2)$
+
+$r=12$일 때는 rank function이 항상 $r$ 이하이므로 $b_0[r] = 0, c_0[r] = \infty$입니다. 따라서,  $X_{i}^{old}$는 다음과 같습니다.
+
 - $X_{0}^{old}[12] = \text{CoinFlip}(2,14)$
-- $X_{1}^{old}[8] = \text{CoinFlip}(0,8)$
-- $X_{1}^{old}[12] = 0$
+- $X_{i}^{old}[12] = 0 (i \ge 1)$
 
-이를 통해 계산하면 $E[T_{2}^{SERPT}] = \frac{18\lambda}{1-2\lambda} + 2$, $E[T_{14}^{SERPT}] = \frac{50\lambda}{(1-8\lambda)(1-2\lambda)} + \frac{6}{1-2\lambda} + 8$임을 알 수 있습니다.
+위 값들로 $\rho$를 구하면,
 
-그리고 optimal하다고 알려진 Gittins에 대해서도 마찬가지로 계산하면 Gittins의 $E[T]$가 조금 더 작은 것을 확인할 수 있습니다.
+- $\rho^{new}[8] = \lambda E[X^{new}[8]] = 0$
+- $\rho_{0}^{old}[8] = \lambda E[X_0^{old}[8]] = 2\lambda$
+
+
+- $\rho^{new}[12] = \lambda E[X^{new}[12]] = 2\lambda$,
+- $\rho_{0}^{old}[12] = \lambda E[X_0^{old}[12]] = \frac{2+14}{2}\lambda = 8\lambda$
+
+
+계산한 값들을 앞서 소개한 $E[T]$의 계산 식에 대입해봅시다. 먼저 $X=2$인 경우,
+
+
+$$E[T_{2}^{SERPT}] = \frac{(2^2 + (0^2 + 8^2)/2))\lambda}{2(1-2\lambda)} + \int_{0}^{2} \frac{da}{1 - 0} = \frac{18\lambda}{1-2\lambda} + 2$$ 
+ 
+이고, $X=14$인 경우 
+ 
+$$E[T_{14}^{SERPT}] = \frac{((2^2 + 14^2)/2)\lambda}{2(1-2\lambda)(1-8\lambda)} + \int_{8}^{14} \frac{da}{1 - 2\lambda}  + \int_{0}^{8} da = \frac{50\lambda}{(1-8\lambda)(1-2\lambda)} + \frac{6}{1-2\lambda} + 8$$
+
+임을 알 수 있습니다.
+
+현재 예시와 같이 size를 미리 알 수 없지만 $X$의 분포를 알고 있는 상황에서, Gittins는 $E[T]$를 minimize하는 policy로 알려져 있습니다.
+
+Gittins는 Gittins index라고 불리는 식이 큰 job부터 처리하는 policy로, rank function을 Gittins index의 역수로 정의하게 되면 이 역시 SOAP policy임을 알 수 있습니다.
+
+Gittins policy에 대해 좀더 살펴보도록 하겠습니다.
+
+Gittins index는 $G(d,a) := \sup_{\delta > 0}\frac{P[X_d-a \le \delta \mid X_d > a]}{E[\min(X_d-a, \delta) \mid X_d > a]}$로 정의됩니다.
+
+현재 세팅에서 Gittins index를 계산해보면 $G(a)$는 $a < 2$일 때는 $\delta$가 2일 때  $\frac{P[X_d-a \le \delta \mid X_d > a]}{E[\min(X_d-a, \delta) \mid X_d > a]}$가 $\frac{0.5}{E[min(X_d-a,2)]}$로 최대가 되고, $2 \le a < 14$이면 $\delta$가 14일 때 $\frac{1}{E[X_d-a]}$로 최대가 됩니다. 역수를 취해서 rank function을 그려 보면 Figure 6의 그래프와 일치함을 확인할 수 있습니다.
+
+Gittins에서도 SEPRT와 마찬가지로 계산해보면,
+
+$r \le 4$ 이면 $c[r] = 0$, $4 < r \le 12$ 이면 $c[r] = 2$가 성립하고, $X^{new}[r] = c[r]$입니다.
+
+$r$의 값은 아래와 같습니다.
+
+- $X = 2$인 경우, $r = r_{d,x}^{worst}(0) = 4$
+- $X = 14$인 경우, $r = r_{d,x}^{worst}(0) = 12$
+
+
+$r = 4$인 경우, 위 그래프에서 4 이하인 부분을 생각해보면 $b_0[r] = 0, c_0[r] = 2, b_1[r] = 10, c_1[r] = \infty$임을 알 수 있습니다. 따라서,
+- $X_{0}^{old}[4] = 2$
+- $X_{1}^{old}[4] = \text{CoinFlip}(0,4)$  ($X=2$일 때 0, $X=14$일 때 4)
+- $X_{i}^{old}[4] = 0 (i \ge 2)$
+
+$r=12$일 때는 rank function이 항상 $r$ 이하이므로 $b_0[r] = 0, c_0[r] = \infty$입니다. 따라서,  $X_{i}^{old}$는 다음과 같습니다.
+
+- $X_{0}^{old}[12] = \text{CoinFlip}(2,14)$
+- $X_{i}^{old}[12] = 0 (i \ge 1)$
+
+위 값들로 $\rho$를 구하면,
+
+- $\rho^{new}[4] = \lambda E[X^{new}[4]] = 0$
+- $\rho_{0}^{old}[4] = \lambda E[X_0^{old}[4]] = 2\lambda$
+
+
+- $\rho^{new}[12] = \lambda E[X^{new}[12]] = 2\lambda$,
+- $\rho_{0}^{old}[12] = \lambda E[X_0^{old}[12]] = \frac{2+14}{2}\lambda = 8\lambda$
+
+이를 통해 $E[T]$를 계산하면
+
+$$E[T_{2}^{Gittins}] = \frac{(2^2 + (0^2 + 4^2)/2))\lambda}{2(1-2\lambda)} + \int_{0}^{2} \frac{da}{1 - 0} = \frac{6\lambda}{1-2\lambda} + 2$$ 
+
+ 
+$$E[T_{14}^{Gittins}] = \frac{((2^2 + 14^2)/2)\lambda}{2(1-2\lambda)(1-8\lambda)} + \int_{4}^{14} \frac{da}{1 - 2\lambda}  + \int_{0}^{4} da = \frac{50\lambda}{(1-8\lambda)(1-2\lambda)} + \frac{10}{1-2\lambda} + 4$$
+
+임을 알 수 있습니다.
+
+SEPRT와 Gittins의 $E[T]$를 비교해보면,
+
+$E[T_{2}^{SEPRT}] - E[T_{2}^{Gittins}] = \frac{12\lambda}{1-2\lambda}$
+
+$E[T_{14}^{SEPRT}] - E[T_{14}^{Gittins}] = \frac{-8\lambda}{1-2\lambda}$
+
+로, $X=2$일 확률과 $X=14$일 확률이 반반임을 생각하면 전체 $E[T]$는 Gittins에서 더 작다는 것을 확인할 수 있습니다. 이는 Gittins가 $E[T]$에 대해 Optimal하다는 사실에 반하지 않는 결과입니다.
+
+## 질문: Pessimism Principle?
+
+Pessimism Principle에 따르면, Gittins 대신 Gittins를 nonincreasing하게 만든 아래와 같은 rank function을 이용해도 $E[T]$가 최소한 더 나빠지지는 않아야 하는 것으로 보입니다. 사실 Pessimism Principle은 기댓값에 대한 것이 아니라 절대적으로 동일하거나 더 나아진다는 Principle이므로, $E[T]$에 국한되지 않더라도 최적의 SOAP policy는 non-increasing rank function를 가져야 할 것 같습니다. 과연 그럴까요?
+
+Figure 6의 Gittins rank function 대신, $a$가 $[0,2]$ 구간에서 $12$로 유지되고 $2 \le a \le 14$이면 Gittins와 동일하게 $14-a$가 되는 rank function을 생각해봅시다. 이 rank function은  Gittins 그래프에서 자신보다 오른쪽의 supremum을 취한 값에 해당하므로, Pessimism principle을 통해 바뀐 rank function으로 보입니다.
+
+그러나, 실제로 $E[T]$를 계산해보면
+
+모든 $0 \le r \le 12$에 대해 $c[r] = X^{new}[r] = 0$이고, 
+$X$의 값 $x$에 관계없이 $r = r_{d,x}^{worst}(0) = 12$,
+
+- $X_{0}^{old}[12] = \text{CoinFlip}(2,14)$
+- $X_{i}^{old}[12] = 0 (i \ge 1)$
+
+따라서,
+
+$$E[T_{2}] = \frac{((2^2 + 14^2)/2)\lambda}{2(1-8\lambda)} + \int_{0}^{2} \frac{da}{1 - 0} = \frac{50\lambda}{1-8\lambda} + 2$$ 
+
+ 
+$$E[T_{14}] = \frac{((2^2 + 14^2)/2)\lambda}{2(1-8\lambda)} + \int_{0}^{14} \frac{da}{1 - 0} = \frac{50\lambda}{1-8\lambda} + 14$$
+
+로, $E[T]$를 계산해보면 Gittins에 비해 큰 값임을 알 수 있습니다. 무엇이 잘못되었을까요?
+
+바로 Pessimism principle을 적용할 때 오류가 있었습니다.
+
+$r_{d,x}^{worst}(a) := sup_{t \in [a,x]} r(d,t)$을 대신 대입할 때 $[a, \infty]$ 구간이 아니라 $[a, x]$ 구간의 supremum을 취해야 하기 때문에,
+
+$X = 2$인 경우에는 $[0,2]$ 구간에서 rank function이 12가 아닌 4가 되었어야 하는 것입니다.
+
+물론 이 경우에도 job의 rank function은 $a$에 대해 non-increasing이므로 non-increasing한 rank function만 보면 된다는 생각은 틀리지 않을 수 있어 보입니다.
+
+그러나, 현재 예시에서와 같이 size $x$의 정보는 descriptor $d$에서 알 수 없을 수 있고, 그 경우 Pessimism Principle을 적용했을 때처럼 size에 따라 rank function이 달라지도록 policy를 설정할 수가 없게 됩니다.
+
+즉, Pessimism Principle을 적용한 Policy는 $r(d,a)$ rank function으로 정의 자체가 불가능해질 수 있습니다. 이에 SOAP Policy 중 최적의 policy를 찾을 때는 non-increasing한 rank function이외에도 Gittins, SEPRT처럼 monotone하지 않은 rank function을 가지는 Policy도 고려해야 합니다.
+
 
 # Conclusion
 
-이상으로, sceduling policy들과 analysis하고자 하는 일반적인 세팅인 M/G/1 Queue와 같은 개념을 먼저 알아보고, rank로 정의되는 SOAP policy가 무엇인지 그리고 rank function을 어떻게 주느냐에 따라 어떤 policy가 나올수 있는지에 대해 알아보았습니다. 나아가 analysis에 이용되는 Pessimism Principle, 그리고 SOAP policy의 mean response time을 구하는 일반적인 식에 대해서까지 알아보고, 실제로 예시를 통해 확인해보기도 했습니다.
+이상으로, sceduling policy들과 analysis하고자 하는 일반적인 세팅인 M/G/1 Queue와 같은 개념을 먼저 알아보고, rank로 정의되는 SOAP policy가 무엇인지 그리고 rank function을 어떻게 주느냐에 따라 어떤 policy가 나올수 있는지에 대해 알아보았습니다. 나아가 analysis에 이용되는 Pessimism Principle, 그리고 SOAP policy의 mean response time을 구하는 일반적인 식에 대해서까지 알아보고, 실제로 예시를 통해 SEPRT와 Gittins에서의 mean response time을 비교해보기도 했습니다.
 
 앞서 살펴보았듯이 현재 우리가 사용하는 컴퓨터와 같은 경우 여러개의 코어를 가지고 있으므로 M/G/1 Queue 모델이 아니라 M/G/k 모델에 가깝다고 할 수 있습니다. 여러 server가 존재하는 M/G/k 모델에 대해 analysis할 수 있는 도구로는 WINE이라는 개념이 있습니다. 이 역시 SOAP를 도입한 Ziv Scully의 [thesis](https://ziv.codes/pdf/scully-thesis.pdf) 에서 찾아볼 수 있으므로 혹시 scheduling, queueing theory에 관심이 있거나 이 글보다 더 자세한 내용에 대해 알고싶으신 분들은 해당 글에서 좀더 심화된 내용을 이해해 볼 수 있을 것입니다.
 
