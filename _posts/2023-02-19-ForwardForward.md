@@ -3,7 +3,7 @@ layout: post
 title:  "Forward Forward algorithm"
 date:   2023-02-19
 author: red1108
-tags: [AI, Deep Learning, Machine Learning]
+tags: [ai, deep-learning, machine-learning]
 ---
 ## 서론
 

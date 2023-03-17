@@ -3,7 +3,7 @@ layout: post
 title:  "Introduction to Classical Shadow"
 date:   2023-01-18
 author: red1108
-tags: [quantum, quantum information, quantum computing, quantum measurement]
+tags: [quantum, quantum-information, quantum-computing, quantum-measurement]
 ---
 #  Quantum state tomography
 
@@ -87,9 +87,9 @@ n-qubit density matrix $\rho$를 알아내는 최소한의 측정횟수는 O($ra
 간단한 프로세스를 1~4를 반복하여 snapshot들의 집합을 얻는다.
 
 1. $\rho$에 랜덤한 유니터리 회전을 적용하여 $\rho \rightarrow U \rho U^\dagger$ 로 변환한다.
-2. n개의 큐빗을 모두 측정하여 $\ket{\hat b}$를 구하고 $U^\dagger\ \ket{\hat b}\bra{\hat b}U$를 계산하여 저장한다.
-3. $\rho \rightarrow \mathbb{E}[U^\dagger \ket{\hat b} \bra{\hat b} U]$ 로 변환하는 quantum channel $M(\rho)=\mathbb{E}[U^\dagger \ket{\hat b} \bra{\hat b} U]$ 를 정의.
-4. 역변환에 저장된 값을 대입하면 *single snapshot* $M^{-1}(U^\dagger\ \ket{\hat b}\bra{\hat b}U)=\hat \rho$를 얻는다.
+2. n개의 큐빗을 모두 측정하여 $|{\hat b}\rangle$를 구하고 $U^\dagger\ |{\hat b}\rangle \langle {\hat b}| U$를 계산하여 저장한다.
+3. $\rho \rightarrow \mathbb{E}[U^\dagger | {\hat b} \rangle \langle {\hat b} | U]$ 로 변환하는 quantum channel $M(\rho)=\mathbb{E}[U^\dagger | {\hat b} \rangle \langle {\hat b} | U]$ 를 정의.
+4. 역변환에 저장된 값을 대입하면 *single snapshot* $M^{-1}(U^\dagger\ |{\hat b}\rangle \langle {\hat b} |U)=\hat \rho$를 얻는다.
 5. 위 과정을 N번 반복하여 $S(\rho ; N)=\{\hat{\rho_1}, ... , \hat{\rho_N}\}$를 얻는다. 이 집합을 ***classical shadow*** of size N이라 한다.
 
 참고로, M과 그 역이 물리적으로 구현 가능할 필요는 없다. 어차피 고전적으로 계산할 것이기 때문이다. 해당 양자 채널의 역변환은 과정 1에서 적용한 유니터리 연산자의 앙상블이 tomographically complete하면 존재한다.
@@ -97,7 +97,7 @@ n-qubit density matrix $\rho$를 알아내는 최소한의 측정횟수는 O($ra
 요약하자면 single snapshot $\hat{\rho}$ 를 많이 찍어내서 $\rho$의 속성을 추정하는데 사용하는 것이다. 여기서 $\hat \rho$는 density matrix가 아닌데, 그 이유는 positive semidefinite하지 않을 수 있기 때문이다. 제일 앞에서 살펴보았던 linear inversion결과와 비슷하다. $\hat \rho$가 유용한 이유는 아래 성질 덕분이다.
 
 $$
-\mathbb{E}[\hat \rho]=\mathbb{E}[M^{-1}(U^\dagger\ \ket{\hat b}\bra{\hat b}U)] = M^{-1}(\mathbb{E}[U^\dagger\ \ket{\hat b}\bra{\hat b}U])=\rho
+\mathbb{E}[\hat \rho]=\mathbb{E}[M^{-1}(U^\dagger\ | {\hat b}\rangle \langle {\hat b} | U)] = M^{-1}(\mathbb{E}[U^\dagger\ | {\hat b} \rangle \langle {\hat b} | U])=\rho
 $$
 
 따라서 $\hat \rho$각각은 density matrix가 아닐 수 있지만, 그 기댓값은 $\rho$이다. 그리고 snapshots를 모아놓은 집합을 ***classical shadow*** 라고 하며, 이를 이용해서 다양한 함수값을 추정하는데 사용한다.
@@ -129,19 +129,19 @@ $\rho$의 속성(함수값)들을 $\hat \rho$들을 이용하여 알아내는 �
 증명 과정에서 앞으로는 $O$의 **traceless matrix**인 $O_o=O-\frac{tr(O)}{2^n}\mathbb{I}$ 만 고려할 것인데, $\hat o - \mathbb{E}[\hat o]=tr(O\hat \rho)-tr(O\rho)=tr(O_o\hat\rho)-tr(O_o\rho)$ 를 만족하기 때문이다.
 
 $$
-Var[\hat o] = \mathbb{E}[(\hat o - \mathbb{E}[\hat o])^2]=\mathbb{E}[(tr(O_o\hat\rho))^2]-(tr(O_o\mathbb{E}[\hat\rho]))^2 = \mathbb{E}[\bra{\hat b}UM^{-1}(O_o)U^\dagger \ket{\hat b}^2]-(tr(O_o\rho))^2
+Var[\hat o] = \mathbb{E}[(\hat o - \mathbb{E}[\hat o])^2]=\mathbb{E}[(tr(O_o\hat\rho))^2]-(tr(O_o\mathbb{E}[\hat\rho]))^2 = \mathbb{E}[\langle {\hat b} | UM^{-1}(O_o)U^\dagger | {\hat b} \rangle ^2]-(tr(O_o\rho))^2
 $$
 
-을 만족하는데, $\mathbb{E}[\bra{\hat b}UM^{-1}(O_o)U^\dagger \ket{\hat b}^2]$ 는 측정 결과로 나올 수 있는 모든 $\ket{b}$ 벡터와 회전으로 사용될 수 있는 모든 $U$ operator에 대한 평균을 낸 것이다. $\rho$에 무관한 upper bound를 찾기 위해서는 평균이 아니라 그 값을 최대로 만드는 $\ket{b}$ 과 $\rho$를 대입할 것이다. 또한 $-(tr(O_o\rho))^2$ 항을 무시해도 upper bound에는 지장이 없다. 이를 수식으로 일종의 norm이 들어간 식을 얻는다.
+을 만족하는데, $\mathbb{E}[\langle {\hat b} | UM^{-1}(O_o)U^\dagger | {\hat b} \rangle ^2]$ 는 측정 결과로 나올 수 있는 모든 $|{b}\rangle$ 벡터와 회전으로 사용될 수 있는 모든 $U$ operator에 대한 평균을 낸 것이다. $\rho$에 무관한 upper bound를 찾기 위해서는 평균이 아니라 그 값을 최대로 만드는 $|{b}\rangle$ 과 $\rho$를 대입할 것이다. 또한 $-(tr(O_o\rho))^2$ 항을 무시해도 upper bound에는 지장이 없다. 이를 수식으로 일종의 norm이 들어간 식을 얻는다.
 
 $$
 Var[\hat o]=\mathbb{E}[(\hat o - \mathbb{E}[\hat o])^2] \leq \left\|O-\frac{tr(O)}{2^n}\mathbb{I} \right\|^2_{shadow}
 $$
 
-위의 식에서 $\left\|O \right\|_{shadow}$ 은 값이 항상 0 이상이며 homogeneous하므로 norm이다. 바로 위에서 설명하였듯이 upper bound를 찾기 위해 값을 최대로 만드는 $\ket{b}$, $\sigma$를 대입하여 얻은 것이다. 수식으로는 아래와 같다.
+위의 식에서 $\left\|O \right\|_{shadow}$ 은 값이 항상 0 이상이며 homogeneous하므로 norm이다. 바로 위에서 설명하였듯이 upper bound를 찾기 위해 값을 최대로 만드는 $|{b}\rangle$, $\sigma$를 대입하여 얻은 것이다. 수식으로는 아래와 같다.
 
 $$
-\left\|O \right\|_{shadow} := \underset{\sigma : state}{max} \left ( \mathbb{E}_{U \sim \mathcal{u}} \left [ \bra b U \sigma U^\dagger \ket b \bra b U M^{-1}(O)U^\dagger \ket{b}^2 \right ] \right )^{0.5}
+\left\|O \right\|_{shadow} := \underset{\sigma : state}{max} \left ( \mathbb{E}_{U \sim \mathcal{u}} \left [ \langle b | U \sigma U^\dagger | b \rangle \langle b | U M^{-1}(O)U^\dagger |{b}\rangle^2 \right ] \right )^{0.5}
 $$
 
 분산이 위에 식처럼 표현되기 때문에 논문에서는 $K=2\log(2M/\delta)$, $N=\frac{34}{\epsilon^2}\underset{1 \leq i \leq M}{max}\left\|O_o \right\|^2_{shadow}$ 으로 설정하면 주어진 문제를 에러확률 $\delta$이내로 해결할 수 있음을 보였다. 증명과정은 너무 복잡해서 생략하였으니 만약 궁금하다면 논문의 supplementary material를 참고하면 된다. 결론적으로, linear function을 에러범위 $\epsilon$, 에러확률 $\delta$ 이내로 해결하기 위해 필요한 전체 측정횟수는 아래 식을 따른다.
