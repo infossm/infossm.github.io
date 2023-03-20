@@ -6,22 +6,18 @@ author: VennTum
 tags: [AI, deep-learning]
 ---
 
-# [Noise or Signal: The Role of Image Backgrounds in Object Recognition](https://arxiv.org/abs/2006.09994)
+# [Noise or Signal: The Role of Image Backgrounds in Object Recognition (ICLR 2021)](https://arxiv.org/abs/2006.09994)
 
-Mixed Sample Data Augmentation, MSDA는 vision task에서 사용하는 데이터를 증강하기 위해서 사용되는 기법입니다.
-이를 위한 수많은 접근 방법이 나왔으며, Mixup을 필두로 해당 기법이 성능 개선에 큰 효과가 있다는 것이 알려지고, 최근에 왜 이러한 MSDA 방법론들이 실제 성능 향상에 영향을 주는지를 loss function perspective로 설명하는 [A Unified Analysis of Mixed Sample Data Augmentation: A Loss Function Perspective](https://arxiv.org/abs/2208.09913)이란 논문이 나오면서 더욱 다양한 관점과 방법론으로 연구되고 있습니다.
+Deep learning 분야에서, 모델의 generalization을 올리는 것은 굉장히 중요한 일입니다. Generalization이 떨어지는 모델의 경우, 주어진 학습 데이터에만 과적합하여 이외의 다른 데이터들에 대해서는 성능이 낮아지는 문제가 발생할 수 있으며, 주어진 train data들만이 가지는 특성들에 대해 큰 bias를 가지게 될 수 있습니다.
 
-물론 아직 MSDA 방식이 정말로 효율적인 것인지에 대해 이야기되고 있기는 합니다. 여러가지 task 문제 상황에 따라서도 효과를 보지 못하는 경우도 있고, fine grained인지 coarse grained 인지에 따라서도 사용하는 기법의 종류가 달라지기도 하는 등, 검증과 방법론의 경우는 많은 연구가 더 필요한 상황입니다.
+이러한 문제를 해결하기 위한 방법론들은 굉장히 다양한 접근들로 제시되어왔습니다. Train data를 건드리는 data augmentation들도 존재하고, train 과정에서 과적합되는 것을 방지하기 위한 sharpness-aware, flooding 등의 방법들도 존재합니다. 이러한 시도들은 더 많은 종류의 데이터를 모델에게 주어 generalization을 키우거나, 혹은 train 과정에서 noise들을 학습하는 것을 방지하는 등으로 개선 효과를 본다고 알려져 있습니다.
 
-그럼에도 불구하고, 아직도 data augmentation의 경우 모델의 성능을 높이는 굉장히 쉬운 접근방법이며, 많은 경우에 효과를 보고있기 때문에 vision task을 연구하거나 실제 사용하는 사람들이라면 높은 관심을 가지고 있습니다.
+그러나 computer vision task를 하는 과정에서, 많은 경우에 효과를 본다고 알려져있는 generalization을 높이는 method들이 큰 효과를 보지 못하거나, 혹은 성능을 매우 크게 낮추는 경우들이 존재하는 것을 경험한 사람들이 꽤 많을 것입니다. 이러한 경우는 특히, 실험 환경에서 사용되는 benchmark dataset을 사용하는 경우가 아닌 실생활에서 얻은 dataset이나 혹은 medical 분야 등에서 경험적으로 꽤 많이 확인해보셨을 겁니다.
 
-이번에 소개할 논문 SAGE: Saliency-Guided Mixup with Optimal Rearrangements 는 BMVC 2022에 accept된 논문으로, 이전에 소개해드린 SalienyMix와 비슷하게 saliency를 base로 사용하는 mixup 기법입니다.
-굉장히 단순한 아이디어를 사용하는데, 사람이 쉽게 눈으로 확인을 했을 때에도 어렵지 않게 성능의 개선이 있을 것이라는 점을 납득할 수 있다는 점과, 이러한 간단한 방법으로 Co-Mixup보다 더 좋은 성능을 내는 것과 동시에 더 빠르다는 장점을 가지고 있어서 소개하려합니다.
+이에는 굉장히 다양한 이유들이 존재할 수 있습니다. 모델의 특성, 데이터 셋의 특성, 데이터의 수, 라벨의 수 등등 여러가지 원인들이 존재할 수 있지만, 그 중 하나로는 오늘 이야기할 foreground와 background도 그 이유에 포함되어 있을 수 있습니다.
 
-물론, 사람의 눈과 인지에서 make sense하다는 것이 곧바로 실제 모델에 적용했을 때에 항상 성능의 개선을 나타낸다는 뜻은 아니지만, 결과적으로도 성능의 향상이 있었고 특히 SOTA를 이야기할 때에 가장 많이 거론되는 Co-mixup에 견준다는 점이 확실히 한 번 봐도 좋을 논문이라고 생각합니다.
-
-그러나 제가 전에 이야기했듯, 많은 종류의 논문들이 특정 환경설정과 몇 번의 시도들에서만 성능이 좋게 나오고, 다른 조건들에서도 같은 성능이 유지되리라는 보장이 없을 수 있습니다.
-이에 따라서 실제로 SAGE를 사용해보시려면, 실제 task에서 이를 사용했을 때에 성능 개선이 있는지를 검증하시는 것이 필요할 것 같습니다.
+Noise or Signal: The Role of Image Backgrounds in Object Recognition은 2021년 ICLR에 accept된 논문으로, 이미지를 학습하는 과정에서 모델이 라벨을 분류하는 과정에서 background에 얼마나 큰 영향을 받는지에 대해 연구한 논문입니다.
+그 과정에서 알게되는 사실들은 우리가 만든 모델이 데이터 특성에 따라서 실제 foreground에만 집중하지 않을 수 있다는 것, 그리고 더 나아가서는 우리가 사용하는 여러가지 generalization 테크닉들이 실제로 효과를 볼 수 있을지에 대해 주어진 task에 따라서 많은 고민을 해야한다는 것을 확인할 수 있게 해줍니다.
 
 ## Abstract
 
