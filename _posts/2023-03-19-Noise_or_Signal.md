@@ -129,12 +129,13 @@ figure 4는 반대로, 실제 insect 이미지의 background에 다른 label의 
 
 이는 실제로 모델이 바라보게 되는 saliency map을 통해서 확인할 수 있습니다. mixed-rand model의 경우, 기존의 original보다 foreground에 더 집중해서 분류하고 있다는 것을 알 수 있습니다.
 
-**그러나 여기에서 조금 더 생각하게 되면, mixed-rand dataset을 통해 학습할 경우, 기존의 original data에 대해서는 accuracy가 떨어지는 것을 확인할 수 있습니다. **
+**그러나 여기에서 조금 더 생각하게 되면, mixed-rand dataset을 통해 학습할 경우, 기존의 original data에 대해서는 accuracy가 떨어지는 것을 확인할 수 있습니다.**
 
 우리는 앞선 robustness를 증가하는 것 이외에도, 왜 이러한 현상이 일어났는지에 대해 살펴볼 필요가 있습니다. 우리가 여기에서 추론할 수 있는 결과로는, 결국에 background information에 robust한 모델이 실제로는 original dataset에서 성능이 떨어진다는 사실을 확인할 수 있습니다.
 이는 어떻게 보면, 실제 data의 경우, background information을 활용하는 것이 주어진 foreground를 추론하는 과정에서 꽤나 효과적인 bias라는 것을 생각해볼 수 있습니다.
 
 예를 들면, 우리가 어떠한 object가 A인지 B인지 foreground만 보고는 알기 어려운 경우를 생각해보겠습니다. 근데 만약, 여기에서 우리가 A는 물에서 살고, B는 땅에서 산다는 사실을 알고 있다면 어떻게 될까요? 우리는 헷갈리는 와중에도, 배경을 보고 만약 물일 경우 A로, 땅일 경우 B로 추론을 할 수 있을 것입니다.
+
 **이러한 경우가 바로 background information이 추론 과정에서 좋은 방향의 bias를 주는 경우로 생각해볼 수 있습니다.**
 
 ## Benchmark Progress and Background Dependence
