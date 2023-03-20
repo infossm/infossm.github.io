@@ -21,23 +21,55 @@ Noise or Signal: The Role of Image Backgrounds in Object Recognition은 2021년 
 
 ## Abstract
 
-본 논문에서도 데이터 증강이 모델이 훈련하는 과정에서, 더 많은 종류의 train 이미지들을 제공함으로써 train 데이터에만 과적합하는 경우를 줄이고 일반화를 개선한다는 것을 명시하고 있습니다.
-최근에는 데이터 증강을 구현하는 과정에서 기하적 변환 뿐만 아니라, 시각적 돌출성 등 다양한 정보나 방법들을 사용하여 새로운 데이터를 만드는 복잡한 방법들까지 제시되고 있습니다.
-이러한 복잡한 데이터 증강 방법론들은 실제 더 좋은 train dataset을 만들어 모델의 성능을 개선하는 역할을 하지만, 이러한 data를 만들기 위해 더욱 많은 자원을 사용하여 비효율적이게 되는 것과 동시에, 몇몇 방법들은 특정 도메인에만 적용가능하여 일반화가 떨어진다는 점을 지적합니다.
-이러한 문제점을 해결하기 위해, 단순하고 복잡도 상으로 효율적인, 일반화 가능하면서 높은 성능을 보이는 새로운 데이터 증강 기법이 필요하고 저자들이 SAGE를 개발하게 됩니다.
+본 논문에서는 최신 object recognization model들이 주어진 이미지의 background signal에 얼마나 의존하는지에 대한 경향을 평가합니다.
+기존의 모델들은 주어진 train dataset에 대해 학습하는 과정에서, 이들을 올바른 label로 분류하는지를 loss로 계산하고, 이 loss를 최소화하는 방식으로 학습됩니다. 그리고 이 모델을 이용해서 실제 test dataset을 분류하고, 실제 label과 얼마나 일치하는지를 사용해 accuracy를 구하게 됩니다.
+이를 통해, 모델이 train dataset을 보고 학습하는 과정에서, test dataset의 label에 매치하여 이들에 대한 correlation을 generalizing하는 것으로 성능을 향상시킬 수 있습니다.
 
-SAGE는 고전적인(물론, 현재를 기준으로) Saliency를 base로 사용하여 이미지 쌍을 혼합하는 과정에서, foreground에 해당하는 object들 위주로 잘 사용하여 train 과정에서 사용할 새로운 이미지를 만들어냅니다.
-그리고 이러한 SAGE가 여러가지 MSDA들보다 benchmark 데이터 세트에서 더욱 정확하고, 꽤나 빠르게 동작한다는 것이 SAGE의 contribution으로 두고 있습니다.
+그러나 실제 모델이 학습하는 과정은 사용한 dataset에 따라서도 correlation이 의존적으로 변하게 됩니다. 즉, 어떠한 데이터를 사용하냐에 따라서 모델이 주어진 데이터에서 인지하는 것이 달라지게 된다는 것입니다. 이 과정에서 학습하는 것은 실제 사람의 인지와는 다른 것들일 수 있습니다.
 
-결국, MSDA를 위한 접근 방법 자체는 제가 기존에 다루었던 Saliency-based MSDA와 크게 다르지 않습니다. 그러나 어떠한 디테일이 기존 방법론들과 SAGE의 차이를 두었는지 살펴보도록 하겠습니다.
+예를 들어, 입력된 이미지의 질감이나 색감 등 실제 사람이 어떠한 object를 인식하는 것과는 거리가 먼 것들이 실제 label과의 correlation이 높다면, 모델들은 이에 bias를 가지고 학습하게 된다는 것입니다.
+이러한 이유로 모델의 correlation 특성 의존성을 이해하는 것은 모델이 어떻게 동작하는지 이해하기 위해 필수적이라는 것을 알 수 있습니다.
+
+이미지 background는 object 인식 과정에서 label과 굉장히 큰 correlation을 갖게 됩니다. 모델에만 해당하는 이야기가 아닌, 사람 또한 실제 background information을 사용하여 object를 인식한다는 것이 잘 알려져있습니다. 그러나 이러한 background information을 사용한다는 것은, recognition에서 굉장히 큰 힌트가 되기도 하지만, 어떠한 경우에는 주어진 환경, scene에 대해 너무나도 큰 bias를 가지게 되는 위험 또한 존재합니다.
+
+이를 분석하기 위해, 이 논문에서는 vision task를 해결하는 모델들이 주어진 data background에 얼마나 큰 correlation을 가지고 인지하게 되는지를 다양한 방법들을 통해 분석합니다.
 
 ## Method
 
 ### Comparision of DA methods
 
-![](/assets/images/VennTum/data_augmentation/sage_1.png)
+실제 dataset을 사용하여 정량적으로 분석하기에 앞서, ImageNet-9를 기반으로 생성한 합성 데이터들을 ImageNet에 pretrained된 ResNet-50 모델에 넣었을 때에, 이들 label을 어떻게 분류하는지에 대해 간단한 실험 결과를 확인할 수 있습니다.
 
-일단 SAGE가 어떻게 동작하는지 확인하기에 앞서, 위 Figure 1을 보면서 다른 논문들이 어떤 식으로 MSDA를 진행하는지, 그리고 어떤 차이점들이 존재하는지 이야기해보도록 하겠습니다.
+![](/assets/images/VennTum/data_augmentation/noise_or_signal_1.png)
+
+Figure 1을 보면 다음과 같은 8가지의 합성을 통해서 모델이 해당 이미지의 label을 올바르게 맞추는지 검증합니다.
+
+- 실제 곤충 이미지
+- 곤충의 background 이미지만 사용하고, foreground 영역은 검정으로 지움
+- 곤충의 background 이미지를 사용하고, foreground 영역은 background로 채움
+- 곤충의 background 이미지만 사용하고, foreground object는 검정으로 지움
+- 곤충의 foreground 이미지만 사용하고, foreground obejct 이외에는 검정으로 지움
+- 곤충의 foreground 이미지만 사용하고, background 영역은 다른 곤충 이미지의 background로 채움
+- 곤충의 foreground 이미지만 사용하고, background 영역은 다른 라벨 이미지의 background로 채움
+- 곤충의 foreground 이미지만 사용하고, background 영역은 다음 라벨 이미지의 background로 채움
+
+이에 대한 결과로 실제 맞추게 된 결과는 figure 1에 나온 것처럼, 절반의 task에서 실패한다는 것을 확인할 수 있습니다.
+이 중에서 실제로 foreground가 존재함에도 불구하고 실패하는 5, 8번의 경우도 존재합니다. 또한 어떻게 본다면, 4번 task도 실제 이미지에서 foreground의 영역 contour 자체는 나비 모양으로 생겼지만, 결과는 bird로 예측하는 2번 task와 다르지 않다는 것도 확인할 수 있습니다.
+
+위 figure가 보여주는 background와 model prediction 사이의 관계는 다음으로 설명할 수 있습니다.
+
+먼저, 2번과 4번 task에서는 foreground가 존재하지 않았음에도 불구하고 bird라는 label을 predict 했습니다. 이는 많은 경우에, 나무나 풀, 그리고 하늘이 있는 배경에서 새가 존재했기 때문에 생긴 bias로 볼 수 있습니다. 이 과정에서 foreground 자체만 확인했을 때에는 label을 확인하기 어려우니 background information에 맞춰서 편향된 것입니다.
+
+그리고 5, 8번의 경우에는 온전히 foreground가 존재함에도 불구하고 나비인 insect로 분류하지 않은 이유를 굉장히 잘 확인할 수 있습니다. 이들 task에서 분류된 라벨은 instrument입니다. 이는 많은 경우, 악기들이 배경이 갈색이나 어두운 배경에서 찍힌 사진들로 구성되어있기 때문에, 검정색이라는 배경에 bias를 가져 이처럼 분류했음을 생각해볼 수 있습니다.
+
+이제부터는 실제 많은 다른 label들에 대해서도 이러한 background information이 model에 얼마나 많은 영향을 주는지 확인하기 위해서 정량적인 분석을 위한 실험을 시작합니다.
+
+
+
+- 
+- 
+- 
+- 일단 SAGE가 어떻게 동작하는지 확인하기에 앞서, 위 Figure  보면서 다른 논문들이 어떤 식으로 MSDA를 진행하는지, 그리고 어떤 차이점들이 존재하는지 이야기해보도록 하겠습니다.
 
 위에 다음과 같이 3개의 batch image들이 주어져있다고 생각해보겠습니다.
 
