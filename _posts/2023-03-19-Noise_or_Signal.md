@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Noise or Signal: The Role of Image Backgrounds in Object Recognition"
+title:  "Noise or Signal: The Role of Image Backgrounds in Object Recognition (ICLR 2021)"
 date:   2023-03-19 08:00:00
 author: VennTum
 tags: [AI, deep-learning]
@@ -36,7 +36,7 @@ Noise or Signal: The Role of Image Backgrounds in Object Recognition은 2021년 
 
 ## Method
 
-### Comparision of DA methods
+### Prior Experiment
 
 실제 dataset을 사용하여 정량적으로 분석하기에 앞서, ImageNet-9를 기반으로 생성한 합성 데이터들을 ImageNet에 pretrained된 ResNet-50 모델에 넣었을 때에, 이들 label을 어떻게 분류하는지에 대해 간단한 실험 결과를 확인할 수 있습니다.
 
@@ -64,12 +64,53 @@ Figure 1을 보면 다음과 같은 8가지의 합성을 통해서 모델이 해
 
 이제부터는 실제 많은 다른 label들에 대해서도 이러한 background information이 model에 얼마나 많은 영향을 주는지 확인하기 위해서 정량적인 분석을 위한 실험을 시작합니다.
 
+### Methodology
+
+실제로 모델에서 image background information이 어떤 영향을 주는지 확인하기 위해서 ImageNet-9로부터 새로운 합성 데이터셋을 만듭니다.
+
+- Base Dataset: ImageNet-9를 base dataset으로 사용합니다. ImageNet-9는 기존의 ImageNet에서 9개의 coarse-grained classes만을 사용한 데이터 셋입니다. 이를 만들어내기 위해서, 저자들은 ImageNet의 annotated bounding box가 존재하는 데이터들만 사용하여 실제 이미지의 foreground와 background을 분리하여 variation을 만들 수 있는 이미지들만 사용하여 각 label들에 대해 5045개의 training dataset과 450개의 test image들을 만들었습니다.
+- Varations of ImageNet-9: 기존의 ImageNet-9에서 bounding box information을 사용하여, figure 1에서 선보여진 7개 종류의 variation을 만들어서 실험을 진행합니다.
+- Lager Dataset: ImageNet-9L은 실제 모델을 학습하는 과정에서 모델의 generalization을 올리기 위해서, bounding box가 존재하지 않은 이미지들을 모두 포함한 총 9개의 라벨에 대한 ImageNet의 부분집합 데이터 셋입니다. 이를 사용하여 실제 모델을 학습시킵니다.
+
+![](/assets/images/VennTum/data_augmentation/noise_or_signal_2.png)
+
+위 Table 1은 앞서 제가 figure 1에서 설명했던, 각 variation들이 어떤 식으로 만들어졌는지 설명하는 내용과 동일합니다.
+
+이러한 데이터 셋들을 사용하여, 이젠 실제로 background signal이 어떠한 영향을 주는지 실험합니다.
+
+## Quantifying Reliance on Background Signals
+
+### Backgrounds suffice for classification
+
+이번 실험에서는 background만 존재하는 데이터들만 사용하여 모델을 학습하고, 그 결과를 확인합니다. 여기에서 사용되는 variation들은 앞선 figure 1에서 이야기된 2, 3, 4번에 해당되는 경우들입니다. 
+
+![](/assets/images/VennTum/data_augmentation/noise_or_signal_3.png)
+
+실제 실험 결과를 figure 2를 통해 확인하게 되면, 주어진 train dataset에서는 어떠한 foreground도 존재하지 않았지만, 이들만 사용한 데이터를 통해 학습한 모델이 모두 40% 이상의 정확도를 보여준다는 것을 확인할 수 있습니다. 전체 label이 9개가 존재한다고 생각하면, 이는 절대 random한 결과(random이면 약 11%의 정확도를 보여야 함)를 보이는 것이 아닌, 실제 background information만을 활용해도 test dataset을 꽤나 높은 확률로 맞출 수 있다는 결과를 보여줍니다.
+
+이는 결과적으로, train dataset에서 가지고 있는 background information과 실제 test dataset에 존재하는 background information이 높은 correlation을 가지고 있다는 것으로 요약할 수 있습니다. 이러한 correlation을 가지고 있기 때문에, 실제로 foreground에 대한 정보를 모르고도, background를 사용하여 inference를 하는 것이 가능했습니다.
+
+### Models exploit background signal for classification
+
+![](/assets/images/VennTum/data_augmentation/noise_or_signal_4.png)
+
+이번 실험에서는 foreground와 background를 실제 같은 이미지가 다닌 다른 이미지들끼리 섞어서 합성한 데이터 세트에 대해 test할 때에 어떠한 현상이 일어나는지 확인합니다.
+
+Table 2를 확인하게 되면, 이번 실험에서는 2개의 모델을 사용하게 됩니다. 하나는 기존의 ImageNet에서 pretrained된 다양한 모델들, 또 다른 하나는 ImageNet-9L을 사용하여 학습한 모델들이 존재합니다. 그리고 실제 이들을 original imagenet, ImageNet-9, ImageNet-9L, 그리고 variation들에 대한 test를 할 때에 accuracy가 어떻게 되는지 확인할 수 있습니다.
+
+결과를 통해 알 수 있는 점은, Only-BG-T의 경우처럼 background info만 존재하는 경우에도 상당히 모델이 잘 맞췄다는 것을 확인할 수 있는 점과(앞선 실험과 비슷한 결론), Mixed variation의 경우, 실제로 기존의 foreground는 전혀 건드리지 않고 똑같이 존재함에도 불구하고, background information이 변했다는 이유로 정확도가 낮아진다는 것입니다.
+
+이 중에서도, 같은 label을 가지는 mixed-same보다 다른 label의 background를 가질 수도 있는 mixed-rand의 정확도가 더 낮다는 것을 통해, background information에 의해서 실제로 모델의 오분류할 가능성이 커진다는 것을 확인할 수 있습니다.
+
+즉, 이 말은 곧 모델이 어떠한 object를 추정하는 과정에서 주어진 이미지의 background information 또한 함께 사용하여 추론하게 된다는 것입니다. 그러한 과정에서 background information에 대한 bias를 얻게 되어 큰 영향을 미칠 수도 있게 됩니다.
+
+### Models are vulnerable to adversarial backgrounds
+
+Background information이 model에 얼마나 안좋은 영향을 미치는지 확인하기 위해서, 이번에는 적대적으로 선택된 background에 대한 모델의 robustness를 측정합니다.
+
+![](/assets/images/VennTum/data_augmentation/noise_or_signal_5.png)
 
 
-- 
-- 
-- 
-- 일단 SAGE가 어떻게 동작하는지 확인하기에 앞서, 위 Figure  보면서 다른 논문들이 어떤 식으로 MSDA를 진행하는지, 그리고 어떤 차이점들이 존재하는지 이야기해보도록 하겠습니다.
 
 위에 다음과 같이 3개의 batch image들이 주어져있다고 생각해보겠습니다.
 
