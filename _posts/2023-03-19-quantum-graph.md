@@ -35,19 +35,22 @@ tags: [quantum, quantum-computing, graph-theory]
 
 양자 그래프는 *operator system*(adjoint에 대해 닫혀 있고, 항등행렬을 포함하는 행렬의 집합)이다. 그리고 주어진 고전 그래프 G에 대응되는 양자 그래프는 아래와 같이 정의된다.
 
-$$S_G = \mathrm{span}\{|e_i \rangle \langle e_j| \; | \; \text{i = j or i is adjacent to j}\}$$
+> **Definition**
+$$S_G = \mathrm{span}\{|e_i \rangle \langle e_j| \; | \; \text{i = j or i is adjacent to j}\}$$<br/>
 
 또한 두 quantum graph의 곱 또한 아래와 같이 정의한다.
 
-$$UV = \mathrm{span}\{ uv\;|\;u\in U, v \in V \}$$
+> **Definition**
+$$UV = \mathrm{span}\{ uv\;|\;u\in U, v \in V \}$$<br/>
 
-
+두 quantum graph의 곱이 정의되었으므로 quantum graph의 거듭제곱도 재귀적으로 정의할 수 있다. 특별히, $U^0 = \mathbb{C}I_n$으로 정의한다. 
 
 ## Connected quantum graph
 
 고전 그래프에서의 연결성은 쉬운 개념이다. 여기서는 양자 그래프에서의 연결성을 다룬다. 양자 그래프의 연결성을 고전 그래프에서의 의미를 가져올 수 있도록 잘 정의하는 것이 필요하다. 따라서 양자 그래프의 연결성은 다음과 같의 정의한다.
 
-> $S \in M_n$이 연결되어 있다 $\Leftrightarrow$ $S^m = M_n$인 자연수 $m$이 존재한다.
+> **Definition**
+$S \in M_n$이 연결되어 있다 $\Leftrightarrow$ $S^m = M_n$인 자연수 $m$이 존재한다.
 
 반대로, 해당 $m$이 존재하지 않는다면 $S$는 연결되어 있지 않다.
 
@@ -55,9 +58,14 @@ $$UV = \mathrm{span}\{ uv\;|\;u\in U, v \in V \}$$
 
 ## Disconnected quantum graph
 
-고전 그래프에서 "연결되지 않음"은 그래프가 서로 연결된 간선이 없는 두 집합으로 분리 가능함을 의미한다. 이 개념을 양자 그래프에도 가져오면 다음과 같은 정의가 가능하다.
+고전 그래프에서 "연결되지 않음"은 그래프가 서로 연결된 간선이 없는 두 집합으로 분리 가능함을 의미한다. 이 개념을 양자 그래프에도 가져올 수 있을까? 다음과 같은 정리가 성립한다.
 
-> $S$가 disconnected라 함은, $PS(I_n-P)={0}$를 만족하는 비자명 사상 행렬 $P \in M_n$이 존재함과 동치이다.
+> **Theorem**
+$S$가 disconnected라 함은, $PS(I_n-P)={0}$를 만족하는 비자명 사상 행렬 $P \in M_n$이 존재함과 동치이다.
+
+위 Theorem의 증명은 다음과 같다.
+
+## Connectness comparison
 
 고전 그래프와 그에 대응되는 양자 그래프에서의 연결성은 동치이다. quantum graph에서의 **vertices**은 rank가 1인 projections에 해당한다. 그리고 이러한 정점들이 모여 높은 rank의 projections가 되는 것이다.
 
