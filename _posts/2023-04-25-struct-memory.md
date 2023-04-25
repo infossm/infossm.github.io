@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Quantum Graph"
-date: 2023-04-23
+title: "Size of struct"
+date: 2023-04-25
 author: red1108
-tags: [computer-architecture, struct-memory, memory]
+tags: [struct, computer-architecture, struct-memory, memory]
 ---
 
 ## 서론
