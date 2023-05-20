@@ -79,18 +79,23 @@ LOCC는 양자 상태를 다룰 수 있는 메서드 중에서 하나이다. 굉
 
 ## 얽힘 증류 (entanglement distillation)
 
-entanglement distillation은 얽힘을 포함하고 있는 양자 상태에서 좀 더 순수한 얽힘을 추출해내는 개념이다. 정확히는, 얽힘을 포함하고 있는 양자 상태에서 연산을 가해서 임의 두 큐빗이 bell state(pure singlet form entanglement)를 가지도록 하는 것이다.
+Quantum Teleportation, Quantum Communication등등 양자 기술을 사용한 어떠한 정보학적 행위들의 핵심은 Bell state(pure entanglement state)를 활용하는 것이다. entanglement가 pure하지 않을수록 확률적인 노이즈가 생길 수 있다. 따라서 임의의 양자 상태로부터 pure singlet form($\Psi^-$)을 추출해 내는 것이 굉장히 중요하다[3]. 이와 관련된 것이 **얽힘 증류**이다.
+
+얽힘 정도를 정의하는 척도에 따르면 2 qubit에서 가장 순수한 얽힘 상태는 Bell states들이다(왠지 그럴 꺼 같지 않은가?). 나머지 얽힌 상태들도 얽혀 있긴 하지만, 순수하게 얽혀 있지는 않다.
+
+entanglement distillation은 얽힘을 포함하고 있는 양자 상태에서 좀 더 순수한 얽힘을 추출해내는 개념이다. 정확히는, 얽힘을 포함하고 있는 양자 상태에서 연산을 가해서 임의 두 큐빗이 Bell state에 가까워지도록 만드는 방법이다.
 
 양자 얽힘을 매듭에 비유해보자. Distillation은 아래처럼 제일 기본적인 매듭을 분리해내는 것이다.
 
 ![img](https://images.pexels.com/photos/4021575/pexels-photo-4021575.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)
 
-하지만 아주 복잡한 매듭이라면 저런 기본적인 매듭을 분리해내지 못할 수도 있다. 이와 마찬가지로 제일 기본적인 bell state entanglement를 분리해낼 수 없는 얽힘 상태가 존재한다. 이를 bound entanglement라고 한다.
 
+하지만 아주 복잡한 매듭이라면 저런 기본적인 매듭을 분리해내지 못할 수도 있다. 이와 마찬가지로 제일 기본적인 bell state entanglement를 분리해낼 수 없는 얽힘 상태가 존재한다. 이를 bound entanglement라고 한다.
 
 ## bound entanglement
 
-구속얽힘이라고도 불리지만, 아직 한국어로 된 제대로 된 명칭은 없다.
+bound entanglement란 얽혀 있지만, distillation이 불가능한 얽힘 상태이다. distillation이 가능한 얽힘 상태를 fure entanglement라고 특별히 지칭한다[3]. 현실 세계에서 
+구속얽힘이라고도 불리지만, 아직 한국어로 된 제대로 된 명칭은 없다. 
 
 ### 참고문헌
 
@@ -99,3 +104,5 @@ entanglement distillation은 얽힘을 포함하고 있는 양자 상태에서 �
 [2]Bennett, Charles H., et al. "Purification of noisy entanglement and faithful teleportation via noisy channels." Physical review letters 76.5 (1996): 722.
 
 [3] M. Horodecki, P. Horodecki, and R. Horodecki, Mixed-State Entanglement and Distillation: Is there a “Bound” Entanglement in Nature?, Physical Review Letters 80, 5239 (1998)
+
+[4] Hiesmayr, Beatrix C. "Free versus bound entanglement, a NP-hard problem tackled by machine learning." Scientific Reports 11.1 (2021): 19739.
