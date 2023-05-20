@@ -24,6 +24,10 @@ tags: [quantum, quantum-information, entanglement]
 
 2개의 큐비트를 관측하면 얻을 수 있는 값은 00, 01, 10, 11일 것이다. 이를 $|00\rangle$, $|01\rangle$, $|10\rangle$, $|11\rangle$ 로 표현한다. 수학적으로는 $|xy\rangle = |x\rangle \otimes |y\rangle$ 이다.
 
+### density matrix(밀도 행렬)
+
+하나의 확률 벡터로 표현되는 양자 상태는 
+
 ## 양자 얽힘
 
 요즈음은 유튜브에도 양자 얽힘에 대해 정말 많은 내용이 나오고 있다. 특히 양자 얽힘 상태가 존재한다면 광속을 넘어 정보를 전달할 수 있는것이 아닌가? 라는 물음에서 출발한 EPR역설은 과학 유튜버의 단골 소재이다. Bound entanglement에 대해 알기 위해서는 그것의 상위 분류인 entanglement부터 알아야 한다.
@@ -94,8 +98,16 @@ entanglement distillation은 얽힘을 포함하고 있는 양자 상태에서 �
 
 ## bound entanglement
 
-bound entanglement란 얽혀 있지만, distillation이 불가능한 얽힘 상태이다. distillation이 가능한 얽힘 상태를 fure entanglement라고 특별히 지칭한다[3]. 현실 세계에서 
-구속얽힘이라고도 불리지만, 아직 한국어로 된 제대로 된 명칭은 없다. 
+bound entanglement란 얽혀 있지만, distillation이 불가능한 얽힘 상태이다. distillation이 가능한 얽힘 상태를 fure entanglement라고 특별히 지칭한다[3]. 현실 세계에서는 free entanglement보다 bound entanglement가 훨씬 더 희귀한 것으로 추정된다[4].
+
+그렇다면 임의의 양자 상태가 bound entanglement인지는 어떻게 알아낼 수있을까? 정의에 따라 (1) entanglement가 있어야 하고 (2) distillation이 불가능해야 한다. 이 두 조건을 만족하는 것과 bound entanglement임은 필요충분 조건이다.
+
+따라서 bound entanglement를 알아내기 위해서는 (1) entanglement가 있는지, (2) distillation이 가능한지를 알아내야 한다. 이 두 방법을 각각 살펴보자.
+
+### check entanglement
+
+주어진
+
 
 ### 참고문헌
 
