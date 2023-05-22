@@ -8,7 +8,7 @@ tags: [graph-theory, probability-theory, random-algorithm]
 
 # Introduction
 
-[지난 글](/ _ posts/2023-04-22-sssp-near-linear.md)에 이어 Bringmann 2023의 near-linear time shortest single source path (SSSP) 문제를 해결하는 부분을 더 다루어보도록 하겠습니다. 간선의 가중치가 $-W^{-}$ 이상인 weighted digraph에 대해 $\mathcal{O}(\log^{2} n \log(nW))$ 번의 dijkstra algorithm으로 shortest path tree, negative cycle 중 하나를 반환하는 문제입니다.
+[지난 글](https://infossm.github.io/blog/2023/04/22/sssp-near-linear/)에 이어 Bringmann 2023의 near-linear time shortest single source path (SSSP) 문제를 해결하는 부분을 더 다루어보도록 하겠습니다. 간선의 가중치가 $-W^{-}$ 이상인 weighted digraph에 대해 $\mathcal{O}(\log^{2} n \log(nW))$ 번의 dijkstra algorithm으로 shortest path tree, negative cycle 중 하나를 반환하는 문제입니다.
 
 지난 글에서는 다음의 특수한 조건을 만족하는 Restricted SSSP (RSSSP)를 $\mathcal{O}(\log^{2} n)$ 번의 dijkstra algorithm으로 해결하는 Las-Vegas algorithm을 소개하였습니다.
 
