@@ -6,8 +6,6 @@ date: 2023-05-21
 tags: [random]
 ---
 
-# Introduction
-
 # PRAM Model
 
 PRAM (Parallel Random Access Machine) 모델은 병렬 처리를 이론적으로 표현한 모델이다. $P$개의 프로세서와 크기 $M$의 공통 메모리로 이루어져 있다. PRAM 모델에서 한 번의 (병렬) 연산은 다음과 같은 과정을 통해 이루어진다:
