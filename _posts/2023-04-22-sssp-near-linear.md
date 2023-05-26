@@ -102,10 +102,10 @@ Restricted SSSP 문제를 해결하기 위해, 우선 가장 기본이 되는 bu
 > Q := PriorityQueue({dist: 0, vertex: s})
 > while Q is not empty:
 >     # run dijkstra using Q and non-negative edges only
->     update _ nonnegative _ dijkstra(Q)
+>     update_nonnegative_dijkstra(Q)
 > 
 >     # bellman-ford like relaxation for negative edges
->     for (src, dst), weight in negative _ edges:
+>     for (src, dst), weight in negative_edges:
 >         if dist[dst] < dist[src] + weight:
 >             dist[dst] = dist[src] + weight # relaxation
 >             Q.add({dist: dist[dst], vertex: dst}) # add relaxed vertex to Q
@@ -185,7 +185,7 @@ $\mathbf{O}(v, \dfrac{\kappa}{4})$ (또는 $\mathbf{I}(v, \dfrac{\kappa}{4})$)�
 
 **Theorem.** $O(\varepsilon^{-2} \log n \cdot \mathcal{T}[\text{Dijk}])$ 정도의 시간에, 주어진 $r$과 모든 $v$에 대해 $\mathbf{O}(v, r)$의 크기를 $\varepsilon n$ 정도의 additive error로 estimate할 수 있다.
 
-*Proof.* $k := 5\varepsilon^{-2} \log n$ 개 정도의 정점 $u _ {1}, \cdots, u _ {k}$를 랜덤으로 샘플링하여 (중복 허용) $\mathbf{I}(u _ {j}, r)$을 계산합시다. 모든 $v$에 대해서 $\lvert \mathbf{O}(v, r) \rvert $의 estimate $\widetilde{O}(v)$를
+*Proof.* $k := 5\varepsilon^{-2} \log n$ 개 정도의 정점 $u _ {1}, \cdots, u _ {k}$를 랜덤으로 샘플링하여 (중복 허용) $\mathbf{I}(u _ {j}, r)$을 계산합시다. 모든 $v$에 대해서 $\lvert \mathbf{O}(v, r) \rvert$의 estimate $\widetilde{O}(v)$를
 
 $\widetilde{O}(v) := \frac{n}{k} \cdot \sum _ {j = 1}^{k} \left[ v \in \mathbf{I}(u _ {j}, r) \right]$로 주면, 놀랍게도 높은 확률로 additive error가 bound됩니다.
 
@@ -212,7 +212,7 @@ Geometric distribution을 고른 이유는 차치하고, 일단 $r$이 $\frac{\k
 
 따라서 마지막 case에 속할 확률만 생각해보면 $\displaystyle\max _ {v} \mathrm{Pr}\left[ r < \mathrm{dist}(v, y) \mid r \ge \mathrm{dist}(v, x) \right]$ 정도로 bound할 수 있습니다. sum 등의 bound를 사용하지 않는 이유는 한번 $e \in L$이 성립하면 다시 고려할 필요가 없기 때문입니다.
 
-Geometric distribution의 memoryless property에 의해, 이 확률의 upper bound는 $\max _ {v} \Pr[r < \mathrm{dist}(v, y) - \mathrm{dist}(v, x)] = \Pr[r < \min _ {v}(\mathrm{dist}(v, y) - \mathrm{dist}(v, x))] = \Pr[r < w _ {G _ {\ge 0}}(e)] = 20w _ {G \ge 0}(e)\log n / \kappa$가 됩니다.
+Geometric distribution의 memoryless property에 의해, 이 확률의 upper bound는 $\max _ {v} \Pr[r < \mathrm{dist}(v, y) - \mathrm{dist}(v, x)] = \Pr[r < \max _ {v}(\mathrm{dist}(v, y) - \mathrm{dist}(v, x))] \le \Pr[r < w _ {G _ {\ge 0}}(e)] = 20w _ {G \ge 0}(e)\log n / \kappa$가 됩니다.
 
 따라서 $G$의 shortest path $P$ 에 대해 $\mathbb{E}\lvert P \cap L \rvert = \frac{20\log n }{\kappa} \cdot w _ {G \ge 0}(P)$ 로 쓸 수 있습니다. 이 때 $w(P) \le 0$이고, (모든 shortest path는 직접적으로 이어진 간선 0보단 작거나 같아야 하므로) 많아야 $\kappa$개의 음수 간선이 있으므로 양수 간선도 $\kappa$개 이하가 됩니다. $w _ {G \ge 0}(P) \le \kappa$가 성립하고, 따라서 $\mathbb{E}\lvert P \cap L \rvert = O(\log n)$이 됩니다.
 
