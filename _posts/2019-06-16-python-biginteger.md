@@ -15,7 +15,7 @@ tags: [big-integer, Python]
 이 글에서 살펴볼 것은 그 라이브러리 중에서도 가장 쉽게 사용할 수 있고 대중적으로 굉장히 많은 사람들이 이미 사용 중인, Python에서의 큰 정수형 구현 방법입니다. 사실 Python에는 큰 정수라는 개념이 없습니다. 기본적인 정수형인 `int`가 바로 큰 정수형이기 때문입니다. 성능보다는 편리함과 명료성에 초점을 둔 Python이기 때문에, 기본적인 정수형 연산에서부터 오버플로우와 같은 문제에 대한 걱정 없이 원하는 정수를 마음껏 표현할 수 있도록 이 기능을 아예 기본 정수형으로서 내장시켜놓은 것입니다. 1편에서는 Python의 가장 표준이 되는 CPython 구현체를 바탕으로 `int`형의 기본적인 구조와 기초적인 연산 몇 가지에 대해 알아보겠습니다.
 
 ## \_longobject 구조체 ##
-CPython의 git repository는 https://github.com/python/cpython 이며, 이 중 int의 구현을 담당하는 소스 코드는 크게 [세](https://github.com/python/cpython/blob/master/Include/longintrepr.h) [개](https://github.com/python/cpython/blob/master/Include/longobject.h)[로](https://github.com/python/cpython/blob/master/Objects/longobject.c) 이루어져 있습니다. 이 중 하나의 `int`형 오브젝트를 나타내는 자료형은 longintrepr.h에 있는  `struct _longobject`입니다.
+CPython의 git repository는 https://github.com/python/cpython 이며, 이 중 int의 구현을 담당하는 소스 코드는 크게 [세](https://github.com/python/cpython/blob/main/Include/cpython/longintrepr.h) [개](https://github.com/python/cpython/blob/main/Include/cpython/longobject.h)[로](https://github.com/python/cpython/blob/main/Objects/longobject.c) 이루어져 있습니다. 이 중 하나의 `int`형 오브젝트를 나타내는 자료형은 longintrepr.h에 있는  `struct _longobject`입니다.
 
 ```c
 /* Long integer representation.
