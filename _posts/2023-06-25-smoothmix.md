@@ -9,7 +9,7 @@ tags: [AI, deep-learning]
 # [SmoothMix: a Simple Yet Effective Data Augmentation to Train Robust Classifiers](https://ieeexplore.ieee.org/document/9151008)
 
 SmoothMix는 제가 앞서 소개했던 RandomMix, SAGE 등에 비하면 꽤나 오래전에 나온 논문입니다. 그렇기 때문에 해당 논문에서 baseline들로 비교하고 있는 기법들도 꽤나 기본적인 것들만을 사용하여 비교하고 있으며 엄청 특출난 성능을 보인다고 보기는 어렵습니다.
-그러나 해당 mixup 방법 및 발견한 model의 이미지에서의 visualization attention, 그리고 data augmentation이 어떻게 robustness에 영향을 줄 수 있는지에 대한 기초적인 접근 방향의 아이디어를 찾을 수 있습니다.
+그러나 해당 mixup 방법 및 발견한 model의 이미지에서의 visualization attention, 그리고 data augmentation이 어떻게 **Robustness에 영향을 줄 수 있는지** 에 대한 기초적인 접근 방향의 아이디어를 찾을 수 있습니다.
 최근에 computer vision과 data augementation에서 고려되고 있는 성질등을 생각했을 때, 한 번 읽어보면 MSDA에 관한 이해를 높이는 데 도움을 받을 수 있을 것입니다.
 
 실제로 해당 논문은 Workshop 논문임에도 불구하고 꽤나 높은 인용수를 가지고 있습니다.
@@ -104,6 +104,72 @@ SmoothMix는 제가 앞서 소개했던 RandomMix, SAGE 등에 비하면 꽤나 
 그리고 이렇게 새롭게 생긴 이미지의 label의 경우는, 앞서 mask의 ratio 누적합을 이용하여 다음과 같이 표현할 수 있습니다.
 
 ![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+
+## Experiments
+
+SmoothMix의 평가는 다음과 같은 데이터 셋들에서 이루어집니다.
+
+먼저 가장 기본적인 Baseline reference distribution dataset에 대해 평가를 진행합니다. 해당 데이터셋들로는
+
+- CIFAR-10
+- CIFAR-100
+- ImageNet
+
+등의 가장 기본적인 데이터 셋들이 사용됩니다.
+
+### Image Classification Results
+
+![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+
+![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+
+CIFAR 데이터 셋들에 대한 Top-1, Top-5 error는 다음과 같습니다.
+위에서 확인할 수 있듯, SmoothMix 자체로는 기본적인 reference dataset에 대한 성능을 크게 향상시키지는 못했습니다. 기존의 다른 data augmentation 기법들이나 mixup보다는 더 좋은 성능을 보였으나 cutmix보다는 더 좋은 성능을 내지 못했습니다.
+
+![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+
+이러한 결과는 ImageNet result에서도 확인할 수 있습니다. 기존의 CIFAR 데이터 셋에서 확인할 수 있던 결과와 마찬가지의 비슷한 양상을 보인다는 것을 알 수 있습니다.
+
+**어떻게 보면 크게 이상한 결과는 아닐수도 있습니다.**
+앞서 SmoothMix라는 아이디어를 착안하기 위해서 실험했던 Strong-edge based region dropout과 같은 경우는, **의도적으로 이미지에 square window를 추가하는 adversarial이 가미된 상황** 에서의 결과이기 때문입니다.
+
+우리가 실제로 test data로 사용하는 경우에는 기존의 train dataset과 같은 distribution을 가지는 데이터 중, 그저 unseen dataset만 사용한 경우이기 때문에 이러한 경우에서는 오히려 이미지에서 중요한 요소에 집중하여 모델이 학습하는 것이 더 좋은 결과를 낼 수 있으며, MSDA 등의 기법으로 generalization을 높이는 것으로도 충분할 수 있습니다.
+
+그렇기에, 저자들은 이러한 data augmentation의 reference dataset에 대한 성능을 올리는 것에 중점을 두는 것이 아닌, 다양한 **adversarial cases** 에 초점을 맞추어 실험을 진행합니다.
+
+### Corrupted Image Classification
+
+해당 결과를 소개하기 이전에 corrupted, adversarial case에 대한 경우를 먼저 살펴보도록 하겠습니다.
+
+우리가 특정 reference dataset에 대해 학습하는 경우, 실제로 우리가 이러한 reference distribution에 가까운 데이터들을 수집하여 해당 모델에 사용할 수 있다면, 큰 문제없이 해당 모델들이 주어진 task를 잘 수행할 수 있습니다.
+그러나 우리는 의도적으로 손상되거나 적대적인 공격을 받은 데이터 셋이 모델에게 주어질 수 있습니다. 여기에서 adversarial case의 경우는 의도적인 noise 등을 추가하여 의도적으로 모델이 실패하도록 만들기 위한 case들에 해당하기는 하지만, 꼭 이렇게 인위적으로 손상을 일으키는 경우가 아니더라도 data가 손상되는 경우는 다수 존재할 수 있습니다.
+
+예를 들면, 우리가 구할 수 있는 북극곰의 이미지는 많은 경우 빙하가 함께 있거나 눈 덮인 얼음 위의 사진들이 주어지는 경우가 많을 것입니다.
+그렇지만 만약 동물원 안에 있는 북극곰 사진이 있을 수도 있고, 혹은 케이지에 넣어서 이동중인 북극곰의 사진이 주어질 수도 있습니다.
+
+또는 어떠한 경우에는 눈이 너무 많이 내리거나 폭풍우가 오는 상황에서의 장미꽃 사진이 주어질 수도 있으며, 50년 전에 찍어두어서 많은 풍화가 일어난 탁자의 사진이 있을 수도 있습니다.
+
+이러한 다양한 자연적인 상황 속에서도 train에서 사용된 reference dataset과는 distribution이 많이 다르거나 손상된 corrupted case들이 존재할 수 있습니다.
+
+많은 경우, 이러한 상황에서 모델의 성능이 떨어지는 것이 잘 알려져있습니다.
+또한 data augmentaion을 사용하는 것이, 모델이 주어진 reference dataset 뿐만아니라 distribution shifted case에서도 좀 더 robustness를 갖는다는 것도 알려져있습니다.
+
+그러나 앞서서 저자들이 확인하였던 strong-edge based region dropout과 같은 경우에서, 특정 data augmentation을 사용하였을 때에 추론을 실패하는 failure case가 발생한다는 것을 알 수 있습니다.
+
+이에 대한 관점에서, 저자들은 SmoothMix가 이러한 corrupted case에 대한 robustness를 갖추고 있다고 주장하며 다음 데이터 셋들에 대해 검증을 진행합니다.
+
+- CIFAR-100-Corrupted
+- ImageNet-Corrupted
+
+
+
+
+
+
+
+
+
+
 
 
 
