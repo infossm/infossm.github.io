@@ -68,7 +68,7 @@ SmoothMix는 제가 앞서 소개했던 RandomMix, SAGE 등에 비하면 꽤나 
 
 어떠한 방식을 통해 만들어진 마스크가 G라고 할 때, 각 마스크의 픽셀 단위의 ratio 누적합 $lambda$는 다음과 같이 계산됩니다.
 
-![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_3.png)
 
 ### Types of Masks
 
@@ -76,19 +76,19 @@ SmoothMix는 제가 앞서 소개했던 RandomMix, SAGE 등에 비하면 꽤나 
 
 이에 저자들은 기본적으로 두 가지 형태의 Mask를 만들어 Soft-edge window를 설정하는 것을 고안합니다.
 
-![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_4.png)
 
 첫 번째 방법은 SmoothMix S 방법입니다. 이는 기존의 Cutout, CutMix에서 사용하고 있는 기본적인 square window를 기반으로 하고 있습니다. 해당 square window를 통해 mask를 만들어내지만, 실제로 주변의 바운더리에 대해서만 linear interpolation을 통해 한 번에 0, 1로 나뉘는 것이 아닌, 특졍 0에서 1로 점진적으로 out되는 mask를 만들어줍니다. 이를 통해, 우리는 해당 square window의 boundary에서도 선형적으로 소실되는 형태의 mask를 만들어줄 수 있습니다.
 
 이러한 boundary linear interpolation mask를 만들기 위해, 저자들은 smooth region k에 대해 다음과 같은 형태로 mask를 만들어냅니다.
 
-![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_5.png)
 
 두 번째 방법은 SmoothMix C 입니다. 이는 해당 region dropout mask를 만들 때에, Gaussian circle mask를 만드는 것입니다. 특정 중심점으로부터 가우시안 분포를 따르는 형태로 외각으로 가면서 내부로 갈수록 점진적으로 소실되는 형태의 mask를 만들게 됩니다. 이렇게 하면 기존의 square window보다 사람이 보았을 때에도 훨씬 부드럽게 mask가 형성된다는 것을 알 수 있습니다.
 
 이 때, 우리는 생성하는 mask를 아예 원형으로 하는 것이 아닌, 가로와 세로에 해당하는 width와 height에 대해 따로 설정하여 타원 형태의 mask를 만들 수 있습니다. 이는 각각에 대해 사용하는 하이퍼파라미터에 대해 다음과 같이 정의할 수 있습니다.
 
-![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_6.png)
 
 이렇게 만들어낸 마스크는 그대로 dropout의 방식을 적용하여 사용할 수 있지만, 저자들은 이에 대해 추가로 해당 마스크에서 dropout되는 영역을 기존의 CutMix에서 사용하는 방식대로 다른 이미지를 넣어 Mixup하는 방식을 사용합니다.
 
@@ -99,11 +99,11 @@ SmoothMix는 제가 앞서 소개했던 RandomMix, SAGE 등에 비하면 꽤나 
 
 그 결과, 우리가 합성에 사용하려는 이미지가 각각 $(x_{i}, y_{i}), (x_{j}, y_{j})$라고 할 때 새롭게 생성되는 이미지는 다음과 같이 정의할 수 있습니다.
 
-![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_7.png)
 
 그리고 이렇게 새롭게 생긴 이미지의 label의 경우는, 앞서 mask의 ratio 누적합을 이용하여 다음과 같이 표현할 수 있습니다.
 
-![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_8.png)
 
 ## Experiments
 
@@ -126,14 +126,14 @@ SmoothMix의 평가는 다음과 같은 데이터 셋들에서 이루어집니�
 이에 대한 기본 baselince 모델로는 PyramidNet-200을 사용하며, SmoothMix S의 경우 k=0.2, $sigma$는 0 과 1 사이에서 유니폼하게 샘플링되며, SmoothMix C의 경우, $sigma$는 0.25~0.5 사이에서 샘플링됩니다.
 각각의 데이터 셋에 대해 사용하는 configuration의 경우 상이하게 다를 수 있기 때문에, 해당 디테일은 논문에서 확인해보실 수 있습니다.
 
-![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_9.png)
 
-![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_10.png)
 
 CIFAR 데이터 셋들에 대한 Top-1, Top-5 error는 다음과 같습니다.
 위에서 확인할 수 있듯, SmoothMix 자체로는 기본적인 reference dataset에 대한 성능을 크게 향상시키지는 못했습니다. 기존의 다른 data augmentation 기법들이나 mixup보다는 더 좋은 성능을 보였으나 cutmix보다는 더 좋은 성능을 내지 못했습니다.
 
-![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_11.png)
 
 이러한 결과는 ImageNet result에서도 확인할 수 있습니다. 기존의 CIFAR 데이터 셋에서 확인할 수 있던 결과와 마찬가지의 비슷한 양상을 보인다는 것을 알 수 있습니다.
 
@@ -171,7 +171,7 @@ CIFAR 데이터 셋들에 대한 Top-1, Top-5 error는 다음과 같습니다.
 위의 Corrupted dataset들은 기존의 CIFAR, ImageNet Dataset들에 대해 특정한 corrupted type들을 넣어 새롭게 만들어낸 데이터셋들입니다.
 이 과정에서 Gaussian noise, snow, motion blur, fog 등등 다양한 종류의 corruption들이 반영되어 있습니다.
 
-![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_12.png)
 
 실제 해당 데이터 셋에서 사용하는 corruption의 디테일들은 다음 논문에서 확인해보실 수 있습니다.
 
@@ -179,9 +179,9 @@ CIFAR 데이터 셋들에 대한 Top-1, Top-5 error는 다음과 같습니다.
 
 이러한 corrupted dataset에서의 result는 다음과 같습니다.
 
-![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_13.png)
 
-![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_14.png)
 
 위의 table에서 baseline으로 설정되어있는 것은 바로 기본적인 strong-edge based region dropout을 사용한 CutMix 모델입니다. 저자들은 CutMix에서 사용했던 기본 configuration을 유지하여 baseline을 만들고, 이를 SmoothMix와 비교하였습니다.
 
