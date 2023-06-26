@@ -165,6 +165,57 @@ def cost_fn(theta):
     return qml.expval(H)
 ```
 
+단순히 앞에서 구한 수소분자 Hamiltonian의 기댓값을 구하는 코드이다.
+
 #### 최적화
 
+```python
+# 최적화 세팅
+stepsize = 0.01
+max_iterations = 100
+opt = qml.AdamOptimizer(stepsize=stepsize)
+theta = np.zeros(num_theta, requires_grad=True)
+
+# 최적화 진행
+theta_opt = None
+energy_VQE = 1e5
+energy = []
+params = []
+
+for n in range(max_iterations):
+    params.append(theta)
+    theta, prev_energy = opt.step_and_cost(cost_fn, theta)
+    energy.append(prev_energy)
+    sample = cost_fn(theta)
+    if sample < energy_VQE:
+        energy_opt = sample
+        theta_opt = theta
+
+print("Final VQE energy: %.4f" % (energy_VQE))
+print("Optimal parameters:", theta_opt)
+```
+
+최적화는 AdamOptimizer를 사용했다. 파라미터를 나타내는 변수가 `theta`인데 0으로 초기화되어 있다. `theta`가 0일때 hf state이고 `theta`를 바꿔감에 따라 결과가 바뀐다. 나중에 최적화 그래프에서 초기값이 hf state의 energy라고 생각하면 된다. 최적화를 진행해나가면서 우리는 hf state보다 더 안정된 "중첩된"상태를 발견할 것이다.
+
+#### 최적화 결과
+
+<p align="center"><img width="50%" src="https://github.com/infossm/infossm.github.io/assets/17401630/103c86cf-b46b-4c55-8ddd-756ff97d3bdf"></p>
+<center><b>그림 6. 최적화 결과</b></center>
+
+처음에 Hf state의 에너지부터 시작해서 좀 더 에너지가 낮아졌다. 큰 차이는 아니지만 오비탈의 바닥상태부터 전자를 가득 채운 상태보다 더 낮은 에너지가 존재한다는 것을 확인할 수 있었다.
+
+실제로 조사해보면 |1100> 상태가 98.9%, |0011>상태가 1.1%였다. 낮긴 하지만 들뜬 상태가 조금 중첩되어 있었다.
+
+이 글은 [페니레인 문서](https://docs.pennylane.ai/en/stable/introduction/chemistry.html) 를 참고하여 작성된 글이다. 더 궁금한 내용이 있다면 이 글을 참고하길 바란다.
+
+## 결론
+
+양자컴퓨팅을 사용하여 수소분자의 전자가 어떻게 배치되어 있는지를 조사할 수 있었다. 전자가 어느 한 오비탈에 고정적으로 배치되어 있지 않고, 여러 오비탈에 중첩되어 있음을 확인할 수 있었다.
+
+이외에도 VQA의 활용방안은 굉장히 많으니 흥미가 생긴다면 더 찾아보길 바란다.
+
 ### 참고문헌
+
+[1] https://docs.pennylane.ai/en/stable/introduction/chemistry.html
+
+[2] https://docs.pennylane.ai/en/stable/code/api/pennylane.AllSinglesDoubles.html
