@@ -15,6 +15,44 @@ SmoothMix는 제가 앞서 소개했던 RandomMix, SAGE 등에 비하면 꽤나 
 실제로 해당 논문은 Workshop 논문임에도 불구하고 꽤나 높은 인용수를 가지고 있습니다.
 현재 SmoothMix에 대한 한글 자료를 찾을 수 없기에, 제가 직접 자료를 만들고 포스팅하려합니다.
 
+## Introduction
+
+최근에 DNN들은 image를 사용하는 다양한 task에서, 다양한 종류의 data augmentation 기법을 사용하여 성능을 향상시키는 것이 가능했습니다. Data augmentation을 사용하여 실제 사용하는 데이터의 수를 늘리는 방식으로 DNN은 overfitting 문제와 해당하는 train dataset에 대해 memorize하는 문제를 해결하는 것으로 알려져있습니다.
+이러한 data augmentation의 경우, 어떠한 comptuer vision task에 대해서도 dataset에 굉장히 쉽게 적용하여 사용할 수 있다는 장점이 있으며, 그 종류에 따라 기존의 모델이 잘 해결하지 못하는 여러 task들 자체를 해결해주는 역할을 할 수 있습니다(이미지 flip, rotation 등).
+
+이러한 여러 data augmentation 방법들 중 일부는 이미지의 일부를 dropout하는 방식으로 구현됩니다. 이미지의 일부를 dropout하여 해당 정보를 의도적으로 손실시켜, 이미지가 다른 영역에 대한 정보를 사용하여 유추할 수 있도록 하는 효과를 볼 수 있으며(Cutout), 어떠한 방법에서는 해당 방식으로 dropout된 영역에 다른 이미지를 채워넣어 두 개의 이미지를 mix하는 방식을 채용하기도 하였습니다(CutMix).
+
+이러한 방법론들은 실제 data augmentation에서 굉장히 높은 성능 향상을 만들어냈습니다.
+그러나 이러한 regional dropout 방법론들은 해당 dropout되는 영역에서 인접한 픽셀들이 급격하게 변화하는 'Strong-Edge Problem'을 일으킬 수 있습니다.
+
+결과적으로 이러한 strong-edge problem은 두 가지의 사이드 이펙트를 일으킵니다.
+
+- 픽셀의 급격한 변화가 일어나면 해당 영역에서 local convolution operation에 영향을 준다.
+- 이러한 급격한 픽셀 변화가 일어나는 영역은 네트워크가 실제로 잘 캐치할 수 있는 특성이 되기 때문에, 해당 영역에 대해 네트워크의 포커스가 맞춰지게 되며, 이러한 이유로 기존의 dropout 메소드들이 가지고 있던 해당 영역 이외의 정보를 사용하여 추론한다는 기본 전제에 상충된다.
+
+실제로 dropout을 베이스로 하는 data augmentation들에서 이러한 현상이 발생하는지 확인하기 위해, 저자들은 CAM(Class Activation Map)을 통해 학습된 네트워크가 이미지의 어느 영역의 정보를 활용하여 해당 label을 추론하고 있는지 확인합니다.
+
+![](/assets/images/VennTum/clip/wiseft_1.png)
+
+이를 확인하는 과정으로, 다음과 같은 모델들에 대한 CAM result를 비교합니다.
+
+- ImageNet을 학습한 기본 ResNet
+- Strong-edge based region dropout을 통해 ImageNet을 학습한 ResNet
+- Soft-edge based region dropout을 통해 ImageNet을 학습한 ResNet (SmoothMix)
+
+실제 위 figure에서 각각 원본과 해당 순서의 모델들의 CAM result를 확인할 수 있습니다.
+
+여기에서 확인할 수 있는 결과로는, 일단 기본적인 ImageNet에서 학습한 모델의 경우 실제로 이미지에서 어떠한 이미지인지 확인하기 명확한 위치의 region을 보고 추론하고 있다는 것을 알 수 있습니다. 해파리의 경우는 해파리의 형태를 캐치하여 판단하고 있으며, 뱀을 확인하는 과정에서는 뱀의 머리를 위주로 보면서 추론하고 있음을 알 수 있습니다.
+이미지를 판단하는 데 있어서 명확한 요소를 보고 판단하고 있으나, 어떻게 보면 해당 영역에 대한 정보만을 위주로 판단하고 있기에, 이미지에서 해당 정보가 손상되어있을 때에 추론이 어려울 수 있습니다.
+
+다음으로 Strong-edge based region dropout을 사용한 모델의 결과에서는 strong-edge를 이미지에 합성해둔 square window에 굉장히 큰 영향을 받고 있다는 것을 알 수 있습니다.
+그 예시로, 해파리 사진에서는, 해당 window 내에 해파리에 대한 정보가 존재하지 않음에도 불구하고, 기존의 region dropout을 사용한 이미지를 통해 학습한 경험을 모델이 알고 있기 때문에 해당 window에 집중하여 추론을 적용하고 있음을 알 수 있습니다. 수치 자체가 완전하게 confidence를 나타내는 것은 아니지만, 이를 통해서 해파리가 존재하지 않는 영역을 중심으로 추론하고 있다 보니, 해파리라는 결론을 낼 때의 score가 상당히 낮음을 알 수 있습니다.
+이 뿐만아니라, 다른 사진들에서도 만들어둔 window에 초점을 맞추어 해당 영역이 추론에 큰 영향을 미친다는 것을 알 수 있으며, 그 일례로 'Boa constrictor'는 아예 'Green snake'로 분류되었습니다.
+
+그러나 아직 소개되지 않은 SmoothMix를 사용하게 되면, 이러한 square window가 존재하는 상황에서도 해당 영역 이외의 실제로 object에서 중요한 영역을 잘 캐치하여 추론에 사용하고 있으며, 이 뿐만아니라 기존의 baseline resnet보다 더 다양한 영역들을 보면서 추론을 진행하고 있음을 알 수 있습니다.
+
+이제 저자들이 어떻게 Soft-edge based region dropout인 SmoothMix를 구현하였는지 소개하도록 하겠습니다.
+  
 ## Zero-shot model
 
 zero-shot이란 모델을 특정 데이터 셋 A에 대해 학습시킨 이후, 이에 대한 다른 추가 train이나 fine-tuning 없이 바로 이와 다른 distribution을 가지거나 혹은 없는 라벨을 포함한 데이터 셋 B에 대해서 inference하는 것을 의미합니다. 결국 간단히 말하자면, zero-shot model은 해당 모델을 학습하는 과정에서 다루지 않았던 라벨이나 데이터, 혹은 더 나아가 다루지 않았던 task에 대해 사용하는 것을 의미하게 됩니다.
