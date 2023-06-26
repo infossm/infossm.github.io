@@ -32,7 +32,7 @@ SmoothMix는 제가 앞서 소개했던 RandomMix, SAGE 등에 비하면 꽤나 
 
 실제로 dropout을 베이스로 하는 data augmentation들에서 이러한 현상이 발생하는지 확인하기 위해, 저자들은 CAM(Class Activation Map)을 통해 학습된 네트워크가 이미지의 어느 영역의 정보를 활용하여 해당 label을 추론하고 있는지 확인합니다.
 
-![](/assets/images/VennTum/clip/wiseft_1.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_1.png)
 
 이를 확인하는 과정으로, 다음과 같은 모델들에 대한 CAM result를 비교합니다.
 
@@ -53,7 +53,60 @@ SmoothMix는 제가 앞서 소개했던 RandomMix, SAGE 등에 비하면 꽤나 
 
 이제 저자들이 어떻게 Soft-edge based region dropout인 SmoothMix를 구현하였는지 소개하도록 하겠습니다.
   
-## Zero-shot model
+## Method
+
+### Mask Generation
+
+기본적으로 저자들은 dropout할 영역을 mask로 만들기 위해서 mask generation을 생각합니다.
+이에 대해 디테일한 마스크의 생김새와 만드는 방법은 이후에 서술될 예정입니다.
+
+기본적으로, 특정한 random mask를 생성하기 위해, 저자들은 이미지의 너비 W와 높이 H에 대해 uniformly 결정되는 center point를 다음과 같이 구하게 됩니다.
+
+![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+
+그리고 이러한 중심점으로부터 얼마나 mask가 퍼져나가는지를 결정하기 위해 $sigma$가 결정되면 이에 맞추어 mask의 크기가 변하게 됩니다.
+
+어떠한 방식을 통해 만들어진 마스크가 G라고 할 때, 각 마스크의 픽셀 단위의 ratio 누적합 $lambda$는 다음과 같이 계산됩니다.
+
+![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+
+### Types of Masks
+
+우리는 앞서 저자들이 strong-edge를 사용하여 dropout을 시키면 안된다는 점에 초점을 두었다는 것을 알고 있습니다. 이에 맞추어, SmoothMix는 어떻게 Soft-edge Mask를 만들 것인지에 초점을 둡니다.
+
+이에 저자들은 기본적으로 두 가지 형태의 Mask를 만들어 Soft-edge window를 설정하는 것을 고안합니다.
+
+![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+
+첫 번째 방법은 SmoothMix S 방법입니다. 이는 기존의 Cutout, CutMix에서 사용하고 있는 기본적인 square window를 기반으로 하고 있습니다. 해당 square window를 통해 mask를 만들어내지만, 실제로 주변의 바운더리에 대해서만 linear interpolation을 통해 한 번에 0, 1로 나뉘는 것이 아닌, 특졍 0에서 1로 점진적으로 out되는 mask를 만들어줍니다. 이를 통해, 우리는 해당 square window의 boundary에서도 선형적으로 소실되는 형태의 mask를 만들어줄 수 있습니다.
+
+이러한 boundary linear interpolation mask를 만들기 위해, 저자들은 smooth region k에 대해 다음과 같은 형태로 mask를 만들어냅니다.
+
+![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+
+두 번째 방법은 SmoothMix C 입니다. 이는 해당 region dropout mask를 만들 때에, Gaussian circle mask를 만드는 것입니다. 특정 중심점으로부터 가우시안 분포를 따르는 형태로 외각으로 가면서 내부로 갈수록 점진적으로 소실되는 형태의 mask를 만들게 됩니다. 이렇게 하면 기존의 square window보다 사람이 보았을 때에도 훨씬 부드럽게 mask가 형성된다는 것을 알 수 있습니다.
+
+이 때, 우리는 생성하는 mask를 아예 원형으로 하는 것이 아닌, 가로와 세로에 해당하는 width와 height에 대해 따로 설정하여 타원 형태의 mask를 만들 수 있습니다. 이는 각각에 대해 사용하는 하이퍼파라미터에 대해 다음과 같이 정의할 수 있습니다.
+
+![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+
+이렇게 만들어낸 마스크는 그대로 dropout의 방식을 적용하여 사용할 수 있지만, 저자들은 이에 대해 추가로 해당 마스크에서 dropout되는 영역을 기존의 CutMix에서 사용하는 방식대로 다른 이미지를 넣어 Mixup하는 방식을 사용합니다.
+
+### Blending Images and Labeling
+
+위 과정을 통해 만들어낸 마스크 G에 대해, 우리는 또 다른 이미지를 하나 선택하고, (1 - G)에 해당하는 마스크를 만들어, 각 픽셀의 mask ratio의 합이 1이 되도록하는 새로운 이미지를 생성할 수 있습니다.
+이를 생성하는 과정은 기존의 CutMix에서 사용하던 mixup 방식을 그대로 차용할 수 있습니다.
+
+그 결과, 우리가 합성에 사용하려는 이미지가 각각 $(x_{i}, y_{i}), (x_{j}, y_{j})$라고 할 때 새롭게 생성되는 이미지는 다음과 같이 정의할 수 있습니다.
+
+![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+
+그리고 이렇게 새롭게 생긴 이미지의 label의 경우는, 앞서 mask의 ratio 누적합을 이용하여 다음과 같이 표현할 수 있습니다.
+
+![](/assets/images/VennTum/data_augmentation/smoothmix_2.png)
+
+
+
 
 zero-shot이란 모델을 특정 데이터 셋 A에 대해 학습시킨 이후, 이에 대한 다른 추가 train이나 fine-tuning 없이 바로 이와 다른 distribution을 가지거나 혹은 없는 라벨을 포함한 데이터 셋 B에 대해서 inference하는 것을 의미합니다. 결국 간단히 말하자면, zero-shot model은 해당 모델을 학습하는 과정에서 다루지 않았던 라벨이나 데이터, 혹은 더 나아가 다루지 않았던 task에 대해 사용하는 것을 의미하게 됩니다.
 
