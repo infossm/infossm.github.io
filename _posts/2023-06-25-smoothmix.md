@@ -103,7 +103,7 @@ SmoothMix는 제가 앞서 소개했던 RandomMix, SAGE 등에 비하면 꽤나 
 
 그리고 이렇게 새롭게 생긴 이미지의 label의 경우는, 앞서 mask의 ratio 누적합을 이용하여 다음과 같이 표현할 수 있습니다.
 
-![](/assets/images/VennTum/data_augmentation/smoothmix_8.png)
+![](/assets/images/VennTum/data_augmentation/smoothmix_8.png) 
 
 ## Experiments
 
