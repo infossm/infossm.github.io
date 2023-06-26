@@ -78,7 +78,7 @@ VQE는 VQA의 특수한 집합이다. VQA는 파라미터 조정을 통한 최�
 
 <br>
 
-이 배치가 좀 더 에너지가 낮을 수도 있다. 굉장히 신기한 일이다. 일반적으로 s오비탈에 전자가 전부 배치되는것이 제일 에너지가 낮을 것이라 생각하지만 중첩을 고려한다면 여러 배치가 중첩된 상태가 에너지가 더 낮을 수도 있다.
+이 배치가 좀 더 에너지가 낮을 수도 있는데, 이는 굉장히 신기한 일이다. 일반적으로 s오비탈에 전자가 전부 배치되는것이 제일 에너지가 낮을 것이라 생각하지만 중첩을 고려한다면 여러 배치가 중첩된 상태가 에너지가 더 낮을 수도 있다.
 
 이를 고려하려면 당연히 고전적인 계산보다는 양자컴퓨팅을 사용한 계산이 자연스러울 것이다. 따라서 양자 컴퓨팅을 사용한 해결방법을 다뤄 보자. 간편하게 VQE를 코딩할 수 있는 `pennylane` 을 사용하여 설명할 것이다.
 
@@ -91,19 +91,79 @@ VQE를 사용하여 대부분의 문제를 해결하는 방법은 아래와 같�
 3. VQE를 사용하여 그 Hamiltonian의 최소 고유값을 찾는다.
 4. 구한 최소 고윳값이 계의 최소 에너지이고, 그때의 상태가 계의 바닥상태이다.
 
-### VQE를 사용한 해결 - 양자 상태 인코딩
+### 1. 양자 상태 인코딩
 
-hartree-fock state. second quantization.
+양자컴퓨터를 사용하여 문제를 해결하려면 상태를 어떻게 큐비트로 표현할지를 정해야 한다. 이 문제에서는 second quantization를 사용할 것이다. second quantization은 양자상태에서 해당 상태의 몇개의 입자가 있는지를 표현할 때 쓰이는 방식이다. 예를 들어 상태 A에 입자가 2개, 상태 B에 전자가 3개라고 하면 아래와 같이 표현한다.
 
-### VQE를 사용한 해결 - Hamiltonian 구성
+$$|2_A\rangle \otimes |3_B\rangle$$
 
-pennylane에서 계산해 줌. 배경에는 Jordan-Wigner Transformation이 있다.
+하지만 이 글에서 이 내용을 자세히 다루기는 어려우니 단순하게 큐비트를 사용하여 각 상태별로 입자의 개수를 나타내는 인코딩 방식이라고 생각하면 된다.
 
-### VQE를 사용한 해결 - 최소 고유값 찾기
+우리는 오비탈에 전자를 배치하는 문제를 풀 것이므로 아래와 같은 오비탈을 생각해 보자.
+
+<p align="center"><img width="50%" src="https://github.com/infossm/infossm.github.io/assets/17401630/25148f68-ad05-4be7-826b-5d5256696c6d"></p>
+<center><b>그림 4. H2 분자의 혼성 오비탈</b></center>
+
+전자를 배치 가능한 오비탈은 2개이고 스핀은 두개가 가능하므로 총 전자가 취할 수 있는 상태는 4개이다. 이를 4큐빗으로 표현하고, 큐비트가 배치되면 1 배치되지 않으면 0으로 표현할 수 있다.
+
+$$|1100\rangle$$
+
+위 상태의 큐비트는 4개이고 1은 2개이다. 이 상태는 위 그림 4의 상태에 대응된다. 첫 두개의 큐비트는 첫 오비탈의 업 스핀, 다운 스핀 상태의 점유 여부를 말한다. 1이면 그 상태가 점유된 것이고 0이면 점유되지 않은 것이다.
+
+따라서 오비탈이 N개라면 큐빗은 2N개가 필요하단 걸 유추할 수 있다. 또한 1의 개수가 배치할 전자의 개수가 된다. 큐비트는 0 또는 1이므로 같은 오비탈, 같은 스핀을 가진 전자가 2개 이상 존재할 수 없다는 조건도 자연스럽게 만족한다.
+
+이제 N큐빗에 e개의 전자를 배치하는 문제에서 고전적인 바닥상태는 2N개의 큐빗을 왼쪽부터 e개만 1을 채우는 상태일 것이다. 이 상태를 **hartree-fock state**라고 하며, 중첩을 고려한 바닥상태 에너지의 상한값이다. 중첩을 고려하면 최소한 hf state보단 에너지가 줄어들기 때문이다.
+
+예를 들어, 오비탈 10개의 전자 14개를 배치하는 상황의 hf state는 $|11111111111111000000\rangle$ 이다.
+
+### 2. Hamiltonian 구성
+
+Hamiltonian은 오비탈 간 전자들, 오비탈 자체의 에너지를 종합적으로 고려하여 계산된다. Hamiltonian계산에 대한 내용은 [링크](http://vergil.chemistry.gatech.edu/notes/quantrev/node30.html)를 참고하면 된다. 굉장히 복잡한 계산식을 거치지만, pennylane을 사용하면 쉽게 계산할 수 있으니 넘어가자. 아래 코드를 작성하면 H2분자의 Hamiltonian을 구할 수 있다.
+
+```python
+import pennylane as qml
+from pennylane import qchem
+from pennylane import numpy as np
+
+symbols = ["H", "H"]
+coordinates = np.array([0.0, 0.0, -0.6614, 0.0, 0.0, 0.6614])
+basis_set = "sto-3g"
+electrons = 2
+
+H, qubits = qchem.molecular_hamiltonian(
+    symbols,
+    coordinates,
+    basis=basis_set,
+)
+print("Hamiltonian is\n\n", H)
+print("Number of qubits: ", qubits)
+```
+
+위 코드에서 coordinates는 두개의 수소원자의 3차원 공간 좌표이다. 둘 사이의 좌표 차이가 대략 1.32정도 나는데, 이건 실제 수소분자의 원자핵간 거리를 bohr radius단위로 나타낸 값이다.
 
 #### ansatz구성
 
+Hamiltonian을 구했으니, 이제 파라미터에 의해 조정되는 회로를 만들자. 파라미터에 의해 조정되는 회로를 **ansatz**라고 한다. 딥러닝에서 신경망의 종류가 많듯이 VQA에서 ansatz의 종류 또한 굉장히 많다. 목적에 따라 적절한 ansatz를 구성해야 훨씬 빠르고 정확하게 정답을 찾을 수 있어 굉장히 중요한 문제이다. 신경망의 종류가 주는 영향을 생각하면 된다.
+
+문제마다 적절한 ansatz설계하는 것은 고민해봐야할 문제이지만, 이 경우에는 pennylane에서 제공하는 간단한 코드를 사용하면 된다.
+
+<p align="center"><img width="50%" src="https://docs.pennylane.ai/en/stable/_images/all_singles_doubles.png"></p>
+<center><b>그림 5. qml.AllSinglesDoubles</b></center>
+
+이 ansatz는 전자의 모든 들뜸을 볼 수 있도록 설계되었다. 위 그림 5에서 앞선 게이트 4개는 `DoubleExcitation`이고 뒤의 게이트 4개는 `SingleExcitatioin`이다. 이를 통해 큐빗 6개, 전자 2개가 점유된 hf state에서 모든 들뜸을 고려할 수 있다.
+
+따라서 파라미터를 잘 조정하면 |1100>이 |0011> 이 될 수도 있고, |0110> 이 될 수도 있다. 여러 상태들의 중첩도 가능하다. 중요한 점은 현재 문제에서는 1의 개수가 전자의 개수를 의미하기 때문에 ansatz또한 1의 개수를 보존해야 한다는 점이다. 이를 U(1) symmetry라고 하는데, 위의 Single Excitation과 Double Excitation은 전자의 들뜸만 고려하기 때문에 1의 개수(전자의 개수)를 보존한다.
+
 #### cost function 구성
+
+cost function은 정말 간단하다. 
+
+```python
+@qml.qnode(dev, interface="autograd")
+def cost_fn(theta):
+    circuit_VQE(theta, range(qubits))
+    return qml.expval(H)
+```
 
 #### 최적화
 
