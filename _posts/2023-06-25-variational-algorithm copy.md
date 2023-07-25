@@ -23,7 +23,7 @@ tags: [quantum, variational-quantum-circuit, variational-quantum-eigensolver, vq
 
 양자 회로를 나타낸 그림 1에서는 1-input gate인 H, X gate와 2-input gate인 CNOT(Controlled-Not)게이트를 확인할 수 있다. 이 게이트들은 각각 고정된 역할을 맡으며 파라미터에 의해 조정되지 않는다.
 
-## Variational Quantum Circuit(VQC)
+## Variational Quantum Circuit(VQC) 또는 Parameterized Quantum Cirquit(PQC)
 
 
 <p align="center"><img src="https://github.com/infossm/infossm.github.io/assets/17401630/5ab9e3a8-0315-4786-af93-d734c4b52afe"></p>
