@@ -296,15 +296,15 @@ int main()
 
 완전 매칭이 존재하는 이분 그래프가 주어지면, 어떤 간선 $e$를 선택하더라도 $e$를 사용하는 완전 매칭이 존재하는 이분 그래프가 되도록 최소 개수의 간선을 추가하는 문제입니다.
 
-주어진 이분 그래프는 완전 매칭이 존재하므로 모든 정점이 $\mathcal{U}$에 속하게 됩니다. Dulmage-Mendelsohn Decomposition을 하고 나서 SCC들을 압축하여 만들어진 condensation graph(DAG) $G'$ 위에서 생각하면, 모든 간선의 양 끝점이 서로 같은 SCC에 속하도록 최소 개수의 간선을 추가하는 문제가 됩니다.
+주어진 이분 그래프는 완전 매칭이 존재하므로 모든 정점이 $\mathcal{U}$에 속하게 됩니다. Dulmage-Mendelsohn Decomposition을 하고 나서 SCC들을 압축하여 만들어진 condensation graph(DAG) $G^{\prime}$ 위에서 생각하면, 모든 간선의 양 끝점이 서로 같은 SCC에 속하도록 최소 개수의 간선을 추가하는 문제가 됩니다.
 
-$G'$에서 indegree가 0인 정점을 source, outdegree가 0인 정점을 sink라고 부르겠습니다. 고립 정점(source이면서 동시에 sink인 정점)을 모두 무시하고 생각해도 동일한 문제가 됩니다. 문제의 조건을 만족시키려면 일단 source와 sink가 없도록 만들어야 하는데 새로 추가하는 간선 하나당 source와 sink의 개수를 각각 최대 하나씩만 감소시킬 수 있으므로, 답의 하한이 max(source의 개수, sink의 개수)임을 확인할 수 있습니다.
+$G^{\prime}$에서 indegree가 0인 정점을 source, outdegree가 0인 정점을 sink라고 부르겠습니다. 고립 정점(source이면서 동시에 sink인 정점)을 모두 무시하고 생각해도 동일한 문제가 됩니다. 문제의 조건을 만족시키려면 일단 source와 sink가 없도록 만들어야 하는데 새로 추가하는 간선 하나당 source와 sink의 개수를 각각 최대 하나씩만 감소시킬 수 있으므로, 답의 하한이 max(source의 개수, sink의 개수)임을 확인할 수 있습니다.
 
-이제 이 하한이 실제로 달성 가능함을 구성적으로 보이겠습니다. 더 강한 버전의 문제인, $G'$가 strongly connected가 되도록 최소 개수의 간선을 추가하는 문제를 해결할 것입니다.
+이제 이 하한이 실제로 달성 가능함을 구성적으로 보이겠습니다. 더 강한 버전의 문제인, $G^{\prime}$가 strongly connected가 되도록 최소 개수의 간선을 추가하는 문제를 해결할 것입니다.
 
 먼저, source에서 sink로 가는 극대 개수의 vertex-disjoint path들을 아무렇게나 구합니다. 최대가 아니라 극대만으로도 충분하기 때문에, DFS로 한 번 방문한 정점은 재방문하지 않는 그리디로 $O(V+E)$에 구할 수 있습니다. 이렇게 구한 path들을 각각 $S_0 \rightarrow T_0, S_1 \rightarrow T_1, \cdots, S_{k-1} \rightarrow T_{k-1}$이라 하면, 각 $0 \leq i < k$에 대해 $(T_i, S_{i+1 \bmod k})$ 형태의 간선 $k$개를 추가해서 하나의 거대한 사이클을 이루도록 합니다.
 
-다음으로, 위 과정에서 어떤 path에도 포함되지 않은 min(source의 개수, sink의 개수)를 $l$이라 하고, 어떤 path에도 포함되지 않은 source들 중에 아무거나 $l$개를 뽑아서 각각 $\lbrace S^{\prime}_0, S^{\prime}_1, \cdots, S^{\prime}_{l-1} \rbrace$이라 하고, 어떤 path에도 포함되지 않은 sink들 중에 아무거나 $l$개를 뽑아서 각각 $\lbrace T^{\prime}_0, T^{\prime}_1, \cdots, T^{\prime}_{l-1} \rbrace$이라 합시다. 위에서 극대 개수의 vertex-disjoint path들을 골랐기 때문에 $S'_{i}$에서 거대 사이클로 가는 경로가 존재하고 거대 사이클에서 $T'_{i}$로 가는 경로가 존재합니다. 따라서 각 $0 \leq i < l$에 대해 $(T'_i, S'_i)$ 형태의 간선을 추가하면 모든 $S'_{i}$와 $T'_{i}$가 거대 사이클과 같은 SCC에 속하게 됩니다.
+다음으로, 위 과정에서 어떤 path에도 포함되지 않은 min(source의 개수, sink의 개수)를 $l$이라 하고, 어떤 path에도 포함되지 않은 source들 중에 아무거나 $l$개를 뽑아서 각각 $\lbrace S^{\prime}_0, S^{\prime}_1, \cdots, S^{\prime}_{l-1} \rbrace$이라 하고, 어떤 path에도 포함되지 않은 sink들 중에 아무거나 $l$개를 뽑아서 각각 $\lbrace T^{\prime}_0, T^{\prime}_1, \cdots, T^{\prime}_{l-1} \rbrace$이라 합시다. 위에서 극대 개수의 vertex-disjoint path들을 골랐기 때문에 $S^{\prime}_{i}$에서 거대 사이클로 가는 경로가 존재하고 거대 사이클에서 $T^{\prime}_{i}$로 가는 경로가 존재합니다. 따라서 각 $0 \leq i < l$에 대해 $(T^{\prime}_i, S^{\prime}_i)$ 형태의 간선을 추가하면 모든 $S^{\prime}_{i}$와 $T^{\prime}_{i}$가 거대 사이클과 같은 SCC에 속하게 됩니다.
 
 마지막으로, 아직 거대 사이클과 같은 SCC에 속하지 않은 source $s$가 존재한다면 $(T_0, s)$ 간선을 추가하고, 거대 사이클과 같은 SCC에 속하지 않은 sink $t$가 존재한다면 $(t, S_0)$ 간선을 추가하는 과정을 반복합니다. 이제 모든 source와 sink가 하나의 SCC에 속하기 때문에 모든 정점이 하나의 SCC에 속하게 되고, 전체 그래프가 strongly connected가 되었습니다.
 
