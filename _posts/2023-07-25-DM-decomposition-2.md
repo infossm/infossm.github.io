@@ -420,7 +420,7 @@ int main()
 
 density가 $D$인 단순 무향 그래프 $G = (V, E)$가 주어지면, $V$의 nonempty proper subset으로부터 만들어지는 어떤 vertex-induced subgraph에 대해서도 density가 $D$ 미만인 경우 Yes를, 그렇지 않다면 No를 출력하는 문제입니다.
 
-먼저, "$D$ 미만" 대신에 "$D$ 이하"에 대해서 해결해 봅시다.
+먼저, $D$ 미만 대신에 $D$ 이하에 대해서 해결해 봅시다.
 
 어떤 nonempty vertex subset으로부터 만들어지는 vertex-induced subgraph에 대해서도 density가 $D$ 이하라는 조건은, 어떤 nonempty edge subset으로부터 만들어지는 edge-induced subgraph에 대해서도 density가 $D$ 이하라는 조건과 동치입니다.
 
@@ -430,7 +430,7 @@ $\lvert E' \rvert / \lvert V' \rvert \leq D$는 $\lvert E' \rvert \leq \lvert V'
 
 $E$의 각 간선 $e = (u,v)$마다 $F$에 $(e,u), (e,v)$ 간선을 추가한 새로운 이분 그래프 $H = (E \sqcup V, F)$를 만들면, 모든 $\emptyset \subsetneq E' \subseteq E$에 대해 항상 $\lvert E' \rvert \leq \lvert N(E') \rvert \cdot D$인지를 판별하는 문제가 됩니다. 이는 $H$의 오른쪽 정점 집합을 $D$배 복제한 새로운 이분 그래프 $H'$에서는 $\lvert E' \rvert \leq \lvert N(E') \rvert$가 되고, [**홀의 결혼 정리**](https://infossm.github.io/blog/2022/03/20/latin-rectangle-hall/)에 의해 완전 매칭의 존재성을 판별하는 문제가 되어 최대 이분 매칭 알고리즘으로 해결할 수 있습니다. 완전 매칭이 존재하지 않았다면 density가 $D$ 초과인 경우가 존재하므로 답이 No임을 알 수 있습니다.
 
-위 방법으로 원래의 문제인 "$D$ 미만"을 해결하지 못하는 이유는 전체 그래프의 density가 정확히 $D$라서 proper vertex subset만을 고려하기 어렵기 때문입니다. 그래도 위 방법으로 density가 $D$ 초과인 경우를 걸러냈기 때문에 이제는 density가 정확히 $D$가 되게 하는 nonempty proper vertex subset의 존재성만 판별해도 됩니다.
+위 방법으로 원래의 문제인 $D$ 미만을 해결하지 못하는 이유는 전체 그래프의 density가 정확히 $D$라서 proper vertex subset만을 고려하기 어렵기 때문입니다. 그래도 위 방법으로 density가 $D$ 초과인 경우를 걸러냈기 때문에 이제는 density가 정확히 $D$가 되게 하는 nonempty proper vertex subset의 존재성만 판별해도 됩니다.
 
 이제 $H'$는 반드시 완전 매칭이 존재하므로 Dulmage-Mendelsohn Decomposition을 하고 나면 모든 정점이 $\mathcal{U}$에만 속하게 됩니다. $\mathcal{U}$의 정점들을 SCC들로 압축해서 condensation graph $G'$를 만들면, $G'$의 SCC가 1개(=strongly connected)임이 답이 Yes일 필요충분조건입니다.
 
