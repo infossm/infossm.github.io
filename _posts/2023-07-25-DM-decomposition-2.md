@@ -304,7 +304,7 @@ $G'$에서 indegree가 0인 정점을 source, outdegree가 0인 정점을 sink�
 
 먼저, source에서 sink로 가는 극대 개수의 vertex-disjoint path들을 아무렇게나 구합니다. 최대가 아니라 극대만으로도 충분하기 때문에, DFS로 한 번 방문한 정점은 재방문하지 않는 그리디로 $O(V+E)$에 구할 수 있습니다. 이렇게 구한 path들을 각각 $S_0 \rightarrow T_0, S_1 \rightarrow T_1, \cdots, S_{k-1} \rightarrow T_{k-1}$이라 하면, 각 $0 \leq i < k$에 대해 $(T_i, S_{i+1 \bmod k})$ 형태의 간선 $k$개를 추가해서 하나의 거대한 사이클을 이루도록 합니다.
 
-다음으로, 위 과정에서 어떤 path에도 포함되지 않은 min(source의 개수, sink의 개수)를 $l$이라 하고, 어떤 path에도 포함되지 않은 source들 중에 아무거나 $l$개를 뽑아서 각각 $\lbrace S'_0, S'_1, \cdots, S'_{l-1} \rbrace$이라 하고, 어떤 path에도 포함되지 않은 sink들 중에 아무거나 $l$개를 뽑아서 각각 $\lbrace T'_0, T'_1, \cdots, T'_{l-1} \rbrace$이라 합시다. 위에서 극대 개수의 vertex-disjoint path들을 골랐기 때문에 $S'_{i}$에서 거대 사이클로 가는 경로가 존재하고 거대 사이클에서 $T'_{i}$로 가는 경로가 존재합니다. 따라서 각 $0 \leq i < l$에 대해 $(T'_i, S'_i)$ 형태의 간선을 추가하면 모든 $S'_{i}$와 $T'_{i}$가 거대 사이클과 같은 SCC에 속하게 됩니다.
+다음으로, 위 과정에서 어떤 path에도 포함되지 않은 min(source의 개수, sink의 개수)를 $l$이라 하고, 어떤 path에도 포함되지 않은 source들 중에 아무거나 $l$개를 뽑아서 각각 $\lbrace S'_0, \cdots, S'_{l-1} \rbrace$이라 하고, 어떤 path에도 포함되지 않은 sink들 중에 아무거나 $l$개를 뽑아서 각각 $\lbrace T'_0, \cdots, T'_{l-1} \rbrace$이라 합시다. 위에서 극대 개수의 vertex-disjoint path들을 골랐기 때문에 $S'_{i}$에서 거대 사이클로 가는 경로가 존재하고 거대 사이클에서 $T'_{i}$로 가는 경로가 존재합니다. 따라서 각 $0 \leq i < l$에 대해 $(T'_i, S'_i)$ 형태의 간선을 추가하면 모든 $S'_{i}$와 $T'_{i}$가 거대 사이클과 같은 SCC에 속하게 됩니다.
 
 마지막으로, 아직 거대 사이클과 같은 SCC에 속하지 않은 source $s$가 존재한다면 $(T_0, s)$ 간선을 추가하고, 거대 사이클과 같은 SCC에 속하지 않은 sink $t$가 존재한다면 $(t, S_0)$ 간선을 추가하는 과정을 반복합니다. 이제 모든 source와 sink가 하나의 SCC에 속하기 때문에 모든 정점이 하나의 SCC에 속하게 되고, 전체 그래프가 strongly connected가 되었습니다.
 
