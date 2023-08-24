@@ -43,13 +43,46 @@ $$(X_1, ..., X_n) = (F_1^{-1}(U_1), ... , F_n^{-1}(U_n))$$
 이 논문에서 준비한 데이터는 애플, 마이크로소프트의 일일 수익률이다. 2010년~2018년 까지의 데이터이다. 대략적으로 생각해 보면 두 회사는 같은 IT섹터에 포함되어 있으므로 당연히 주가 변동률이 어느정도 양의 correlation이 있을 것이다.
 
 <p align="center"><img src="https://github.com/infossm/infossm.github.io/assets/17401630/4ff93a26-6ea0-466a-a10c-2d9260f13c0a"></p>
-<center><b>그림 2. (a)시작 금액을 $10,000로 했을때 수집 데이터 기간에서 자산의 변동. (b) 일일 수익률의 scatter plot </b></center>
+<center><b>그림 1. (a)시작 금액을 $10,000로 했을때 수집 데이터 기간에서 자산의 변동. (b) 일일 수익률의 scatter plot </b></center>
 
 scatter plot을 보면 오른쪽 위로 기울어져 있으므로 확실히 양의 상관관계가 보인다. 
 
-QGAN을 사용하여 최종적으로 모사할 분포는 위 그림 1에서 (b)이다. 하지만 바로 모사하는것은 생성할 점의 분포가 
+QGAN을 사용하여 최종적으로 모사할 분포는 위 그림 1에서 (b)이다. 하지만 바로 모사하는것은 생성할 점의 분포가 정규화된 형태가 아니기 때문에 어렵다. 또한 논문의 표현에 따르면 joint probability에서의 두 정보가 얽힌 정도를 copula space로 옮기면 양자상태의 얽힘에 대응시킬 수 있다는 표현이 있는데, 이 문장의 의미는 아직 이해하지 못하였다.
 
+결론적으로, 논문에서 사용한 프로세스는 다음과 같다.
 
+1. 주어진 애플/마이크로소프트의 일일 수익률을 copula space로 변환한다.
+
+2. 모델 (GAN, QGAN, QCBM)을 사용하여 copula space상의 분포를 생성하도록 학습한다.
+
+3. 생성한 copula데이터를 역변환으로 original space로 옮긴다.
+
+4. 변환된 데이터와 원래 데이터를 비교한다.
+
+## 모델 소개
+
+이 논문에선 GAN, QGAN, QBCM(quantum cirquit born mahcine)을 비교하였다. 결과론적으론 QGAN, QBCM에서 양자 우위를 확인하였다는 것이 논문의 골자이지만, 여기서는 QGAN, 그 중에서도 quantum generator에 대해서만 소개하도록 하겠다. Discriminator은 고전 신경망으로 이루어져 있고, 모델 구조도 단순히 fc layer 한두개 연결한 거라 예상 가능한 방식으로 학습을 진행하였다.
+
+이 논문에서 사용한 QGAN의 신기했던 점은 다음과 같다.
+1. quantum generator는 입력 노이즈를 받지 않는다.
+2. quantum generator의 출력값을 uniform distribution으로 만들기 위한 방법론이 신기했다. 또한 이러한 상황에서도 학습이 된다는 점도 신선했다.
+
+### Quantum generator 구조
+
+<p align="center"><img src="https://github.com/infossm/infossm.github.io/assets/17401630/79a6f239-fa6d-4dba-8c4c-6a1fed67dcf9"></p>
+<center><b>그림 2. QGAN에서 generator circuit의 구조 </b></center>
+
+위 그림은 논문에서 사용한 generator circuit의 구조이다. 생성할 값은 x, y좌표로 두개이므로 숫자 하나당 3큐빗을 사용하였다. 또한 3큐빗 단위로 모델의 레이어가 붙는데, 이는 그림 2의 (b)에서 확인할 수 있다. (b)가 레이어 한 층이고, 논문에서는 레이어 하나만 사용하였다. 총 파라미터 수는 2 * (9+3) = 24개이다. 파라미터 24개만으로 의미 있는 결과를 얻었다는게 대단한 것 같다.
+
+위 그림에서 알아야 할 점은 두 가지이다. 좌표 하나 뽑는데 큐빗 3개를 썼다는 점. 그리고 큐빗 3개 단위로 레이어가 붙었다는 점이다.
+
+### Output generating
+
+QGAN을 코딩해 본 사람은 알겠지만, 단순히 Observable이나 0/1 확률을 출력으로 바로 쓰게 되면 모델의 출력이 중심부로 극도로 몰려 있는 현상이 생긴다. 이는 Bloch sphere에서 적도부분에 대부분의 관측값이 몰리는 현상 때분이다.
+
+하지만 Quantum generator가 만들어야 할 분포는 copula space이기 때문에 x, y좌표가 모두 uniform해야 한다. 이를 위해 굉장히 신기한 방법을 쓴다. shot을 여러번 보내서 평균낸 값을 사용하는 것이 아니라 shot 한번마다 데이터를 만드는 것이다.
+
+shot을 보내서 0/1 basis로 측정한 결과가 101이라면 결과값은 이진법으로 0.101이 되는것이다. 
 
 ### 참고문헌
 
