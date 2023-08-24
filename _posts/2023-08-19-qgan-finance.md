@@ -78,11 +78,81 @@ QGAN을 사용하여 최종적으로 모사할 분포는 위 그림 1에서 (b)�
 
 ### Output generating
 
-QGAN을 코딩해 본 사람은 알겠지만, 단순히 Observable이나 0/1 확률을 출력으로 바로 쓰게 되면 모델의 출력이 중심부로 극도로 몰려 있는 현상이 생긴다. 이는 Bloch sphere에서 적도부분에 대부분의 관측값이 몰리는 현상 때분이다.
+QGAN을 코딩해 본 사람은 알겠지만, 단순히 Observable이나 0/1 확률을 출력으로 바로 쓰게 되면 모델의 출력이 중심부로 극도로 몰려 있는 현상이 생긴다. 이는 Bloch sphere에서 적도부분에 대부분의 확률이 몰리는 현상 때문이다.
 
-하지만 Quantum generator가 만들어야 할 분포는 copula space이기 때문에 x, y좌표가 모두 uniform해야 한다. 이를 위해 굉장히 신기한 방법을 쓴다. shot을 여러번 보내서 평균낸 값을 사용하는 것이 아니라 shot 한번마다 데이터를 만드는 것이다.
+하지만 Quantum generator가 만들어야 할 분포는 copula space이기 때문에 x, y좌표가 모두 uniform해야 한다. 이를 위해 굉장히 신기한 방법을 쓴다. shot을 여러번 보내서 평균낸 값을 사용하는 것이 아니라 shot 한번마다 데이터를 만드는 것이다. 0/1 basis로 측정한 결과가 101이라면 결과값은 이진법으로 0.101이 되는것이다. 물론 이러면 정밀도가 떨어지기 때문에 classical하게 랜덤 20비트 bitstring을 생성하여 뒤에(LSB위치에)붙인다. 0.10100101101.. 이렇게 되는것이다.
 
-shot을 보내서 0/1 basis로 측정한 결과가 101이라면 결과값은 이진법으로 0.101이 되는것이다. 
+Observable들을 모델의 출력으로 사용하려면 반복횟수를 늘려서 값의 정밀도를 높여야 하는데, 이렇게 shot 한번당 모델 출력으로 1:1로 대응시키는 것은 참신한 접근이라 느껴졌다.
+
+## Model training
+
+모델의 파라미터는 24개이므로 parameter shift rule을 사용하여 epoch하나를 돌리려면 48번의 학습이 필요하다. 논문에선 이게 많다고 느꼈는지, epoch당 10번의 shot으로 모델을 학습하는 방식을 설명한다. 이미 heuristic optimization분야에선 많이 쓰이고 있는 spsa를 가져오는 것이다. 양자컴퓨팅 분야에서도 많이 쓰이는 방법인 것 같다. gradient추정치를 계산하는 방식은 아래와 같다.
+
+$$(\hat{g}_k(\theta_k))_i=\frac{C(\theta_k+c_k\Delta_k)-C(\theta_k-c_k\Delta_k)}{2c_k(\Delta_k)_i}$$
+
+$\hat{g}_k$는 k번째 iteration에서 gradient의 근사치이다. spsa algorithm은 이러한 iteration을 k=1,2,3,4,5 총 5번 반복한다. gradient 근사치를 구하고, $\theta_{k+1}=\theta_k-a_k\hat{g}_k(\theta_k)$ 이렇게 gradient를 적용하는 과정 또한 5번 반복하는 것이다.
+
+k, i notation이 헷갈릴 수도 있는데 k는 현재 몇 번째 iteration인지를 나타내는 거고, i는 몇번째 원소에 대한 gradient인지를 의미하는 것이다. 아래 파이썬 코드를 참고하면 훨씬 직관적으로 이해할 수 있다.
+
+```python
+class SPSA_opt():
+    def __init__(self, a=0.008, c=0.01, n_iter = 5, gamma=0.101):
+        self.epoch = 1
+        self.a = a
+        self.c = c
+        self.n_iter = n_iter
+        self.gamma = gamma
+
+    def step(self):
+        self.epoch += 1
+    
+    def get_params(self):
+        # (a, c) tuple return
+        return self.a/self.epoch, self.c/(self.epoch**self.gamma)
+
+def spsa_step(params):
+    # 한 iter당 n_iter * 2 만큼 shot을 보냄
+    spsa_opt = SPSA_opt()
+    for i in range(spsa_opt.n_iter):
+        a, c = spsa_opt.get_params()
+
+        loss_plus = generator_cost_fn(params + c * delta).detach().numpy()
+        loss_minus = generator_cost_fn(params - c * delta).detach().numpy()
+        g = (loss_plus - loss_minus)/(2*c*delta)
+
+        params -= a*g
+        spsa_opt.step()
+    
+    return params
+```
+
+## Train result
+
+<p align="center"><img src="https://github.com/infossm/infossm.github.io/assets/17401630/919a5706-c1d2-4472-b25d-046d001a6125"></p>
+<center><b>그림 3. (a)noisy simulator (b) 실제 양자컴퓨터 상에서 학습한 결과 </b></center>
+
+위 그림 3을 보면 생성자와 판별자가 어떻게 학습되었는지를 살펴볼 수 있다. 초반엔 discriminator의 학습이 먼저 진행되어 생성자가 만드는 이미지를 모두 가짜 이미지로 판단해버리다가 simulator에서는 300epoch, 실제 양자컴에서는 400epoch쯤에서 판별자가 무언가를 깨닫고 생성을 잘 해내기 시작했다. 논문 원문에서는 이를 Aha! moment라고 하던데 연구자들도 굉장히 신기하게 보았던 것 같다. 물론 이것도 신기하지만, 생각보다 양자컴퓨터에서도 별 무리 없이 학습이 잘 진행된다는 게 놀랍다.
+
+논문에서는 생성된 분포가 실제 분포와 동일한지를 2-dimensional 2-sample KolmogorovSmirnov (KS) test 로 검정하였는데, 이를 지표를 통해 GAN, QGAN, QCBM의 생성 성능을 비교할 수 있다.
+
+<center><b>표 1. 모델별 KS test결과 </b></center>
+<p align="center"><img src="https://github.com/infossm/infossm.github.io/assets/17401630/d4fbe5b0-1cf7-4c2f-a0be-68e48054dfb4"></p>
+
+
+$D_{ks}$는 낮을수록 좋고 p-value는 높을수록 좋다. 만약 p-value가 0.05보다 낮다면 "생성된 분포는 원래 분포와 같다"라는 귀무가설을 기각해야 해서 생성한 분포가 다르다는 것을 의미한다. 모든 모델의 파라미터 수를 24개로 고정하여서 GAN은 몇몇 경우에는 생성된 분포의 p-value가 threshold 미만인 것을 확인할 수 있다. QGAN은 시뮬레이션에서도, 실제 양자컴에서도 굉장히 좋은 성능을 보였다.
+
+또한 학습 횟수는 GAN은 20000, QGAN은 2000, QCBM은 200번으로 고전적인 신경망보다 더 적은 epoch로도 학습이 가능하였다.
+
+## 결론
+
+- QGAN으로 GAN보다 더 좋은 성능을 내었다.
+    - 양자 컴퓨팅에서의 파라미터 24개와 고전적인 신경망에서 파라미터 24개는 다르긴 하지만, 그래도 의미 있는 결과이다.
+- 필요한 학습 횟수 또한 적었다.
+    - 이것 또한 고전 신경망의 epoch 1번과 양자 컴퓨터의 epoch 1번을 동등하게 비교할 수 있느냐? 는 질문이 들긴 한다.
+
+흥미로운 점은, 자체적으로 언제쯤 이 논문에서 사용한 QGAN기술이 상용화될지 결론 부분에서 예측한 게 있는데, 일반적인 구조화된 데이터셋이 10~100차원 정도라고 가정했을때 대략 현재의 에러율을 유지하면서 50큐빗 쯤 되면 제품성이 생길 것이라 예측했다.
+
+개인적으로 이 논문은 양자 회로의 출력을 어떻게 후처리할지, 학습은 어떻게 해야 할지에 관해서 참고할 만한게 많은 논문이라 생각한다.
 
 ### 참고문헌
 
