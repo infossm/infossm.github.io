@@ -6,6 +6,9 @@ author: red1108
 tags: [quantum, quantum-machine-learning]
 ---
 
+이 글에서는 현재 양자 인공신경망이 직면한 가장 큰 문제인 **Barren Plateaus**에 대해 다룬다. 이 현상은 큐비트가 늘어나고, 회로의 깊이가 깊어질수록 gradient가 사라져서 학습이 불가능해지는 현상을 말한다.
+
+본 글에서는 이 현상을 소개하고, 수학적으로 기술하고자 한다. 이때 논문 [2]의 내용을 참고하였다. 글의 말미에는 코드를 통해 이 현상이 실재함을 확인한다.
 
 ## 서론
 
@@ -27,7 +30,22 @@ Barren Plateaus는 인공신경망에서의 **Gradient Vanishing**과 유사한 
 
 ### 측도 집약화란?
 
+![측도 집약화](/assets/images/barren-plateaus/concentration.png)
+<center><b>그림 1. 양자 상태 관측값의 측도 집약화 현상</b></center><br/>
 
+위 그림 1은 측도 집약화를 간략하게 보여주고 있다. 임의의 양자 상태는 행렬로 표현되고, 고윳값이 상태별로 확률값을 가지기 때문에 행렬의 trace값이 1을 만족한다. 따라서 양자 상태는 Hypersphere에 표현된다.
+
+랜덤하게 양자 상태를 생성하면 그 값은 Hypersphere상의 적도에 존재할 확률이 아주 아주 크다(Levy's lemma). 따라서 Hypersphere상에서 관측값을 구하면, 대부분의 값이 적도에 몰리는 현상이 발생하는데, 이 현상이 측도 집약화이다. 
+
+큐비트가 늘어나면서 hypersphere의 차원이 커지면 적도로부터 특정 각도 이상 차이날 확률이 지수적으로 작아진다. 결국 모든 양자 인공신경망은 관측값(Observable) 기반으로 gradient를 계산하는데, 관측값이 적도에서 유의미하게 멀어질 확률이 사라지면 gradient의 크기도 줄어든다. 앞으로 Barren Plateaus에 대해서 증명할 모든 내용은 사실상 이 직관으로부터 이해 가능하다.
+
+## 실습
+
+간단한 파이썬 코드를 통해 Barren Plateau가 실재함을 확인해 보자.
+
+```python
+print("hello world")
+```
 
 ### 참고문헌
 
