@@ -84,7 +84,24 @@ $$= \begin{pmatrix}0.35&0&0&0.35\\0&0.15&-0.5&0\\0&-0.15&0.15&0\\0.35&0&0&0.35\e
 
 density matrix의 정의로부터, states의 확률은 모두 0 이상이므로 density matrix는 positive semi-definite이다. 이는 density matrix의 고유값이 모두 0 이상임을 의미한다.
 
-이처럼 density matrix는 pure state가 아닌 양자 상태를 표현하는데 유용하다. 이때, pure state는 trace가 1인 density matrix이다. 또한, pure state가 아닌 density matrix는 trace가 1보다 작다. 이 상태를 mixed state라고 한다. density matrix의 고윳값과 관련된 다양한 성질들은 실제 양자 상태를 분석하는데 큰 도움이 된다.
+이처럼 density matrix는 pure state가 아닌 양자 상태를 표현하는데 유용하다.
+
+Density matrix에서 고윳값들을 뽑아냈다고 생각해 보자. 예를 들어 3큐빗짜리 8*8 density matrix의 고윳값이 0.5, 0.4, 0.1이라면 이 density matrix는 3가지 상태의 앙상블이며, 각각의 상태의 확률이 50%, 40%, 10%라는 것을 바로 알 수 있다. 또한 고유벡터까지 구한다면 각 상태가 무엇인지도 알 수 있다.
+
+이로부터 쉽게 유추할 수 있는 사실은 density matrix 의 고윳값을 전부 더하면 1이 될 것이라는 사실이다. 밀도 행렬의 고윳값의 성질을 정리해 보자.
+
+1. 고윳값은 모두 0 이상 1 이하이다. (positive semi-definite)
+2. 고윳값들의 합은 1이다. (확률의 합이 1이기 때문에 자명하다)
+
+그렇다면 density matrix가 $\rho$가 주어졌을 때, 이 상태가 pure state인지 mixed state인지는 어떻게 구별할까? 아래와 같은 관찰을 해보자.
+
+> 만약 pure state라면 밀도 행렬이 저장 중인 앙상블에는 상태 하나만 있을 것이고, 당연히 확률은 1일 것이다. 따라서 확률을 제곱해서 더해도 1이다.
+
+> 만약 mixed state라면 밀도 행렬이 저장 중인 앙상블에는 여러 상태가 있을 것이고, 확률의 제곱을 더하면 1보다 작을 것이다. 예를 들어, 확률이 0.5, 0.4라면 제곱해서 더하면 0.41 < 1 이다.
+
+즉, $\text{tr}(\rho^2) = 1$ 이라면 $\rho$는 pure state이다. 역으로, $\text{tr}(\rho^2) \lt 1$ 이라면 $\rho$는 mixed state이다.
+
+이번 섹션에서 다루었듯이, density matrix의 고윳값과 관련된 다양한 성질들은 실제 양자 상태를 분석하는데 큰 도움이 된다.
 
 ## LOCC (Local Operations and Classical Communication)
 
