@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Mojo Overview"
-date: 2023-09-25
+title: "Gradient Boosting Overview"
+date: 2023-10-23
 author: yhunroh
-tags: [Python, software-design, introduction]
+tags: [machine-learning, introduction]
 ---
 
 ## 소개
