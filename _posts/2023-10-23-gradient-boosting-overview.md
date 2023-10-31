@@ -153,14 +153,14 @@ $$L(y, \gamma) = \sum -p_y \log(p_\gamma) = -y\log \gamma - (1-y) \log (1-\gamma
 
 Residual을 계산하고자 했던 이유를 다시 생각해보면, 결과적으로 residual을 잘 예측해서 전체 Loss를 줄이기 위함이었습니다. Regression에서는 loss가 MSE였기 때문에, MSE를 가장 잘 줄이는 방향을 판단하기 위해서 residual을 $y - \gamma$로 잡았던 것입니다.
 일반화하면, residual r은 loss function L에 대해 다음과 같이 정의할 수 있습니다.
-$$r = - {{\partial L(y, F(x))} \over {\partial F(x)}} $$
+$$ r = - { {\partial L(y, F(x))} \over {\partial F(x)} } $$
 즉, 우리는 이때까지 '이 loss function을 가장 잘 줄이는 결정 트리를 찾아라!' 라는 문제를 풀고 있던 것으로 생각할 수 있습니다. 여기서 gradient boosting이라는 이름이 연결되는 것을 알 수 있습니다.
 
 위에서 정의한 loss function을 대입하여 계산해 정리해보면, 아래와 같습니다. $F(x)$가 확률 p가 아닌 log-odds인 s를 따른다는 것에 유의합시다.
 
 $$ L(y,s) = - y \log s + \log ( { 1 + e^s }) $$
 
-$$r = - {{\partial L(y, s)} \over {\partial s}} = y - p$$
+$$ r = - { { \partial L(y, s) } \over {\partial s} } = y - p $$
 
 기가 막히게도, residual은 여전히 예측치와 목표치의 확률 차이라는 것을 알 수 있습니다. 직관적으로 표현하면, 확률 분포로 이해하여 cross entropy를 최소화하는 방향으로 움직이기 위해서, 확률의 차이가 가장 작아지는 쪽으로 움직이면 된다는 뜻입니다.
 
@@ -178,7 +178,7 @@ $$ \gamma = {\arg \min} _ \gamma \sum _ {x} L(y, F_{m-1} (x) + \gamma ) $$
 즉, $y, F_{m-1}(x)$가 주어졌으니, 각 노드별로 loss를 실제로 최소화하는 $\gamma$를 찾아서 기존 결과에 보정해줘야 한다는 뜻입니다. 이는 cross entropy loss에서는 단순히 residual의 평균과 같지 않을 수 있습니다.
 
 실제로 계산해보면, 아래와 같이 나옵니다. (loss function에 대한 2차 근사를 거친 결과입니다.)
-$$\gamma = {{\sum_x (y - p)} \over {\sum_x p(1-p)}}$$
+$$ \gamma = { {\sum_x (y - p)} \over {\sum_x p(1-p)} } $$
 
 이후 과정은 regression과 마찬가지입니다. 이렇게 구한 결정 트리의 보정값 $\gamma$를 estimator에 더해주고, 다시 residual을 구하고, 그 residual을 잘 예측하는 결정 트리를 만들고... 를 반복하면 됩니다.
 
