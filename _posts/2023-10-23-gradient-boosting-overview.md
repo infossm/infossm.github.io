@@ -157,7 +157,7 @@ $$r = - {{\partial L(y, F(x))} \over {\partial F(x)}} $$
 즉, 우리는 이때까지 '이 loss function을 가장 잘 줄이는 결정 트리를 찾아라!' 라는 문제를 풀고 있던 것으로 생각할 수 있습니다. 여기서 gradient boosting이라는 이름이 연결되는 것을 알 수 있습니다.
 
 위에서 정의한 loss function을 대입하여 계산해 정리해보면, 아래와 같습니다. $F(x)$가 확률 p가 아닌 log-odds인 s를 따른다는 것에 유의합시다.
-$$ L(y,s) = - y \log s + log (1+e^s) )$$
+$$ L(y,s) = - y \log s + \log ( 1 + e^s ) $$
 $$r = - {{\partial L(y, s)} \over {\partial s}} = y - p$$
 기가 막히게도, residual은 여전히 예측치와 목표치의 확률 차이라는 것을 알 수 있습니다. 직관적으로 표현하면, 확률 분포로 이해하여 cross entropy를 최소화하는 방향으로 움직이기 위해서, 확률의 차이가 가장 작아지는 쪽으로 움직이면 된다는 뜻입니다.
 
@@ -168,7 +168,7 @@ regression에서는 결정 트리의 리프 노드에 담겨 있는 residual 보
 하지만, 지금의 경우에는 문제가 있을 것입니다. 확률을 예측하고 있는 기존 모델에, (residual이 그 확률 차이라고는 하나) 예측한 residual을 곧이곧대로 더해주면 우리가 원했던 만큼의 업데이트가 되지 않을 것이기 때문입니다.
 
 정확히 표현하자면, 우리가 만든 결정 트리의 보정값 $\gamma$는 아래와 같은 식으로 계산되어야 합니다.
-$$ \gamma = {\arg \min} _\gamma \sum_{x} L(y, F_{m-1} (x) + \gamma) $$
+$$ \gamma = {\arg \min} _ \gamma \sum _{x} L(y, F_{m-1} (x) + \gamma ) $$
 여기서 합의 대상에 들어가는 $x$는 각 리프노드에 속하는 데이터들입니다.
 즉, $y, F_{m-1}(x)$가 주어졌으니, 각 노드별로 loss를 실제로 최소화하는 $\gamma$를 찾아서 기존 결과에 보정해줘야 한다는 뜻입니다. 이는 cross entropy loss에서는 단순히 residual의 평균과 같지 않을 수 있습니다.
 
