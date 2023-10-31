@@ -96,7 +96,7 @@ $$h_m = {\arg \min}_{h_m} L(r_m(x), h_m(x)),\ \gamma _m = h_m(x)$$
 
 그렇기 때문에 learning rate $\nu$ 를 정해서 결정 트리의 주장 $\gamma_m$의 가중치를 줄여줍니다. $\nu$ 는 보통 학습이 진행됨에 따라서 변하지 않으며, 실전에서는 보통 0.1정도의 값을 사용합니다. 지금의 예시 학습에서는 더 큰 $\nu$ 값을 사용했습니다.
 
-$$ F*m(x) = F*{m-1}(x) + \nu \cdot \gamma_m $$
+$$ F_m (x) = F_{m-1} (x) + \nu \cdot \gamma_m $$
 
 ![](/assets/images/2023-10-23-gradient/20231023014741.png)
 
@@ -138,7 +138,7 @@ Regression에서는 학습하고자 하는 결과값이 수 하나로 결정되�
 
 우선, 절댓값에 대해서 좀 더 편해지기 위해서, 실제로 학습하는 대상을 확률 $p$ 가 아니라, $s = \log (odds) = \log (p / (1-p))$ 로 생각해봅시다. log-odds로의 변환은 로지스틱 회귀 등등에서 자주 나오는 변환으로, 0~1 사이의 확률값을 $[-\infty, \infty]$ 로 변환해줍니다. 다만, 여기서는 실제로 p=0, 1인 경우들을 계산해줘야 할 수 있으니, 실전에서는 lipping이나 작은 오차항을 넣어줘야 할 수 있습니다.
 
-$$ s = \log(odds) = \log({p \over 1-p}),\ p = {{e^s} \over {1 + e^s}}$$
+$$ s = \log(odds) = \log( { p \over 1-p } ),\ p = { { e^s } \over { 1 + e^s } } $$
 
 #### Loss function
 
@@ -157,8 +157,11 @@ $$r = - {{\partial L(y, F(x))} \over {\partial F(x)}} $$
 즉, 우리는 이때까지 '이 loss function을 가장 잘 줄이는 결정 트리를 찾아라!' 라는 문제를 풀고 있던 것으로 생각할 수 있습니다. 여기서 gradient boosting이라는 이름이 연결되는 것을 알 수 있습니다.
 
 위에서 정의한 loss function을 대입하여 계산해 정리해보면, 아래와 같습니다. $F(x)$가 확률 p가 아닌 log-odds인 s를 따른다는 것에 유의합시다.
-$$ L(y,s) = - y \log s + log (1+e^s) )$$
+
+$$ L(y,s) = - y \log s + \log ( { 1 + e^s }) $$
+
 $$r = - {{\partial L(y, s)} \over {\partial s}} = y - p$$
+
 기가 막히게도, residual은 여전히 예측치와 목표치의 확률 차이라는 것을 알 수 있습니다. 직관적으로 표현하면, 확률 분포로 이해하여 cross entropy를 최소화하는 방향으로 움직이기 위해서, 확률의 차이가 가장 작아지는 쪽으로 움직이면 된다는 뜻입니다.
 
 ### 새로 만든 트리 적용하기
@@ -168,9 +171,11 @@ regression에서는 결정 트리의 리프 노드에 담겨 있는 residual 보
 하지만, 지금의 경우에는 문제가 있을 것입니다. 확률을 예측하고 있는 기존 모델에, (residual이 그 확률 차이라고는 하나) 예측한 residual을 곧이곧대로 더해주면 우리가 원했던 만큼의 업데이트가 되지 않을 것이기 때문입니다.
 
 정확히 표현하자면, 우리가 만든 결정 트리의 보정값 $\gamma$는 아래와 같은 식으로 계산되어야 합니다.
-$$ \gamma = {\arg \min}_\gamma \sum_{x} L(y, F*{m-1}(x) + \gamma) $$
+
+$$ \gamma = {\arg \min} _ \gamma \sum _ {x} L(y, F_{m-1} (x) + \gamma ) $$
+
 여기서 합의 대상에 들어가는 $x$는 각 리프노드에 속하는 데이터들입니다.
-즉, $y, F*{m-1}(x)$가 주어졌으니, 각 노드별로 loss를 실제로 최소화하는 $\gamma$를 찾아서 기존 결과에 보정해줘야 한다는 뜻입니다. 이는 cross entropy loss에서는 단순히 residual의 평균과 같지 않을 수 있습니다.
+즉, $y, F_{m-1}(x)$가 주어졌으니, 각 노드별로 loss를 실제로 최소화하는 $\gamma$를 찾아서 기존 결과에 보정해줘야 한다는 뜻입니다. 이는 cross entropy loss에서는 단순히 residual의 평균과 같지 않을 수 있습니다.
 
 실제로 계산해보면, 아래와 같이 나옵니다. (loss function에 대한 2차 근사를 거친 결과입니다.)
 $$\gamma = {{\sum_x (y - p)} \over {\sum_x p(1-p)}}$$
