@@ -60,7 +60,7 @@ $A_i = a_i \cdot i!$와 $B_i = b_i \cdot i!$와 $C_i = \frac{c^i}{i!}$를 정의
 
 $i' = N-1-i$를 정의하면, $B_{N-1-j'} = \sum_{i' \leq j'} A_{N-1-i'} C_{j'-i'}$
 
-수열 뒤집기 연산 $\textrm{Rev}(D)_i = D_{N-1-i}$을 정의하면, $\textrm{Rev}(B)_{j'} = \sum_{i' \leq j'} \textrm{Rev}(A)_{i'} C_{j'-i'}$
+수열 뒤집기 연산 $\textrm{Rev}(D)_ i = D_{N-1-i}$을 정의하면, $\textrm{Rev}(B)_{j'} = \sum_{i' \leq j'} \textrm{Rev}(A)_{i'} C_{j'-i'}$
 
 이제 이 식은 convolution이므로 $\textrm{Rev}(B) = \textrm{Rev}(A) \ast C$로 적을 수 있고, FFT로 $O(N \log N)$에 계산 가능합니다.
 
