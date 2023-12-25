@@ -98,17 +98,17 @@ $$\sum_{1\leq k\leq r, (k, r)=1}g^{k\times \phi(p^e)/r}=\sum_{1\leq k\leq r}g^{k
 
 고정된 $p_i^{e_i}$에서 보았을 때, 위수가 $r_i$인 수의 개수는 정확히 $\phi(r_i)$으로 이는 **곱산술함수**이다. 따라서 우리가 $r_i$를 소인수분해한다면, 각각의 소수 거듭제곱에 대한 개수들의 곱으로 생각해도 무관하다. 이런 관점에서 보았을 때 최소공배수 조건 또한 쉽게 처리할 수 있다. 최소공배수 조건은 결국 각각의 소인수들에 대해 지수가 특정 부등호 조건을 만족해야 한다는 뜻이다. 즉, 최소공배수 조건 또한 소인수별로 따로 생각해도 무관하다.(여기서 다루는 소수 및 소인수는 $\phi(p_i^{e_i})$들의 소인수들이다)
 
-각각의 가능한 $r_i$ 쌍들에 대한 개수의 곱을 위 내용과 같이 소수 거듭제곱 항들의 곱으로 분해하자. 각 소인수들은 독립적인 조건을 가지므로, 이 항들의 합은 잘 묶여서 **각 소인수들에 대한 답(개수의 곱의 합)**의 곱으로 표현될 것이다. "각 소인수 $p$에 대한 답"을 formal하게 표현하면 다음과 같다.
+각각의 가능한 $r_i$ 쌍들에 대한 개수의 곱을 위 내용과 같이 소수 거듭제곱 항들의 곱으로 분해하자. 각 소인수들은 독립적인 조건을 가지므로, 이 항들의 합은 잘 묶여서 "각 소인수들에 대한 답(개수의 곱의 합)"의 곱으로 표현될 것이다. "각 소인수 $p$에 대한 답"을 formal하게 표현하면 다음과 같다.
 
 $\displaystyle\sum_{f_i\leq v_p(\phi(p_i^{e_i}))\text{ and }max(f_1,\cdots,f_t)=f}\phi(p^{f_1})\cdots\phi(p^{f_t})$
 
-$=\displaystyle\sum_{f_i\leq v_p(\phi(p_i^{e_i}))\text{ and }f_1,\cdots,f_t\leq f}\phi(p^{f_1})\cdots\phi(p^{f_t})-\displaystyle\sum_{f_i\leq v_p(\phi(p_i^{e_i}))\text{ and }f_1,\cdots,f_t<f}\phi(p^{f_1})\cdots\phi(p^{f_t})$
+$=\displaystyle\sum_{f_i\leq v_p(\phi(p_i^{e_i}))\text{ and }f_1,\cdots,f_t\leq f}\phi(p^{f_1})\cdots\phi(p^{f_t})-\displaystyle\sum_{f_i\leq v_p(\phi(p_i^{e_i}))\text{ and }f_1,\cdots,f_t\leq f-1}\phi(p^{f_1})\cdots\phi(p^{f_t})$
 
 우변의 각 항을 보면 $f_1,\cdots,f_t$끼리도 독립임을 알 수 있다. 따라서 이들 또한 잘 묶여서 각각의 $i$에 대한 답들의 곱으로 표현할 수 있다.
 
-$=\displaystyle\prod_{i}\sum_{f_i\leq v_p(\phi(p_i^{e_i}))\text{ and }f_i\leq f}\phi(p^{f_i})-\displaystyle\prod_{i}\sum_{f_i\leq v_p(\phi(p_i^{e_i}))\text{ and }f_i<f}\phi(p^{f_i})$
+$=\displaystyle\prod_{i}\sum_{f_i\leq v_p(\phi(p_i^{e_i}))\text{ and }f_i\leq f}\phi(p^{f_i})-\displaystyle\prod_{i}\sum_{f_i\leq v_p(\phi(p_i^{e_i}))\text{ and }f_i\leq f-1}\phi(p^{f_i})$
 
-$\sum$과 $\prod$ 안의 각 항은 정말 쉽게 계산할 수 있다! (그냥 closed form으로 표현 가능하다) 따라서 이 식을 계산할 수 있게 되었다.
+$\sum$와 $\prod$ 안의 각 항은 정말 쉽게 계산할 수 있다! (그냥 closed form으로 표현 가능하다) 따라서 이 식을 계산할 수 있게 되었다.
 
 ### 4번 쿼리
 
