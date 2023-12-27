@@ -66,10 +66,13 @@ Bootstrapping이 등장하면서 FHE가 등장했고, 그 후 FHE 연구가 가�
 
 # Naive Approach
 
+우선 $d \times d$ matrix 두 개를 곱하는 상황을 상상해봅시다. 먼저 가장 간단하게 생각할 수 있는 naive한 방법은, 한 matrix의 entry 하나 하나를 전부 encrypt 하는 것입니다.
 
+![](/assets/images/cs71107_image/secure_matrix_naive.png)
 
+이렇게 하면 총 $d \times d$개의 Ciphertext가 생길 것입니다. 직관적이지만, 굉장히 비효율적 입니다. 그리고 plaintext - Ciphertext 연산이 $O(d^3)$번 시행될 것 입니다. 공간적으로 봐도 $O(d^2)$개의 Ciphertext를 저장할 공간이 필요하니, 시간적, 공간적 복잡도가 모두 매우 크다는 것을 알 수 있습니다.
 
-
+이를 해결하기 위해서 어떻게 하면 될까요?
 
 
 # Column Order method
