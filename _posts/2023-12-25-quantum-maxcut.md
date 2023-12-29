@@ -80,6 +80,25 @@ $$H = -\frac{1}{2}\sum_{i \leq j}{a_{ij}(1-Z_i Z_j)}$$
 
 이제 이 Hamiltonian의 바닥 상태를 구하면 문제의 답을 구하는 것이다.
 
+## 2. 바닥 상태를 구하기
+
+Hamiltonian을 구했으니 바닥 상태를 구할 때이다. 보통 이럴 때에는 Variational Quantum Circuit을 사용한다. VQC에 대한 설명은 https://infossm.github.io/blog/2023/06/25/variational-algorithm/ 이 글에 설명이 되어 있다.
+
+간단하게 설명하자면 파라미터화된 양자 회로를 만들고, 파라미터들의 gradient를 구해서 값을 줄이는 방향으로 파라미터를 업데이트 해 나가는 알고리즘이다. 머신 러닝과 동일한 접근방식이다.
+
+다만 여기서는 VQC의 종류 중 하나인 **QAOA**를 사용한다. Quantum approximate optimization algorithm(QAOA)는 우리가 바닥 상태를 잘 알고있는 hamiltonian을 준비하는 과정으로부터 시작한다. 그리고 초기 양자 상태는 그 hamiltonian의 바닥 상태로 설정한다. 그리고 점진적으로 답을 구하고 싶은 hamiltonian으로 변화시켜 나가고 바닥상태도 점진적으로 변화시켜 나가는 방식이다. 최종적으론 우리가 원하던 바닥상태를 구할 수 있게 된다.
+
+하지만 이 방식은 결정론적 방식이 아니다. 사실 대부분의 양자 알고리즘이 그렇다. 그렇기에 이름에 approximate라는 단어가 그렇다는 것이고, 구체적으로는 hamiltonian을 이동시켜 감에 따라 바닥상태가 제대로 이동하지 않고 local minimum에 빠질 수도 있다. 이 확률적인 바닥 상태의 전이로 인해 여러 번 실행하여 답을 찾아야 한다.
+
+이제 구체적인 코드와 함께 max cut의 바닥 상태를 계산하는 여정을 따라가 보자.
+
+
+# QAOA for maxcut의 구현
+
+```python
+print("hello world!")
+```
+
 ## 참고문헌
 
 [1] Goemans, Michel X., and David P. Williamson. ". 879-approximation algorithms for max cut and max 2sat." Proceedings of the twenty-sixth annual ACM symposium on Theory of computing. 1994.
