@@ -27,7 +27,9 @@ Max cut 문제는 주어진 그래프를 두 집합으로 잘 분리하여 두 �
 
 # Max cut을 양자 알고리즘으로 해결하기
 
-양자 알고리즘의 접근법은 다음과 같다: (TODO: 내용 추가하자.)
+아래는 이제부터 설명할 hamiltonian, QAOA의 아주 간략한 개론이다.
+
+> 각 정점을 어느 집합에 넣을지는 둘 중 하나이다. 두 집합으로밖에 분할하지 못하기 때문이다. 따라서 양자 상태로 쉽게 대응시킬 수 있다. 그 다음엔 양자 상태에서 cut의 개수를 구하는 방법이 필요하다. 이것은 hamiltonian이란 것을 정의함으로써 해결된다. 그 다음으론 hamiltonian을 최대화 시키는 양자 상태를 찾으면 된다. 이는 QAOA를 사용한다.
 
 ## 1. 양자 상태로 표현하기
 
@@ -68,7 +70,7 @@ $$C = \frac{1}{2}\sum_{i \leq j}{a_{ij}(1-c_ic_j)}$$
 
 ### 2.2 Hamiltonian설계
 
-위 식을 그대로 적용한 Hamiltonian을 만들어 보자. 양자 상태가 $|0\rangle$ 일때는 1, $|1\rangle$일때는 -1이 되는 걸 떠올려 보면 Z operator가 떠오른다. $Z|0\rangle = 1, Z|1\rangle = -1$ 이기 때문이다. (또는 $\sigma_z$ 로 표기하기도 함)
+위 식을 그대로 적용한 Hamiltonian을 만들어 보자. 양자 상태가 $|0\rangle$ 일때는 1, $|1\rangle$일때는 -1이 되는 걸 떠올려 보면 Z operator가 떠오른다. $Z|0\rangle = 1, Z|1\rangle = -1$ 이기 때문이다. (또는 $Z = \sigma_z = \begin{pmatrix}1&0\\0&-1\end{pmatrix} $ 로 표기하기도 함)
 
 이제 Hamiltonian을 설계해 보자
 
@@ -77,6 +79,10 @@ $$H = \frac{1}{2}\sum_{i \leq j}{a_{ij}(1-Z_i Z_j)}$$
 이면 된다. 이 Hamiltonian이 바로 양자 상태를 cut의 개수로 매핑시켜 주는 Observable이다. 그런데 우리는 이를 에너지로 해석하고, 바닥 상태를 구하고 싶다. 따라서 부호를 음수로 만들어주면 된다.
 
 $$H = -\frac{1}{2}\sum_{i \leq j}{a_{ij}(1-Z_i Z_j)}$$
+
+또는 아래와 같은 식으로도 적을 수 있다. ($E$는 $(i, j)$형태의 무방향 간선들을 포함하는 간선들의 집합)
+
+$$H = -\frac{1}{2}\sum_{i, j \in E}{(1-Z_i Z_j)}$$
 
 이제 이 Hamiltonian의 바닥 상태를 구하면 문제의 답을 구하는 것이다.
 
@@ -92,13 +98,185 @@ Hamiltonian을 구했으니 바닥 상태를 구할 때이다. 보통 이럴 때
 
 이제 구체적인 코드와 함께 max cut의 바닥 상태를 계산하는 여정을 따라가 보자.
 
+# QAOA란?
+
+풀고자 하는 문제를 hamiltonian으로 정의하고 바닥 상태를 찾는 과정을 통해 문제의 해답을 찾는 것은 일반적인 접근방식이다. 하지만 게이트 기반 양자컴의 모든 연산은 우리들이 "임의적"으로 가해 주어야 하는 것들이다. "hamiltonian을 구성했으니, 가만히 놔두어도 바닥 상태를 찾아 가게 할 것이다" 이런 생각은 잘못된 생각이다. 적어도 gate 기반 양자 컴퓨터에서는 그렇다. 우리는 직접 양자 상태가 바닥 상태가 되도록 입력 상태에 연산을 가해서 바닥 상태로 만들어 주어야 한다.
+
+그러나 현재의 양자 컴퓨터는 에러가 너무 크고, 큐빗도 작다. 이를 NISQ(Noisy Intermediate-Scale Quantum) 시대의 양자 컴퓨터라고 부른다. 따라서 에러에 강건한 양자 알고리즘을 사용하는게 유리하다. 사실 필수인 수준이다. 에러가 무시 가능한 시대가 온다면 사용하는 리소스가 중요하겠지만, 지금은 에러의 규모는 그 알고리즘의 가능/불가능을 나누는 중요한 척도이다. 이러한 상황에서 나온 알고리즘이 QAOA이다.
+
+QAOA는 위에서 잠깐 언급했듯이, 우리가 바닥상태를 잘 알고 있는 hamiltonian에서부터 시작한다. 주로 바닥 상태는 maximally mixed state ($\frac{1}{2^n}\sum_{i=0}^{2^n-1}|i\rangle$)에서 시작하고, 대응되는 hamiltonian은 $\sigma_x^{\otimes n} = \begin{pmatrix}0&1\\1&0\end{pmatrix}^{\otimes n}$)
+
+그리고 hamiltonian을 우리가 바꾸고 싶은 $H$로 바꿔야 하는 데, 이를 점진적으로 바꾸어 나가 안정적으로 바닥 상태를 찾는 것이 목표이다.
+
+이 과정은 의외로 간단한데, 작은 수 $\beta, \gamma$에 대해서 초기 hamiltonian이 $X$, 목표 hamiltonian이 $Y$라면
+
+$$e^{-i\beta X}e^{-i\gamma Y}$$
+
+를 연속적으로 가해 주면 된다. 만약 l개의 레이어를 사용한다면 $\beta, \gamma$는 각각 p개의 원소를 가진 파라미터일 것이다. 큐빗 수는 4개인데, 이번 예시에서 든 그래프의 정점 수가 4개이기 때문이다. 이제 구현을 살펴보자.
 
 # QAOA for maxcut의 구현
 
+먼저 기본적인 세팅부터 하자.
+
 ```python
-print("hello world!")
+import pennylane as qml
+from pennylane import numpy as np
+
+np.random.seed(1108)
+
+edges = [(0, 1), (0, 3), (1, 2), (2, 3)]
+n_qubits = 4 # 정점 수 = 큐빗 수
 ```
+
+이제 $\sigma_x$와 $H$ 연산을 가해주는 레이어를 정의하자.
+
+```python
+# 초기 hamiltonian 적용 레이어
+def U_B(beta):
+    for wire in range(n_qubits):
+        qml.RX(2 * beta, wires=wire)
+
+
+# 목표 hamiltonian 적용 레이어
+def U_C(gamma):
+    for edge in edges:
+        qml.CNOT(wires=[edge[0], edge[1]])
+        qml.RZ(gamma, wires=edge[1])
+        qml.CNOT(wires=[edge[0], edge[1]])
+```
+
+사용할 backend는 pennylane에서 제공하는 lightning.qubit이다. 빠른 연산을 지원한다. 나중에 샘플링을 직관적으로 하기 위해서 shots=1로 하였다.
+만약에 여러 번의 샘플링을 한 번에 하고 싶다면 shots를 늘리고 추가적인 후처리를 하면 된다.
+
+```python
+dev = qml.device("lightning.qubit", wires=n_qubits, shots=1)
+```
+
+이제 본격적으로 모든 일이 일어나는 회로를 정의할 것이다. 처음에는 모든 큐빗에 Hadamard gate를 적용하여 maximally mixed state를 만드는 것으로 시작한다. 그 다음엔 현재 edge가 만드는 cost를 계산하기 위한 evaluation term이 있다. 만약 edge가 없다면 상태 하나를 샘플링하는 동작을 수행한다.
+
+```python
+@qml.qnode(dev)
+def circuit(gammas, betas, edge=None, n_layers=1):
+    # Hadamard게이트를 가해서 초기 |+> 상태 준비
+    for wire in range(n_qubits):
+        qml.Hadamard(wires=wire)
+    # 레이어 적용 
+    for i in range(n_layers):
+        U_C(gammas[i])
+        U_B(betas[i])
+
+    if edge is None:
+        return qml.sample() # 샘플링 모드
+
+    # edge 하나에 대한 evaluation term
+    H = qml.PauliZ(edge[0]) @ qml.PauliZ(edge[1])
+    return qml.expval(H)
+```
+
+마지막으로, 파라미터들을 최적화 하야 답을 찾아내는 과정이 필요하다. (2, n_layers)차원의 벡터가 파라미터이다. 절반은 $beta$, 나머지 절반은 $gamma$이다. 보면 objective 함수 내에서 edge들을 순회하면서 가중치를 더하는 것을 볼 수 있다. Hamiltonian의 기댓값을 한 번에 계산하는 것은 힘들기 때문에, 여러 개로 쪼개서 구한 뒤 더하는 것이다. 어차피 gradient를 구할 때에는 영향을 주지 않는다.
+
+최적화는 30번 진행하고, 이 단계가 끝난 뒤에는 샘플링을 100번 진행하여 가장 많이 등장하는 상태를 출력한다. 이 상태가 답이 된다.
+
+```python
+def qaoa_maxcut(n_layers=1):
+    print("\nnumber of layers={:d}".format(n_layers))
+
+    # QAOA 파라미터는 작은 값으로 초기화됨.
+    params = 0.01 * np.random.rand(2, n_layers, requires_grad=True)
+
+    # 목적함수 정의
+    def objective(params):
+        gammas, betas = params[0], params[1]
+        obj = 0 # 목적함수 (-씌워진 상태)
+        for edge in edges: # 각각 edge별로 따로 목적함수 계산.
+            obj -= 0.5 * (1 - circuit(gammas, betas, edge=edge, n_layers=n_layers))
+        return obj
+
+    opt = qml.AdagradOptimizer(stepsize=0.5) # optimizer
+
+    # 파라미터 최적화 코드
+    steps = 30
+    for i in range(steps):
+        params = opt.step(objective, params)
+        if (i + 1) % 5 == 0:
+            print("{:5d}이후 목적합수: {: .7f}".format(i + 1, -objective(params)))
+
+    # 가장 많이 등장하는 상태가 바닥 상태 --> 100개 샘플링 해보자.
+    bit_strings = []
+    for i in range(0, 100):
+        bits = circuit(params[0], params[1], edge=None, n_layers=n_layers).numpy()
+        bit_strings.append(''.join([str(int(b)) for b in bits]))
+    
+    print("가장 많이 등장하는 상태: ", most_common(bit_strings))
+```
+
+이제 아래 코드처럼 레이어 개수를 다르게 해보면서 실행해 볼 수 있다. 위 그래프는 단순해서 레이어가 하나여도 답을 잘 찾는다.
+
+```python
+qaoa_maxcut(n_layers=1)
+qaoa_maxcut(n_layers=2)
+qaoa_maxcut(n_layers=3)
+```
+
+레이어가 하나일 때, 아래와 같은 출력이 나온다. 목적함수가 4일 때가 최대인데, 중간중간에 항상 4이지는 않는 것도 확인할 수 있다. 최빈값이 4일 뿐이다. QAOA가 확률적인 최적화 과정이란 것을 여기서도 확인할 수 있는 것이다.
+
+```
+number of layers=1
+    5이후 목적합수:  1.0000000
+   10이후 목적합수:  4.0000000
+   15이후 목적합수:  2.0000000
+   20이후 목적합수:  2.0000000
+   25이후 목적합수:  3.0000000
+   30이후 목적합수:  2.0000000
+가장 많이 등장하는 상태:  1010
+```
+
+이제 좀 더 복잡한 그래프를 만들어서 테스트 해 보자.
+
+<p align="center"><img src="/assets/images/red1108/qaoa_newgraph.jpg" width="500px"></p>
+<center><b>그림 3. 좀 더 복잡한 그래프.</b></center>
+
+정점의 개수는 6개 이므로 사용할 큐비트는 6개 이다. maxcut은 5인데, 사진에서 정점을 색칠해놓은게 최대 maxcut을 만드는 예시이다. bitstring으로 나타내면 101010, 010101 둘 중 하나이다.
+
+이번에는 레이어를 3개는 써야지 답이 나온다.
+
+```
+number of layers=3
+    5이후 목적합수:  3.0000000
+   10이후 목적합수:  4.0000000
+   15이후 목적합수:  6.0000000
+   20이후 목적합수:  3.0000000
+   25이후 목적합수:  5.0000000
+   30이후 목적합수:  4.0000000
+가장 많이 등장하는 상태:  101010
+```
+
+만약에 레이어를 2개만 사용한다면 답을 찾지 못하였다.
+
+```
+number of layers=2
+    5이후 목적합수:  3.0000000
+   10이후 목적합수:  4.0000000
+   15이후 목적합수:  3.0000000
+   20이후 목적합수:  4.0000000
+   25이후 목적합수:  3.0000000
+   30이후 목적합수:  3.0000000
+가장 많이 등장하는 상태:  011000
+```
+
+흥미로운 관찰거리가 있다. 레이어 3개인 경우를 살펴보자. 분명히 max cut은 5인데, 중간에 목적함수가 6까지 올라가는 경우가 있다. 어떻게 이럴 수 있을까? 이건 hamiltonian은 양자 상태 기반이기 때문이다. 다양한 양자상태의 중첩을 시키게 되면 두 집합을 모두 점유하는 상태도 가능하기 때문에 목적함수의 이론적 최댓값을 달성할 수도 있다. 하지만 우리가 실제로 관측하는 상태는 중첩이 붕괴된 상태이기 모순되는 것은 아니다.
+
+# 결론
+
+간단하게 결론을 요약해 보자.
+
+1. Max cut문제는 양자상태의 에너지에 대응되는 hamiltonian으로 쉽게 변환된다.
+2. 바닥상태를 찾는 것이 문제의 해답을 찾는 것이다.
+3. 바닥상태를 찾을 때 QAOA를 사용하면 적은 파라미터로 안정적으로 찾을 수 있다.
 
 ## 참고문헌
 
 [1] Goemans, Michel X., and David P. Williamson. ". 879-approximation algorithms for max cut and max 2sat." Proceedings of the twenty-sixth annual ACM symposium on Theory of computing. 1994.
+[2] https://pennylane.ai/qml/demos/tutorial_qaoa_intro/
+[3] https://pennylane.ai/qml/demos/tutorial_qaoa_maxcut/
+[4] https://qml.baidu.com/tutorials/combinatorial-optimization/solving-max-cut-problem-with-qaoa.html
