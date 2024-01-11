@@ -2,7 +2,7 @@
 layout: post
 title:  "Number Theory Techniques"
 date:   2023-12-25 17:00
-author: mathema123
+author: garam1732
 tags: [algorithm, mathematics]
 ---
 
