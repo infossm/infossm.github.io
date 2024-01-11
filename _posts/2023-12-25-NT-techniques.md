@@ -2,7 +2,7 @@
 layout: post
 title:  "Number Theory Techniques"
 date:   2023-12-25 17:00
-author: mathema123
+author: garam1732
 tags: [algorithm, mathematics]
 ---
 
@@ -50,7 +50,7 @@ $A_N$에서 기약분수 $a/b$의 다음 항을 계산해보자. 그 항을 $c/d
 
 일단 풀이를 완성하기 위해 다음 Lemma가 필요하다.(위수의 성질을 생각해보면 자명하다)
 
-**Lemma.** $1\leq i\leq t$에 대해 $ord_{p_i}(a)=r_i$일 때, $r=ord_N(a)=LCM(r_1,\cdots,r_t)$이다.
+**Lemma.** $1\leq i\leq t$에 대해 $ord_{p_i^{e_i}}(a)=r_i$일 때, $r=ord_N(a)=LCM(r_1,\cdots,r_t)$이다.
 
 ### 1번 쿼리
 
@@ -74,7 +74,7 @@ $p_i=2$인 경우는 독자들에게 맡긴다. 힌트를 주자면, LTE Lemma�
 
 위 조건을 만족한다 생각하고 문제를 풀어보자. 우선 가장 간단한 경우, $e=1$일 때를 생각해보자. 위수가 정확히 $r$인 수들은 원시근 $g$에 대해 $g^{k\times \phi(p^e)/r}(1\leq k\leq r, (k, r)=1)$로 표현된다. 따라서 개수는 정확히 $\phi(r)$개이다.(3번 쿼리의 답)
 
-4번 쿼리, 즉 합을 구하는 것이 가장 어렵다. 단순히 closed form으로 표현하기는 어려운데, 이 과정에서 Mobius function을 이용할 것이다. 구체적으로, $\displaystyle\sum_{d|n}\mu(d)$가 $n=1$일 때만 $1$, 나머지는 $0$이라는 성질을 이용한다.
+4번 쿼리, 즉 합을 구하는 것이 가장 어렵다. 단순히 closed form으로 표현하기는 어려운데, 이 과정에서 Mobius function을 이용할 것이다. 구체적으로, $\displaystyle\sum_{d\vert n}\mu(d)$가 $n=1$일 때만 $1$, 나머지는 $0$이라는 성질을 이용한다.
 
 $$\sum_{1\leq k\leq r, (k, r)=1}g^{k\times \phi(p^e)/r}=\sum_{1\leq k\leq r}g^{k\times \phi(p^e)/r}\sum_{d|(k,r)}\mu(d)=\sum_{d|r}\mu(d)\sum_{d|k}g^{k\times \phi(p^e)/r}\equiv\mu(r)\text{ (mod p)}$$
 
@@ -90,7 +90,7 @@ $$\sum_{1\leq k\leq r, (k, r)=1}g^{k\times \phi(p^e)/r}=\sum_{1\leq k\leq r}g^{k
 
 ### 2번 쿼리
 
-먼저 $LCM(r_1,\cdots,r_t)=r$이며 $r_i | \phi(p_i^{e_i})(1\leq i\leq t)$인 $r_i$들을 잡는다. 이는 $\phi(p_i^{e_i})$의 소인수분해 결과를 미리 저장하여 이용하면 쉽게 해결 가능하다. 각각의 $i$에 대해 위수가 $r_i$인 수를 mod $p_i^{e_i}$에서 잡았으므로, CRT로 실제 답을 계산하면 된다.
+먼저 $LCM(r_1,\cdots,r_t)=r$이며 $r_i \vert \phi(p_i^{e_i})(1\leq i\leq t)$인 $r_i$들을 잡는다. 이는 $\phi(p_i^{e_i})$의 소인수분해 결과를 미리 저장하여 이용하면 쉽게 해결 가능하다. 각각의 $i$에 대해 위수가 $r_i$인 수를 mod $p_i^{e_i}$에서 잡았으므로, CRT로 실제 답을 계산하면 된다.
 
 ### 3번 쿼리
 
