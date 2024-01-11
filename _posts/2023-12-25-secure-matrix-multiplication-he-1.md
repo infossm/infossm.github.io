@@ -87,21 +87,21 @@ $$A =
   a_{d,1} & a_{d,2} & \cdots & a_{d,d}
  \end{bmatrix}$$
 
-라고 두면, $\textbf{a}_i = [a_{1,i}, a_{2,i}, \cdots, a_{d,i}]^T$ 라고 뒀을 때,
+라고 두면, $\textbf{a}_{i} = [a_{1,i}, a_{2,i}, \cdots, a_{d,i}]^T$ 라고 뒀을 때,
 
-$$ A = (\textbf{a}_1 \ | \ \textbf{a}_2 \ | \cdots | \ \textbf{a}_d) $$
+$$ A = (\textbf{a}_1 \ \vert \ \textbf{a}_2 \ \vert \cdots \vert \ \textbf{a}_d) $$
 
 로 둘 수 있습니다.
 
-이때, 두 $d \times d$ matrix $A, B$에 대해, 위와 같은 식으로 표현한 것을 각각 $A = (\textbf{a}_1 \ | \ \textbf{a}_2 \ | \cdots | \ \textbf{a}_d),  B = (\textbf{b}_1 \ | \ \textbf{b}_2 \ | \cdots | \ \textbf{b}_d)$라고 합시다.
+이때, 두 $d \times d$ matrix $A, B$에 대해, 위와 같은 식으로 표현한 것을 각각 $A = (\textbf{a}_1 \ \vert \ \textbf{a}_2 \ \vert \cdots \vert \ \textbf{a}_d),  B = (\textbf{b}_1 \ \vert \ \textbf{b}_2 \ \vert \cdots \vert \ \textbf{b}_d)$라고 합시다.
 
-$C = AB$라고 두면, $C = (\textbf{c}_1 \ | \ \textbf{c}_2 \ | \cdots | \ \textbf{c}_d)$라고 했을 때,
+$C = AB$라고 두면, $C = (\textbf{c}_1 \ \vert \ \textbf{c}_2 \ \vert \cdots \vert \ \textbf{c}_d)$라고 했을 때,
 
 $$ \textbf{c}_i = \sum_{j = 0}^d {b_{j, i}\textbf{a}_j}$$
 
 가 성립합니다.
 
-따라서, $A, B$를 encrypt할 때, 각 entry를 하나하나 encrypt하는 대신, 각 column을 encrypt합시다. (CKKS의 경우 SIMD manner를 통해 가능합니다.) 즉, $ct(A), ct(B)$가 각각 $A, B$를 encrypt한 것이라고 합시다. $ct(A) = (u_1 \ | \ u_2 \ | \cdots | \ u_d),  B = (v_1 \ | \ v_2 \ | \cdots | \ v_d)$라고 합시다. $u_i, v_i$는 각각 $\textbf{a}_i, \textbf{b}_i$를 encrypt한 것입니다.
+따라서, $A, B$를 encrypt할 때, 각 entry를 하나하나 encrypt하는 대신, 각 column을 encrypt합시다. (CKKS의 경우 SIMD manner를 통해 가능합니다.) 즉, $ct(A), ct(B)$가 각각 $A, B$를 encrypt한 것이라고 합시다. $ct(A) = (u_1 \ \vert \ u_2 \ \vert \cdots \vert \ u_d),  B = (v_1 \ \vert \ v_2 \ \vert \cdots \vert \ v_d)$라고 합시다. $u_i, v_i$는 각각 $\textbf{a}_i, \textbf{b}_i$를 encrypt한 것입니다.
 
 이제, 각 ciphertext $v_i$에서 replicate이란 과정을 통해서 ciphertext $v_{1i}, v_{2i}, \cdots, v_{di}$를 얻읍시다. 이는 column vector의 각 entry를 encrypt한 것에 대응됩니다. 예를 들어서, $v = [2, 3, 5, 7]^T$라고 두면, 순서대로 $[2, 2, 2, 2]^T, [3, 3, 3, 3]^T, [5, 5, 5, 5]^T, [7, 7, 7, 7]^T$을 encrypt 한 것을 구하는 것과 같습니다. replicate의 원리는 다음과 같습니다.
 
@@ -109,7 +109,7 @@ $$ \textbf{c}_i = \sum_{j = 0}^d {b_{j, i}\textbf{a}_j}$$
 
 현재 $v_i$는 encrypt된 상태이기 때문에, 각 entry의 값을 알 수 없는 상태입니다. 할 수 있는 연산은 rotate, addition 처럼 제한돼있는 상태입니다. 그렇기 때문에, 위와 같이 rotate를 적절히 활용해 원하는 vector에 대응되는 Ciphertext를 만들어주는 것입니다.
 
-$C$를 $A, B$처럼 encrypt한 것을 $ct(C) = (w_1 \ | \ w_2 \ | \cdots | \ w_d)$라고 할 때, 
+$C$를 $A, B$처럼 encrypt한 것을 $ct(C) = (w_1 \ \vert \ w_2 \ \vert \cdots \vert \ w_d)$라고 할 때, 
 
 $$ w_i = \sum_{j = 0}^d {v_{j, i}u_j}$$
 
