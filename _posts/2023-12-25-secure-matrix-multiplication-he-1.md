@@ -87,7 +87,7 @@ $$A =
   a_{d,1} & a_{d,2} & \cdots & a_{d,d}
  \end{bmatrix}$$
 
-라고 두면, $\textbf{a}_{i}$를 $[a_{1,i}, a_{2,i}, \cdots, a_{d,i}]^T$로 정의하면,
+라고 두면, 열 벡터 $\textbf{a}_{i}$가 이어져 있는 형태로 생각하면,
 
 $$ A = (\textbf{a}_1 \ \vert \ \textbf{a}_2 \ \vert \cdots \vert \ \textbf{a}_d) $$
 
