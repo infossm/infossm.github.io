@@ -21,12 +21,12 @@ tags: [quantum, quantum-computing, graph-theory]
 양자 그래프는 _operator system_(adjoint에 대해 닫혀 있고, 항등행렬을 포함하는 행렬의 집합)이다. 그리고 주어진 고전 그래프 G에 대응되는 양자 그래프는 아래와 같이 정의된다.
 
 > **Definition**
-> $$S_G = \mathrm{span}\{|e_i \rangle \langle e_j| \; | \; \text{i = j or i is adjacent to j}\}$$<br/>
+> $$S_G = \mathrm{span}\{\vert e_i \rangle \langle e_j\vert  \; \vert  \; \text{i = j or i is adjacent to j}\}$$<br/>
 
 또한 두 quantum graph의 곱 또한 아래와 같이 정의한다.
 
 > **Definition**
-> $$UV = \mathrm{span}\{ uv\;|\;u\in U, v \in V \}$$<br/>
+> $$UV = \mathrm{span}\{ uv\;\vert \;u\in U, v \in V \}$$<br/>
 
 두 quantum graph의 곱이 정의되었으므로 quantum graph의 거듭제곱도 재귀적으로 정의할 수 있다. 특별히, $U^0 = \mathbb{C}I_n$으로 정의한다.
 
@@ -59,9 +59,9 @@ tags: [quantum, quantum-computing, graph-theory]
 
 위 따름정리를 통해 Quantum graph에서의 연결성의 정의가 정당하다는 점을 확인할 수 있다. 증명 또한 직관적이다. 먼저 1) 고전 그래프가 connected라면 양자 그래프도 connected이며, 2) 고전 그래프가 disconnected라면 양자 그래프도 disconnected임을 보일 것이다.
 
-1. 만약 G가 connected라면 모든 $i, j \in \{1...n\}$에 대해 $\{p_1=i, p_1, ...,p_{m-1}, p_m=j \}$인 경로가 존재함을 의미한다. 그러한 경로가 존재함이 보장된다면 m은 당연히 $m \leq n$을 만족하도록 잡을 수 있다. 따라서 $|e_i\rangle \langle e_j | = \prod_{k=1}^{m-1} |e_{p_k}\rangle \langle e_{p_{k+1}}| \in S_G^{m} \in S_G^{n}$ 이므로 $S_G^{n}$만 하여도 충분히 $M_n$을 span함을 알 수 있다. 따라서 $S_G$또한 connected이다.
+1. 만약 G가 connected라면 모든 $i, j \in \{1...n\}$에 대해 $\{p_1=i, p_1, ...,p_{m-1}, p_m=j \}$인 경로가 존재함을 의미한다. 그러한 경로가 존재함이 보장된다면 m은 당연히 $m \leq n$을 만족하도록 잡을 수 있다. 따라서 $\vert e_i\rangle \langle e_j \vert  = \prod_{k=1}^{m-1} \vert e_{p_k}\rangle \langle e_{p_{k+1}}\vert  \in S_G^{m} \in S_G^{n}$ 이므로 $S_G^{n}$만 하여도 충분히 $M_n$을 span함을 알 수 있다. 따라서 $S_G$또한 connected이다.
 
-2. 만약 G가 disconnected라면 사이에 간선이 존재하지 않는 두 집합 $K, L$로 정점들이 분리가 된다. 그러면 $P=\sum_{j\in K} |e_j \rangle \langle e_j|$ 로 설정하면 $PS_G(I_n-P)={0}$이므로 정의에 의해 $S_G$또한 disconnected이다.
+2. 만약 G가 disconnected라면 사이에 간선이 존재하지 않는 두 집합 $K, L$로 정점들이 분리가 된다. 그러면 $P=\sum_{j\in K} \vert e_j \rangle \langle e_j\vert $ 로 설정하면 $PS_G(I_n-P)={0}$이므로 정의에 의해 $S_G$또한 disconnected이다.
 
 따라서 고전 그래프 $G$의 연결성과 양자 그래프 $S_G$의 연결성은 동치이다.
 
@@ -100,7 +100,7 @@ G is k-connected $\Leftrightarrow$ $S_G$ is k-connected 가 성립한다.
 
 이것 또한 증명의 아이디어만 제시하고 넘어가고자 한다. 이 Proposition역시 양쪽 방향으로 모두 증명할 것이다. 본 글에서는 한쪽 방향만 증명하고 반대쪽 방향은 생략한다.
 
-양자 그래프가 k-connected일때 고전 그래프 또한 k-connected임을 보이자. 고전 그래프 G에서 certex cut이 $\{p_0, p_1, ..., p_m\}$ 이라면 $P=\sum_{i=1}^{m} |p_i \rangle \langle p_i|$로 정의하면 이 행렬이 rank는 m이상이며 $S_G$의 seperator임을 쉽게 보일 수 있다. 따라서 $k \leq m$이므로 G또한 k-connected이다.
+양자 그래프가 k-connected일때 고전 그래프 또한 k-connected임을 보이자. 고전 그래프 G에서 certex cut이 $\{p_0, p_1, ..., p_m\}$ 이라면 $P=\sum_{i=1}^{m} \vert p_i \rangle \langle p_i\vert $로 정의하면 이 행렬이 rank는 m이상이며 $S_G$의 seperator임을 쉽게 보일 수 있다. 따라서 $k \leq m$이므로 G또한 k-connected이다.
 
 고전 그래프가 k-connected일때 양자 그래프 또한 k-connected임을 보이는 과정은 조금 복잡하므로 논문 [1]을 찾아보길 권한다.
 # 활용방안

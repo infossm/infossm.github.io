@@ -42,9 +42,9 @@ Max cut 문제의 본질은 그래프의 정점을 두 부분집합으로 분할
 
 이제 문제를 해결하기 위해 큐비트 4개를 준비할 것이다. 그래프의 정점이 n개라면 n개의 큐비트를 준비하면 된다.
 
-그리고 $0 \leq i \lt n$인 정수 i에 대해 i번째 큐비트는 i번째 정점이 어느 집합에 속하는지에 대한 정보를 저장할 것이다. 집합은 두 개 뿐이므로 $|0\rangle$, $|1\rangle$로 나누자. 같은 값을 가진다면 같은 집합에 속하는 것이다.
+그리고 $0 \leq i \lt n$인 정수 i에 대해 i번째 큐비트는 i번째 정점이 어느 집합에 속하는지에 대한 정보를 저장할 것이다. 집합은 두 개 뿐이므로 $\vert0\rangle$, $\vert1\rangle$로 나누자. 같은 값을 가진다면 같은 집합에 속하는 것이다.
 
-그렇다면, 이 문제의 답이 되는 양자 상태는 $|0101\rangle, |1010\rangle$일 것이다. 이제 우리는 저 양자 상태만 확률을 최대화하여 남겨 놓고, 나머지 상태들은 확률을 없애버리는 것이 목표이다. 이후엔 관측을 통해 양자 정답 상태를 구할 수 있고, 이로부터 max cut을 구할 수 있다. 그렇다면 어떻게 저 상태들만 남기고 나머지 상태들을 지울 수 있을까? Hamiltonian을 사용하면 된다.
+그렇다면, 이 문제의 답이 되는 양자 상태는 $\vert0101\rangle, \vert1010\rangle$일 것이다. 이제 우리는 저 양자 상태만 확률을 최대화하여 남겨 놓고, 나머지 상태들은 확률을 없애버리는 것이 목표이다. 이후엔 관측을 통해 양자 정답 상태를 구할 수 있고, 이로부터 max cut을 구할 수 있다. 그렇다면 어떻게 저 상태들만 남기고 나머지 상태들을 지울 수 있을까? Hamiltonian을 사용하면 된다.
 
 
 ## 2. 헤밀토니안 정의하기
@@ -56,7 +56,7 @@ Max cut 문제의 본질은 그래프의 정점을 두 부분집합으로 분할
 1. 문제 상황에 대응되는 Hamiltonian을 만드는데, 바닥상태가 문제의 정답이어야 한다.
 2. 여러 가지 방법을 써서 바닥상태(정답)를 찾는다.
 
-위 기준에 따르면 우리의 목표는 $|0101\rangle, |1010\rangle$가 바닥상태가 되는 Hamiltonian을 설계하는 것이다. 일반화한다면, cut의 개수가 많아질수록 에너지가 낮아지는 Hamiltonian을 설계 하면 바닥 상태가 항상 문제의 정답이 될 것이다.
+위 기준에 따르면 우리의 목표는 $\vert0101\rangle, \vert1010\rangle$가 바닥상태가 되는 Hamiltonian을 설계하는 것이다. 일반화한다면, cut의 개수가 많아질수록 에너지가 낮아지는 Hamiltonian을 설계 하면 바닥 상태가 항상 문제의 정답이 될 것이다.
 
 ### 2.1 Motivation
 
@@ -70,7 +70,7 @@ $$C = \frac{1}{2}\sum_{i \leq j}{a_{ij}(1-c_ic_j)}$$
 
 ### 2.2 Hamiltonian설계
 
-위 식을 그대로 적용한 Hamiltonian을 만들어 보자. 양자 상태가 $|0\rangle$ 일때는 1, $|1\rangle$일때는 -1이 되는 걸 떠올려 보면 Z operator가 떠오른다. $Z|0\rangle = 1, Z|1\rangle = -1$ 이기 때문이다. (또는 $Z = \sigma_z = \begin{pmatrix}1&0\\0&-1\end{pmatrix} $ 로 표기하기도 함)
+위 식을 그대로 적용한 Hamiltonian을 만들어 보자. 양자 상태가 $\vert0\rangle$ 일때는 1, $\vert1\rangle$일때는 -1이 되는 걸 떠올려 보면 Z operator가 떠오른다. $Z\vert0\rangle = 1, Z\vert1\rangle = -1$ 이기 때문이다. (또는 $Z = \sigma_z = \begin{pmatrix}1&0\\0&-1\end{pmatrix} $ 로 표기하기도 함)
 
 이제 Hamiltonian을 설계해 보자
 
@@ -104,7 +104,7 @@ Hamiltonian을 구했으니 바닥 상태를 구할 때이다. 보통 이럴 때
 
 그러나 현재의 양자 컴퓨터는 에러가 너무 크고, 큐빗도 작다. 이를 NISQ(Noisy Intermediate-Scale Quantum) 시대의 양자 컴퓨터라고 부른다. 따라서 에러에 강건한 양자 알고리즘을 사용하는게 유리하다. 사실 필수인 수준이다. 에러가 무시 가능한 시대가 온다면 사용하는 리소스가 중요하겠지만, 지금은 에러의 규모는 그 알고리즘의 가능/불가능을 나누는 중요한 척도이다. 이러한 상황에서 나온 알고리즘이 QAOA이다.
 
-QAOA는 위에서 잠깐 언급했듯이, 우리가 바닥상태를 잘 알고 있는 hamiltonian에서부터 시작한다. 주로 바닥 상태는 maximally mixed state ($\frac{1}{2^n}\sum_{i=0}^{2^n-1}|i\rangle$)에서 시작하고, 대응되는 hamiltonian은 $\sigma_x^{\otimes n} = \begin{pmatrix}0&1\\1&0\end{pmatrix}^{\otimes n}$)
+QAOA는 위에서 잠깐 언급했듯이, 우리가 바닥상태를 잘 알고 있는 hamiltonian에서부터 시작한다. 주로 바닥 상태는 maximally mixed state ($\frac{1}{2^n}\sum_{i=0}^{2^n-1}\vert i\rangle$)에서 시작하고, 대응되는 hamiltonian은 $\sigma_x^{\otimes n} = \begin{pmatrix}0&1\\1&0\end{pmatrix}^{\otimes n}$)
 
 그리고 hamiltonian을 우리가 바꾸고 싶은 $H$로 바꿔야 하는 데, 이를 점진적으로 바꾸어 나가 안정적으로 바닥 상태를 찾는 것이 목표이다.
 
