@@ -63,7 +63,7 @@ $$U(\theta)=U(\theta_1, ..., \theta_L)=\prod_{l=1}^{L}U_l(\theta_l)W_l$$
 
 신경망에서 cost function이 주어지듯이, RPQC도 결국엔 최적화 하고자 하는 값이 존재한다. 이는 Observable의 형태로 다음과 같이 주어진다.
 
-$$E(\theta)=\langle 0|U(\theta)^\dagger H U(\theta)|0\rangle$$
+$$E(\theta)=\langle 0\vert U(\theta)^\dagger H U(\theta)\vert 0\rangle$$
 
 이제 k번째 파라미터 $\theta_k$에 대한 그래디언트 구하기 위해, 아래와 같이 정의하자.
 
@@ -71,7 +71,7 @@ $$U_- = \prod_{l=0}^{k-1}U_l(\theta_l)W_l, \,\,\,\, U_+ = \prod_{l=k}^{L}U_l(\th
 
 $\theta_k$가 무작위로 초기화된 것이 가정이므로, $U_-$와 $U_+$는 **독립**임에 유의하자. 이제 k번째 파라미터 gradient을 아래의 식으로 얻을 수 있다. 증명은 꽤 복잡하므로 생략한다.
 
-$$\partial_k E = \frac{\partial E(\theta)}{\partial \theta_k}=i\langle 0|U_-^\dagger \left [ V_k, U_+^\dagger H U_+ \right ]U_- |0\rangle$$
+$$\partial_k E = \frac{\partial E(\theta)}{\partial \theta_k}=i\langle 0\vert U_-^\dagger \left [ V_k, U_+^\dagger H U_+ \right ]U_- \vert 0\rangle$$
 
 BP가 존재한다는 것을 보이기 위해선, $\partial_k E$값이 아주아주 작아진다는 것을 보이면 충분하다. 따라서 저 값의 (기대)평균과 (기대)분산을 계산할 것이다.
 
@@ -79,7 +79,7 @@ BP가 존재한다는 것을 보이기 위해선, $\partial_k E$값이 아주아
 
 아래 식은 정의로부터 아주 명확하다.
 
-$$\partial_k E = \int dU p(U)\partial_k \langle 0|U(\theta)^\dagger H U(\theta)|0\rangle$$
+$$\partial_k E = \int dU p(U)\partial_k \langle 0\vert U(\theta)^\dagger H U(\theta)\vert 0\rangle$$
 
 $p(U)$는 유니터리 $U$의 확률분포 함수이다. $U$는 $U_-$와 $U_+$로 분해되므로, 둘의 확률로 분해하여 표현할 수 있다.
 
@@ -89,7 +89,7 @@ $$p(U) = \int dU_+ p(U_+)\int dU_-p(U_-) \times \delta(U_+U_--U)$$
 
 $$\langle \partial_kE\rangle=i\int dU_-p(U_-)\text{Tr}\{\rho \int dU_+p(U_+)\left[V, U_+^\dagger H U_+ \right] \}$$
 
-위 식에서는 $\rho = U_-|0\rangle\langle0|U_-^\dagger$ 의 치환이 사용되었다. 또한 Trace연산자 안에서 순서를 자유자재로 바꾸었음에 유의하자.
+위 식에서는 $\rho = U_-\vert 0\rangle\langle0\vert U_-^\dagger$ 의 치환이 사용되었다. 또한 Trace연산자 안에서 순서를 자유자재로 바꾸었음에 유의하자.
 
 이제 아래의 성질을 사용하고자 하는데, 이 식은 논문 [3]에서 증명되어 있다. 항상 성립하는 식은 아니고, $\mu(U)$가 Haar measure을 만족할 때 성립한다.
 
