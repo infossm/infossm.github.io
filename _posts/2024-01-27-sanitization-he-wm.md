@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Circuit Privacy - 1"
+title:  "HE Sanitization - Washing Machine"
 date:   2024-01-27 19:00:00
 author: cs71107
 tags: [cryptography]
@@ -232,10 +232,57 @@ $$ \forall ct_1, ct_2 \in C, \Detla(Sanitize(pk, ct_1), Sanitize(pk, ct_2)) \le 
 
 # Sanitize Building - Regev Ciphertext
 
+이제 실제 scheme들에 위에서 구성한 Sanitization 알고리즘을 어떻게 쓸 수 있는지 살펴봅시다. 다음과 같이 LWE-encryption들의 집합을 정의합시다.
 
+$$LWE_{\textbf{s}}^{q}(\mu, \eta) = \{ (\textbf{a}, \langle\textbf{a}, \textbf{s} \rangle + \mu \cdot \lfloor q/2 \rfloor + e) \in \mathbb{Z}_{q}^{n+1} \}$$
 
-# Conclusion
+$\textbf{s}$는 secret key를, $q$는 modulus를, $\mu$는 plaintext를, $\eta$는 error rate을 의미합니다. 즉, $\lvert e \rvert < \eta q$ 입니다.
 
+이제 public key가 다음과 같은 $l \ge O(nlogq)$개 이상의 fresh encryption of zero를 포함한다고 합시다. 즉, public key에는 $ 1 \le i \le l$에 대해, 다음과 같이 $r_i$들을 생성합니다.
+
+$$r_{i} = (\textbf{a}_{i}, b_{i}) \in LWE_{\textbf{s}}^{q}(0, \eta)$$
+
+여기에서 각 $r_i$들은 independently하게 생성됐습니다. 이제, *Rerand*함수를 다음과 같이 정의합시다.
+
+$$ ReRand(pk, ct) = ct + \sum \varepsilon_{i} r_{i} + (\textbf{0}, f)$$
+
+이때, $f$의 경우 $[-B, B]$에서 uniformly random하게 추출하고, $\varepsilon_{i}$는 *Rerand*함수를 실행할 때 마다 $\{ -1, 0, 1\}$ 중에서 uniformly random하게 선택합니다.
+
+이때, 
+
+$$ ct' = ct + \sum \varepsilon_{i} r_{i} = (\textbf{a}', \langle \textbf{a}', \textbf{s} \rangle + \mu \cdot \lfloor q/2 \rfloor + e')$$
+
+위와 같이 $ct'$를 정의하면, left over hash lemma에 의해서, $\textbf{a}'$의 distribution은 uniform distribution과 indistinguishable합니다. 따라서, 이제 기존 ciphertext의 정보는 $e'$에만 남게 됩니다.
+
+그리고 $\lvert e' \rvert < (l+1) \cdot \eta \cdot q$가 성립합니다.
+
+그리고 임의의 $x, y$에 대해 $ -(l+1) \eta q < x, y < (l+1) \eta q$이면, 
+
+$$ \Delta (x+U([-B, B]), y+U([-B, B])) \le \frac{(l+1) \eta q}{B} =: \delta$$
+
+따라서, 임의의 $ct_0, ct_1 \in LWE_{\textbf{s}}^{q}(\mu, \eta)$에 대해, 
+
+$$ \Delta (ReRand(pk, ct_0), ReRand(pk, ct_1)) \le \delta $$
+
+가 되고, 이제 이것을 적절한 횟수만큼 반복하면 됩니다. 예를 들어, $\delta \approx 2^{-16}$이고, 128-bit security를 달성해야 해서 $negl(\lambda) = 2^{-128}$이라고 하면, $\delta ^ k \le negl(\lambda)$ 여야 하므로, $k \ge 8$이니까, 8회 이상 반복하면 됩니다.
+
+# Conclusion and Discussion
+
+지금까지 FHE에서의 Ciphertext Sanitizability를 알아보았습니다. 이 글에서 소개한 것은 Ducas - Stehlé Washing machine 기법으로, FHE에서 공통적으로 적용될 수 있는 기법이면서 유명한 기법입니다.
+
+글의 결과를 요약하면 결국 *Wash*라는, circuit의 정보를 담고 있는 error의 정보를 순차적으로 지워나갈 수 있게 해주는 함수를 정의한 후, 반복적용한다는 것입니다.
+
+여기서부터는 글을 읽으면서 생길 수 있는 몇 가지 의문점들에 대한 대답입니다.
+
+Q. Background에 나오는 Noise Flooding이 훨씬 더 간단해 보이는데, 그냥 적용하면 안 되나요?
+
+A. Noise Flooding의 경우 같이 설명했듯이, 기존의 정보를 덮어서 없애버릴 수 있는 큰 분포에서 더해야 하는 항 (error)를 추출하는데, TFHE와 같은 일부 scheme들의 경우 parameter set이 빡빡한 경우가 많기 때문에, Noise Flooding을 적용할 수 있을 만큼 여유가 있지 않은 경우가 많습니다. 특히나 TFHE의 경우 error를 정말 한계 크기까지 허용하는 느낌이라, 더욱 적용하기 어렵습니다.
+
+Q. Washing Machine에서 한계점이 있을까요?
+
+A. Washing Machine을 구성하는 core 함수 중 Refresh 함수의 경우 대부분 bootstrapping이 사용됩니다. (error 크기를 일정 수준으로 줄여야하므로) 하지만, 대부분의 FHE scheme에서 bootstrapping의 경우 아주 시간이 오래 걸립니다. 그렇기 때문에, 할 수 bootstrapping을 '반복'하는 행위 자체가 매우 부담으로 작용하게 됩니다.
+
+지금까지 Ducas - Stehlé Washing machine을 소개했습니다. 부족한 글 읽어주셔서 감사합니다. 이 글에서 소개한 technique의 원 논문은 [여기](https://eprint.iacr.org/2016/164.pdf)에서 확인할 수 있습니다.
 
 # Reference
-- 
+- https://eprint.iacr.org/2016/164.pdf
