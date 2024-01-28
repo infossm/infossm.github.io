@@ -6,7 +6,7 @@ author: red1108
 tags: [quantum, quantum-machine-learning, gan, generative, ai, qgan, qml]
 ---
 
-> Keywords: `GAN`, `QGAN`, `copula`, `finance data``
+> Keywords: `GAN`, `QGAN`, `copula`, `finance data`
 
 [아이온큐 공식 블로그](https://ionq.com/resources/generative-quantum-machine-learning-for-finance)에 소개되어 있기도 하고, 2022년 11월에 실린 논문인데 아직 한국에 소개하는 글이 없어서 블로그 글로 작성한다. ~~arxiv엔 2021년에 올라왔는데 왜이리 늦게 실렸는지 모르겠다. PRX저널에 실으려고 꽤 오래 존버했나..?~~
 
