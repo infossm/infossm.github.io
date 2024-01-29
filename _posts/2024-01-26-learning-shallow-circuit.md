@@ -59,6 +59,27 @@ $$V^{sew}\vert 0\rangle^{\otimes 2n} = U \otimes U^\dagger \vert 0\rangle^{\otim
 
 왜 이렇게 되는 것일까? 아주 기초적인 조작들만 사용해서 만들어낸 과정이기 때문에 조금 곱씹어 보면 이해하기 어렵지 않을 것이다. 각각의 큐빗별로 작용을 되돌린 다음, 되돌아간 큐빗들을 미리 저장해두었을 뿐이다. 그 과정에서 하나하나 차근차근 큐빗들을 모아가기 위해 swap게이트를 사용하였다.
 
+전체 과정을 수식으로 다시 표현하자면 $V_i$ 는 $UV_i = U'^{(i)}\otimes I_i$ 를 만족하는 i번째 큐빗의 local inversion일 때,  
+
+$$U \otimes U^\dagger = S \prod_{i=0}^{n-1} V_i S_i V_i^\dagger$$
+
+이 식이라고 할 수 있다 (논문에서는 1-based라서 $i=1$ 부터라고 적혀 있다). 
+
+간단한 의사 코드로도 살펴 보자. 훨씬 직관적으로 이해할 수 있을 것이다.
+
+```python
+U() # 처음 게이트를 가함
+for i in range(n):
+    V_i() # i번째 큐빗을 분리해냄
+    SWAP(i, n+i) # 바꿔치기
+    V_i_dagger() # 다시 V_i를 복구함
+```
+
+## local inversion 구하기
+
+그럼 local inversion은 어떻게 구할까? Parameterized Quantum Circuit을 사용하면 된다. QML에서 흔히 사용하듯이 적당히 Rx, Ry, Rz, CNOT 사용해서 회로를 구성하고 gradient구해서 최적화하면 된다. 학습 목표는 i번째 큐빗을 $\vert 0\rangle$으로 만드는 것이다.
+
+이렇게 학습한 회로 자체가 $V_i$가 되는 것이다. 이 방식으로도 $V_i$를 다항 시간, 다항 개수의 게이트로 찾을 수 있다는 것에 대해서 논문에서 증명되어 있다.
 
 # Learning shallow quantum circuits
 
@@ -88,7 +109,7 @@ $$\text{SWAP} = \frac{1}{2} \sum_{P \in I,X,Y,Z} P \otimes P$$
 
 $$U \otimes U^\dagger = S \prod_{i=0}^{n-1} V_i S_i V_i^\dagger$$
 
-임을 리마인드 하자 (논문에서는 1-based라서 i=1부터라고 적혀 있다). 이제 다음 식이 성립한다.
+임을 리마인드 하자. 이제 다음 식이 성립한다.
 
 $$V_iS_iV_i = U^\dagger U V_iS_iV_i^\dagger U^\dagger U = U^\dagger S_i U = W_i$$
 
