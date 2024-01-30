@@ -153,8 +153,8 @@ $$ \Delta (f^{k}(a), f^{k}(b)) \le \delta^k $$
 
 proof: 수학적 귀납법을 사용합니다. $k = 0$일 때는 정의에 의해 증명이 끝납니다. 이제, $k \le m$인 $k$에 대해 성립한다고 가정합시다. $k = m+1$일 때, Lemma 1. 에 의해서, 다음과 같은 distribution $D, D'$가 존재합니다.
 
-$$ f^{m}(a) = (1- \delta^{m}) \cdot f^{m}(a) \cap f^{m}(b) + \delta^{m} \cdot D$$
-$$ f^{m}(b) = (1- \delta^{m}) \cdot f^{m}(a) \cap f^{m}(b) + \delta^{m} \cdot D'$$
+$$ f^{m}(a) = (1- \delta^{m}) \cdot f^{m}(a) \cap f^{m}(b) + \delta^{m} \cdot D $$
+$$ f^{m}(b) = (1- \delta^{m}) \cdot f^{m}(a) \cap f^{m}(b) + \delta^{m} \cdot D' $$
 
 따라서, 양변에 $f$를 compose하면 아래와 같습니다.
 
@@ -218,7 +218,7 @@ $$ Wash(pk, ct) = Rerand(pk, Refresh(pk, ct))$$
 
 *Wash*의 경우, 적당한 $\delta < 1$에 대해 다음이 성립합니다.
 
-$$ \forall ct_1, ct_2 \in C, \Detla(Wash(pk, ct_1), Wash(pk, ct_2)) \le \delta$$
+$$ \forall ct_1, ct_2 \in C, \Detla (Wash(pk, ct_1), Wash(pk, ct_2)) \le \delta$$
 
 이제 적당한 $k$에 대해서, *Sanitize*함수를, *Wash*함수를 $k$번 compose한 것으로 정의합시다. $Wash_pk$가 주어진 $pk$를 사용하는 *Wash*함수라고 한다면, *Sanitize*함수를 다음과 같이 정의할 수 있습니다.
 
@@ -226,7 +226,7 @@ $$ Sanitize(pk, ct) = Wash_{pk}^{k} (ct)$$
 
 이때, 앞선 Lemma 3에서 $S$를 $C$로, $Wash_pk$를 $f$로 생각하면, Lemma 3에 의해서 다음이 성립합니다.
 
-$$ \forall ct_1, ct_2 \in C, \Detla(Sanitize(pk, ct_1), Sanitize(pk, ct_2)) \le \delta^{k} $$
+$$ \forall ct_1, ct_2 \in C, \Detla (Sanitize(pk, ct_1), Sanitize(pk, ct_2)) \le \delta^{k} $$
 
 적당히 큰 $k$에 대해서, $\delta^{k} \le negl(\lambda)$이므로, $k$를 잘 설정해주면, 원하는 *Sanitize*함수를 construct할 수 있습니다.
 
