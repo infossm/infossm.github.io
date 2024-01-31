@@ -218,7 +218,7 @@ $$ Wash(pk, ct) = Rerand(pk, Refresh(pk, ct))$$
 
 *Wash*의 경우, 적당한 $\delta < 1$에 대해 다음이 성립합니다.
 
-$$ \forall ct_1, ct_2 \in C, \Detla (Wash(pk, ct_1), Wash(pk, ct_2)) \le \delta$$
+$$ \forall ct_1, ct_2 \in C, \Delta (Wash(pk, ct_1), Wash(pk, ct_2)) \le \delta $$
 
 이제 적당한 $k$에 대해서, *Sanitize*함수를, *Wash*함수를 $k$번 compose한 것으로 정의합시다. $Wash_pk$가 주어진 $pk$를 사용하는 *Wash*함수라고 한다면, *Sanitize*함수를 다음과 같이 정의할 수 있습니다.
 
@@ -226,7 +226,7 @@ $$ Sanitize(pk, ct) = Wash_{pk}^{k} (ct)$$
 
 이때, 앞선 Lemma 3에서 $S$를 $C$로, $Wash_pk$를 $f$로 생각하면, Lemma 3에 의해서 다음이 성립합니다.
 
-$$ \forall ct_1, ct_2 \in C, \Detla (Sanitize(pk, ct_1), Sanitize(pk, ct_2)) \le \delta^{k} $$
+$$ \forall ct_1, ct_2 \in C, \Delta (Sanitize(pk, ct_1), Sanitize(pk, ct_2)) \le \delta^{k} $$
 
 적당히 큰 $k$에 대해서, $\delta^{k} \le negl(\lambda)$이므로, $k$를 잘 설정해주면, 원하는 *Sanitize*함수를 construct할 수 있습니다.
 
