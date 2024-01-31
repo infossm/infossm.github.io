@@ -167,11 +167,11 @@ $$ \Delta (f^{m+1}(a), f^{m+1}(b)) = \delta^{m} \cdot \Delta (f(D), f(D')) $$
 
 이때, 다음과 같이 계산하면
 
-$$ Delta (f(D), f(D')) = \sum _{x \in S} \lvert \sum _{c \in S} D(c) Pr[f(c) = x] - \sum _{d \in S} D'(d) Pr[f(d) = x] \rvert = \sum _{x \in S} \lvert \sum _{c, d \in S} D(c)D'(d)(Pr[f(c) = x]-Pr[f(d) = x])\rvert $$
+$$ \Delta (f(D), f(D')) = \sum _{x \in S} \lvert \sum _{c \in S} D(c) Pr[f(c) = x] - \sum _{d \in S} D'(d) Pr[f(d) = x] \rvert = \sum _{x \in S} \lvert \sum _{c, d \in S} D(c)D'(d)(Pr[f(c) = x]-Pr[f(d) = x])\rvert $$
 
 에서, 
 
-$$ Delta (f(D), f(D')) \le \sum _{c, d \in S} D(c)D'(d) \lvert \sum _{x \in S} (Pr[f(c) = x]-Pr[f(d) = x]) \rvert \le \delta$$
+$$ \Delta (f(D), f(D')) \le \sum _{c, d \in S} D(c)D'(d) \lvert \sum _{x \in S} (Pr[f(c) = x]-Pr[f(d) = x]) \rvert \le \delta$$
 
 따라서, $\Delta (f(D), f(D')) \le \delta$이므로, 증명이 끝난다.
 
