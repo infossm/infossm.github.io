@@ -134,7 +134,7 @@ $0 \le \delta < 1$에 대해, $\Delta(B, B') \le \delta$를 만족하는 distibu
 
 $$ B = (1- \delta) \cdot B \cap B' + \delta \cdot D \ and \ B' = (1- \delta) \cdot B \cap B' + \delta \cdot D' $$
 
-proof: $C = B \cap B'$라고 하고, $D(x) = (B(x) - (1- \delta) \cdot C(x)) / \delta$로 정의하면, 됩니다. $D'$로 비슷하게 정의할 수 있습니다.
+proof: $C = B \cap B'$라고 하고, $D(x) = (B(x) - (1- \delta) \cdot C(x)) / \delta$로 정의하면 됩니다. $D'$로 비슷하게 정의할 수 있습니다.
 
 ## Lemma 2.
 
@@ -142,14 +142,14 @@ $0 \le \alpha \le 1$과, 임의의 distribution $C, D, D'$에 대해, 다음이 
 
 $$ \Delta ((1- \alpha) \cdot C + \alpha \cdot D, (1- \alpha) \cdot C + \alpha \cdot D') = \alpha \Delta (D, D') $$
 
-proof: $2 \Delta ((1- \alpha) \cdot C + \alpha \cdot D, (1- \alpha) \cdot C + \alpha \cdot D') = \sum \lvert ((1- \alpha) \cdot C(x) + \alpha \cdot D(x)) - ((1- \alpha) \cdot C(x) + \alpha \cdot D'(x)) \rvert = \sum \lvert \alpha \cdot D(x) - \alpha \cdot D'(x) \rvert = \alpha \sum \lvert D(x) - D'(x) \rvert = 2 \alpha \Delta (D, D')$ 에서 증명이 끝난다.
+proof: $2 \Delta ((1- \alpha) \cdot C + \alpha \cdot D, (1- \alpha) \cdot C + \alpha \cdot D') = \sum \lvert ((1- \alpha) \cdot C(x) + \alpha \cdot D(x)) - ((1- \alpha) \cdot C(x) + \alpha \cdot D'(x)) \rvert = \sum \lvert \alpha \cdot D(x) - \alpha \cdot D'(x) \rvert = \alpha \sum \lvert D(x) - D'(x) \rvert = 2 \alpha \Delta (D, D')$ 에서 증명이 끝납니다.
 
 ## Lemma 3.
 
 $0 \le \delta \le 1$와 randomized function $f : S \rightarrow S$가 임의의 $a, b \in S$에 대해 $\Delta (f(a), f(b)) \le \delta$를 만족할 때, 모든 $k \ge 0$에 대해 다음이 성립한다.
 
 임의의 $a, b \in S$에 대해
-$$ \Delta (f^{k}(a), f^{k}(b)) \le \delta^k $$
+$$ \Delta ( f^{k} (a), f^{k} (b) ) \le \delta^{k} $$
 
 proof: 수학적 귀납법을 사용합니다. $k = 0$일 때는 정의에 의해 증명이 끝납니다. 이제, $k \le m$인 $k$에 대해 성립한다고 가정합시다. $k = m+1$일 때, Lemma 1. 에 의해서, 다음과 같은 distribution $D, D'$가 존재합니다.
 
