@@ -153,13 +153,11 @@ $$ \Delta ( f^{k} (a), f^{k} (b) ) \le \delta^{k} $$
 
 proof: 수학적 귀납법을 사용합니다. $k = 0$일 때는 정의에 의해 증명이 끝납니다. 이제, $k \le m$인 $k$에 대해 성립한다고 가정합시다. $k = m+1$일 때, Lemma 1. 에 의해서, 다음과 같은 distribution $D, D'$가 존재합니다.
 
-$$ f^{m}(a) = (1- \delta^{m}) \cdot f^{m}(a) \cap f^{m}(b) + \delta^{m} \cdot D $$
-$$ f^{m}(b) = (1- \delta^{m}) \cdot f^{m}(a) \cap f^{m}(b) + \delta^{m} \cdot D' $$
+$$ f^{m}(a) = (1- \delta^{m}) \cdot f^{m}(a) \cap f^{m}(b) + \delta^{m} \cdot D \\ f^{m}(b) = (1- \delta^{m}) \cdot f^{m}(a) \cap f^{m}(b) + \delta^{m} \cdot D' $$
 
 따라서, 양변에 $f$를 compose하면 아래와 같습니다.
 
-$$ f^{m+1}(a) = (1- \delta^{m}) \cdot f(f^{m}(a) \cap f^{m}(b)) + \delta^{m} \cdot f(D)$$
-$$ f^{m+1}(b) = (1- \delta^{m}) \cdot f(f^{m}(a) \cap f^{m}(b)) + \delta^{m} \cdot f(D')$$
+$$ f^{m+1}(a) = (1- \delta^{m}) \cdot f(f^{m}(a) \cap f^{m}(b)) + \delta^{m} \cdot f(D) \\ f^{m+1}(b) = (1- \delta^{m}) \cdot f(f^{m}(a) \cap f^{m}(b)) + \delta^{m} \cdot f(D') $$
 
 Lemma 2.에 의해서, 다음이 성립합니다.
 
