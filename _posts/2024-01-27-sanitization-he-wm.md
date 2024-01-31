@@ -172,7 +172,7 @@ $$ \Delta (f(D), f(D')) = \sum _{x \in S} \lvert \sum _{c \in S} D(c) Pr[f(c) = 
 
 $$ \Delta (f(D), f(D')) \le \sum _{c, d \in S} D(c)D'(d) \lvert \sum _{x \in S} (Pr[f(c) = x]-Pr[f(d) = x]) \rvert \le \delta$$
 
-따라서, $\Delta (f(D), f(D')) \le \delta$이므로, 증명이 끝난다.
+따라서, $\Delta (f(D), f(D')) \le \delta$이므로, 증명이 끝납니다.
 
 # Properties and Construction of Sanitize
 
@@ -272,6 +272,10 @@ $$ \Delta (ReRand(pk, ct_0), ReRand(pk, ct_1)) \le \delta $$
 글의 결과를 요약하면 결국 *Wash*라는, circuit의 정보를 담고 있는 error의 정보를 순차적으로 지워나갈 수 있게 해주는 함수를 정의한 후, 반복적용한다는 것입니다.
 
 여기서부터는 글을 읽으면서 생길 수 있는 몇 가지 의문점들에 대한 대답입니다.
+
+Q. Bootstrapping을 그냥 쓰면 되는 거 아닌가요?
+
+A. Bootstrapping의 경우 Decryption과 Re-encryption을 혼동해서 나오는 질문 중 하나입니다. Re-encryption의 경우 기존에 있던 error가 Decrypt 과정에서 날아가고, 새로운 fresh error를 추출하지만, Bootstrapping의 경우 Decryption을 Homomorphic하게 하는 것으로, 기존에 있는 Ciphertext의 정보가 완전히 사라진다고 보장할 수 없습니다. 그렇기 때문에 Washing Machine에서 Refresh를 Rerand를 거쳐서 '여러 번' 사용하는 것입니다.
 
 Q. Background에 나오는 Noise Flooding이 훨씬 더 간단해 보이는데, 그냥 적용하면 안 되나요?
 
