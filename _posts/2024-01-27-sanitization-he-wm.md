@@ -149,6 +149,7 @@ proof: $2 \Delta ((1- \alpha) \cdot C + \alpha \cdot D, (1- \alpha) \cdot C + \a
 $0 \le \delta \le 1$와 randomized function $f : S \rightarrow S$가 임의의 $a, b \in S$에 대해 $\Delta (f(a), f(b)) \le \delta$를 만족할 때, 모든 $k \ge 0$에 대해 다음이 성립한다.
 
 임의의 $a, b \in S$에 대해
+
 $$ \Delta ( f^{k} (a), f^{k} (b) ) \le \delta^{k} $$
 
 proof: 수학적 귀납법을 사용합니다. $k = 0$일 때는 정의에 의해 증명이 끝납니다. 이제, $k \le m$인 $k$에 대해 성립한다고 가정합시다. $k = m+1$일 때, Lemma 1. 에 의해서, 다음과 같은 distribution $D, D'$가 존재합니다.
