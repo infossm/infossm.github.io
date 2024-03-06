@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "FlashFFTConv: Efficient Convolutions for Long Sequences with Tensor Cores"
-date: 2024-01-29
+date: 2024-02-23
 author: billcho
 tags: [parallel, cuda, fft]
 ---
