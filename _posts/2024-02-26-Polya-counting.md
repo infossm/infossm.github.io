@@ -35,7 +35,7 @@ $$Z(G)=\frac{1}{|G|}\sum_{g\in G}\prod_{k=1}^{n}{a_k}^{j_k(g)}$$
 
 이를 바탕으로 서로 다른 색칠의 개수를 색 $c_1, c_2, \cdots, c_m$이 칠해진 횟수에 따라 구할 수 있습니다.  $a_i={c_1}^i+{c_2}^i+\cdots+{c_m}^i$로 치환하면 
 
-$$K_E(c_1, c_2, \cdots, c_m)=\frac{1}{|G|}\sum_{g\in G}\prod_{k=1}^{n}{\{{c_1}^k+{c_2}^k+\cdots+{c_m}^k\}}^{j_k(g)}$$
+$$K_E(c_1, c_2, \cdots, c_m)=\frac{1}{|G|}\sum_{g\in G}\prod_{k=1}^{n}{\{\{c_1}^k+{c_2}^k+\cdots+{c_m}^k\}}^{j_k(g)}$$
 
 입니다. $K_E$는 각 색을 변수로 갖는 생성함수로, ${c_1}^{b_1}{c_2}^{b_2}\cdots{c_m}^{b_m}$의 계수는 $1\leq i\leq m$에 대해 $c_i$가 $b_i$번 사용된 서로 다른 색칠의 개수를 의미합니다.
 
