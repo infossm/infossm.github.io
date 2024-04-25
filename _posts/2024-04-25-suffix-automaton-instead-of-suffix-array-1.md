@@ -19,11 +19,11 @@ Suffix Automaton을 간단히 설명하면 Suffix Trie의 효율적인 구현이
 
 
 
-Trie를 이용하면 어떤 문자열 집합 $\left\{S_1, S_2, \cdots, S_n\right\}$에서 어떤 문자열 $P$를 Prefix로 가지는 원소가 존재하는지 $O(|P|)$에 검사할 수 있습니다. 그렇다면 Trie에 들어있는 것이 $S$의 모든 Suffix라면 어떻게 될까요?
+Trie를 이용하면 어떤 문자열 집합 $\{S_1, S_2, \cdots, S_n\}$에서 어떤 문자열 $P$를 Prefix로 가지는 원소가 존재하는지 $O(|P|)$에 검사할 수 있습니다. 그렇다면 Trie에 들어있는 것이 $S$의 모든 Suffix라면 어떻게 될까요?
 
 어떤 문자열 $S$의 모든 부분 문자열은 $S$의 Suffix의 Prefix이므로, 어떤 문자열 $P$가 $S$의 부분 문자열인지 $O(|P|)$에 검사할 수 있을 것입니다. 또한, Trie에 있는 각각의 노드는 정확히 하나의 부분 문자열에 대응될 것입니다.
 
-$S=\rm{abcbc}$일 때 $S$의 Suffix들인 $\left\{\rm{abcbc}, \rm{bcbc}, \rm{cbc}, \rm{bc}, \rm{c}\right\}$로 Suffix Trie를 구성하면 아래와 같습니다.
+$S=\rm{abcbc}$일 때 $S$의 Suffix들인 $\{\rm{abcbc}, \rm{bcbc}, \rm{cbc}, \rm{bc}, \rm{c}\}$로 Suffix Trie를 구성하면 아래와 같습니다.
 
 ![](/assets/images/suffix-automaton-psb0623/trie.jpg)
 
@@ -51,28 +51,28 @@ Suffix Automaton에 문자열 $S$가 들어있다고 합시다. $S$의 어떤 �
 
 이처럼 $S$에서 $P$가 등장하는 오른쪽 끝 인덱스의 집합을 $endpos(P)$라고 합시다. $S=\rm{abcbc}$라면, 각 부분 문자열에 대한 $endpos$는 아래와 같이 구할 수 있습니다.
 
-- $endpos(\rm{a}) = \left\{0\right\}$
-- $endpos(\rm{ab}) = \left\{1\right\}$
-- $endpos(\rm{abc}) = \left\{2\right\}$
-- $endpos(\rm{abcb}) = \left\{3\right\}$
-- $endpos(\rm{abcbc}) = \left\{4\right\}$
-- $endpos(\rm{b}) = \left\{1, 3\right\}$
-- $endpos(\rm{bc}) = \left\{2, 4\right\}$
-- $endpos(\rm{bcb}) = \left\{3\right\}$
-- $endpos(\rm{bcbc}) = \left\{4\right\}$
-- $endpos(\rm{c}) = \left\{2, 4\right\}$
-- $endpos(\rm{cb}) = \left\{3\right\}$
-- $endpos(\rm{cbc}) = \left\{4\right\}$
+- $endpos(\rm{a}) = \{0\}$
+- $endpos(\rm{ab}) = \{1\}$
+- $endpos(\rm{abc}) = \{2\}$
+- $endpos(\rm{abcb}) = \{3\}$
+- $endpos(\rm{abcbc}) = \{4\}$
+- $endpos(\rm{b}) = \{1, 3\}$
+- $endpos(\rm{bc}) = \{2, 4\}$
+- $endpos(\rm{bcb}) = \{3\}$
+- $endpos(\rm{bcbc}) = \{4\}$
+- $endpos(\rm{c}) = \{2, 4\}$
+- $endpos(\rm{cb}) = \{3\}$
+- $endpos(\rm{cbc}) = \{4\}$
 
 여기서 $endpos(P)$가 동일한 문자열들을 모아보면,
 
-- $\left\{0\right\} : \rm{a}$
-- $\left\{1\right\} : \rm{ab}$ 
-- $\left\{2\right\} : \rm{abc}$ 
-- $\left\{3\right\} : \rm{cb, bcb, abcb}$ 
-- $\left\{4\right\} : \rm{cbc, bcbc, abcbc}$
-- $\left\{1, 3\right\} : \rm{b}$
-- $\left\{2, 4\right\} : \rm{c, bc}$
+- $\{0\} : \rm{a}$
+- $\{1\} : \rm{ab}$ 
+- $\{2\} : \rm{abc}$ 
+- $\{3\} : \rm{cb, bcb, abcb}$ 
+- $\{4\} : \rm{cbc, bcbc, abcbc}$
+- $\{1, 3\} : \rm{b}$
+- $\{2, 4\} : \rm{c, bc}$
 
 이는 위에서 $S=\rm{abcbc}$로 만든 Suffix Automaton에서 각 노드에 대응되는 문자열들의 목록과 일치합니다.
 
@@ -108,7 +108,7 @@ $P$의 왼쪽 끝점을 바깥쪽으로 점점 늘리다 보면 어느 순간 $e
 
 또한, $l_{min}\le l \le l_{max}$를 만족하는 모든 부분 문자열 $S[l..r]$들은 모두 동일한 $endpos$를 가진다는 것을 알 수 있습니다. $endpos$가 동일하다는 것은, 이 부분 문자열들이 모두 같은 노드에 대응된다는 것을 의미합니다.
 
-따라서 $endpos=\left\{5,11\right\}$에 해당하는 문자열을 아래처럼 묶어서 표시할 수 있습니다.
+따라서 $endpos=\{5,11\}$에 해당하는 문자열을 아래처럼 묶어서 표시할 수 있습니다.
 
 ![](/assets/images/suffix-automaton-psb0623/interval.png)
 
@@ -116,13 +116,13 @@ $P$의 왼쪽 끝점을 바깥쪽으로 점점 늘리다 보면 어느 순간 $e
 
 위에서 소개한 노드의 $len$과 $link$가 바로 그 역할을 하는 속성들입니다.
 
-노드의 $len$ 속성은 해당 노드에 대응되는 부분 문자열의 왼쪽 끝점을 바깥쪽으로 점점 늘릴 때, $endpos$**를 동일하게 유지하면서 왼쪽으로 늘릴 수 있는 최대치의 길이**입니다. 즉, 한 노드가 표현하는 부분 문자열들 중 가장 긴 것의 길이입니다. 예를 들어, 위의 예시에서 $endpos=\left\{5,11\right\}$에 해당하는 노드를 $v$라 하면 $v.len$은 $5$가 될 것입니다.
+노드의 $len$ 속성은 해당 노드에 대응되는 부분 문자열의 왼쪽 끝점을 바깥쪽으로 점점 늘릴 때, $endpos$**를 동일하게 유지하면서 왼쪽으로 늘릴 수 있는 최대치의 길이**입니다. 즉, 한 노드가 표현하는 부분 문자열들 중 가장 긴 것의 길이입니다. 예를 들어, 위의 예시에서 $endpos=\{5,11\}$에 해당하는 노드를 $v$라 하면 $v.len$은 $5$가 될 것입니다.
 
 ![](/assets/images/suffix-automaton-psb0623/len.png)
 
 노드의 $link$ 속성은 해당 노드에 대응되는 부분 문자열의 왼쪽 끝점을 안쪽으로 점점 줄일 때 처음으로 $endpos$가 달라지는 지점이 존재할 텐데요, **그때 달라진** $endpos$**에 해당하는 노드**를 향하는 포인터입니다. ($endpos$가 달라진다는 건, 결국 그 문자열에 대응되는 노드가 달라진다는 것이니까요.)
 
-예를 들어, 위의 예시에서 $endpos=\left\{5,11\right\}$에 해당하는 노드를 $v$라 하면 $v.link$는 $\left\{5,7,11\right\}$에 해당하는 노드 $w$를 향하는 포인터가 될 것입니다.
+예를 들어, 위의 예시에서 $endpos=\{5,11\}$에 해당하는 노드를 $v$라 하면 $v.link$는 $\{5,7,11\}$에 해당하는 노드 $w$를 향하는 포인터가 될 것입니다.
 
 ![](/assets/images/suffix-automaton-psb0623/link.png)
 
