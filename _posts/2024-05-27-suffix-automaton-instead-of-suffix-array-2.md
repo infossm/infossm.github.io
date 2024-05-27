@@ -345,3 +345,19 @@ HLD를 이용하면 DP로 구해야 하는 값을 online으로 구할 수 있는
 - $pref[n-1]$부터 루트까지 가는 경로에 모두 1씩 증가시킨 후, 제곱의 합 출력
 
 각각의 작업의 시간복잡도가 $O(\log^2 n)$이므로, 전체 시간복잡도 $O(n\log^2n)$에 문제를 풀 수 있습니다.
+
+## 마치며
+
+Suffix Automaton과 다른 알고리즘을 함께 사용하여 문제를 푸는 테크닉에 대해 알아보았습니다. 위에서 보듯이 Suffix Automaton으로 편하게 풀 수 있는 문제들의 커버리지가 꽤나 넓기 때문에, 저는 개인적으로 Suffix Automaton이 Suffix Array의 훌륭한 대안이 될 수 있다고 생각합니다. 저는 앞으로도 웬만한 문자열 문제는 먼저 Suffix Automaton으로 풀게 될 것 같습니다.
+
+이 글에서는 풀이를 설명하지 않았지만, 아래의 문제들도 Suffix Array 없이 Suffix Automaton을 이용하여 해결하였으므로, 관심이 있으신 분들은 아래의 문제들을 Suffix Automaton으로 풀어보셔도 좋을 것 같습니다.
+
+- https://www.acmicpc.net/problem/22905
+- https://www.acmicpc.net/problem/18744
+- https://www.acmicpc.net/problem/27525
+- https://www.acmicpc.net/problem/25546
+- https://www.acmicpc.net/problem/22349
+- https://www.acmicpc.net/problem/15454
+
+긴 글 읽어주셔서 감사합니다.
+
