@@ -138,7 +138,7 @@ $S$가 모두 Suffix Automaton에 들어있는 상황에서, 위의 과정은 $S
 
 아래 그림은 $S=\rm{abcbc}$일 때의 Suffix Automaton에서 prefix를 나타내는 노드를 초록색으로 표시하고, Suffix Link에서 위 과정을 진행했을 때 각 노드의 $size$의 값을 표시한 그림입니다. 각 노드가 표현하는 부분 문자열이 $\rm{abcbc}$에서 몇 번 등장하는지 올바르게 구해짐을 볼 수 있습니다.
 
-![](assets/images/suffix-automaton-psb0623/size.png)
+![](/assets/images/suffix-automaton-psb0623/size.png)
 
 하지만 잘 생각해보면, 어떤 노드의 $size$는 Suffix Link에서 자신을 루트로 하는 서브트리 내에 존재하는 prefix 노드의 개수와 동일함을 알 수 있습니다. 이 사실은 위 그림에서도 쉽게 확인할 수 있습니다. 
 
