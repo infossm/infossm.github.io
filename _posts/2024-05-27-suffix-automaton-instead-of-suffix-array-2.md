@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Suffix Automaton으로 Suffix Array 문제들을 풀어보자 2"
-date: 2024-05-27 23:00:00
+date: 2024-05-27 20:00:00
 author: psb0623
 tags: [string, data-structure]
 ---
