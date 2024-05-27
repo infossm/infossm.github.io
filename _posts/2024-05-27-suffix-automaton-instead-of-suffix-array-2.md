@@ -58,6 +58,7 @@ struct SuffixAutomaton {
 
 ```c++
 set<int> s[N];
+bool vis[N];
 void dfs(int cur) {
 	if(vis[cur]) return;
 	vis[cur] = 1;
@@ -77,6 +78,7 @@ void dfs(int cur) {
 
 ```c++
 set<int> s[N];
+bool vis[N];
 void dfs(int cur) {
 	if(vis[cur]) return;
 	vis[cur] = 1;
