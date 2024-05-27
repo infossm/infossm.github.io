@@ -353,11 +353,16 @@ Suffix Automaton과 다른 알고리즘을 함께 사용하여 문제를 푸는 
 이 글에서는 풀이를 설명하지 않았지만, 아래의 문제들도 Suffix Array 없이 Suffix Automaton을 이용하여 해결하였으므로, 관심이 있으신 분들은 아래의 문제들을 Suffix Automaton으로 풀어보셔도 좋을 것 같습니다.
 
 - https://www.acmicpc.net/problem/22905
+  
 - https://www.acmicpc.net/problem/18744
+  
 - https://www.acmicpc.net/problem/27525
+  
 - https://www.acmicpc.net/problem/25546
+  
 - https://www.acmicpc.net/problem/22349
+  
 - https://www.acmicpc.net/problem/15454
 
-긴 글 읽어주셔서 감사합니다.
+마지막으로, 긴 글 읽어주셔서 감사합니다.
 
