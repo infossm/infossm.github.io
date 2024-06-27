@@ -32,8 +32,8 @@ $[1, 8)$ 구간에 해당하는 부분 문자열은 $\rm{ississi}$로, 길이 $3
 
 문자열 $S$가 주어질 때, run은 다음의 조건을 모두 만족하는 튜플 $(l,r,p)$입니다.
 
-- $0 \le l < r \le |S|$
-- $1 \le p \le |S|$
+- $0 \le l < r \le \vert S \vert$
+- $1 \le p \le \vert S \vert $
 - $r-l \ge 2p$
 - $p$는 모든 $l \le i < r-p$에 대해서 $S[i] = S[i+p]$를 만족해야 하며, 가능한 $p$가 여러개라면 그 중 가장 작은 것이어야 합니다.
 - 위의 네 조건이 $(l-1,r,p)$와 $(l,r+1,p)$에 대해서는 성립하지 않아야 합니다.
@@ -41,8 +41,8 @@ $[1, 8)$ 구간에 해당하는 부분 문자열은 $\rm{ississi}$로, 길이 $3
 
 각각의 조건에 대해서 자세하게 살펴봅시다.
 
-> - $0 \le l < r \le |S|$  
-> - $1 \le p \le |S|$
+> - $0 \le l < r \le \vert S \vert$  
+> - $1 \le p \le \vert S \vert$
 
 위 조건들은 문자열의 범위에 따른 기본적인 조건들입니다.
 
@@ -144,7 +144,7 @@ Lyndon Word가 아닌 예시로는 $\rm{ba, abab}$ 등이 있습니다. 이는 �
 
 이 때, $w_1$은 **Longest Lyndon Prefix**, 즉 $S$의 prefix이면서 Lyndon word인 것들 중에서 가장 긴 문자열이 됩니다.
 
-예를 들어, $\rm{banana}$의 Lyndon Decomposition은 $\rm{b|an|an|a}$이며, Longest Lyndon Prefix는 $\rm{b}$입니다.
+예를 들어, $\rm{banana}$의 Lyndon Decomposition은 $\rm{b \vert an \vert an \vert a}$이며, Longest Lyndon Prefix는 $\rm{b}$입니다.
 
 이러한 Lyndon Decomposition은 항상 존재하며, 또한 유일하다고 알려져 있습니다.
 
@@ -172,7 +172,7 @@ $\rm{banana}$의 경우를 예시로 들어봅시다. $\rm{banana}$의 suffix를
 - $\rm{\textcolor{red}{na}}$ → 이미 제거되었으므로 넘어갑니다.
 - $\rm{\textcolor{red}{nana}}$ → 이미 제거되었으므로 넘어갑니다.
 
-따라서, $\rm{banana}$의 Lyndon Decomposition인 $\rm{b|an|an|a}$를 올바르게 얻을 수 있습니다.
+따라서, $\rm{banana}$의 Lyndon Decomposition인 $\rm{b \vert an \vert an \vert a}$를 올바르게 얻을 수 있습니다.
 
 보시다시피 이 알고리즘은 구현이 전혀 어렵지 않으며, Suffix Array의 $O(n)$ 구현을 사용하는 경우 시간복잡도는 Duval 알고리즘과 마찬가지로 $O(n)$이 됩니다.
 
@@ -188,7 +188,7 @@ $\rm{banana}$의 경우를 예시로 들어봅시다. $\rm{banana}$의 suffix를
 
 $S$와 $-S$는 각각 $n$개의 suffix를 가지고, 각 suffix마다 하나의 Longest Lyndon Prefix를 가지므로 총 $2n$개의 문자열이 나오게 됩니다. 그러면, 이 $2n$개의 문자열들이 모두 **문자열 $S$에서 반복되는 최소단위 문자열의 후보**가 됩니다. (왜 그런지는 증명하지 않고 넘어가겠습니다.)
 
-이렇듯 후보가 되는 문자열을 seed string이라고 부르겠습니다. 그러면, 이제 남은 것은 각 seed string이 *얼마나 반복되는지* 찾는 것입니다. 반복될 가능성이 있는 최소단위의 seed string을 찾았으니, 이제 그 seed string이 실제로 얼마나 반복되는지 찾을 차례입니다.
+이렇듯 후보가 되는 문자열을 seed string이라고 부르겠습니다. 그러면, 이제 남은 것은 각 seed string이 *얼마나 반복되는지* 찾는 것입니다. 반복될 가능성이 있는 최소단위의 seed string을 찾았으니, 이제 그 seed string이 실제로 얼마나 반복되는지 찾을 차례입니다. seed string의 구간을 $[i, j)$로 두고 분석해봅시다.
 
 예를 들어, 문자열 $S=\rm{cbacbababaa}$라고 합시다. $S$의 $5$번째 인덱스부터 시작하는 suffix는 $\rm{ababaa}$이며, $\rm{ababaa}$의 Longest Lyndon Prefix는 $\rm{ab}$입니다. 따라서 해당하는 구간 $[5, 7)$을 seed string으로 잡습니다.
 
@@ -463,7 +463,7 @@ for(auto [p, l, r]:s.runs) {
 
 이를 효율적으로 세기 위해서는, 각 문자마다 그 문자에서 시작되는 Tandem Repeat의 개수와 그 문자에서 끝나는 Tandem Repeat의 개수를 저장해주면 됩니다.
 
-$i$번째 문자에서 시작하는 Tandem Repeat의 개수를 $s[i]$, $i$번째 문자에서 끝나는 Tandem Repeat의 개수를 $e[i]$라고 합시다. 그러면 정답을 $\sum_{i=1}^{|S|-1} e[i-1] \cdot s[i]$처럼 나타낼 수 있습니다.
+$i$번째 문자에서 시작하는 Tandem Repeat의 개수를 $s[i]$, $i$번째 문자에서 끝나는 Tandem Repeat의 개수를 $e[i]$라고 합시다. 그러면 정답을 $\sum_{i=1}^{\vert S \vert -1} e[i-1] \cdot s[i]$처럼 나타낼 수 있습니다.
 
 이제 남은 것은 $s[i]$와 $e[i]$를 올바르게 관리하는 것입니다.
 
@@ -484,7 +484,7 @@ $i$번째 문자에서 시작하는 Tandem Repeat의 개수를 $s[i]$, $i$번째
 
 같은 작업을 모든 run에 대해 반복해주면 $s[i]$와 $e[i]$를 모두 올바르게 구할 수 있습니다. run의 성질에 따라 가능한 모든 반복을 보는 것은 $O(n)$이며, 각 반복마다 $O(\log n)$의 구간 업데이트가 있으므로 총 시간복잡도는 $O(n \log n)$입니다.
 
-마지막으로 $\sum_{i=1}^{|S|-1} e[i-1] \cdot s[i]$을 구해 출력하면 정답을 받을 수 있습니다. Fenwick Tree나 Segment Tree with Lazy Propagation을 사용하는 경우, 이 과정의 시간 복잡도는 $O(n \log n)$입니다.
+마지막으로 $\sum_{i=1}^{\vert  S  \vert -1} e[i-1] \cdot s[i]$을 구해 출력하면 정답을 받을 수 있습니다. Fenwick Tree나 Segment Tree with Lazy Propagation을 사용하는 경우, 이 과정의 시간 복잡도는 $O(n \log n)$입니다.
 
 Run Enumerate의 시간 복잡도도 $O(n \log n)$이므로, 최종 시간복잡도는 $O(n \log n)$입니다.
 
