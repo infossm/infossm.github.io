@@ -94,9 +94,9 @@ run을 찾는 것은 문자열에 존재하는 반복을 모두 찾는다는 점
 
 예를 들어, $\rm{abababababab}$를 표현하는 run $(0, 12, 2)$의 내부에는
 
-- 길이 $2$의 반복 $\rm{\textcolor{red}{ab}\textcolor{blue}{ab}}$ 혹은 $\rm{\textcolor{red}{ba}\textcolor{blue}{ba}}$
-- 길이 $4$의 반복 $\rm{\textcolor{red}{abab}\textcolor{blue}{abab}}$ 혹은 $\rm{\textcolor{red}{baba}\textcolor{blue}{baba}}$
-- 길이 $6$의 반복 $\rm{\textcolor{red}{ababab} \textcolor{blue}{ababab}}$
+- 길이 $2$의 반복 $\rm{ab \vert ab}$ 혹은 $\rm{ba \vert ba}$
+- 길이 $4$의 반복 $\rm{abab \vert abab}$ 혹은 $\rm{baba \vert baba}$
+- 길이 $6$의 반복 $\rm{ababab \vert ababab}$
 
 모두 존재함을 알 수 있습니다.
 
@@ -163,14 +163,14 @@ $\rm{banana}$의 경우를 예시로 들어봅시다. $\rm{banana}$의 suffix를
 - $\rm{na}$
 - $\rm{nana}$
 
-이때, suffix들을 사전 순서대로 보면서 순서대로 제거해봅시다. 이미 제거된 문자는 빨간색으로 표현하겠습니다.
+이때, suffix들을 사전 순서대로 보면서 순서대로 제거해봅시다. 이미 제거된 문자는 **굵은 글씨**로 표현하겠습니다.
 
 - $\rm{a}$ → $\rm{a}$를 제거합니다.
-- $\rm{an\textcolor{red}{a}}$ → $\rm{an}$을 제거합니다.
-- $\rm{an\textcolor{red}{ana}}$ → $\rm{an}$을 제거합니다.
-- $\rm{b\textcolor{red}{anana}}$ → $\rm{b}$를 제거합니다.
-- $\rm{\textcolor{red}{na}}$ → 이미 제거되었으므로 넘어갑니다.
-- $\rm{\textcolor{red}{nana}}$ → 이미 제거되었으므로 넘어갑니다.
+- $\rm{an}\bf{a}$ → $\rm{an}$을 제거합니다.
+- $\rm{an\bf{ana}}$ → $\rm{an}$을 제거합니다.
+- $\rm{b\bf{anana}}$ → $\rm{b}$를 제거합니다.
+- $\rm{\bf{na}}$ → 이미 제거되었으므로 넘어갑니다.
+- $\rm{\bf{nana}}$ → 이미 제거되었으므로 넘어갑니다.
 
 따라서, $\rm{banana}$의 Lyndon Decomposition인 $\rm{b \vert an \vert an \vert a}$를 올바르게 얻을 수 있습니다.
 
@@ -182,7 +182,7 @@ $\rm{banana}$의 경우를 예시로 들어봅시다. $\rm{banana}$의 suffix를
 
 문자열 $S$가 주어질 때, 존재하는 모든 알파벳의 대소관계가 반대로 뒤집어지도록 변환한 문자열을 $-S$라고 합시다. 
 
-예를 들어 알파벳 소문자만 활용하는 경우, 모든 문자에 대해 `s[i] = 'a' + 'z' - s[i]`를 적용한다고 생각할 수 있습니다. 이 때 $a$는 $z$로, $b$는 $y$로, $c$는 $x$로, $\cdots$ 변환됩니다.
+예를 들어 알파벳 소문자만 활용하는 경우, 모든 문자에 대해 `s[i] = 'a' + 'z' - s[i]`를 적용한다고 생각할 수 있습니다. 이 때 $\rm{a}$는 $\rm{z}$로, $\rm{b}$는 $\rm{y}$로, $\rm{c}$는 $\rm{x}$로, $\cdots$ 변환됩니다.
 
 이제, $S$와 $-S$의 모든 suffix들에 대해 각각 Longest Lyndon Prefix를 구해봅시다.
 
@@ -219,11 +219,11 @@ seed string이 반복되는 최소 단위임이 보장되므로, run에서의 $p
 
 어떤 seed string의 구간 $[i, j)$가 주어지면, 이 seed string으로부터 비롯되는 run은 $(i-l, j+k, j-i)$입니다. 
 
-이 때, $k$의 값은 $S[i..n-1]$과 $S[j..n-1]$의 Longest Common Prefix의 길이이며, $l$의 값은 $S[0..i-1]$과 $S[0..j-1]$의 Longest Common **Suffix**의 길이입니다.
+이 때, $k$의 값은 $S[i..n-1]$과 $S[j..n-1]$의 Longest Common Prefix의 길이이며, $l$의 값은 $S[0..i-1]$과 $S[0..j-1]$의 Longest Common *Suffix*의 길이입니다.
 
 일반적으로, 인접한 두 suffix의 Longest Common Prefix의 길이를 나타내는 LCP 배열을 $O(n)$에 구하는 법이 잘 알려져 있으며, 임의의 두 suffix의 Longest Common Prefix는 LCP 배열에서 구간 최솟값 쿼리를 통해 $O(\log n)$에 알 수 있습니다.
 
-Longest Common **Suffix**의 경우에는, 문자열을 뒤집어서 Longest Common Prefix 쿼리로 변환해줄 수 있습니다.
+Longest Common *Suffix*의 경우에는, 문자열을 뒤집어서 Longest Common Prefix 쿼리로 변환해줄 수 있습니다.
 
 따라서, 하나의 seed string 후보에 대해 해당하는 run을 $O(\log n)$에 구할 수 있고, 총 $2n$개의 seed string 후보가 있으므로 총 시간 복잡도 $O(n \log n)$에 가능한 모든 run의 후보들을 구할 수 있습니다.
 
