@@ -216,7 +216,7 @@ public:
 
 ### 실전 예시: Slope Trick
 
-위에서 소개한 방법을 효과적으로 활용할 수 있는 대표적인 알고리즘은 **Slope Trick**입니다. Slope Trick이 무엇인지에 대해서는 Slope Trick에 대해 설명한 다른 글들을 참고하시길 부탁드립니다.
+위에서 소개한 방법을 효과적으로 활용할 수 있는 대표적인 알고리즘은 **Slope Trick**입니다. Slope Trick이 무엇인지에 대해서는 이 글에서 다루지 않으므로, Slope Trick에 대해 설명한 다른 글들을 참고하시길 부탁드립니다.
 
 결국 Slope Trick에서 요구되는 것은 piecewise linear convex function을 효율적으로 관리하는 것이며, 특히 function의 평행이동, function과 function의 합 등의 연산을 효율적으로 수행할 수 있어야 합니다.
 
