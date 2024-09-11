@@ -66,7 +66,7 @@ standard position coset이 되려면 $Q$의 order가 정확히 $2^{n+1}$이면 �
 
 $$D = Q \cdot G_n = Q \cdot G_{n-1} \cup Q^{-1} \cdot G_{n-1}$$
 
-이 됨을 보일 수 있습니다. 또한, 각 $D \subset C(\mathbb{F}_p) \setminus G_m$이 $G_{m-1}$와 $J$에 대해서 invariant이라면, 임의의 $n \le m$에 대하여 $N = 2^n$ 크기의 twin-coset으로 decompose 될 수 있음을 증명할 수 있습니다. 특히, $D$가 standard position coset of size $M = 2^m$이면, 
+이 됨을 보일 수 있습니다. 또한, 각 $D \subset C(\mathbb{F}\_p) \setminus G\_m$이 $G\_{m-1}$와 $J$에 대해서 invariant이라면, 임의의 $n \le m$에 대하여 $N = 2^n$ 크기의 twin-coset으로 decompose 될 수 있음을 증명할 수 있습니다. 특히, $D$가 standard position coset of size $M = 2^m$이면, 
 
 $$D = Q \cdot G_m = \cup_{k=0}^{M/N-1} \left( Q^{4k+1} \cdot G_{n-1} \cup Q^{-4k-1} \cdot G_{n-1} \right)$$
 

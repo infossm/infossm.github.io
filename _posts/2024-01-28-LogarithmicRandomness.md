@@ -43,7 +43,7 @@ $$(1 - r_0, r_0) \otimes (1 - r_1, r_1) \otimes \cdots \otimes (1 - r_{\log n - 
 
 ## Testing via Tensor Product
 
-> For any $[n, k, d]$ code $V \in \mathbb{F}_q^n$ and $e < d/3$, given $u_0, \cdots, u_{m-1} \in \mathbb{F}_q^n$ such that 
+> For any $[n, k, d]$ code $V \in \mathbb{F}\_q^n$ and $e < d/3$, given $u\_0, \cdots, u\_{m-1} \in \mathbb{F}\_q^n$ such that 
 > 
 > $$\text{Pr}_{(r_0, \cdots, r_{\log m - 1}) \in \mathbb{F}_q} \left( d( [\otimes_{i=0}^{\log m - 1} (1 - r_i, r_i)] \cdot [u_0, \cdots, u_{m-1}]^T, V) \le e \right) > 2 \cdot \log m \cdot \frac{e}{q}$$
 > 
@@ -79,7 +79,7 @@ $$\mu(R^\star) + (e+1) / q \ge  \text{Average}_{(r_0, \cdots , r_{l-2})} (p(r_0,
 
 를 얻어 $\mu(R^\star) > 2e(l-1)/q$가 증명된다. 
 
-그러므로, 귀납 가정에 의해서, $[u_0, \cdots , u_{2^{l-1}-1}]$ and $[u_{2^{l-1}}, \cdots ,u_{2^l-1}]$에 대해서도 명제가 성립함을 사용할 수 있다. 
+이제 귀납 가정에 의해서 $[u_0, \cdots , u_{2^{l-1}-1}]$ and $[u_{2^{l-1}}, \cdots ,u_{2^l-1}]$에 대해서 명제가 성립함을 사용할 수 있다. 
 
 이에 따라 
 
@@ -149,7 +149,11 @@ Extractability가 원하는 것은 대강 설명하면 다음과 같다.
 
 $\mathcal{A}$의 성공확률이 $\epsilon$이라면, expected time은 $1 + \epsilon \cdot (m - 1) / \epsilon = m$이 되어 일단 extractor 자체는 PPT이다. 이제 extractor가 다른 곳에서 실패할 확률이 negligible 함을 보인다. 
 
-먼저, $d([u_0, \cdots, u_{m-1}], V) < d/3$을 보인다. $e = \lfloor (d - 1) / 3 \rfloor$이라 하고, $u' = [\otimes_{i=l}^{2l-1} (1 - r_i, r_i)] \cdot [u_0, \cdots, u_{m-1}]^T$로 두자. 귀류법으로, 
+먼저, $d([u_0, \cdots, u_{m-1}], V) < d/3$을 보인다. $e = \lfloor (d - 1) / 3 \rfloor$이라 하고, 
+
+$$u' = [\otimes_{i=l}^{2l-1} (1 - r_i, r_i)] \cdot [u_0, \cdots, u_{m-1}]^T$$
+
+로 두자. 귀류법으로, 
 
 $$d((u_i)_{i=0}^{m-1}, V) \ge d/3$$
 
@@ -195,7 +199,7 @@ $$\text{Pr}[E | V] = \frac{\text{Pr}[V \cap E]}{\text{Pr}[V \cap E] + \text{Pr}[
 
 를 얻고, 모든 경우에서 $V$가 되었을 때 $E$가 따라올 확률 역시 $(1-\sqrt{\delta})^{m-1}$이 되어 $1$과의 차이가 negligible 하다. 
 
-비슷하게, $\left( [ \otimes_{j=l}^{2l-1} (1 - r_{i, j}, r_{i, j}) ] \right)_{i=0}^{m-1}$이 invertible 함도 증명할 수 있다. 궁극적으로, 새로운 $(r_l, \cdots, r_{2l-1})$이 linear dependence를 만든다는 것은 최소한 이 값으로 만들어진 $[\otimes_{i=l}^{2l-1} (1 - r_{i}, r_{i})]$이 어떤 고정된 hyperplane 안에 속한다는 것이다. 그런데, 그 조건과 확률을 생각해보면 결국 $l$-variate multilinear non-zero polynomial의 근을 생각하는 것과 같으니 Schwartz-Zippel에 의해 그 확률은 최대 $l/q$다. 
+비슷하게, $\left( [ \otimes_{j=l}^{2l-1} (1 - r\_{i, j}, r\_{i, j}) ] \right)\_{i=0}^{m-1}$이 invertible 함도 증명할 수 있다. 궁극적으로, 새로운 $(r\_l, \cdots, r\_{2l-1})$이 linear dependence를 만든다는 것은 최소한 이 값으로 만들어진 $[\otimes_{i=l}^{2l-1} (1 - r\_{i}, r\_{i})]$이 어떤 고정된 hyperplane 안에 속한다는 것이다. 그런데, 그 조건과 확률을 생각해보면 결국 $l$-variate multilinear non-zero polynomial의 근을 생각하는 것과 같으니 Schwartz-Zippel에 의해 그 확률은 최대 $l/q$다. 
 
 즉, 이번에는 $E$를 linear dependence가 생기지 않을 사건이라고 생각하면 이번에는 
 
