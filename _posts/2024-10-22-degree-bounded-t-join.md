@@ -43,7 +43,7 @@ $$ \begin{align*} \text{minimize:} & & \sum_{e \in E} c_e \cdot x_e && \\ \text{
   * $(V, E, b, T)$에 대해 LP-relaxation을 해결해 basic optimal solution $x \in \mathbb{R}^E$ 를 얻는다.
   * $E := E(x)$ // $x$의 support 상의 간선들만 남긴다. ($x$값이 0이 아닌 간선)
   * 만약 $E \neq \emptyset$ 이라면:
-    * $x_{uv} = 1$인 간선 $uv$를 찾는다. $\cdots (*)$ 
+    * $x_{uv} = 1$인 간선 $uv$를 찾는다. $\cdots (\star)$ 
     * $J := J \cup \{uv\}$
     * $T := T \Delta\{u, v\}$
     * $u \in W$ 라면 $b_u := b_u - 1$
@@ -51,7 +51,7 @@ $$ \begin{align*} \text{minimize:} & & \sum_{e \in E} c_e \cdot x_e && \\ \text{
     * $E := E \setminus uv$
 * return $J$
 
-만약 $(*)$이 항상 가능하다고 가정한다면, 이 알고리즘은 반복적으로 feasible 한 instance에 대해 LP를 해결하게 되며, 결론적으로 optimal 한 degree-bounded $T$-join을 반환함을 쉽게 확인할 수 있다. 하지만, $(*)$이 가능하다는 것이 가장 비자명한 부분이고, 이 글에서는 $(*)$ 이 항상 가능함을 확인해볼 것이다.
+만약 $(\star)$이 항상 가능하다고 가정한다면, 이 알고리즘은 반복적으로 feasible 한 instance에 대해 LP를 해결하게 되며, 결론적으로 optimal 한 degree-bounded $T$-join을 반환함을 쉽게 확인할 수 있다. 하지만, $(\star)$이 가능하다는 것이 가장 비자명한 부분이고, 이 글에서는 $(\star)$ 이 항상 가능함을 확인해볼 것이다.
 
 # Correctness Overview
 
