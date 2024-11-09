@@ -254,6 +254,7 @@ cd /home/ubuntu/deploy_folder && ... # 빌드 및 실행 코드
 만약 `product`브랜치에 push됐을 경우 배포를 진행하고 싶다면, 아래 주석을 참고하여 수정하면 됩니다. (push 옵션 주석 해제 및, pull_request 옵션 주석 처리)
 
 ```yaml
+{% raw %}
 name: product_deploy
 
 on:
@@ -337,6 +338,7 @@ jobs:
   #     uses: actions/checkout@v3
 
   #     #...
+{% endraw %}
 ```
 
 # 8. Github Secrets 설정
