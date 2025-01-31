@@ -18,7 +18,7 @@ tags: [numerical analysis, problem solving]
 
 지애 상수는 좌표평면의 점 $A(0,0),B(1,0),C( {1 \over 2} , { \sqrt 3 \over 2})$로 정의된 정삼각형 $ABC$에서 시작하여 만든 시에르핀스키 삼각형에서 독립적으로 균등하게 잡은 점 두 개의 유클리디안 거리의 기댓값입니다.
 
-<img src="/infossm.github.io/assets/images/poro/jie6.png" alt="jie1" style="zoom:72%;" />
+<img src="/assets/images/poro/jie6.png" alt="jie1" style="zoom:72%;" />
 
 #### 균등하게 점 잡기?
 
@@ -26,17 +26,17 @@ tags: [numerical analysis, problem solving]
 
 우선 아래 그림의 1단계 시에르핀스키 삼각형을 생각해봅시다. 점이 균등하게 선택되어야 하기에, 점은 각각 ${1\over 3}$ 확률로 삼각형 $1, 2, 3$ 중 한 곳에 선택되어야 합니다. 
 
-<img src="/infossm.github.io/assets/images/poro/jie1.png" alt="jie1" style="zoom:12%;" />
+<img src="/assets/images/poro/jie1.png" alt="jie1" style="zoom:12%;" />
 
 일반성을 잃지 않고 삼각형 $1$이 선택되었다고 합시다. 이제 2단계 시에르핀스키 삼각형으로 들어가면, 1단계의 $1$번 삼각형이 다시 3개의 삼각형으로 분할되고, 이중에서 새로운 삼각형이 각각 $1 \over 3$ 확률로 선택되게 될 것입니다.  이런 과정들을 계속 반복하다 보면 점은 결국 한 점으로 수렴함을 증명할 수 있고, 문제에서는 이 점을 시에르핀스키 삼각형에서 균등하게 고른 한 점이라고 정의합니다.
 
-<img src="/infossm.github.io/assets/images/poro/jie2.png" alt="jie2" style="zoom:12%;" />
+<img src="/assets/images/poro/jie2.png" alt="jie2" style="zoom:12%;" />
 
 #### 균등하게 선택한 점의 수식적 표현
 
 점이 수렴하는 과정에서 선택된 각 단계의 정삼각형의 중심을 이어보면, 아래의 그림을 얻을 수 있게 됩니다.
 
-<img src="/infossm.github.io/assets/images/poro/jie3.png" alt="jie3" style="zoom:12%;" />
+<img src="/assets/images/poro/jie3.png" alt="jie3" style="zoom:12%;" />
 
 이 화살표들을 관찰하면, 점이 수렴하는 과정을 수식으로 간단하게 표현할 수 있음을 알 수 있습니다. 편의상 0단계 시에르핀스키 삼각형의 중심을 $O(0,0)$이라고 정의하고, $i$번째 단계에서 고른 삼각형의 번호를 $a_i$라고 합시다. 이때, 선택된 점의 좌표는 아래와 같이 나타낼 수 있습니다. (편의상 복소평면 위에서 서술하겠습니다.)
 $$
@@ -49,7 +49,7 @@ $$
 
 각각 선택된 점을 $A = \sum_{i=1}^{\infty} {1 \over {2^i}} V_{a_i}$, $B = \sum_{i=1}^{\infty} {1 \over {2^i}} V_{b_i}$라고 합시다. ($\{a_i \}, \{ b_i\}$는 각각의 삼각형에서 $i$번째 삼각형 때 선택된 삼각형의 번호입니다) 두 점 사이의 거리 벡터를 계산하기 위해서는 $A-B$를 구해야 하며, 이때 $D=A-B = \sum_{i=1}^{\infty} {1 \over {2^i}} (V_{a_i} - V_{b_i})$가 됩니다. 이때 $V_{a_i} - V_{b_i}$를 직접 계산하기에는 꽤나 불편한 감이 있으니, 각각의 $A_i = (1,2,3), \ B_i = (1,2,3)$ 케이스마다 $V_{a_i} - V_{b_i} $의 값을 계산해서 새로운 확률 변수 $X_i = V_{a_i} - V_{b_i} $를 정의해 줍시다. 이때 $X_i$는 아래 그림처럼 표현됩니다.
 
-<img src="/infossm.github.io/assets/images/poro/jie5.png" alt="jie5" style="zoom:22%;" />
+<img src="/assets/images/poro/jie5.png" alt="jie5" style="zoom:22%;" />
 
 위 확률 변수 $X_i$에 대해, 균등하게 선택된 두 점 사이의 벡터는 $D = \sum_{i=1}^{\infty} {1 \over 2^i} X_i$가 되겠습니다.
 
