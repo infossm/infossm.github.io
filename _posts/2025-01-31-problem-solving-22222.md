@@ -74,7 +74,7 @@ $\sqrt{1+X} = 1 + {1\over 2}X - {1\over8}X^2 + {1\over 16}X^3 - \cdots$
 
 
 
-#### $E[D^p {D^{\ast}}^q]$ 구하기
+#### $E[D^p {D^{\ast q}}]$ 구하기
 
 전개된 테일러 식으로 지애 상수를 구하기 위해서는, 전개된 각 $E[D^p{D^{\ast q}} ]$의 값들을 알 수 있어야 합니다. 이를 구하기 위해 다음 4개의 property가 사용됩니다.
 
@@ -92,7 +92,7 @@ $E[D^p {D^{\ast q}} ] = E[(e^{{\pi i \over 3}} D)^p {(e^{{\pi i \over 3}} D)^{\a
 
 이 성립하며, 가정에 의해 $e^{{(p-q)\pi i \over 3}} \neq 1$이므로 $E[D^p {D^{\ast q}} ] = 0$입니다.
 
-(2) $6 \mid p - q$면, $b = ae^{{\pi i} \over 3}$에 대해 $E[(a+D)^p({a^{\ast}} + D^{\ast q})] = E[(b+D)^p({b^{\ast}} + D^{\ast})^q]$가 성립합니다.
+(2) $6 \mid p - q$면, $b = ae^{{\pi i} \over 3}$에 대해 $E[(a+D)^p({a^{\ast}} + D^{\ast})^q] = E[(b+D)^p({b^{\ast}} + D^{\ast})^q]$가 성립합니다.
 
 ​	proof) (1)의 증명과 유사하게, $E[f(D)] = E[f(e^{{\pi i \over 3}} D)]$가 성립하므로
 
@@ -105,21 +105,21 @@ $E[(b+D)^p({b^{\ast}} + D^{\ast})^q] = E[(ae^{{\pi i} \over 3}+De^{{\pi i} \over
 
 ​	proof) $D$의 구조를 보면  $D = \sum_{i=1}^\infty {1\over2^i}X_i  = {X_1 \over 2} + {1\over 2}\sum_{i=1}^\infty {1\over2^i}X_{i+1} = {X_1 \over 2} + {1 \over 2} D'$ 꼴임을 알 수 있고, 따라서 위 식이 성립합니다. 
 
-위 property들로 $E[ D^p{D^{\ast}}^q ]$의 값의 점화식을 유도해봅시다. property (2), (3)을 사용하면, $6 \mid p-q$일 때, $E[D^p {D^{\ast}}^q]$는 아래와 같이 표현됩니다.
+위 property들로 $E[ D^p{D^{\ast q}} ]$의 값의 점화식을 유도해봅시다. property (2), (3)을 사용하면, $6 \mid p-q$일 때, $E[D^p {D^{\ast q}}]$는 아래와 같이 표현됩니다.
 
 <p align="center">
-$E[D^p {D^{\ast}}^q] = \sum_{x_i\in X_1} p(x=x_i)E[(x_i + {1 \over 2}D)^p (x_i^{\ast} + {1 \over 2}D^{\ast})^q ]
+$E[D^p {D^{\ast q}}] = \sum_{x_i\in X_1} p(x=x_i)E[(x_i + {1 \over 2}D)^p (x_i^{\ast} + {1 \over 2}D^{\ast})^q ]
 \\ = {1\over3}E [ (0 + {1\over 2}D)^p(0 + {1 \over 2}D^{\ast} )^q ] + {2 \over 3}E [ ({1\over2} + {1\over 2}D)^p({1\over2} + {1 \over 2}D^{\ast} )^q ]$
 </p>
 
 
-이를 통해 $E[D^i{D^{\ast}}^j]$의 점화식을 구할 수 있습니다. 
+이를 통해 $E[D^i{D^{\ast j}}]$의 점화식을 구할 수 있습니다. 
 
 <p align="center">
-$6 \mid p-q \ : \ E[D^p {D^*}^q] = {2\over3} {1\over {2^{p+q}-1}} \sum_{i=0}^p \sum_{j=0}^q d_{p,q}(i,j) \times {_pC_i} {_qC_j} E[D^i {D^*}^j]$
+$6 \mid p-q \ : \ E[D^p {D^{\ast q}}] = {2\over3} {1\over {2^{p+q}-1}} \sum_{i=0}^p \sum_{j=0}^q d_{p,q}(i,j) \times {_pC_i} {_qC_j} E[D^i {D^{\ast j}}]$
 </p>
 <p align="center">
-$\text{else} \ : \ E[D^p {D^*}^q] = 0$
+$\text{else} \ : \ E[D^p {D^{\ast q}] = 0$
 </p>
 
 (이때 $d_{p,q}(i, j) = 0 \ \text{if} \ (i,j)=(p,q),\ 1 \ \text{otherwise}$)
