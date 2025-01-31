@@ -60,7 +60,7 @@ $$
 \end{bmatrix}
 $$
 
-이 그래프의 CSR 표현을 구하면 `csr`과 `cnt` 배열은 $\left\{ 2, 5, 1, 2, 4, 1, 5, 3 \right\}$, $\left\{ 0, 2, 4, 5, 7, 8 \right\}$이 됩니다. CSR 표현은 간선이 고정된 길이의 메모리 상에서 인접한 하나의 배열에 저장되기 때문에 array doubling이 일어나지 않고, cache hit rate가 높다는 장점이 있습니다.
+이 그래프의 CSR 표현을 구하면 `csr` 배열은 $2, 5, 1, 2, 4, 1, 5, 3$이고, `cnt` 배열은 $0, 2, 4, 5, 7, 8$이 됩니다. CSR 표현은 간선이 고정된 길이의 메모리 상에서 인접한 하나의 배열에 저장되기 때문에 array doubling이 일어나지 않고, cache hit rate가 높다는 장점이 있습니다.
 
 ### 구현 코드
 ```cpp
@@ -87,11 +87,11 @@ for (int i = cnt[cur - 1]; i < cnt[cur]; i++) {
 counting sort가 끝난 뒤 `csr` 배열의 `[cnt[i - 1], cnt[i])` 범위에는 `i`번 정점에서 나가는 edge가 저장되고, 따라서 `csr` 배열에서 해당 범위를 순회하며 인접 리스트에서와 같이 인접한 정점을 순회할 수 있습니다.
 
 ### 성능 비교
-1. [G4] BOJ 1753 - 최단경로 [link](https://www.acmicpc.net/problem/1753)
+1. [G4] BOJ 1753 - 최단경로 [[link]](https://www.acmicpc.net/problem/1753)
 - adjacency list (112ms, 9112kb) : [http://boj.kr/3ea45a03506446bd9fcc608ace0fd99c](http://boj.kr/3ea45a03506446bd9fcc608ace0fd99c)
 - csr representation (88ms, 8552kb) : [http://boj.kr/a071cb4eb4da47a2b2f19365dcc88c16](http://boj.kr/a071cb4eb4da47a2b2f19365dcc88c16)
 
-2. [S2] BOJ 11725 - 트리의 부모 찾기 [link](https://www.acmicpc.net/problem/11725)
+2. [S2] BOJ 11725 - 트리의 부모 찾기 [[link]](https://www.acmicpc.net/problem/11725)
 - adjacency list (48ms, 10404kb) : [http://boj.kr/737a1eff8a88480ea4512770b4344067](http://boj.kr/737a1eff8a88480ea4512770b4344067)
 - csr representation (32ms, 7028kb) : [http://boj.kr/ba47a71aec3449879c60b86d4aad65fd](http://boj.kr/ba47a71aec3449879c60b86d4aad65fd)
 
@@ -136,12 +136,12 @@ for (int i = 2; i <= n; i++) {
 입력 과정에서 `deg[i]`와 `acc[i]`에는 각각 `i`번 정점의 degree와 인접한 정점의 인덱스를 xor한 값이 저장됩니다. 이후 순회 과정에서는 `deg[x] = 1`인 정점 `x`를 찾아 삭제 후 인접한 노드로 이동하는 것을 반복하며 트리를 순회합니다. 이때 트리의 루트가 $1$로 정해져있기 때문에 `while`문 내에 `x != 1` 조건이 추가되었습니다.
 
 ### 성능 비교
-1. [S2] BOJ 11725 - 트리의 부모 찾기 [link](https://www.acmicpc.net/problem/11725)
+1. [S2] BOJ 11725 - 트리의 부모 찾기 [[link]](https://www.acmicpc.net/problem/11725)
 - adjacency list (48ms, 10404kb) : [http://boj.kr/737a1eff8a88480ea4512770b4344067](http://boj.kr/737a1eff8a88480ea4512770b4344067)
 - csr representation (32ms, 7028kb) : [http://boj.kr/ba47a71aec3449879c60b86d4aad65fd](http://boj.kr/ba47a71aec3449879c60b86d4aad65fd)
 - xor linked tree (32ms, 2804kb) : [http://boj.kr/ca7203efb1f74f3aafc7e623308f5ec4](http://boj.kr/ca7203efb1f74f3aafc7e623308f5ec4)
 
-2. [G4] BOJ 32934 - 풍성한 트리 [link](https://www.acmicpc.net/problem/32934)
+2. [G4] BOJ 32934 - 풍성한 트리 [[link]](https://www.acmicpc.net/problem/32934)
 - adjacency list (92ms, 16748kb) : [http://boj.kr/4fb678b1239d4974ab50a12eb04fbf76](http://boj.kr/4fb678b1239d4974ab50a12eb04fbf76)
 - csr representation (48ms, 8304kb) : [http://boj.kr/69dc1379e18e4e9e8a4918c9f5c51974](http://boj.kr/69dc1379e18e4e9e8a4918c9f5c51974)
 - xor linked tree (44ms, 5228kb) : [http://boj.kr/4dcbfeba533f47ff85967cf8843ae77f](http://boj.kr/4dcbfeba533f47ff85967cf8843ae77f)
