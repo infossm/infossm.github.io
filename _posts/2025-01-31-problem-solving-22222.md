@@ -67,9 +67,7 @@ $A = \sum_{i=1}^{\infty} {1 \over {2^i}} V_{a_i}  \\ (a_i = 1,2,3), \ \ ( V_{1},
 이는 **테일러 전개**에서 힌트를 얻을 수 있습니다. 테일러 전개에 의하면, $\sqrt{1+X}$는 아래와 같이 나타낼 수 있습니다.
 
 <p align="center">
-$
-\sqrt{1+X} = 1 + {1\over 2}X - {1\over8}X^2 + {1\over 16}X^3 - \cdots
-$
+$\sqrt{1+X} = 1 + {1\over 2}X - {1\over8}X^2 + {1\over 16}X^3 - \cdots$
 </p>
 
 즉, $\sqrt{F}$ 꼴의 식을 $F$의 polynomial한 식으로 바꿔서 전개를 할 수 있게 됩니다. 이 문제의 경우 $E[D^p {D^{\ast}}^q ]$의 값을 꽤 쉽게 구할 수 있기 때문에(후술됩니다), 이런 식의 전개가 매우 유효한 접근이라고 할 수 있겠습니다.
@@ -104,23 +102,19 @@ $E[(b+D)^p({b^{\ast}} + D^{\ast})^q] = E[(ae^{{\pi i} \over 3}+De^{{\pi i} \over
 위 property들로 $E[ D^p{D^{\ast}}^q ]$의 값의 점화식을 유도해봅시다. property (2), (3)을 사용하면, $6 \mid p-q$일 때, $E[D^p {D^{\ast}}^q]$는 아래와 같이 표현됩니다.
 
 <p align="center">
-$
-E[D^p {D^{\ast}}^q] = \sum_{x_i\in X_1} p(x=x_i)E[(x_i + {1 \over 2}D)^p (x_i^{\ast} + {1 \over 2}D^{\ast})^q ]
-\\ = {1\over3}E [ (0 + {1\over 2}D)^p(0 + {1 \over 2}D^{\ast} )^q ] + {2 \over 3}E [ ({1\over2} + {1\over 2}D)^p({1\over2} + {1 \over 2}D^{\ast} )^q ]
-$
+$E[D^p {D^{\ast}}^q] = \sum_{x_i\in X_1} p(x=x_i)E[(x_i + {1 \over 2}D)^p (x_i^{\ast} + {1 \over 2}D^{\ast})^q ]
+\\ = {1\over3}E [ (0 + {1\over 2}D)^p(0 + {1 \over 2}D^{\ast} )^q ] + {2 \over 3}E [ ({1\over2} + {1\over 2}D)^p({1\over2} + {1 \over 2}D^{\ast} )^q ]$
 </p>
 
 
 이를 통해 $E[D^i{D^{\ast}}^j]$의 점화식을 구할 수 있습니다. 
 
 <p align="center">
-$
-E[D^p {D^{\ast}}^q] = 
+$E[D^p {D^{\ast}}^q] = 
 \begin{cases}
 {2\over3} {1\over {2^{p+q}-1}} \sum_{i=0}^p \sum_{j=0}^q d_{p,q}(i,j) \times {_pC_i} {_qC_j} E[D^i {D^{\ast}}^j] & ( 6 \mid p-q )\\
 \phantom{11111111111111111111}0 & \text{otherwise}
-\end{cases}
-$
+\end{cases}$
 </p>
 
 (이때 $d_{p,q}(i, j) = 0 \ \text{if} \ (i,j)=(p,q),\ 1 \ \text{otherwise}$)
@@ -128,9 +122,7 @@ $
 이를 이용해 이전에 언급한 $E(DD^{\ast})$의 값을 구해보면,
 
 <p align="center">
-$
-E[D^1 {D^{\ast}}^1] = {2\over3} {1\over {2^{2}-1}} \sum_{i=0}^p \sum_{j=0}^q d_{p,q}(i,j) = {2\over9}(E[D^0{D^{\ast}}^0]+ E[D^0{D^{\ast}}^1] + E[D^1{D^{\ast}}^0]) = {2 \over 9}
-$
+$E[D^1 {D^{\ast}}^1] = {2\over3} {1\over {2^{2}-1}} \sum_{i=0}^p \sum_{j=0}^q d_{p,q}(i,j) = {2\over9}(E[D^0{D^{\ast}}^0]+ E[D^0{D^{\ast}}^1] + E[D^1{D^{\ast}}^0]) = {2 \over 9}$
 </p>
 임을 확인할 수 있습니다.
 
@@ -163,27 +155,22 @@ $
  이는 아래의 식정리를 통해 해결할 수 있습니다. (property 2, 3이 사용됩니다.)
 
 <p align="center">
-$
-E[|D|] =  {1\over 3} (E[ {|0 + {1\over2}D}| ]) +  {2\over 3} (E[ {|{1\over2} + {1\over2}D}| ]) \\
+$E[|D|] =  {1\over 3} (E[ {|0 + {1\over2}D}| ]) +  {2\over 3} (E[ {|{1\over2} + {1\over2}D}| ]) \\
 E[|D|] = {2 \over 5}E[|1 + D|] \\
 
 E[|1+D|] =  \sum_{x_i\in X, \ x_i \neq -1} p(x=x_i)(E[|1+{1\over2}x_i + {1\over2}D]) + {1\over9}(E[1-{1\over2}+{1\over2}D]) \\
 
 E[|1+D|] = {18 \over 17} \sum_{x_i\in X, \ x_i \neq -1} p(x=x_i)(E[|1+{1\over2}x_i + {1\over2}D]) \\
 
-E[|D|] = {36 \over 85} \sum_{x_i\in X, \ x_i \neq -1} p(x=x_i)(E[|1+{1\over2}x_i + {1\over2}D])
-
-$
+E[|D|] = {36 \over 85} \sum_{x_i\in X, \ x_i \neq -1} p(x=x_i)(E[|1+{1\over2}x_i + {1\over2}D])$
 </p>
 
 마지막 식에서 $|1+{1\over2}x_i|$의 값들은 모두 $|{3 \over 4} + {\sqrt{3} \over 4}i| \approx 0.866 $보다 크며, 각 $x_i$마다 식정리를 하면 $E[|1+UD|] = E[\sqrt{(1+UD)(1+U^{\ast}D^{\ast})} ]$, $|UD| < 0.7$ 꼴의 식이 나오게 됩니다. 따라서 각 $\sqrt{1+UD}$, $\sqrt{1+U^{\ast}D^{\ast}}$의 테일러 급수는 빠르게 수렴함이 보장되고, 각 식을 펼치면 나오는
 
 <p align="center">
-$
-E[\sqrt{1+UD} \sqrt{1+U^{\ast}D^{\ast}} ] \\
+$E[\sqrt{1+UD} \sqrt{1+U^{\ast}D^{\ast}} ] \\
 = E[(1 + \frac{1}{2}UD - \frac{1}{8} (UD)^2 + \cdots)(1 + \frac{1}{2}U^{\ast}D^{\ast} - \frac{1}{8} (U^{\ast}D^{\ast})^2 + \cdots) ] \\
-= E[1] + {1\over 2}UE[D] + {1\over 2}U^{\ast}E[D^{\ast}] + {1\over4}UU^{\ast}E[DD^{\ast}] + \cdots
-$
+= E[1] + {1\over 2}UE[D] + {1\over 2}U^{\ast}E[D^{\ast}] + {1\over4}UU^{\ast}E[DD^{\ast}] + \cdots$
 </p>
 를 적절한 $k$번째 항까지 계산하면 됩니다.
 
