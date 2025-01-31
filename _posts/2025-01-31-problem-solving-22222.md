@@ -88,7 +88,7 @@ $\sqrt{1+X} = 1 + {1\over 2}X - {1\over8}X^2 + {1\over 16}X^3 - \cdots$
 
 <p align="center">
 $E[D^p {D^{\ast}}^q ] = E[(e^{{\pi i \over 3}} D)^p {(e^{{\pi i \over 3}} D)^{\ast}}^q ] = E[D^p {D^{\ast}}^q ] e^{{(p-q)\pi i \over 3}}$
-<\p>
+</p>
 
 이 성립하며, 가정에 의해 $e^{{(p-q)\pi i \over 3}} \neq 1$이므로 $E[D^p {D^{\ast}}^q ] = 0$입니다.
 
@@ -116,11 +116,10 @@ $E[D^p {D^{\ast}}^q] = \sum_{x_i\in X_1} p(x=x_i)E[(x_i + {1 \over 2}D)^p (x_i^{
 이를 통해 $E[D^i{D^{\ast}}^j]$의 점화식을 구할 수 있습니다. 
 
 <p align="center">
-$E[D^p {D^{\ast}}^q] = 
-\begin{cases}
-{2\over3} {1\over {2^{p+q}-1}} \sum_{i=0}^p \sum_{j=0}^q d_{p,q}(i,j) \times {_pC_i} {_qC_j} E[D^i {D^{\ast}}^j] & ( 6 \mid p-q )\\
-\phantom{11111111111111111111}0 & \text{otherwise}
-\end{cases}$
+$6 \mid p-q \ : \ E[D^p {D^*}^q] = {2\over3} {1\over {2^{p+q}-1}} \sum_{i=0}^p \sum_{j=0}^q d_{p,q}(i,j) \times {_pC_i} {_qC_j} E[D^i {D^*}^j]$
+</p>
+<p align="center">
+$\text{else} \ : \ E[D^p {D^*}^q] = 0$
 </p>
 
 (이때 $d_{p,q}(i, j) = 0 \ \text{if} \ (i,j)=(p,q),\ 1 \ \text{otherwise}$)
