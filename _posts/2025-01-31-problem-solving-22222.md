@@ -177,10 +177,10 @@ $E[\sqrt{1+UD} \sqrt{1+U^{\ast}D^{\ast}} ] $
 </p>
 
 <p align="center">
-$\eq E[(1 + \frac{1}{2}UD - \frac{1}{8} (UD)^2 + \cdots)(1 + \frac{1}{2}U^{\ast}D^{\ast} - \frac{1}{8} (U^{\ast}D^{\ast})^2 + \cdots) ]$
+$= E[(1 + \frac{1}{2}UD - \frac{1}{8} (UD)^2 + \cdots)(1 + \frac{1}{2}U^{\ast}D^{\ast} - \frac{1}{8} (U^{\ast}D^{\ast})^2 + \cdots) ]$
 </p>
 <p align="center">
-$\eq E[1] + {1\over 2}UE[D] + {1\over 2}U^{\ast}E[D^{\ast}] + {1\over4}UU^{\ast}E[DD^{\ast}] + \cdots$
+$= E[1] + {1\over 2}UE[D] + {1\over 2}U^{\ast}E[D^{\ast}] + {1\over4}UU^{\ast}E[DD^{\ast}] + \cdots$
 </p>
 를 적절한 $k$번째 항까지 계산하면 됩니다.
 
