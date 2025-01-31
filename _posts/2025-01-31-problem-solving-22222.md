@@ -14,13 +14,13 @@ tags: [numerical analysis, problem solving]
 
 
 
-#### Definition of 지애 상수
+### Definition of 지애 상수
 
 지애 상수는 좌표평면의 점 $A(0,0),B(1,0),C( {1 \over 2} , { \sqrt 3 \over 2})$로 정의된 정삼각형 $ABC$에서 시작하여 만든 시에르핀스키 삼각형에서 독립적으로 균등하게 잡은 점 두 개의 유클리디안 거리의 기댓값입니다.
 
 <img src="/assets/images/poro/jie6.png" alt="jie1" style="zoom:72%;" />
 
-#### 균등하게 점 잡기?
+### 균등하게 점 잡기?
 
 지애 상수를 정의하기 위해서는 우선 시에르핀스키 삼각형에서 점을 균등하게 잡는 것을 수학적으로 정의할 수 있어야 합니다. 이는 시에르핀스키 삼각형의 재귀적 구조를 통해 해결할 수 있습니다.
 
@@ -36,7 +36,7 @@ tags: [numerical analysis, problem solving]
 <img src="/assets/images/poro/jie2.png" alt="jie2" width="300" />
 </p>
 
-#### 균등하게 선택한 점의 수식적 표현
+### 균등하게 선택한 점의 수식적 표현
 
 점이 수렴하는 과정에서 선택된 각 단계의 정삼각형의 중심을 이어보면, 아래의 그림을 얻을 수 있게 됩니다.
 
@@ -50,7 +50,7 @@ tags: [numerical analysis, problem solving]
 $A = \sum_{i=1}^{\infty} {1 \over {2^i}} V_{a_i}  \\ (a_i = 1,2,3), \ \ ( V_{1}, V_{2}, V_{3}) = ({1 \over {\sqrt 3}}i,\ {1 \over 2} -{1 \over {2\sqrt3}}i,\ -{1 \over 2} -{1 \over {2\sqrt3}}i )$
 </p>
 
-#### 두 점 사이 거리의 수식적 표현
+### 두 점 사이 거리의 수식적 표현
 
 이때까지 점 1개를 고르는 과정을 수식으로 표현했습니다. 하지만 지애 상수를 구하기 위해서는 두 점 사이의 거리의 기댓값을 구해야 하고, 따라서 이를 수식으로 다시 나타내야 합니다.
 
@@ -66,7 +66,7 @@ $A = \sum_{i=1}^{\infty} {1 \over {2^i}} V_{a_i}  \\ (a_i = 1,2,3), \ \ ( V_{1},
 
 
 
-#### How to get $|D|$?
+### How to get $|D|$?
 
 드디어 문제 정의를 마쳤습니다. 이제 이렇게 정의된 $|D|=\sqrt{DD^{\ast}}$의 기댓값 $E[\sqrt{DD^{\ast}}]$을 어떻게 정리해서 구할 지 알아봅시다.
 
@@ -82,7 +82,7 @@ $\sqrt{1+X} = 1 + {1\over 2}X - {1\over8}X^2 + {1\over 16}X^3 - \cdots$
 
 
 
-#### $E[D^p {D^{\ast q}}]$ 구하기
+### $E[D^p {D^{\ast q}}]$ 구하기
 
 전개된 테일러 식으로 지애 상수를 구하기 위해서는, 전개된 각 $E[D^p{D^{\ast q}} ]$의 값들을 알 수 있어야 합니다. 이를 구하기 위해 다음 4개의 property가 사용됩니다.
 
@@ -143,7 +143,7 @@ $E[D^1 {D^{\ast 1}}] = {2\over3} {1\over {2^{2}-1}} \sum_{i=0}^p \sum_{j=0}^q d_
 
 
 
-#### Calculating $E[ |D| ]$ - First try
+### Calculating $E[ |D| ]$ - First try
 
 이제 다시 본 문제를 생각해봅시다. 
 
@@ -161,7 +161,7 @@ $E[D^1 {D^{\ast 1}}] = {2\over3} {1\over {2^{2}-1}} \sum_{i=0}^p \sum_{j=0}^q d_
 
 
 
-##### Calculating $E[ |D| ]$ - Second try
+### Calculating $E[ |D| ]$ - Second try
 
  위 실패를 통해 저희는 중요한 교훈을 얻었습니다. $\sqrt{1+X}$의 테일러 급수를 사용하려면 $|X|$의 크기가 충분히 작아야 합니다. 엄밀하게는 $|X|$의 upper bound가 strictly하게 1보다 작아야 하며, 한정된 컴퓨터 자원으로 충분히 빠른 수렴 속도를 보장하려면 그래도 $|X| < 0.8$ 정도는 되어야 살아생전 지애 상수를 볼 수 있을 듯 합니다. 어떻게 하면 저런 꼴의 식을 얻을 수 있을까요?
 
@@ -195,7 +195,7 @@ $E[\sqrt{1+UD} \sqrt{1+U^{\ast}D^{\ast}} ] = E[(1 + \frac{1}{2}UD - \frac{1}{8} 
 
 
 
-##### 구현
+### 구현
 
 꽤 코드가 길어서, github link를 남깁니다.
 
