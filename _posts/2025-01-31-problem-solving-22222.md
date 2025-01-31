@@ -161,13 +161,13 @@ $E[|D|] =  {1\over 3} (E[ {|0 + {1\over2}D}| ]) +  {2\over 3} (E[ {|{1\over2} + 
 $E[|D|] = {2 \over 5}E[|1 + D|] $
 </p>
 <p align="center">
-$E[|1+D|] =  \sum_{x_i\in X, \ x_i \neq -1} p(x=x_i)(E[|1+{1\over2}x_i + {1\over2}D]) + {1\over9}(E[1-{1\over2}+{1\over2}D]) $
+$E[|1+D|] =  \sum_{x_i\in X, \ x_i \neq -1} p(x=x_i)(E[|1+{1\over2}x_i + {1\over2}D | ]) + {1\over9}(E[ | 1-{1\over2}+{1\over2}D | ]) $
 </p>
 <p align="center">
-$E[|1+D|] = {18 \over 17} \sum_{x_i\in X, \ x_i \neq -1} p(x=x_i)(E[|1+{1\over2}x_i + {1\over2}D]) $
+$E[|1+D|] = {18 \over 17} \sum_{x_i\in X, \ x_i \neq -1} p(x=x_i)(E[ |1+{1\over2}x_i + {1\over2}D | ]) $
 </p>
 <p align="center">
-$E[|D|] = {36 \over 85} \sum_{x_i\in X, \ x_i \neq -1} p(x=x_i)(E[|1+{1\over2}x_i + {1\over2}D])$
+$E[|D|] = {36 \over 85} \sum_{x_i\in X, \ x_i \neq -1} p(x=x_i)(E[ |1+{1\over2}x_i + {1\over2}D | ])$
 </p>
 
 마지막 식에서 $|1+{1\over2}x_i|$의 값들은 모두 $|{3 \over 4} + {\sqrt{3} \over 4}i| \approx 0.866 $보다 크며, 각 $x_i$마다 식정리를 하면 $E[|1+UD|] = E[\sqrt{(1+UD)(1+U^{\ast}D^{\ast})} ]$, $|UD| < 0.7$ 꼴의 식이 나오게 됩니다. 따라서 각 $\sqrt{1+UD}$, $\sqrt{1+U^{\ast}D^{\ast}}$의 테일러 급수는 빠르게 수렴함이 보장되고, 각 식을 펼치면 나오는
@@ -175,11 +175,12 @@ $E[|D|] = {36 \over 85} \sum_{x_i\in X, \ x_i \neq -1} p(x=x_i)(E[|1+{1\over2}x_
 <p align="center">
 $E[\sqrt{1+UD} \sqrt{1+U^{\ast}D^{\ast}} ] $
 </p>
+
 <p align="center">
-$ = E[(1 + \frac{1}{2}UD - \frac{1}{8} (UD)^2 + \cdots)(1 + \frac{1}{2}U^{\ast}D^{\ast} - \frac{1}{8} (U^{\ast}D^{\ast})^2 + \cdots) ]$
+$\eq E[(1 + \frac{1}{2}UD - \frac{1}{8} (UD)^2 + \cdots)(1 + \frac{1}{2}U^{\ast}D^{\ast} - \frac{1}{8} (U^{\ast}D^{\ast})^2 + \cdots) ]$
 </p>
 <p align="center">
-$ = E[1] + {1\over 2}UE[D] + {1\over 2}U^{\ast}E[D^{\ast}] + {1\over4}UU^{\ast}E[DD^{\ast}] + \cdots$
+$\eq E[1] + {1\over 2}UE[D] + {1\over 2}U^{\ast}E[D^{\ast}] + {1\over4}UU^{\ast}E[DD^{\ast}] + \cdots$
 </p>
 를 적절한 $k$번째 항까지 계산하면 됩니다.
 
