@@ -84,7 +84,13 @@ $\sqrt{1+X} = 1 + {1\over 2}X - {1\over8}X^2 + {1\over 16}X^3 - \cdots$
 
 (1) $6 \nmid p-q$면, $E[D^p {D^{\ast}}^q ] = 0$이 성립합니다.
 
-​	proof) $D$에서 각각의 확률 변수 $X_i$는 60도 대칭임을 관찰하면, $E[f(D)] = E[f(e^{{\pi i \over 3}} D)]$임을 관찰할 수 있습니다. 따라서 $E[D^p {D^{\ast}}^q ] = E[(e^{{\pi i \over 3}} D)^p {(e^{{\pi i \over 3}} D)^{\ast}}^q ] = E[D^p {D^{\ast}}^q ] e^{{(p-q)\pi i \over 3}}$이 성립하며, 가정에 의해 $e^{{(p-q)\pi i \over 3}} \neq 1$이므로 $E[D^p {D^{\ast}}^q ] = 0$입니다.
+​	proof) $D$에서 각각의 확률 변수 $X_i$는 60도 대칭임을 관찰하면, $E[f(D)] = E[f(e^{{\pi i \over 3}} D)]$임을 관찰할 수 있습니다. 따라서 
+
+<p align="center">
+$E[D^p {D^{\ast}}^q ] = E[(e^{{\pi i \over 3}} D)^p {(e^{{\pi i \over 3}} D)^{\ast}}^q ] = E[D^p {D^{\ast}}^q ] e^{{(p-q)\pi i \over 3}}$
+<\p>
+
+이 성립하며, 가정에 의해 $e^{{(p-q)\pi i \over 3}} \neq 1$이므로 $E[D^p {D^{\ast}}^q ] = 0$입니다.
 
 (2) $6 \mid p - q$면, $b = ae^{{\pi i} \over 3}$에 대해 $E[(a+D)^p({a^{\ast}} + D^{\ast})^q] = E[(b+D)^p({b^{\ast}} + D^{\ast})^q]$가 성립합니다.
 
@@ -175,6 +181,7 @@ $E[|D|] = {36 \over 85} \sum_{x_i\in X, \ x_i \neq -1} p(x=x_i)(E[ |1+{1\over2}x
 <p align="center">
 $E[\sqrt{1+UD} \sqrt{1+U^{\ast}D^{\ast}} ] = E[(1 + \frac{1}{2}UD - \frac{1}{8} (UD)^2 + \cdots)(1 + \frac{1}{2}U^{\ast}D^{\ast} - \frac{1}{8} (U^{\ast}D^{\ast})^2 + \cdots) ] = E[1] + {1\over 2}UE[D] + {1\over 2}U^{\ast}E[D^{\ast}] + {1\over4}UU^{\ast}E[DD^{\ast}] + \cdots$
 </p>
+
 를 적절한 $k$번째 항까지 계산하면 됩니다.
 
 계산한 각각의 값을 더하면, 최종적으로 지애 상수 $E[ |D| ]$의 수렴값을 구할 수 있게 됩니다!
