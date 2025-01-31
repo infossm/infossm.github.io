@@ -70,29 +70,29 @@ $A = \sum_{i=1}^{\infty} {1 \over {2^i}} V_{a_i}  \\ (a_i = 1,2,3), \ \ ( V_{1},
 $\sqrt{1+X} = 1 + {1\over 2}X - {1\over8}X^2 + {1\over 16}X^3 - \cdots$
 </p>
 
-즉, $\sqrt{F}$ 꼴의 식을 $F$의 polynomial한 식으로 바꿔서 전개를 할 수 있게 됩니다. 이 문제의 경우 $E[D^p {D^{\ast}}^q ]$의 값을 꽤 쉽게 구할 수 있기 때문에(후술됩니다), 이런 식의 전개가 매우 유효한 접근이라고 할 수 있겠습니다.
+즉, $\sqrt{F}$ 꼴의 식을 $F$의 polynomial한 식으로 바꿔서 전개를 할 수 있게 됩니다. 이 문제의 경우 $E[D^p {D^{\ast q}} ]$의 값을 꽤 쉽게 구할 수 있기 때문에(후술됩니다), 이런 식의 전개가 매우 유효한 접근이라고 할 수 있겠습니다.
 
 
 
 #### $E[D^p {D^{\ast}}^q]$ 구하기
 
-전개된 테일러 식으로 지애 상수를 구하기 위해서는, 전개된 각 $E[D^p{D^{\ast}}^q ]$의 값들을 알 수 있어야 합니다. 이를 구하기 위해 다음 4개의 property가 사용됩니다.
+전개된 테일러 식으로 지애 상수를 구하기 위해서는, 전개된 각 $E[D^p{D^{\ast q}} ]$의 값들을 알 수 있어야 합니다. 이를 구하기 위해 다음 4개의 property가 사용됩니다.
 
-(0) $E[D^0{D^{\ast}}^0]=1$입니다.
+(0) $E[D^0{D^{\ast 0}}]=1$입니다.
 
 ​	proof) 자명합니다.
 
-(1) $6 \nmid p-q$면, $E[D^p {D^{\ast}}^q ] = 0$이 성립합니다.
+(1) $6 \nmid p-q$면, $E[D^p {D^{\ast q}} ] = 0$이 성립합니다.
 
 ​	proof) $D$에서 각각의 확률 변수 $X_i$는 60도 대칭임을 관찰하면, $E[f(D)] = E[f(e^{{\pi i \over 3}} D)]$임을 관찰할 수 있습니다. 따라서 
 
 <p align="center">
-$E[D^p {D^{\ast}}^q ] = E[(e^{{\pi i \over 3}} D)^p {(e^{{\pi i \over 3}} D)^{\ast}}^q ] = E[D^p {D^{\ast}}^q ] e^{{(p-q)\pi i \over 3}}$
+$E[D^p {D^{\ast q}} ] = E[(e^{{\pi i \over 3}} D)^p {(e^{{\pi i \over 3}} D)^{\ast q}} ] = E[D^p {D^{\ast q}} ] e^{{(p-q)\pi i \over 3}}$
 </p>
 
-이 성립하며, 가정에 의해 $e^{{(p-q)\pi i \over 3}} \neq 1$이므로 $E[D^p {D^{\ast}}^q ] = 0$입니다.
+이 성립하며, 가정에 의해 $e^{{(p-q)\pi i \over 3}} \neq 1$이므로 $E[D^p {D^{\ast q}} ] = 0$입니다.
 
-(2) $6 \mid p - q$면, $b = ae^{{\pi i} \over 3}$에 대해 $E[(a+D)^p({a^{\ast}} + D^{\ast})^q] = E[(b+D)^p({b^{\ast}} + D^{\ast})^q]$가 성립합니다.
+(2) $6 \mid p - q$면, $b = ae^{{\pi i} \over 3}$에 대해 $E[(a+D)^p({a^{\ast}} + D^{\ast q})] = E[(b+D)^p({b^{\ast}} + D^{\ast})^q]$가 성립합니다.
 
 ​	proof) (1)의 증명과 유사하게, $E[f(D)] = E[f(e^{{\pi i \over 3}} D)]$가 성립하므로
 
