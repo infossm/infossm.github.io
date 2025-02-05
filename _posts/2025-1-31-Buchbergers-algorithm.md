@@ -42,7 +42,7 @@ $\lt P\gt=\\{p_1 f_1+...+p_n f_n|f_i\in K[x_1,x_2,...,x_m],p_i\in P\\}$과 같�
 
 다항식 환에서, 어떤 아이디얼의 "해"라는 것은, 해당 아이디얼에 속한 모든 다항식을 0으로 만드는 tuple $(x_1,...,x_n)$들의 집합입니다.
 
-Proposition(Hilbert's Basis Theorem). 모든 $K[x_1,...,x_n]$의 아이디얼 $I$에 대해서, 유한개의 다항식 $f_1,...,f_m\in K[x_1,...,x_n]$이 존재하여, $I=<f_1,...,f_m>$을 만족합니다.
+Proposition(Hilbert's Basis Theorem). 모든 $K[x_1,...,x_n]$의 아이디얼 $I$에 대해서, 유한개의 다항식 $f_1,...,f_m\in K[x_1,...,x_n]$이 존재하여, $I=\lt f_1,...,f_m\gt$을 만족합니다.
 # 개요
 
 본 포스팅에서는 궁극적으로 다음과 같은 문제를 해결하고 싶습니다:
@@ -70,19 +70,19 @@ Gröbner Basis라는 것은, 주어진 다항식들의 집합 $P$와 동일한 �
 이에 대해 설명하기 위해선, 우선 다항식을 구성하는 각 항들에 대한 순서를 도입해야 합니다.
 
 Definition. $K[x_1,...,x_n]$의 term order이라는 것은, 그 내부에 존재할 수 있는 모든 monomial들 $x^a=x_1^{a_1}x_2^{a_2}...x_n^{a_n}$에 대한 total order로, 다음의 두 조건을 만족합니다:
-1. $\forall a,b,c\in N^{n}, x^a<x^b\to x^{a+c}<x^{b+c}$
-2. $\forall a\in N^{n}/\\{ 0 \\}, 1<x^a$
+1. $\forall a,b,c\in N^{n}, x^a\lt x^b\to x^{a+c}\lt x^{b+c}$
+2. $\forall a\in N^{n}/\\{ 0 \\}, 1\lt x^a$
 
 예컨대, $n=2$인 경우를 생각해보면, 다음과 같은 전순서는 term order라는 사실을 알 수 있습니다:
 
-$1<x_1<x_2<x_1^2<x_1x_2<x_2^2<x_1^3<...$
+$1\lt x_1\lt x_2\lt x_1^2\lt x_1x_2\lt x_2^2\lt x_1^3\lt ...$
 
-이러한 전순서 하나를 고정한 채로 생각해보겠습니다. 그렇다면, 모든 다항식들은 최고차항을 가질 것입니다. 이러한 $f$의 최고차항에 해당되는 단항식을 $f$의 initial term이라고 하고, $in_<(f)=x^a$와 같이 표기하겠습니다.
+이러한 전순서 하나를 고정한 채로 생각해보겠습니다. 그렇다면, 모든 다항식들은 최고차항을 가질 것입니다. 이러한 $f$의 최고차항에 해당되는 단항식을 $f$의 initial term이라고 하고, $in_{\lt}(f)=x^a$와 같이 표기하겠습니다.
 
-어떤 아이디얼 $I$에 대해서, $in_<(I)=<in_<(f)|f\in I>$와 같이 정의하고, 이를 $I$의 initial ideal이라고 정의하겠습니다.
+어떤 아이디얼 $I$에 대해서, $in_{\lt}(I)=\lt in_{\lt}(f)|f\in I\gt$와 같이 정의하고, 이를 $I$의 initial ideal이라고 정의하겠습니다.
 이제 Gröbner Basis의 정의에 대해 설명하겠습니다.
 
-Definition. 어떤 아이디얼 $I$의 유한한 부분집합 $G$가 term order $<$에 대해서 Gröbner Basis이라는 것은, $in_<(I)=in_<(G)=<in_<(g)|g\in G>$를 만족한다는 것입니다.
+Definition. 어떤 아이디얼 $I$의 유한한 부분집합 $G$가 term order $<$에 대해서 Gröbner Basis이라는 것은, $in_{\lt}(I)=in_{\lt}(G)=\lt in_{\lt}(g)|g\in G\gt$를 만족한다는 것입니다.
 
 즉, 간단히 말해서 $G$의 initial ideal만으로 $I$의 initial ideal을 만들 수 있다면, $G$를 Gröbner Basis이라고 합니다.
 
@@ -98,7 +98,7 @@ Definition. 어떤 아이디얼 $I$의 유한한 부분집합 $G$가 term order 
 
 Buchberger's algorithm은 일차적으로 Gröbner Basis를 계산하는 알고리즘입니다. 해당 알고리즘은 다음과 같은 몇가지 사실들에 의거하여 Gröbner Basis를 계산합니다:
 
-Definition. 두 다항식 $p,q$에 대해서, 그들의 S-polynomial이라는 것은 $S(p,q)=ap-bq$인데, 여기서 $a,b$는 $in_<(ap)=in_M(bq)$를 만족하는 최소의 유일한 단항식 $a,b$입니다.
+Definition. 두 다항식 $p,q$에 대해서, 그들의 S-polynomial이라는 것은 $S(p,q)=ap-bq$인데, 여기서 $a,b$는 $in_{\lt}(ap)=in_M(bq)$를 만족하는 최소의 유일한 단항식 $a,b$입니다.
 
 어떤 다항식들의 집합 $G$에 대해서 $f$를 나눈다는 것은, 다음과 같은 알고리즘을 실행한다는 것입니다:
 
@@ -112,13 +112,13 @@ Definition. 두 다항식 $p,q$에 대해서, 그들의 S-polynomial이라는 �
 
 위의 알고리즘에 의해 결과 $r_0$가 도출된 것을, $f\to_Gr_0$와 같이 표기합니다.
 
-Proposition(Buchberger's Criterion). $I=<g_1,...,g_k>$에 대해서, $G=\\{ g_1,...,g_k \\}$가 $I$의 Gröbner Basis라는 것은, 모든 가능한 $f,g\in G$에 대해서, $S(f,g)\to_G 0$을 만족하는 것입니다.
+Proposition(Buchberger's Criterion). $I=\lt g_1,...,g_k\gt$에 대해서, $G=\\{ g_1,...,g_k \\}$가 $I$의 Gröbner Basis라는 것은, 모든 가능한 $f,g\in G$에 대해서, $S(f,g)\to_G 0$을 만족하는 것입니다.
 
 이 판정조건이 있다면, 이제 Buchberger's algorithm을 이해할 수 있습니다.
 
 Buchberger's algorithm:
 입력: 다항식들의 집합 $\\{ f_1,...,f_m \\}$
-출력: $I=<f_1,...,f_m>$의 Gröbner Basis $G$
+출력: $I=\lt f_1,...,f_m\gt$의 Gröbner Basis $G$
 작동과정:
 
 1. $G=\\{ f_1,...,f_m \\}$으로 설정.
@@ -126,7 +126,7 @@ Buchberger's algorithm:
    $f=0$이라면, 다른 $p,q$로 해당 스텝을 시도. 만약 모든 $p,q$의 선택에 대해 $S(p,q)\to 0$이라면, $G$를 반환.
    
 이 알고리즘이 만약 끝난다면, 그 결과물이 Gröbner Basis임은 명백합니다. 따라서 해당 알고리즘이 유한번의 연산 내에 끝난다는 사실만 증명하면 충분합니다.
-만약 해당 알고리즘이 계속 끝나지 않는다면, 2번 스텝에서 $f\neq 0$을 발견할 때마다, $I=\\{ in_<(g)|g\in G \\}$는 이전의 것을 strict하게 포함할 것입니다. 즉, 무한히 증가하는 아이디얼의 chain을 발견한 것이기 때문에, $Z[x_1,...,x_n]$이 뇌터 환이라는 사실에 모순입니다.
+만약 해당 알고리즘이 계속 끝나지 않는다면, 2번 스텝에서 $f\neq 0$을 발견할 때마다, $I=\\{ in_{\lt}(g)|g\in G \\}$는 이전의 것을 strict하게 포함할 것입니다. 즉, 무한히 증가하는 아이디얼의 chain을 발견한 것이기 때문에, $Z[x_1,...,x_n]$이 뇌터 환이라는 사실에 모순입니다.
 
 따라서, 위 알고리즘은 언젠간 종료됩니다.
 
@@ -142,7 +142,7 @@ Buchberger's algorithm:
 
 여전히 minimal한 Gröbner Basis는 여러개 존재할 수 있지만, 다음과 같은 강력한 성질이 성립합니다:
 
-Proposition. $G,H$가 $I$의 두 Gröbner Basis라고 할 때, 이들을 적절히 재배열하면 $in_<(g_i)=in_(h_i)$.
+Proposition. $G,H$가 $I$의 두 Gröbner Basis라고 할 때, 이들을 적절히 재배열하면 $in_{\lt}(g_i)=in_(h_i)$.
 
 이제 reduced Gröbner Basis를 정의합니다.
 
@@ -161,7 +161,7 @@ Definition. Gröbner Basis $G$가 reduced Gröbner Basis라는 것은, 이것이
 
 어떤 다항식 $p$가, 주어진 다항식들 $f_1,f_2,...,f_n$에 대해서 $p=f_1g_1+...+f_ng_n(g_i\in K[x_1,x_2,...,x_m])$과 같이 나타날 수 있는지 확인할 수 있을까요?
 
-이는 위에서 언급한 표기를 통해 나타내면, $p\in <f_1,...,f_n>$인지 판별하는 문제라고 볼 수 있습니다.
+이는 위에서 언급한 표기를 통해 나타내면, $p\in \lt f_1,...,f_n\gt$인지 판별하는 문제라고 볼 수 있습니다.
 
 $F=\\{ f_1,...,f_n \\}$에 Buchberger's algorithm을 적용하여 Gröbner Basis를 얻고, 그 위해서 $p$의 reduction 과정을 거쳐서 $p$가 $0$이 되도록 할 수 있다면, 아이디얼 안에 있다고 판정할 수 있습니다.
 
@@ -176,7 +176,7 @@ $F=\\{ f_1,...,f_n \\}$에 Buchberger's algorithm을 적용하여 Gröbner Basis
 
 이러한 체의 예시로는, 복소수체 $C$가 있습니다.
 
-Proposition. 위의 연립다항방정식이 해를 가질 필요충분조건은, $I=<f_1,...,f_m>$이 $1$을 포함하지 않는 것이다.
+Proposition. 위의 연립다항방정식이 해를 가질 필요충분조건은, $I=\lt f_1,...,f_m\gt$이 $1$을 포함하지 않는 것이다.
 # 3-Coloring problem
 놀랍게도, Gröbner Basis는 어떤 그래프가 3-colorable한지 판별하는데에 사용될 수도 있습니다!
 
@@ -186,7 +186,7 @@ Proposition. 위의 연립다항방정식이 해를 가질 필요충분조건은
 
 여기에서, 각 정점에 $0,1,-1$중 하나의 값을 할당하는 3-coloring을 고려할 것입니다.
 
-우선, 단순하게 생각해보면 $I=<x_1^3-x_1,x_2^3-x_2,...,x_n^3-x_n>$과 같은 아이디얼의 해는, $\\{ (x_1,...,x_n)|x_i\in \\{ -1,0,1\\} \\}$과 같음을 알 수 있습니다.
+우선, 단순하게 생각해보면 $I=\lt x_1^3-x_1,x_2^3-x_2,...,x_n^3-x_n\gt$과 같은 아이디얼의 해는, $\\{ (x_1,...,x_n)|x_i\in \\{ -1,0,1\\} \\}$과 같음을 알 수 있습니다.
 
 여기까지 오면 어떤 전략을 통해서 그래프의 3-coloring을 나타낼지 짐작할 수 있을 것입니다. 어떤 두 정점 $u,v$가 인접해있을 때, 그 둘에 할당되는 값이 다를때에만 0이 되는 다항식을 구성하면 됩니다!
 
@@ -195,7 +195,7 @@ Proposition. 위의 연립다항방정식이 해를 가질 필요충분조건은
 $x^2+xy+y^2-1$
 
 굳이 증명하지는 않겠지만, 해당 다항식은 $x\neq y$일때만 0이고, 그렇지 않을땐 항상 0이 아님을 쉽게 확인할 수 있습니다.
-결국, 다음과 같은 아이디얼 $I_C=<x_i^2+x_ix_j+x_j^2-1|v_iv_j\in E(G)>$의 해는, $G$의 가능한 모든 $3-coloring$임을 알 수 있습니다!
+결국, 다음과 같은 아이디얼 $I_C=\lt x_i^2+x_ix_j+x_j^2-1|v_iv_j\in E(G)\gt$의 해는, $G$의 가능한 모든 3-coloring임을 알 수 있습니다!
 
 비록 아이디얼에 대한 분석을 위해 Gröbner Basis를 계산하는 시간복잡도보다, 단순히 가능한 모든 coloring을 순회해보는 것의 시간복잡도가 느리지 않지만, Gröbner Basis를 통해서 3-coloring의 대수기하학적인 성질을 이해하고, 상황에 따라서는 더욱 빠른 계산을 제공하는 점은 분명한 이점일 것입니다.
 반대로 생각해보면 Gröbner Basis를 구하는 것은 적어도 NP-complete 이상의 어려움을 가지고 있음을 알려주기도 합니다.
