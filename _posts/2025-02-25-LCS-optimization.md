@@ -13,9 +13,9 @@ LCS(Longest Common Subsequence) 문제는 두 문자열의 공통 부분 수열 
 $DP[i][j]$를 $A$의 길이 $i$인 접두사와 $B$의 길이 $j$인 접두사의 LCS 길이로 정의하면 다음과 같은 점화식으로 $A$와 $B$의 LCS 길이를 구할 수 있습니다. ($A$, $B$의 길이는 각각 $n$, $m$입니다.)
 
 $DP[i][j]=\begin{cases}
-0 & \text{if }i=0\space or\space j=0
-\\DP[i-1][j-1]+1 & \text{if }A[i]=B[j]
-\\max(DP[i-1][j], DP[i][j-1]) & \text{otherwise }
+0 & \text{if }i=0\space or\space j=0 \\
+DP[i-1][j-1]+1 & \text{if }A[i]=B[j] \\
+max(DP[i-1][j], DP[i][j-1]) & \text{otherwise }
 \end{cases}$
 
 이 방법으로 LCS의 길이뿐 아니라 실제 LCS중 하나를 찾을 수 있습니다. $DP[0\dots n][0\dots m]$을 모두 채운 뒤 $(i, j)=(n, m)$에서 시작하여 $A[i]$와 $B[j]$가 같으면 $(i-1, j-1)$로 이동하면서 $A[i]$를 지금까지 찾은 LCS의 앞쪽에 붙입니다. $A[i]$와 $B[j]$가 다르면 $(i-1, j)$과 $(i, j-1)$ 중 $DP$ 테이블의 값이 더 큰 곳으로 이동합니다. 이를 $i$와 $j$ 중 하나가 0이 될 때까지 반복하면 됩니다. 
@@ -58,8 +58,8 @@ $$L^\prime[j]=(L^\prime[j-1]+(L^\prime[j-1] \And M))\vert (L^\prime[j-1]\& M^\pr
 이 과정을 $O(n\log n)$ LIS와 비슷한 방법으로 빠르게 할 수 있습니다. Bitset을 이용한 DP 최적화에서 했던 관찰을 그대로 적용하면 됩니다. DP 테이블의 각 행에서 $k$가 처음 등장하는 인덱스(=bitset $L^\prime$에서 0이 등장하는 인덱스)를 기록한 $T[i][k]$를 정의합니다. 그러면 다음 점화식을 얻을 수 있습니다. 
 
 $T[i][k]=\begin{cases}
-\text{smallest }j\text{ s.t. }x_i=y_i \text{ and }T[i-1][k-1]<j\leq T[i-1][k]
-\\T[i-1][k] \text{ if no such }j\text{ exists}
+\text{smallest }j\text{ s.t. }x_i=y_i \text{ and }T[i-1][k-1]<j\leq T[i-1][k] \\
+T[i-1][k] \text{ if no such }j\text{ exists}
 \end{cases}$
 
 $A$에 등장하는 각 문자에 대해 $B$에서 어느 위치에 등장하는지를 match list에 저장합니다. $A$의 $i$번째 문자에 대한 match list의 모든 원소 $j$에 대해 반복하면서 이분탐색으로 $k$를 찾습니다. $j<T[i-1][k]$라면 값을 업데이트하면서 $T[i-1][k-1]$에 해당하는 match point와 연결하여 LCS 복원에 활용합니다. 여기서 match list를 내림차순으로 정렬하면 $T[i]$를 뒤에서부터 채울 수 있는데 $T[i]$가 아닌 $T[i-1]$에 채우더라도 이분탐색의 결과에는 영향을 주지 않게 됩니다. 따라서 match list를 내림차순으로 전처리한 다음 1차원의 $T$에 업데이트를 반복하는 방식으로 공간을 아낄 수 있습니다. 
@@ -78,6 +78,7 @@ $A$에 등장하는 각 문자에 대해 $B$에서 어느 위치에 등장하는
 이 문제를 해결하기 위해, 또다시 bitset을 이용한 최적화를 적용할 수 있습니다. 지금까지 관찰에 따르면 match point$(i, j)$가 dominant하다는 것과 다음 식은 동치입니다.
 
 $$DP[i][j]=DP[i-1][j-1]+1=DP[i-1][j]+1=DP[i][j-1]$$
+
 이를 bit vector $L^\prime$으로 나타내면 $L^\prime [j-1]_i=1 \text{ and }L^\prime [j]_i=0$입니다. 그렇다면 $(L^\prime [j-1] \oplus L^\prime [j]) \And L^\prime [j-1]$의 결과에서 $i$번째 bit가 1이라면 $(i, j)$는 dominant match point입니다. 
 
 그러나 이것만으로는 기존 HS 알고리즘을 최적화하기 어렵습니다. 이렇게 얻은 dominant match point들을 정렬하는 작업이 추가로 필요하기 때문입니다. 이는 HS 알고리즘은 row-wise로 작동하는 반면 bit vector 연산은 column-wise로 작동하기에 생기는 문제입니다. 이 문제의 해결책으로, HS 알고리즘을 column-wise로 변형합니다. 매 column이 계산될 때마다 그때그때 dominant match point들을 찾고 이를 가지고 HS 알고리즘을 적용하면 됩니다. 
