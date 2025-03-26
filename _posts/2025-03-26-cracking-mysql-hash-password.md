@@ -102,5 +102,3 @@ method 2에서는 `nr`과 `nr2`를 독립적으로 만들어 구하는 방법을
 
 ## Conclusion
 Method 3을 통해 기존 논문의 $O(\sqrt{N} log N)$ 의 시간복잡도에 작동하는 알고리즘을 $O({N}^{1 \over 4} log N)$로 대폭 발전시킬 수 있었습니다. 보통 Problem solving과 realworld가 꽤 괴리가 있다는 인식이 있는데, 이번 글을 작성하면서 Meet in the middle을 포함한 몇몇 PS-테크닉을 통해 실제로 쓰였던 해시 함수의 cryptanalysis을 할 수 있었다는 점이 개인적으로 상당히 인상적으로 느껴졌습니다. 또, 현재는 `mysql_hash_password`가 사용되지 않고 있기에 이 글의 method를 직접적으로 사용하는 것은 힘들겠지만, 테크닉 자체는 다른 해시 함수 및 암호의 cryptanalysis를 하는데 충분히 적용을 해볼 수 있을 것이라고 생각합니다.
-
-링크를 통해 구현된 코드를 첨부합니다.
