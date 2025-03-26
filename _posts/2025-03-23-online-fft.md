@@ -10,7 +10,7 @@ tags: [algorithm, fft]
 
 이 글에서는 Block Decomposition을 이용한 Online FFT(Fast Fourier Transform) 구현 방법을 소개합니다.
 
-두 수열 $A$, $B$의 convolution $C$를 $\mathcal{O}(n\log n)$에 구하는 FFT 알고리즘은 두 수열 $A$, $B$가 모두 주어져야만 사용할 수 있습니다. Online FFT는 $A$, $B$의 원소 $a_i$, $b_i$가 하나씩 주어질 때 $c_i$를 온라인으로 구하는 알고리즘입니다. 이는 점화식이 convolution 형태이면서 $c_0, \cdots, c_{i-1}$을 알아야 $a_i$, $b_i$를 구할 수 있는 경우(예를 들면 카탈란 수 $C_{n+1} = \displaystyle\sum_{i=0}^n C_i C_{n-i}$)에 사용할 수 있습니다.
+두 수열 $A$, $B$의 convolution $C$를 $\mathcal{O}(n\log n)$에 구하는 FFT 알고리즘은 두 수열 $A$, $B$가 모두 주어져야만 사용할 수 있습니다. Online FFT는 $A$, $B$의 원소 $a_i$, $b_i$가 하나씩 주어질 때 $c_i$를 온라인으로 구하는 알고리즘입니다. 이는 점화식이 convolution 형태이면서 $c_0, \cdots, c_{i-1}$을 알아야 $a_i$, $b_i$를 구할 수 있는 경우(예를 들면 카탈란 수 $C_{n+1} = \sum_{i=0}^n C_i C_{n-i}$)에 사용할 수 있습니다.
 
 Online FFT는 여러 구현 방법이 있으며, 그중 가장 잘 알려진 방법은 분할 정복을 이용하는 $\mathcal{O}(n\log^2 n)$ 기법입니다. 이에 대해선 이미 좋은 글([링크](https://infossm.github.io/blog/2023/09/24/relaxed-convolution/))이 있으니, 일독을 권합니다. 다른 방법은 블록 단위로 2차원 grid를 분해해서 convolution을 구하는 기법이 있습니다. 첫 번째 방법은 비교적 잘 알려진 거 같지만, 두 번째 방법을 소개하는 글은 많이 못 본 거 같아서 글을 써봅니다.
 
@@ -18,11 +18,11 @@ Online FFT는 여러 구현 방법이 있으며, 그중 가장 잘 알려진 방
 
 일반적인 FFT 문제는 다음과 같이 정의됩니다.
 
-- $A = \{ a_0, \cdots, a_n \}$, $B = \{ b_0, \cdots, b_m \}$이 주어질 때 $c_k = \displaystyle\sum_{i+j=k}{a_i b_j}$로 정의되는 수열 $C = \{ c_0, \cdots, c_{n + m} \}$를 구해라.
+- $A = \{ a_0, \cdots, a_n \}$, $B = \{ b_0, \cdots, b_m \}$이 주어질 때 $c_k = \sum_{i+j=k}{a_i b_j}$로 정의되는 수열 $C = \{ c_0, \cdots, c_{n + m} \}$를 구해라.
 
 비슷하게, Online FFT 문제는 다음과 같이 정의됩니다.
 
-- $k = 0, 1, \cdots$에 대해 $a_k$, $b_k$가 주어질 때 $c_i = \displaystyle\sum_{i+j=k}{a_i b_j}$를 구해라.
+- $k = 0, 1, \cdots$에 대해 $a_k$, $b_k$가 주어질 때 $c_i = \sum_{i+j=k}{a_i b_j}$를 구해라.
 
 일반적인 FFT의 구현 방법인 Cooley-Tukey Algorithm은 $A$, $B$의 짝수항과 홀수항을 나눠 분할 정복을 하는 방식이기에 수열 $A$, $B$를 처음부터 알고 있어야 $C$를 계산할 수 있습니다. 따라서 Online FFT 문제를 해결하기 위해서는 다른 접근법이 필요합니다.
 
@@ -38,7 +38,7 @@ $[0, n] \times [0, n]$ 그리드 위의 $(i, j)$에 $a_i b_j$가 쓰여있다고
 
 이제 그리드를 $B \times B$ 크기의 블록으로 분할해, 일종의 Sqrt Decomposition으로 대각선의 합을 빠르게 계산하는 방법을 알아보겠습니다. 각 블록 $T_{i,j} = [iB, iB + B - 1] \times [jB, jB + B - 1]$을 이용하면 $[0, n] \times [0, n]$ 그리드를 $\mathcal{O}((\frac{n}{B})^2)$개의 영역으로 나눌 수 있고, $T_{i,j}$의 convolution을 구해 누적하면 대각선상의 합을 빠르게 구할 수 있습니다.
 
-각 블록의 모든 값이 주어질 때마다 $a_{iB}, \cdots, a_{iB + B - 1}$과 $b_{jB}, \cdots, b_{jB + B - 1}$의 convolution을 계산하여 $c_{(i + j)B}, \cdots, c_{(i + j)B + 2B - 2}$에 누적한다고 합시다. 이렇게 하면 $c_k$를 구할 때 $i + j = k$를 만족하는 $(i, j)$ 중 일부만 아직 반영되지 않았고, 나머지는 이미 convolution을 통해 추가된 상태일 것입니다. 이때 반영되지 않은 $(i, j)$의 개수는 $\mathcal{O}(B)$개이니, 직접 계산하며 $c_k$를 구할 수 있습니다. 예를 들어 Fig.2 처럼 $B = 8$인 경우, $c_35$를 구할 땐 파란색 영역의 $4 + 4 = 8$개의 값만 직접 계산을 하면 됩니다.
+각 블록의 모든 값이 주어질 때마다 $a_{iB}, \cdots, a_{iB + B - 1}$과 $b_{jB}, \cdots, b_{jB + B - 1}$의 convolution을 계산하여 $c_{(i + j)B}, \cdots, c_{(i + j)B + 2B - 2}$에 누적한다고 합시다. 이렇게 하면 $c_k$를 구할 때 $i + j = k$를 만족하는 $(i, j)$ 중 일부만 아직 반영되지 않았고, 나머지는 이미 convolution을 통해 추가된 상태일 것입니다. 이때 반영되지 않은 $(i, j)$의 개수는 $\mathcal{O}(B)$개이니, 직접 계산하며 $c_k$를 구할 수 있습니다. 예를 들어 Fig.2 처럼 $B = 8$인 경우, $c_{35}$를 구할 땐 파란색 영역의 $4 + 4 = 8$개의 값만 직접 계산을 하면 됩니다.
 
 이를 이용하면 Online FFT를 $\mathcal{O}((\frac{n}{B})^2 B\log B + nB)$에 구할 수 있습니다. 여기서 $B = \sqrt{n\log n}$으로 설정하면 $\mathcal{O}(n\sqrt{n \log n})$의 시간복잡도를 얻습니다.
 
@@ -190,7 +190,7 @@ Fig.3 과 같이 한 변의 길이가 $1, 2, \cdots, 2^k$인 정사각 영역으
 
 $a_i$, $b_i$가 주어지는 시점에 모든 값이 주어지는 블록을 찾아 순회하는 방법은 $\{ 0 \} / \{ 1, 2 \} / \{ 3, 4, 5, 6 \} / \{ 7, 8, 9, 10, 11, 12, 13, 14 \} / \cdots$ 단위로 구간을 나눈 뒤 각 구간에서 규칙을 구하면 찾을 수 있습니다. $i$가 속하는 구간의 길이를 $s$라 하면, $s = 2^{\lfloor \log_2(i + 1) \rfloor}$가 성립합니다. 또한 $i$가 구간에서 $k$번째 값이라 하면, 업데이트해야 하는 블록은 $t =$ <code>__builtin_ctz(k)</code>에 대해 $(0, i)$에서 아래로 내려가면서 만나는 변의 길이가 $1, 2, \cdots, 2^t$인 블록들과 그 블록의 $y = x$ 대칭 위치에 있는 블록입니다.
 
-시간복잡도는 길이가 $s$인 블록의 개수가 $\mathcal{O}(\frac{n}{s})$개이고, 각 블록의 convolution을 구해 누적하는 연산량이 $\mathcal{O}(s\log s)$이니 $\displaystyle\mathcal{O}(\sum_{s=2^0, 2^1, \cdots}(\frac{n}{s})s\log s) = \mathcal{O}(n\log^2 n)$입니다.
+시간복잡도는 길이가 $s$인 블록의 개수가 $\mathcal{O}(\frac{n}{s})$개이고, 각 블록의 convolution을 구해 누적하는 연산량이 $\mathcal{O}(s\log s)$이니 $\mathcal{O}(\sum(\frac{n}{s})s\log s) = \mathcal{O}(n\log^2 n)$입니다.
 
 구현 코드는 다음과 같습니다.
 
