@@ -4,7 +4,7 @@ layout: null
 [
   {% for post in site.posts %}
     {
-      "title"    : "{{ post.title | mathmode | escape }}",
+      "title"    : {{ post.title | mathmode | jsonify }},
       "category" : "{{ post.category }}",
       "tags"     : "{{ post.tags | array_to_sentence_string }}",
       "url"      : "{{ site.baseurl }}{{ post.url }}",
