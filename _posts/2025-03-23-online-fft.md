@@ -98,7 +98,7 @@ private:
 
 뒤의 Benchmarking에서 알아보겠지만, 실제 구현에서는 convolution의 오버헤드를 고려해 이론적 최적값인 $B = \sqrt{n\log n}$보다 약간 큰 $B = 8\,000$을 이용하는 게 더 효율적입니다.
 
-다음은 해당 방법으로 [BOJ 1067번](https://www.acmicpc.net/problem/1067) 문제를 해결하는 코드입니다: [http://boj.kr/08268a376d8443b69657e9806177b316](http://boj.kr/08268a376d8443b69657e9806177b316)
+다음은 해당 방법으로 [BOJ 1067번](https://www.acmicpc.net/problem/1067) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/08268a376d8443b69657e9806177b316)
 
 ## Online FFT - $\mathcal{O}(n\sqrt{n})$ using Sqrt Decomposition
 
@@ -174,7 +174,7 @@ private:
 };
 ```
 
-다음은 해당 방법으로 [BOJ 1067번](https://www.acmicpc.net/problem/1067) 문제를 해결하는 코드입니다: [http://boj.kr/75793bd3363e4a65a58f216742988779](http://boj.kr/75793bd3363e4a65a58f216742988779)
+다음은 해당 방법으로 [BOJ 1067번](https://www.acmicpc.net/problem/1067) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/75793bd3363e4a65a58f216742988779)
 
 ## Online FFT - $\mathcal{O}(n\log^2{n})$ using Block Decomposition
 
@@ -233,7 +233,7 @@ private:
 };
 ```
 
-다음은 해당 방법으로 [BOJ 1067번](https://www.acmicpc.net/problem/1067) 문제를 해결하는 코드입니다: [http://boj.kr/cb17b208dd074222863ac96c99684ddc](http://boj.kr/cb17b208dd074222863ac96c99684ddc)
+다음은 해당 방법으로 [BOJ 1067번](https://www.acmicpc.net/problem/1067) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/cb17b208dd074222863ac96c99684ddc)
 
 ## Online FFT - $\mathcal{O}(n\log^2 n)$ using DnC
 
@@ -241,7 +241,7 @@ private:
 
 $[l, r]$ 구간의 $c_k$ 값을 구할 때 $[l, m]$ 범위를 재귀 호출해 해당 범위의 $a_i$, $b_i$ 값을 구했다면, 해당 값이 $c_{m+1}, \cdots, c_r$에 미치는 영향력을 계산한 뒤 $[m + 1, r]$ 범위를 재귀 호출하며 남은 값을 계산할 수 있습니다. 이때 영향력은 $\mathcal{O}((r - l)\log(r - l))$에 계산할 수 있으니, $T(n) = 2T(n / 2) + \mathcal{O}(n\log n) = \mathcal{O}(n\log^2 n)$에 Online FFT를 구현할 수 있습니다.
 
-다음은 해당 방법으로 [BOJ 1067번](https://www.acmicpc.net/problem/1067) 문제를 해결하는 코드입니다: [http://boj.kr/6236c31b484843549c119a95aaa0cb75](http://boj.kr/6236c31b484843549c119a95aaa0cb75)
+다음은 해당 방법으로 [BOJ 1067번](https://www.acmicpc.net/problem/1067) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/6236c31b484843549c119a95aaa0cb75)
 
 ## Benchmarking
 
