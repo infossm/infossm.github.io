@@ -159,8 +159,12 @@ for (int i = 2; i <= n; i++) {
 
 ## References
 
-- [https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_row_%28CSR%2C_CRS_or_Yale_format%29](https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_row_%28CSR%2C_CRS_or_Yale_format%29)
-- [https://github.com/atcoder/ac-library/blob/master/atcoder/internal_csr.hpp](https://github.com/atcoder/ac-library/blob/master/atcoder/internal_csr.hpp)
-- [https://nyaannyaan.github.io/library/graph/static-graph.hpp](https://nyaannyaan.github.io/library/graph/static-graph.hpp)
-- [https://snippets.kiwiyou.dev/graph](https://snippets.kiwiyou.dev/graph)
-- [https://codeforces.com/blog/entry/135239](https://codeforces.com/blog/entry/135239)
+[1] [https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_row_%28CSR%2C_CRS_or_Yale_format%29](https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_row_%28CSR%2C_CRS_or_Yale_format%29)
+
+[2] [https://github.com/atcoder/ac-library/blob/master/atcoder/internal_csr.hpp](https://github.com/atcoder/ac-library/blob/master/atcoder/internal_csr.hpp)
+
+[3] [https://nyaannyaan.github.io/library/graph/static-graph.hpp](https://nyaannyaan.github.io/library/graph/static-graph.hpp)
+
+[4] [https://snippets.kiwiyou.dev/graph](https://snippets.kiwiyou.dev/graph)
+
+[5] [https://codeforces.com/blog/entry/135239](https://codeforces.com/blog/entry/135239)

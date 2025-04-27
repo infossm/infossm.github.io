@@ -271,9 +271,14 @@ FFT 자체가 난도가 있는 주제이기에 Online FFT는 상대적으로 진
 
 ## References
 
-- [https://infossm.github.io/blog/2023/09/24/relaxed-convolution/](https://infossm.github.io/blog/2023/09/24/relaxed-convolution/)
-- [https://infossm.github.io/blog/2023/10/24/relaxed-convolution-2/](https://infossm.github.io/blog/2023/10/24/relaxed-convolution-2/)
-- [https://blog.naver.com/jinhan814/223203500880](https://blog.naver.com/jinhan814/223203500880)
-- [https://codeforces.com/blog/entry/59452](https://codeforces.com/blog/entry/59452)
-- [https://www.acmicpc.net/blog/view/122](https://www.acmicpc.net/blog/view/122)
-- [https://qiita.com/Kiri8128/items/1738d5403764a0e26b4c#fn-siki](https://qiita.com/Kiri8128/items/1738d5403764a0e26b4c#fn-siki)
+[1] [https://infossm.github.io/blog/2023/09/24/relaxed-convolution/](https://infossm.github.io/blog/2023/09/24/relaxed-convolution/)
+
+[2] [https://infossm.github.io/blog/2023/10/24/relaxed-convolution-2/](https://infossm.github.io/blog/2023/10/24/relaxed-convolution-2/)
+
+[3] [https://blog.naver.com/jinhan814/223203500880](https://blog.naver.com/jinhan814/223203500880)
+
+[4] [https://codeforces.com/blog/entry/59452](https://codeforces.com/blog/entry/59452)
+
+[5] [https://www.acmicpc.net/blog/view/122](https://www.acmicpc.net/blog/view/122)
+
+[6] [https://qiita.com/Kiri8128/items/1738d5403764a0e26b4c#fn-siki](https://qiita.com/Kiri8128/items/1738d5403764a0e26b4c#fn-siki)
