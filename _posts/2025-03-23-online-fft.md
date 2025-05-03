@@ -106,7 +106,7 @@ private:
 
 Online FFT의 $\mathcal{O}((\frac{n}{B})^2 B\log B + nB) = \mathcal{O}(n\sqrt{n\log n})$ 구현에서 Fourier Transform의 성질을 잘 이용하면 DFT(Discrete Fourier Transform), IDFT(Inverse Discrete Fourier Transform)의 횟수를 줄일 수 있습니다.
 
-두 수열 $A$, $B$의 DFT를 각각 $\mathcal{F}(A)$, $\mathcal{F}(B)$라 하고, $\mathcal{F}(A + B) = \mathcal{F}(A) \times \mathcal{F}(B)$가 성립합니다. 이때 $+$는 element-wise sum을, $\times$는 element-wise product를 의미합니다. 이를 이용하면 $a_{iB}, \cdots, a_{iB + B - 1}$과 $b_{jB}, \cdots, b_{jB + B - 1}$의 DFT를 저장한 뒤, 각각 곱해서 누적하고 한 번에 IDFT를 적용하는 방식으로 DFT, IDFT의 횟수를 $\mathcal{O}(\frac{n}{B})$번으로 줄일 수 있습니다.
+두 수열 $A$, $B$의 DFT를 각각 $\mathcal{F}(A)$, $\mathcal{F}(B)$라 하면, $\mathcal{F}(A + B) = \mathcal{F}(A) \times \mathcal{F}(B)$가 성립합니다. 이때 $+$는 element-wise sum을, $\times$는 element-wise product를 의미합니다. 이를 이용하면 $a_{iB}, \cdots, a_{iB + B - 1}$과 $b_{jB}, \cdots, b_{jB + B - 1}$의 DFT를 저장한 뒤, 각각 곱해서 누적하고 한 번에 IDFT를 적용하는 방식으로 DFT, IDFT의 횟수를 $\mathcal{O}(\frac{n}{B})$번으로 줄일 수 있습니다.
 
 시간복잡도는 DFT, IDFT의 계산에 $\mathcal{O}(\frac{n}{B}B\log B)$, $\mathcal{F}(A) \times \mathcal{F}(B)$를 계산하고 누적하는데 $\mathcal{O}((\frac{n}{B})^2 B)$, 반영되지 않은 값을 계산하는데 $\mathcal{O}(nB)$의 연산량이 필요하니 $\mathcal{O}(n\log B + \frac{n^2}{B} + nB)$이고, $B = \sqrt{n}$일 때 $\mathcal{O}(n\sqrt{n})$이 됩니다.
 
@@ -188,7 +188,7 @@ Fig.3 과 같이 한 변의 길이가 $1, 2, \cdots, 2^k$인 정사각 영역으
 
 위의 사실에 의해 $c_k$를 구하는 시점에 필요한 값이 포함된 블록은 이미 convolution을 계산한 뒤입니다. 따라서 각 블록의 값이 모두 주어지는 시점에 convolution을 계산해 누적할 수만 있다면 $c_k$를 바로 구할 수 있습니다. 이를 위해 블록을 순회하는 방법을 알아봅시다.
 
-$a_i$, $b_i$가 주어지는 시점에 모든 값이 주어지는 블록을 찾아 순회하는 방법은 $\{ 0 \} / \{ 1, 2 \} / \{ 3, 4, 5, 6 \} / \{ 7, 8, 9, 10, 11, 12, 13, 14 \} / \cdots$ 단위로 구간을 나눈 뒤 각 구간에서 규칙을 구하면 찾을 수 있습니다. $i$가 속하는 구간의 길이를 $s$라 하면, $s = 2^{\lfloor \log_2(i + 1) \rfloor}$가 성립합니다. 또한 $i$가 구간에서 $k$번째 값이라 하면, 업데이트해야 하는 블록은 $t =$ <code>__builtin_ctz(k)</code>에 대해 $(0, i)$에서 아래로 내려가면서 만나는 변의 길이가 $1, 2, \cdots, 2^t$인 블록들과 그 블록의 $y = x$ 대칭 위치에 있는 블록입니다.
+$a_i$, $b_i$가 주어지는 시점에 모든 값이 주어지는 블록을 찾아 순회하는 방법은 $[0, 0], [1, 2], [3, 6], [7, 14], \cdots$ 단위로 구간을 나눈 뒤 각 구간에서 규칙을 구하면 찾을 수 있습니다. $i$가 속하는 구간의 길이를 $s$라 하면, $s = 2^{\lfloor \log_2(i + 1) \rfloor}$가 성립합니다. 또한 $i$가 구간에서 $k$번째 값이라 하면, 업데이트해야 하는 블록은 $t =$ <code>__builtin_ctz(k)</code>에 대해 $(0, i)$에서 아래로 내려가면서 만나는 변의 길이가 $1, 2, \cdots, 2^t$인 블록들과 그 블록의 $y = x$ 대칭 위치에 있는 블록입니다.
 
 시간복잡도는 길이가 $s$인 블록의 개수가 $\mathcal{O}(\frac{n}{s})$개이고, 각 블록의 convolution을 구해 누적하는 연산량이 $\mathcal{O}(s\log s)$이니 $\mathcal{O}(\sum(\frac{n}{s})s\log s) = \mathcal{O}(n\log^2 n)$입니다.
 
