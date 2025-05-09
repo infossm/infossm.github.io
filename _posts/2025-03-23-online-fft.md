@@ -249,11 +249,11 @@ $[l, r]$ 구간의 $c_k$ 값을 구할 때 $[l, m]$ 범위를 재귀 호출해 �
 
 Fig.4 는 $n = 1, \cdots, 10^6$ 범위에서 각 Online FFT 구현 방식의 수행 시간을 측정한 결과입니다.
 
-- <code>naive</code>: Naive한 $\mathcal{O}(n^2)$ 구현, $n = 10^4$ 이상부터 급격히 성능 저하
-- <code>sqrtlog</code>: Sqrt Decomposition 기반 $\mathcal{O}(n\sqrt{n\log n})$ 구현. ($B = 6\,000, 8\,000, 10\,000$)
-- <code>sqrt</code>: Sqrt Decomposition 기반 $\mathcal{O}(n\sqrt n)$ 구현. ($B = 2^9, 2^{10}, 2^{11}$)
-- <code>logsquare</code>: Block Decomposition 기반 $\mathcal{O}(n\log^2 n)$ 구현.
-- <code>logsquare_dnc</code>: DnC 기반 $\mathcal{O}(n\log^2 n)$ 구현.
+- <code>naive</code>: Naive한 $\mathcal{O}(n^2)$ 구현
+- <code>sqrtlog</code>: Sqrt Decomposition 기반 $\mathcal{O}(n\sqrt{n\log n})$ 구현 ($B = 6\,000, 8\,000, 10\,000$)
+- <code>sqrt</code>: Sqrt Decomposition 기반 $\mathcal{O}(n\sqrt n)$ 구현 ($B = 2^9, 2^{10}, 2^{11}$)
+- <code>logsquare</code>: Block Decomposition 기반 $\mathcal{O}(n\log^2 n)$ 구현
+- <code>logsquare_dnc</code>: DnC 기반 $\mathcal{O}(n\log^2 n)$ 구현
 
 측정 결과를 보면 $n$이 커짐에 따라 알고리즘의 수행 시간이 실제 시간복잡도에 따라 증가함을 알 수 있습니다. 이때 $n$이 $200\,000$ 이하로 작을 땐 <code>sqrt</code>가 <code>logsquare_dnc</code>보다 빠른 것과 같이 Sqrt Decomposition 기반 알고리즘도 충분히 빠른 성능을 보임을 알 수 있습니다.
 
