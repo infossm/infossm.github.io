@@ -3,7 +3,7 @@ layout: post
 title: "Block Decomposition을 이용한 Online FFT 구현"
 date: 2025-03-23
 author: jinhan814
-tags: [algorithm, fft]
+tags: [algorithm, FFT]
 ---
 
 ## Introduction
