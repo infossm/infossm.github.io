@@ -42,7 +42,7 @@ matmul<<<DimGrid, DimBlock>>>(A, B, C, ...);
 <p align="center"><img src="/assets/images/cuda-matmul/001.png"></p>
 
 이제제 가장 안쪽 반복문을 실행하여 계산한 인덱스에 해당하는 $C$의 값을 계산하면 됩니다. $C$에 반복적으로 접근하는 대신, 임시 변수를 만들어 합을 구한 다음 최종 결과만 저장하는 것이 좋습니다. 
-<details>
+<details markdown="1">
 <summary>코드</summary>
 
 ```cpp
@@ -80,7 +80,7 @@ Shared memory 배열의 크기를 block의 크기와 같게 설정한다면 하�
 int thread_id=threadIdx.z*(blockDim.y*blockDim.x)+threadIdx.y*blockDim.x+threadIdx.x;
 ```
 
-<details>
+<details markdown="1">
 <summary>코드</summary>
 
 ```cpp
@@ -119,7 +119,7 @@ __global__ void matmul2(const float *A, const float *B, float *C, int H, int W, 
 
 <p align="center"><img src="/assets/images/cuda-matmul/004.png"></p>
 
-<details>
+<details markdown="1">
 <summary>코드</summary>
 
 ```cpp
@@ -187,7 +187,7 @@ float형 대신 float4를 활용하면 한 번에 여러 개의 float를 Shared 
 float를 float4 형식으로 불러오기 위해서는 type cast가 필요합니다. reinterpret_cast를 이용하면 됩니다. 
 
 Shared memory에서 register으로 불러올 때도 vectorization을 사용하기 위해서는 필요에 따라 Shared memory를 transpose해야 합니다. Global memory에서 가져온 값을 float4 형식 변수에 저장하고, 4개의 float 값을 transpose된 위치에 각각 넣으면 됩니다. 다음은 register blocking과 vectorization을 적용한 코드입니다. 
-<details>
+<details markdown="1">
 <summary>코드</summary>
 
 ```cpp
@@ -265,7 +265,7 @@ __global__ void matmul4(float *A, float *B, float *C, int H, int W, int K){
 
 다만 Shared memory를 2배로 사용하게 되고 Multiprocessor 당 Shared memory 크기의 제한이 있습니다. 그러므로 활성화된 thread의 수는 절반까지 줄어들 수 있습니다. 그러므로 이 방식은 Shared memory가 아닌 다른 자원에 의해 실행 속도에 병목현상이 생겼을 때 활용할 수 있습니다. 
 
-<details>
+<details markdown="1">
 <summary>코드</summary>
 
 ```cpp
