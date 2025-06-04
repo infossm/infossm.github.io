@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Montgomery, Barrett Reduction을 이용한 모듈러 연산의 고속화"
+title: "Barrett, Montgomery Reduction을 이용한 모듈러 연산의 고속화"
 date: 2025-06-03
 author: jinhan814
 tags: [algorithm, mathematics, problem-solving]
