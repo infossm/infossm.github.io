@@ -18,15 +18,15 @@ tags: [algorithm, mathematics, problem-solving]
 
 ## 2. Barrett Reduction
 
-Barrett Reduction은 $0 \leq n < m^2$일 때,
+Barrett Reduction은 $0 \leq n < m^2$일 때, 충분히 큰 $k$에 대해
 
 $$
 \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k} \right\rfloor
 $$
 
-이 성립하는 충분히 큰 $k$를 찾아 나눗셈을 곱셈과 시프트 연산으로 대체하는 정수 나눗셈 최적화 기법입니다.
+가 성립함을 이용하는 정수 나눗셈 최적화 기법입니다. 여기서 $\left\lceil \frac{2^k}{m} \right\rceil$은 미리 계산할 수 있고, $2^k$로 나누는 과정은 시프트 연산으로 처리할 수 있습니다.
 
-// here
+등식이 성립하는 $k$의 범위를 구하기 위해 먼저 다음의 보조 정리를 증명하겠습니다.
 
 **Lemma 1.** Floor Equality
 
@@ -34,8 +34,8 @@ $$
 \begin{align*}
 &0 \leq a &&(a \in \mathbb{Z}) \\
 &2 \leq b &&(b \in \mathbb{Z}) \\
-&0 \leq e < \dfrac{1}{b} &&(e \in \mathbb{R}) \\
-&\Rightarrow \quad \left\lfloor \dfrac{a}{b} + e \right\rfloor = \left\lfloor \dfrac{a}{b} \right\rfloor
+&0 \leq e < \frac{1}{b} &&(e \in \mathbb{R}) \\
+&\Rightarrow \quad \left\lfloor \frac{a}{b} + e \right\rfloor = \left\lfloor \frac{a}{b} \right\rfloor
 \end{align*}
 $$
 
@@ -43,14 +43,14 @@ $$
 
 $$
 \begin{align*}
-& \quad a = qb + r \quad (q = \lfloor \frac{a}{b} \rfloor, \, 0 \leq r \leq b - 1) & \\
+& \quad a = qb + r \quad (q = \lfloor \frac{a}{b} \rfloor, 0 \leq r \leq b - 1) & \\
 &\Rightarrow \quad 0 \leq \frac{r}{b} \leq 1 - \frac{1}{b} \\
 &\Rightarrow \quad 0 \leq \frac{r}{b} + e < 1 \\
 &\therefore \quad \left\lfloor \frac{a}{b} + e \right\rfloor = \left\lfloor q + \left( \frac{r}{b} + e \right) \right\rfloor = q \quad \square
 \end{align*}
 $$
 
-// here
+위의 결과를 이용하면 $\frac{n}{m} + e = n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k}$에서 $0 \leq e < \frac{1}{m}$가 성립하는 것을 보이며 $k$를 구할 수 있습니다.
 
 **Lemma 2.** Barrett Approximation
 
@@ -58,7 +58,7 @@ $$
 \begin{align*}
 &0 \leq n < m^2 &&(n \in \mathbb{Z}) \\
 &2 \leq m       &&(m \in \mathbb{Z}) \\
-&2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n,\, m) < 2^k &&(k \in \mathbb{Z}) \\
+&2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) < 2^k &&(k \in \mathbb{Z}) \\
 &\Rightarrow \quad \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k} \right\rfloor
 \end{align*}
 $$
@@ -67,10 +67,13 @@ $$
 
 $$
 \begin{align*}
-&s = \left\lfloor \log_2 (m - 1) \right\rfloor = \left\lceil \log_2 m \right\rceil - 1 && \Rightarrow \quad 2^s < m \leq 2^{s+1} \\
-&x = \left\lceil \frac{2^k}{m} \right\rceil,\quad r = x \cdot m - 2^k && \Rightarrow \quad 0 \leq r < m \\
-&e = \frac{n x}{2^k} - \frac{n}{m} && \Rightarrow \quad 0 \leq e < \frac{1}{m} \\
-&\therefore \quad \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor \frac{n x}{2^k} \right\rfloor && \quad \square
+s &= \left\lfloor \log_2(m - 1) \right\rfloor = \left\lceil \log_2 m \right\rceil - 1 &&(n < 2^{k - s - 1}, \quad 2^s < m \leq 2^{s+1}) \\
+x &= \left\lceil \frac{2^k}{m} \right\rceil \\
+r &= x m - 2^k &&(0 \leq r < m) \\
+e &= \frac{nx}{2^k} - \frac{n}{m} = \frac{n}{m}(\frac{xm}{2^k} - \frac{2^k}{2^k}) = \frac{n r}{m 2^k} &&(0 \leq e) \\
+&\Rightarrow e - \frac{1}{m} = \frac{1}{m}(\frac{nr}{2^k} - \frac{2^k}{2^k}) < 0 &&(\because nr < nm < 2^{k-s-1} \cdot 2^{s+1} = 2^k) \\
+&\Rightarrow 0 \leq e < \frac{1}{m} \\
+&\Rightarrow \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor \frac{n}{m} + e \right\rfloor = \left\lfloor \frac{nx}{2^k} \right\rfloor = \left\lfloor n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k} \right\rfloor \quad \square \\
 \end{align*}
 $$
 
