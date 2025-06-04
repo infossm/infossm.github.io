@@ -32,9 +32,9 @@ $$
 
 $$
 \begin{align*}
-&0 \leq a &&(a \in \mathbb{Z}) \\[1.2ex]
-&2 \leq b &&(b \in \mathbb{Z}) \\[1.2ex]
-&0 \leq e < \dfrac{1}{b} &&(e \in \mathbb{R}) \\[1.5ex]
+&0 \leq a &&(a \in \mathbb{Z}) \\
+&2 \leq b &&(b \in \mathbb{Z}) \\
+&0 \leq e < \dfrac{1}{b} &&(e \in \mathbb{R}) \\
 &\Rightarrow \quad \left\lfloor \dfrac{a}{b} + e \right\rfloor = \left\lfloor \dfrac{a}{b} \right\rfloor
 \end{align*}
 $$
@@ -43,11 +43,11 @@ $$
 
 $$
 \begin{align*}
-& \quad a = qb + r \quad (q = \lfloor \frac{a}{b} \rfloor, \, 0 \leq r \leq b - 1) & \\[1.2ex]
+& \quad a = qb + r \quad (q = \lfloor \frac{a}{b} \rfloor, \, 0 \leq r \leq b - 1) & \\
 
-&\Rightarrow \quad 0 \leq \frac{r}{b} \leq 1 - \frac{1}{b} \\[1.2ex]
+&\Rightarrow \quad 0 \leq \frac{r}{b} \leq 1 - \frac{1}{b} \\
 
-&\Rightarrow \quad 0 \leq \frac{r}{b} + e < 1 \\[1.2ex]
+&\Rightarrow \quad 0 \leq \frac{r}{b} + e < 1 \\
 
 &\therefore \quad \left\lfloor \frac{a}{b} + e \right\rfloor 
 = \left\lfloor q + \left( \frac{r}{b} + e \right) \right\rfloor 
@@ -61,9 +61,9 @@ $$
 
 $$
 \begin{align*}
-&0 \leq n < m^2 &&(n \in \mathbb{Z}) \\[1.2ex]
-&2 \leq m       &&(m \in \mathbb{Z}) \\[1.2ex]
-&2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n,\, m) < 2^k &&(k \in \mathbb{Z}) \\[1.5ex]
+&0 \leq n < m^2 &&(n \in \mathbb{Z}) \\
+&2 \leq m       &&(m \in \mathbb{Z}) \\
+&2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n,\, m) < 2^k &&(k \in \mathbb{Z}) \\
 &\Rightarrow \quad \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k} \right\rfloor
 \end{align*}
 $$
@@ -73,13 +73,13 @@ $$
 $$
 \begin{align*}
 &s = \left\lfloor \log_2 (m - 1) \right\rfloor = \left\lceil \log_2 m \right\rceil - 1 
-&&\Rightarrow \quad 2^s < m \leq 2^{s+1} \\[1.2ex]
+&&\Rightarrow \quad 2^s < m \leq 2^{s+1} \\
 
 &x = \left\lceil \frac{2^k}{m} \right\rceil,\quad r = x \cdot m - 2^k 
-&&\Rightarrow \quad 0 \leq r < m \\[1.2ex]
+&&\Rightarrow \quad 0 \leq r < m \\
 
 &e = \frac{n x}{2^k} - \frac{n}{m}
-&&\Rightarrow \quad 0 \leq e < \frac{1}{m} \\[1.5ex]
+&&\Rightarrow \quad 0 \leq e < \frac{1}{m} \\
 
 &\therefore \quad \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor \frac{n x}{2^k} \right\rfloor 
 &&\quad \square
