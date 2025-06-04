@@ -44,11 +44,8 @@ $$
 $$
 \begin{align*}
 & \quad a = qb + r \quad (q = \lfloor \frac{a}{b} \rfloor, \, 0 \leq r \leq b - 1) & \\
-
 &\Rightarrow \quad 0 \leq \frac{r}{b} \leq 1 - \frac{1}{b} \\
-
 &\Rightarrow \quad 0 \leq \frac{r}{b} + e < 1 \\
-
 &\therefore \quad \left\lfloor \frac{a}{b} + e \right\rfloor = \left\lfloor q + \left( \frac{r}{b} + e \right) \right\rfloor = q \quad \square
 \end{align*}
 $$
@@ -70,15 +67,9 @@ $$
 
 $$
 \begin{align*}
-&s = \left\lfloor \log_2 (m - 1) \right\rfloor = \left\lceil \log_2 m \right\rceil - 1 
-&&\Rightarrow \quad 2^s < m \leq 2^{s+1} \\
-
-&x = \left\lceil \frac{2^k}{m} \right\rceil,\quad r = x \cdot m - 2^k 
-&&\Rightarrow \quad 0 \leq r < m \\
-
-&e = \frac{n x}{2^k} - \frac{n}{m}
-&&\Rightarrow \quad 0 \leq e < \frac{1}{m} \\
-
+&s = \left\lfloor \log_2 (m - 1) \right\rfloor = \left\lceil \log_2 m \right\rceil - 1 && \Rightarrow \quad 2^s < m \leq 2^{s+1} \\
+&x = \left\lceil \frac{2^k}{m} \right\rceil,\quad r = x \cdot m - 2^k && \Rightarrow \quad 0 \leq r < m \\
+&e = \frac{n x}{2^k} - \frac{n}{m} && \Rightarrow \quad 0 \leq e < \frac{1}{m} \\
 &\therefore \quad \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor \frac{n x}{2^k} \right\rfloor && \quad \square
 \end{align*}
 $$
