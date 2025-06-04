@@ -49,9 +49,7 @@ $$
 
 &\Rightarrow \quad 0 \leq \frac{r}{b} + e < 1 \\
 
-&\therefore \quad \left\lfloor \frac{a}{b} + e \right\rfloor 
-= \left\lfloor q + \left( \frac{r}{b} + e \right) \right\rfloor 
-= q \quad \square
+&\therefore \quad \left\lfloor \frac{a}{b} + e \right\rfloor = \left\lfloor q + \left( \frac{r}{b} + e \right) \right\rfloor = q \quad \square
 \end{align*}
 $$
 
@@ -81,8 +79,7 @@ $$
 &e = \frac{n x}{2^k} - \frac{n}{m}
 &&\Rightarrow \quad 0 \leq e < \frac{1}{m} \\
 
-&\therefore \quad \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor \frac{n x}{2^k} \right\rfloor 
-&&\quad \square
+&\therefore \quad \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor \frac{n x}{2^k} \right\rfloor && \quad \square
 \end{align*}
 $$
 
