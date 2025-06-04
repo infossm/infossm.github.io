@@ -26,7 +26,7 @@ $$
 
 가 성립함을 이용하는 정수 나눗셈 최적화 기법입니다. 여기서 $\left\lceil \frac{2^k}{m} \right\rceil$은 미리 계산해둔 뒤 곱할 수 있고, $2^k$로 나누는 과정은 시프트 연산으로 처리할 수 있습니다.
 
-등식이 성립하는 $k$의 범위를 구하기 위해 먼저 다음의 보조 정리를 증명하겠습니다.
+등식이 성립하는 $k$를 구하기 위해 먼저 다음의 보조 정리를 증명하겠습니다.
 
 **Lemma 1.** Floor Equality
 
@@ -89,9 +89,9 @@ using u128 = unsigned __int128;
 using u64 = unsigned long long;
 using u32 = unsigned int;
 
-struct fast_div {
-	fast_div() {}
-	fast_div(u32 m) : m(m), x(((u128(1) << 93) + m - 1) / m) {}
+struct barrett {
+	barrett() {}
+	barrett(u32 m) : m(m), x(((u128(1) << 93) + m - 1) / m) {}
 	u64 div(u64 n) {
 		return n * x >> 93;
 	}
@@ -105,9 +105,11 @@ private:
 };
 ```
 
-$0 \leq n < m^2$인 정수 $n$에 대해 $\left\lfloor \frac{n}{m} \right\rfloor$를 빠르게 계산할 수 있으면, $0 \leq a, b < m$인 두 정수에 대해 $\left\lfloor \frac{ab}{m} \right\rfloor$를 빠르게 계산할 수 있고, 이를 이용해 $\mathbb{Z}_m$에서의 연산을 구현할 수 있습니다.
+$0 \leq n < m^2$인 정수 $n$에 대해 $\left\lfloor \frac{n}{m} \right\rfloor$를 빠르게 계산할 수 있으면, $0 \leq a, b < m$인 두 정수에 대해 $a \bmod b = ab - \left\lfloor \frac{ab}{m} \right\rfloor m$를 빠르게 계산할 수 있고, 이를 이용해 $\mathbb{Z}_m$에서의 연산을 구현할 수 있습니다.
 
-사용 예시는 다음과 같습니다. [(코드)](http://boj.kr/24aedfaa42c04f92bd55c85670f26d22)
+사용 예시는 다음과 같습니다. [(코드)](http://boj.kr/233deb0addff442ebdd782ac500d9298)
+
+**Note.** GNU 계열 컴파일러(GCC/Clang)와 달리 Microsoft Visual C++(MSVC)는 <code>__int128</code> 자료형을 지원하지 않기에 128비트 정수 곱셈을 직접 구현해야 합니다. 같은 이유로 $m$이 <code>long long</code> 범위라면 256비트 정수 곱셈을 직접 구현해야 합니다.
 
 ## 3. Montgomery Reduction
 
@@ -119,4 +121,12 @@ $0 \leq n < m^2$인 정수 $n$에 대해 $\left\lfloor \frac{n}{m} \right\rfloor
 
 [2] [https://modoocode.com/313](https://modoocode.com/313)
 
-[9] [https://cp-algorithms.com/algebra/montgomery_multiplication.html](https://cp-algorithms.com/algebra/montgomery_multiplication.html)
+[3] [https://cp-algorithms.com/algebra/montgomery_multiplication.html](https://cp-algorithms.com/algebra/montgomery_multiplication.html)
+
+[4] [https://en.algorithmica.org/hpc/number-theory/montgomery/](https://en.algorithmica.org/hpc/number-theory/montgomery/)
+
+[5] [https://codeforces.com/blog/entry/103374](https://codeforces.com/blog/entry/103374)
+
+[6] [https://simonlindholm.github.io/files/bincoef.pdf](https://simonlindholm.github.io/files/bincoef.pdf)
+
+[7] [https://github.com/atcoder/ac-library/blob/master/atcoder/internal_math.hpp](https://github.com/atcoder/ac-library/blob/master/atcoder/internal_math.hpp)
