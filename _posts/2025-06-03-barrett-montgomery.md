@@ -59,7 +59,7 @@ $$
 \begin{align*}
 &0 \leq n < m^2 &&(n \in \mathbb{Z}) \\
 &2 \leq m       &&(m \in \mathbb{Z}) \\
-&2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) < 2^k &&(k \in \mathbb{Z}) \\
+&2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) \leq 2^k &&(k \in \mathbb{Z}) \\
 &\Rightarrow \quad \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k} \right\rfloor
 \end{align*}
 $$
@@ -68,11 +68,11 @@ $$
 
 $$
 \begin{align*}
-s &= \left\lfloor \log_2(m - 1) \right\rfloor = \left\lceil \log_2 m \right\rceil - 1 &&(n < 2^{k - s - 1}, \; 2^s < m \leq 2^{s+1}) \\
+s &= \left\lfloor \log_2(m - 1) \right\rfloor = \left\lceil \log_2 m \right\rceil - 1 &&(n \leq 2^{k - s - 1}, \; 2^s < m \leq 2^{s+1}) \\
 x &= \left\lceil \frac{2^k}{m} \right\rceil \\
 r &= x m - 2^k &&(0 \leq r < m) \\
 e &= \frac{nx}{2^k} - \frac{n}{m} = \frac{n}{m}(\frac{xm}{2^k} - \frac{2^k}{2^k}) = \frac{n r}{m 2^k} &&(0 \leq e) \\
-  &\Rightarrow e - \frac{1}{m} = \frac{1}{m}(\frac{nr}{2^k} - \frac{2^k}{2^k}) < 0 &&(\because nr < nm < 2^{k-s-1} \cdot 2^{s+1} = 2^k) \\
+  &\Rightarrow e - \frac{1}{m} = \frac{1}{m}(\frac{nr}{2^k} - \frac{2^k}{2^k}) < 0 &&(\because nr < nm \leq 2^{k-s-1} \cdot 2^{s+1} = 2^k) \\
   &\Rightarrow 0 \leq e < \frac{1}{m} \\
   &\therefore \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor \frac{n}{m} + e \right\rfloor = \left\lfloor \frac{nx}{2^k} \right\rfloor = \left\lfloor n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k} \right\rfloor &&\square \\
 \end{align*}
@@ -109,7 +109,11 @@ $0 \leq n < m^2$인 정수 $n$에 대해 $\left\lfloor \frac{n}{m} \right\rfloor
 
 사용 예시는 다음과 같습니다. [(코드)](http://boj.kr/233deb0addff442ebdd782ac500d9298)
 
-**Note.** GNU 계열 컴파일러(GCC/Clang)와 달리 Microsoft Visual C++(MSVC)는 <code>__int128</code> 자료형을 지원하지 않기에 128비트 정수 곱셈을 직접 구현해야 합니다. 같은 이유로 $m$이 <code>long long</code> 범위라면 256비트 정수 곱셈을 직접 구현해야 합니다.
+**Note.**
+
+- GNU 계열 컴파일러(GCC/Clang)와 달리 Microsoft Visual C++(MSVC)는 <code>__int128</code> 자료형을 지원하지 않기에 128비트 정수 곱셈을 직접 구현해야 합니다. 같은 이유로 $m$이 <code>long long</code> 범위라면 256비트 정수 곱셈을 직접 구현해야 합니다.
+- $k$를 $\left\lfloor \log_2(m - 1) \right\rfloor + \left\lfloor \log_2(m^2 - 1) \right\rfloor + 1$로 설정하면 $[2, 2^{31} - 1]$ 범위의 <code>m</code>에 대해 $2 \leq \left\lceil \frac{2^k}{m} \right\rceil < 2^{63} - 1$이 성립해 <code>x</code>를 <code>long long</code>으로 나타낼 수 있습니다. [(코드)](http://boj.kr/44f6d12b75624a138d2ff6968c7dd2ff)
+- $k$가 상수가 아니라면 <code>>></code>에서 추가적인 연산이 생기기 때문에 성능 저하가 있을 수 있습니다. [(참고)](https://godbolt.org/z/vjnnM1eoT)
 
 ## 3. Montgomery Reduction
 
