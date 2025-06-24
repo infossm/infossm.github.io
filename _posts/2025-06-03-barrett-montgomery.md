@@ -26,6 +26,8 @@ $$
 
 가 성립함을 이용하는 정수 나눗셈 최적화 기법입니다. 여기서 $\left\lceil \frac{2^k}{m} \right\rceil$은 미리 계산해둔 뒤 곱할 수 있고, $2^k$로 나누는 과정은 시프트 연산으로 처리할 수 있습니다.
 
+### 2.1 Conditions for Valid $k$
+
 등식이 성립하는 $k$를 구하기 위해 먼저 다음의 보조 정리를 증명하겠습니다.
 
 **Lemma 1.** Floor Equality
@@ -78,9 +80,15 @@ e &= \frac{nx}{2^k} - \frac{n}{m} = \frac{n}{m}(\frac{xm}{2^k} - \frac{2^k}{2^k}
 \end{align*}
 $$
 
-Lemma 2에 의해, $2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) < 2^k$를 만족하는 $k$와 $x = \left\lceil \frac{2^k}{m} \right\rceil$을 구해두면 <code>n / m</code>을 <code>(n * x) >> k</code>로 나타낼 수 있습니다.
+### 2.2 Practical Selection of $k$ and Data Types
 
+Lemma 2를 이용하면 $2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) < 2^k$를 만족하는 $k$를 구한 뒤 $x = \left\lceil \frac{2^k}{m} \right\rceil$로 <code>n / m</code>을 <code>(n * x) >> k</code>로 대체하며 Barrett Reduction을 구현할 수 있습니다.
 
+$k$를 너무 크게 잡으면 <code>n * x</code>에서 overflow가 발생할 수 있으니, 가능하면 작은 $k$를 이용하는게 좋습니다. 가능한 $k$의 최솟값은 $\lfloor \log_2 (m - 1) \rfloor + \lfloor \log_2 (\max(2n, m)) \rfloor + 1$이니, $n, m$의 범위가 주어지면 해당 값을 계산해 $k$로 사용할 수 있습니다.
+
+이때 $k$를 최대한 작게 잡더라도 $nx$의 범위가 커질 수 있음에 주의해야 합니다. 예를 들어 $n = m = 2^{31} - 1$이라면, $k \geq 30 + 31 + 1 = 62$에서 $k$를 $62$로 선택하더라도 $x = \lceil \frac{2^{62}}{2^{31} - 1} \rceil > 2^{31}$에서 $nx$가 <code>long long</code>의 범위를 벗어납니다. 따라서 $n, m$의 범위에 따라 $nx$의 최댓값을 계산한 뒤 적절한 자료형을 사용하는게 중요합니다.
+
+### 2.3 Modular Multiplication in $\mathbb{Z}_m$ using Barrett Reduction
 
 대부분의 ps/cp 환경에서 <code>m</code>은 $[2, 2^{31} - 1]$ 범위이니 $k = 93$을 이용할 수 있고, $nx < m^2 (\frac{2^k}{m} + 1) < m 2^k + m^2 < 2^{124}$이니 128비트 정수 자료형을 이용해 <code>n * x</code>를 계산하면 Barrett Reduction을 구현할 수 있습니다.
 
