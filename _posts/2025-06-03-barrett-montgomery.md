@@ -10,15 +10,15 @@ tags: [algorithm, mathematics, problem-solving]
 
 현대 CPU에서 나눗셈과 모듈러 연산은 연산 비용이 상당히 큰 편입니다. Agner Fog의 [instruction tables](https://www.agner.org/optimize/instruction_tables.pdf)에 따르면, Intel Skylake 아키텍처 기준으로 `ADD`, `SUB`의 latency는 1 cycle, `MUL`은 3~4 cycle인데 반해, `DIV`는 32비트는 26 cycle, 64비트는 최소 35 cycle, 최대 88 cycle까지 소요됩니다.
 
-그런데 실제로 코드를 작성해보면 나눗셈 연산은 생각보다 빠르게 동작하는 경우가 많습니다. 이는 대부분의 현대 컴파일러가 <code>x / c</code>, <code>x % c</code>처럼 나누는 수 <code>c</code>가 상수일 때, 해당 연산을 곱셈(<code>*</code>)과 시프트(<code>>></code>)로 변환해 최적화해주기 때문입니다. 이때 <code>c</code>가 <code>const</code>로 명시되어 있어야 컴파일 타임에 최적화가 적용됩니다. 만약 <code>c</code>가 일반 변수라면 `DIV` 명령어가 사용되기 때문에 실행 시간이 증가하지만, 최적화 과정을 직접 구현하면 <code>c</code>가 일반 변수인 경우에도 나눗셈 연산을 빠르게 처리할 수 있습니다.
+그런데 실제로 코드를 작성해보면 나눗셈 연산은 생각보다 빠르게 동작하는 경우가 많습니다. 이는 현대 컴파일러가 <code>x / c</code>, <code>x % c</code>에서 나누는 수 <code>c</code>가 compile-time const일 때 해당 연산을 곱셈(<code>*</code>)과 시프트(<code>>></code>)로 변환해 최적화해주기 때문입니다. 하지만 <code>c</code>가 run-time에 주어지는 경우는 <code>c</code>를 일반 변수로 선언해야 하기 때문에 실제로 `DIV` 명령어가 호출되어 성능 저하가 발생합니다.
 
-또한, 대부분의 아키텍처에서 SIMD(Single Instruction Multiple Data) 명령어 집합은 정수 나눗셈(<code>/</code>)이나 모듈러 연산(<code>%</code>)을 지원하지 않기에 나눗셈 연산은 Vectorization을 이용해 고속화하기도 어렵습니다. 하지만 몇가지 모듈러 연산 최적화를 이용하면 시프트(<code>>></code>), 덧셈(<code>+</code>), 곱셈(<code>*</code>) 등의 SIMD에서 지원하는 연산을 이용해 나눗셈을 구현할 수 있습니다.
+또한 대부분의 아키텍처에서 SIMD(Single Instruction Multiple Data) 명령어 집합은 정수 나눗셈(<code>/</code>)과 모듈러 연산(<code>%</code>)을 지원하지 않기에 Vectorization를 이용한 고속화가 불가능합니다.
 
-이 글에서는 이러한 최적화 기법 중 대표적인 방법인 Barrett Reduction과 Montgomery Reduction 기법을 소개하고, 이를 통해 모듈러가 컴파일 타임에 주어지지 않는 상황이나 SIMD 기반의 병렬 연산을 구현할 때 나눗셈, 모듈러 연산의 성능을 개선하는 방법을 설명합니다.
+이번 글에서는 정수 나눗셈(<code>/</code>), 모듈러 연산(<code>%</code>)을 시프트(<code>>></code>), 덧셈(<code>+</code>), 곱셈(<code>*</code>)으로 대체하는 Barrett Reduction, Montgomery Reduction 기법을 소개하고, 이를 통해 모듈러가 comiple-time에 주어지지 않는 상황이나 SIMD 기반의 병렬 연산을 구현할 때 나눗셈, 모듈러 연산의 성능을 개선하는 방법을 설명합니다.
 
 ## 2. Barrett Reduction
 
-Barrett Reduction은 $0 \leq n < m^2$일 때, 충분히 큰 $k$에 대해
+Barrett Reduction은 $n \geq 0$, $m \geq 2$일 때, 충분히 큰 $k$에 대해
 
 $$
 \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k} \right\rfloor
@@ -57,8 +57,8 @@ $$
 
 $$
 \begin{align*}
-&0 \leq n < m^2 &&(n \in \mathbb{Z}) \\
-&2 \leq m       &&(m \in \mathbb{Z}) \\
+&0 \leq n &&(n \in \mathbb{Z}) \\
+&2 \leq m &&(m \in \mathbb{Z}) \\
 &2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) \leq 2^k &&(k \in \mathbb{Z}) \\
 &\Rightarrow \quad \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k} \right\rfloor
 \end{align*}
@@ -78,9 +78,11 @@ e &= \frac{nx}{2^k} - \frac{n}{m} = \frac{n}{m}(\frac{xm}{2^k} - \frac{2^k}{2^k}
 \end{align*}
 $$
 
-따라서 $2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) < 2^k$를 만족하는 $k$를 이용하면 $x = \left\lceil \frac{2^k}{m} \right\rceil$을 이용해 <code>n % m</code>를 <code>(n * x) >> k</code>로 나타낼 수 있습니다.
+Lemma 2에 의해, $2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) < 2^k$를 만족하는 $k$와 $x = \left\lceil \frac{2^k}{m} \right\rceil$을 구해두면 <code>n / m</code>을 <code>(n * x) >> k</code>로 나타낼 수 있습니다.
 
-대부분의 ps/cp 환경에서 <code>m</code>은 $[2, 2^{31} - 1]$ 범위이니 $k = 93$을 이용할 수 있고, $nx < m^2 (\frac{2^k}{m} + 1) < m 2^k + m^2 < 2^{124}$에서 128비트 정수 자료형을 이용해 <code>n * x</code>를 계산하면 Barrett Reduction을 구현할 수 있습니다.
+
+
+대부분의 ps/cp 환경에서 <code>m</code>은 $[2, 2^{31} - 1]$ 범위이니 $k = 93$을 이용할 수 있고, $nx < m^2 (\frac{2^k}{m} + 1) < m 2^k + m^2 < 2^{124}$이니 128비트 정수 자료형을 이용해 <code>n * x</code>를 계산하면 Barrett Reduction을 구현할 수 있습니다.
 
 구현 코드는 다음과 같습니다.
 
