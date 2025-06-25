@@ -80,13 +80,37 @@ e &= \frac{nx}{2^k} - \frac{n}{m} = \frac{n}{m}(\frac{xm}{2^k} - \frac{2^k}{2^k}
 \end{align*}
 $$
 
-### 2.2 Practical Selection of $k$ and Data Types
+### 2.2 Integer Division using Barrett Reduction
 
 Lemma 2를 이용하면 $2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) < 2^k$를 만족하는 $k$를 구한 뒤 $x = \left\lceil \frac{2^k}{m} \right\rceil$를 미리 계산하여 <code>n / m</code>을 <code>(n * x) >> k</code>로 대체하며 Barrett Reduction을 구현할 수 있습니다.
 
 이때 $k$를 너무 크게 잡으면 <code>n * x</code>에서 overflow가 발생할 수 있으니, 가능한 작은 $k$를 이용하는게 좋습니다. Lemma 2로부터 계산되는 $k$의 최솟값은 $\lfloor \log_2 (m - 1) \rfloor + \lfloor \log_2 (\max(2n, m)) \rfloor + 1$입니다. 따라서 $n, m$의 범위가 주어지면 해당 값을 계산해 $k$의 하한을 구할 수 있습니다.
 
 한편 $k$를 최대한 작게 선택하더라도 $nx$의 범위가 커질 수 있음에 주의해야 합니다. 예를 들어 $n = m = 2^{31} - 1$인 경우, $k \geq 30 + 31 + 1$에서 $k = 62$를 선택하면 $x = \lceil \frac{2^{62}}{2^{31} - 1} \rceil = 2^{31} + 2$가 되므로 $nx$가 <code>long long</code>의 범위를 초과하게 됩니다. 따라서 $n, m$의 범위를 고려하여 $nx$의 최댓값을 계산하고, 이에 맞는 충분한 자료형을 선택하는 것이 중요합니다.
+
+구현 코드는 다음과 같습니다.
+
+```cpp
+using i128 = __int128;
+using i64 = long long;
+
+struct intdiv_barrett {
+	intdiv_barrett() {}
+	intdiv_barrett(int m) : x(((1LL << 62) + m - 1) / m) {}
+	int div(int n) {
+		return i128(n) * x >> 62;
+	}
+private:
+	i64 x;
+};
+```
+
+해당 코드는 $2 \leq m < 2^{31}$인 고정된 $m$에 대해 $0 \leq n < 2^{31}$인 $n$이 주어질 때 $n / m$을 $k = 62$인 Barrett Reduction을 이용해 빠르게 계산합니다.
+
+**Note.**
+
+- GNU 계열 컴파일러(GCC/Clang)와 달리 Microsoft Visual C++(MSVC)는 <code>__int128</code> 자료형을 지원하지 않기에 128비트 정수 곱셈을 직접 구현해야 합니다.
+- $n, m$이 <code>long long</code> 범위라면 $k = 126$과 256비트 정수 곱셈을 이용해 Barrett Reduction을 구현할 수 있습니다.
 
 ### 2.3 Modular Multiplication in $\mathbb{Z}_m$ using Barrett Reduction
 
@@ -98,8 +122,8 @@ Lemma 2를 이용하면 $2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) < 
 
 $$
 \begin{align*}
-nx &< m\,2^k + m^2 \\
-   &\le m\cdot4\,(m - 1)\,(m^2 - 1) + m^2 \\
+nx &< m \cdot 2^k + m^2 \\
+   &\leq m\cdot4\,(m - 1)\,(m^2 - 1) + m^2 \\
    &= 4m^4 - 4m^3 - 3m^2 + 4m \\
    &< 4m^4
 \end{align*}
@@ -107,7 +131,7 @@ $$
 
 를 얻습니다.
 
-대부분의 ps/cp 환경에서 $m$은 $[2, 2^{31} - 1]$ 범위이니 $k$의 하한은 $93$이고, 이때 $k = 93$을 선택하면 $nx < 4m^4 < 2^{126}$이니 <code>__int128</code>를 이용해 <code>n * x</code>를 계산하며 Barrett Reduction을 구현할 수 있습니다.
+대부분의 ps/cp 환경에서 $m$은 $[2, 2^{31} - 1]$ 범위이니 $k$의 하한은 $93$이고, $k = 93$을 선택하면 $nx < 4m^4 < 2^{126}$이니 <code>__int128</code>를 이용해 <code>n * x</code>를 계산하며 Barrett Reduction을 구현할 수 있습니다.
 
 구현 코드는 다음과 같습니다.
 
@@ -116,9 +140,9 @@ using u128 = unsigned __int128;
 using u64 = unsigned long long;
 using u32 = unsigned int;
 
-struct barrett {
-	barrett() {}
-	barrett(u32 m) : m(m), x(((u128(1) << 93) + m - 1) / m) {}
+struct modmul_barrett {
+	modmul_barrett() {}
+	modmul_barrett(u32 m) : m(m), x(((u128(1) << 93) + m - 1) / m) {}
 	u64 div(u64 n) {
 		return n * x >> 93;
 	}
@@ -132,14 +156,13 @@ private:
 };
 ```
 
-해당 코드는 $0 \leq a, b < m$인 두 정수에 대해 $a \bmod b = ab - \lfloor \frac{ab}{m} \rfloor m$을 Barrett Reduction을 이용해 빠르게 계산합니다. 이때 $2 \leq m < 2^{31} - 1$을 가정하며, $k = 93$을 사용합니다.
+해당 코드는 $2 \leq m < 2^{31} - 1$인 고정된 $m$에 대해 $0 \leq a, b < m$인 두 정수 $a, b$가 주어질 때 $a \bmod b = ab - \lfloor \frac{ab}{m} \rfloor m$을 $k = 93$인 Barrett Reduction을 이용해 빠르게 계산합니다.
 
 사용 예시는 다음과 같습니다. [(코드)](http://boj.kr/233deb0addff442ebdd782ac500d9298)
 
 **Note.**
 
-- GNU 계열 컴파일러(GCC/Clang)와 달리 Microsoft Visual C++(MSVC)는 <code>__int128</code> 자료형을 지원하지 않기에 128비트 정수 곱셈을 직접 구현해야 합니다. 같은 이유로 $m$이 <code>long long</code> 범위라면 256비트 정수 곱셈을 직접 구현해야 합니다.
-- $k$를 $\left\lfloor \log_2(m - 1) \right\rfloor + \left\lfloor \log_2(m^2 - 1) \right\rfloor + 2$로 설정하면 $[2, 2^{31} - 1]$ 범위의 <code>m</code>에 대해 $2 \leq \left\lceil \frac{2^k}{m} \right\rceil < 2^{63}$이 성립해 <code>x</code>를 <code>long long</code>으로 나타낼 수 있습니다. [(코드)](http://boj.kr/d4b035cb317b4d579c10656d4a5bf9ec)
+- $k$를 $\left\lfloor \log_2(m - 1) \right\rfloor + \left\lfloor \log_2(m^2 - 1) \right\rfloor + 2$로 설정하면 $[2, 2^{31} - 1]$ 범위의 <code>m</code>에 대해 $2 \leq \left\lceil \frac{2^k}{m} \right\rceil < 2^{63}$이 성립해 <code>x</code>를 <code>long long</code>으로 저장할 수 있습니다. [(코드)](http://boj.kr/d4b035cb317b4d579c10656d4a5bf9ec)
 - $k$가 상수가 아니라면 <code>>></code>에서 추가적인 연산이 생기기 때문에 성능 저하가 있을 수 있습니다. [(참고)](https://godbolt.org/z/vjnnM1eoT)
 
 ## 3. Montgomery Reduction
