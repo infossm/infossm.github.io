@@ -111,28 +111,15 @@ private:
 **Note.**
 
 - GNU 계열 컴파일러(GCC/Clang)와 달리 Microsoft Visual C++(MSVC)는 <code>__int128</code> 자료형을 지원하지 않기에 128비트 정수 곱셈을 직접 구현해야 합니다.
-- $n, m$이 64비트 정수 자료형 범위라면 $k = 128$과 256비트 정수 곱셈을 이용해 Barrett Reduction을 구현할 수 있습니다.
+- $2 \leq m < 2^{64}$, $0 \leq n < 2^{64}$라면 $k = 128$과 256비트 정수 곱셈을 이용하면 됩니다.
 
 ### 2.3 Modular Multiplication in $\mathbb{Z}_m$ using Barrett Reduction
 
 두 정수 $0 \leq a, b < m$에 대해 <code>(a * b) % m</code>는 <code>(a * b) - ((a * b) / m) * m</code>에서 <code>(a * b) / m</code>에 Barrett Reduction을 적용해 빠르게 구할 수 있습니다.
 
-이 경우 $0 \leq ab < m^2$이 성립하니 $k$의 하한은 $\lfloor \log_2(m - 1) \rfloor + \lceil \log_2(m^2 - 1) \rceil + 1$입니다.
+이 경우 $0 \leq ab < m^2$이 성립하니 $k$의 하한은 $\lfloor \log_2(m - 1) \rfloor + \lceil \log_2(m^2 - 1) \rceil + 1$이고, $nx$의 상한은 $nx < m^2(\frac{2^k}{m} + 1) < m \cdot 2^k + m^2$입니다.
 
-$nx$의 상한은 $nx < m^2(\frac{2^k}{m} + 1) < m2^k + m^2$이고, 여기에 $k$의 하한을 대입하면
-
-$$
-\begin{align*}
-nx &< m \cdot 2^k + m^2 \\
-   &\leq m \cdot 4(m - 1)(m^2 - 1) + m^2 \\
-   &= 4m^4 - 4m^3 - 3m^2 + 4m \\
-   &< 4m^4
-\end{align*}
-$$
-
-를 얻습니다.
-
-대부분의 ps/cp 환경에서 $m$은 $[2, 2^{31} - 1]$ 범위이니 $k = 93$을 선택할 수 있고, 이때 $nx < m \cdot 2^k + m^2 \leq (2^{31} - 1) \cdot 2^{93} + (2^{31} - 1)^2 < 2^{124}$이니 128비트 정수 자료형을 이용해 <code>n * x</code>를 계산하며 Barrett Reduction을 구현할 수 있습니다.
+대부분의 ps/cp 환경에서 $m$은 $2 \leq m < 2^{31}$ 범위이니 $k = 93$을 선택할 수 있고, 이때 $nx < m \cdot 2^k + m^2 \leq (2^{31} - 1) \cdot 2^{93} + (2^{31} - 1)^2 < 2^{124}$이니 128비트 정수 자료형을 이용해 <code>n * x</code>를 계산하며 Barrett Reduction을 구현할 수 있습니다.
 
 구현 코드는 다음과 같습니다.
 
@@ -163,8 +150,10 @@ private:
 
 **Note.**
 
-- $m$이 $[2, 2^{63} - 1]$ 범위라면 $k = 189$와 256비트 정수 곱셈을 이용해 Barrett Reduction을 구현할 수 있습니다.
-- $k$를 $\left\lfloor \log_2(m - 1) \right\rfloor + \left\lfloor \log_2(m^2 - 1) \right\rfloor + 2$로 설정하면 $[2, 2^{31} - 1]$ 범위의 <code>m</code>에 대해 $2 \leq \left\lceil \frac{2^k}{m} \right\rceil < 2^{63}$이 성립해 <code>x</code>를 64비트 정수 자료형으로 저장할 수 있습니다. [(코드)](http://boj.kr/d4b035cb317b4d579c10656d4a5bf9ec)
+- $2 \leq m < 2^{32}$라면 $k = 96$과 128비트 정수 곱셈을 이용하면 됩니다.
+- $2 \leq m < 2^{63}$이라면 $k = 189$와 256비트 정수 곱셈을 이용하면 됩니다.
+- $2 \leq m < 2^{64}$라면 $k = 192$와 256비트 정수 곱셈을 이용하면 됩니다.
+- $k$를 $m$에 대한 실제 하한 값로 설정하면 $2 \leq m < 2^{31}$에 대해 $2 \leq \left\lceil \frac{2^k}{m} \right\rceil < 2^{63}$이 성립해 <code>x</code>를 64비트 정수 자료형으로 저장할 수 있습니다. [(코드)](http://boj.kr/d4b035cb317b4d579c10656d4a5bf9ec)
 - $k$가 상수가 아니라면 <code>>></code>에서 추가적인 연산이 생기기 때문에 성능 저하가 있을 수 있습니다. [(참고)](https://godbolt.org/z/vjnnM1eoT)
 
 ## 3. Montgomery Reduction
