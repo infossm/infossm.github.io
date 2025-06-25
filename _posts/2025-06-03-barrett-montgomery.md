@@ -12,9 +12,9 @@ tags: [algorithm, mathematics, problem-solving]
 
 그런데 실제로 코드를 작성해보면 나눗셈 연산은 생각보다 빠르게 동작하는 경우가 많습니다. 이는 현대 컴파일러가 <code>x / c</code>, <code>x % c</code>에서 나누는 수 <code>c</code>가 compile-time const일 때 해당 연산을 곱셈(<code>*</code>)과 시프트(<code>>></code>)로 변환해 최적화해주기 때문입니다. 하지만 <code>c</code>가 run-time에 주어지는 경우는 <code>c</code>를 일반 변수로 선언해야 하기 때문에 실제로 `DIV` 명령어가 호출되어 성능 저하가 발생합니다.
 
-또한 대부분의 아키텍처에서 SIMD(Single Instruction Multiple Data) 명령어 집합은 정수 나눗셈(<code>/</code>)과 모듈러 연산(<code>%</code>)을 지원하지 않기에 Vectorization를 이용한 고속화가 불가능합니다.
+또한 대부분의 아키텍처에서 SIMD(Single Instruction Multiple Data) 명령어 집합은 정수 나눗셈(<code>/</code>)과 모듈러 연산(<code>%</code>)을 지원하지 않기에 Vectorization을 이용한 고속화가 어렵습니다.
 
-이번 글에서는 정수 나눗셈(<code>/</code>), 모듈러 연산(<code>%</code>)을 시프트(<code>>></code>), 덧셈(<code>+</code>), 곱셈(<code>*</code>)으로 대체하는 Barrett Reduction, Montgomery Reduction 기법을 소개하고, 이를 통해 모듈러가 comiple-time에 주어지지 않는 상황이나 SIMD 기반의 병렬 연산을 구현할 때 나눗셈, 모듈러 연산의 성능을 개선하는 방법을 설명합니다.
+이번 글에서는 정수 나눗셈(<code>/</code>), 모듈러 연산(<code>%</code>)을 시프트(<code>>></code>), 덧셈(<code>+</code>), 곱셈(<code>*</code>)으로 대체하는 Barrett Reduction, Montgomery Reduction 기법을 소개하고, 이를 통해 모듈러가 compile-time에 주어지지 않는 상황이나 SIMD 기반의 병렬 연산을 구현할 때 나눗셈, 모듈러 연산의 성능을 개선하는 방법을 설명합니다.
 
 ## 2. Barrett Reduction
 
@@ -26,7 +26,7 @@ $$
 
 가 성립함을 이용하는 정수 나눗셈 최적화 기법입니다. 여기서 $\left\lceil \frac{2^k}{m} \right\rceil$은 미리 계산해둔 뒤 곱할 수 있고, $2^k$로 나누는 과정은 시프트 연산으로 처리할 수 있습니다.
 
-### 2.1 Conditions for Valid $k$
+### 2.1 Determining $k$ for Barrett Reduction
 
 등식이 성립하는 $k$를 구하기 위해 먼저 다음의 보조 정리를 증명하겠습니다.
 
@@ -82,48 +82,49 @@ $$
 
 ### 2.2 Integer Division using Barrett Reduction
 
-Lemma 2를 이용하면 $2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) < 2^k$를 만족하는 $k$를 구한 뒤 $x = \left\lceil \frac{2^k}{m} \right\rceil$를 미리 계산하여 <code>n / m</code>을 <code>(n * x) >> k</code>로 대체하며 Barrett Reduction을 구현할 수 있습니다.
+Lemma 2를 이용하면 $2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) \leq 2^k$를 만족하는 $k$를 구한 뒤 $x = \left\lceil \frac{2^k}{m} \right\rceil$를 미리 계산하여 <code>n / m</code>을 <code>(n * x) >> k</code>로 대체하며 Barrett Reduction을 구현할 수 있습니다.
 
-이때 $k$를 너무 크게 잡으면 <code>n * x</code>에서 overflow가 발생할 수 있으니, 가능한 작은 $k$를 이용하는게 좋습니다. Lemma 2로부터 계산되는 $k$의 최솟값은 $\lfloor \log_2 (m - 1) \rfloor + \lfloor \log_2 (\max(2n, m)) \rfloor + 1$입니다. 따라서 $n, m$의 범위가 주어지면 해당 값을 계산해 $k$의 하한을 구할 수 있습니다.
+이때 $k$를 너무 크게 잡으면 <code>n * x</code>에서 overflow가 발생할 수 있으니, 가능한 작은 $k$를 이용하는 게 좋습니다. Lemma 2로부터 계산되는 $k$의 최솟값은 $\lfloor \log_2 (m - 1) \rfloor + \lceil \log_2 (\max(2n, m)) \rceil$입니다. 따라서 $n, m$의 범위가 주어지면 해당 값을 계산해 $k$의 하한을 구할 수 있습니다.
 
-한편 $k$를 최대한 작게 선택하더라도 $nx$의 범위가 커질 수 있음에 주의해야 합니다. 예를 들어 $n = m = 2^{31} - 1$인 경우, $k \geq 30 + 31 + 1$에서 $k = 62$를 선택하면 $x = \lceil \frac{2^{62}}{2^{31} - 1} \rceil = 2^{31} + 2$가 되므로 $nx$가 <code>long long</code>의 범위를 초과하게 됩니다. 따라서 $n, m$의 범위를 고려하여 $nx$의 최댓값을 계산하고, 이에 맞는 충분한 자료형을 선택하는 것이 중요합니다.
+한편 $k$를 최대한 작게 선택하더라도 $nx$의 범위가 커질 수 있음에 주의해야 합니다. 예를 들어 $n = m = 2^{32} - 1$인 경우, $k \geq 31 + 33$에서 $k = 64$를 선택하면 $x = \lceil \frac{2^{64}}{2^{32} - 1} \rceil = 2^{32} + 2$가 되므로 $nx = (2^{32} - 1)(2^{32} + 2) = 2^{64} + 2^{32} - 2$가 64비트 정수 자료형의 범위를 초과하게 됩니다. 따라서 $n, m$의 범위를 고려하여 $nx$의 최댓값을 계산하고, 이에 맞는 충분한 자료형을 선택하는 것이 중요합니다.
 
 구현 코드는 다음과 같습니다.
 
 ```cpp
-using i128 = __int128;
-using i64 = long long;
+using u128 = unsigned __int128;
+using u64 = unsigned long long;
+using u32 = unsigned int;
 
 struct intdiv_barrett {
 	intdiv_barrett() {}
-	intdiv_barrett(int m) : x(((1LL << 62) + m - 1) / m) {}
-	int div(int n) {
-		return i128(n) * x >> 62;
+	intdiv_barrett(u32 m) : x(((u128(1) << 64) + m - 1) / m) {}
+	u32 div(u32 n) {
+		return u128(n) * x >> 64;
 	}
 private:
-	i64 x;
+	u64 x;
 };
 ```
 
-해당 코드는 $2 \leq m < 2^{31}$인 고정된 $m$에 대해 $0 \leq n < 2^{31}$인 $n$이 주어질 때 $n / m$을 $k = 62$인 Barrett Reduction을 이용해 빠르게 계산합니다.
+해당 코드는 $2 \leq m < 2^{32}$인 고정된 $m$에 대해 $0 \leq n < 2^{32}$인 $n$이 주어질 때 $n / m$을 $k = 64$인 Barrett Reduction을 이용해 빠르게 계산합니다.
 
 **Note.**
 
 - GNU 계열 컴파일러(GCC/Clang)와 달리 Microsoft Visual C++(MSVC)는 <code>__int128</code> 자료형을 지원하지 않기에 128비트 정수 곱셈을 직접 구현해야 합니다.
-- $n, m$이 <code>long long</code> 범위라면 $k = 126$과 256비트 정수 곱셈을 이용해 Barrett Reduction을 구현할 수 있습니다.
+- $n, m$이 64비트 정수 자료형 범위라면 $k = 128$과 256비트 정수 곱셈을 이용해 Barrett Reduction을 구현할 수 있습니다.
 
 ### 2.3 Modular Multiplication in $\mathbb{Z}_m$ using Barrett Reduction
 
 두 정수 $0 \leq a, b < m$에 대해 <code>(a * b) % m</code>는 <code>(a * b) - ((a * b) / m) * m</code>에서 <code>(a * b) / m</code>에 Barrett Reduction을 적용해 빠르게 구할 수 있습니다.
 
-이 경우 $0 \leq ab < m^2$이 성립하니 $k$의 하한은 $\lfloor \log_2(m - 1) \rfloor + \lfloor \log_2(m^2 - 1) \rfloor + 2$이고, $nx$의 상한은 $nx < m^2(\frac{2^k}{m} + 1) < m2^k + m^2$입니다.
+이 경우 $0 \leq ab < m^2$이 성립하니 $k$의 하한은 $\lfloor \log_2(m - 1) \rfloor + \lceil \log_2(m^2 - 1) \rceil + 1$입니다.
 
-여기에 $k$의 하한을 대입하면,
+$nx$의 상한은 $nx < m^2(\frac{2^k}{m} + 1) < m2^k + m^2$이고, 여기에 $k$의 하한을 대입하면
 
 $$
 \begin{align*}
 nx &< m \cdot 2^k + m^2 \\
-   &\leq m\cdot4\,(m - 1)\,(m^2 - 1) + m^2 \\
+   &\leq m \cdot 4(m - 1)(m^2 - 1) + m^2 \\
    &= 4m^4 - 4m^3 - 3m^2 + 4m \\
    &< 4m^4
 \end{align*}
@@ -131,7 +132,7 @@ $$
 
 를 얻습니다.
 
-대부분의 ps/cp 환경에서 $m$은 $[2, 2^{31} - 1]$ 범위이니 $k$의 하한은 $93$이고, $k = 93$을 선택하면 $nx < 4m^4 < 2^{126}$이니 <code>__int128</code>를 이용해 <code>n * x</code>를 계산하며 Barrett Reduction을 구현할 수 있습니다.
+대부분의 ps/cp 환경에서 $m$은 $[2, 2^{31} - 1]$ 범위이니 $k = 93$을 선택할 수 있고, 이때 $nx < m \cdot 2^k + m^2 \leq (2^{31} - 1) \cdot 2^{93} + (2^{31} - 1)^2 < 2^{124}$이니 128비트 정수 자료형을 이용해 <code>n * x</code>를 계산하며 Barrett Reduction을 구현할 수 있습니다.
 
 구현 코드는 다음과 같습니다.
 
@@ -156,13 +157,14 @@ private:
 };
 ```
 
-해당 코드는 $2 \leq m < 2^{31} - 1$인 고정된 $m$에 대해 $0 \leq a, b < m$인 두 정수 $a, b$가 주어질 때 $a \bmod b = ab - \lfloor \frac{ab}{m} \rfloor m$을 $k = 93$인 Barrett Reduction을 이용해 빠르게 계산합니다.
+해당 코드는 $2 \leq m < 2^{31}$인 고정된 $m$에 대해 $0 \leq a, b < m$인 두 정수 $a, b$가 주어질 때 $ab \bmod m = ab - \lfloor \frac{ab}{m} \rfloor m$을 $k = 93$인 Barrett Reduction을 이용해 빠르게 계산합니다.
 
 사용 예시는 다음과 같습니다. [(코드)](http://boj.kr/233deb0addff442ebdd782ac500d9298)
 
 **Note.**
 
-- $k$를 $\left\lfloor \log_2(m - 1) \right\rfloor + \left\lfloor \log_2(m^2 - 1) \right\rfloor + 2$로 설정하면 $[2, 2^{31} - 1]$ 범위의 <code>m</code>에 대해 $2 \leq \left\lceil \frac{2^k}{m} \right\rceil < 2^{63}$이 성립해 <code>x</code>를 <code>long long</code>으로 저장할 수 있습니다. [(코드)](http://boj.kr/d4b035cb317b4d579c10656d4a5bf9ec)
+- $m$이 $[2, 2^{63} - 1]$ 범위라면 $k = 189$와 256비트 정수 곱셈을 이용해 Barrett Reduction을 구현할 수 있습니다.
+- $k$를 $\left\lfloor \log_2(m - 1) \right\rfloor + \left\lfloor \log_2(m^2 - 1) \right\rfloor + 2$로 설정하면 $[2, 2^{31} - 1]$ 범위의 <code>m</code>에 대해 $2 \leq \left\lceil \frac{2^k}{m} \right\rceil < 2^{63}$이 성립해 <code>x</code>를 64비트 정수 자료형으로 저장할 수 있습니다. [(코드)](http://boj.kr/d4b035cb317b4d579c10656d4a5bf9ec)
 - $k$가 상수가 아니라면 <code>>></code>에서 추가적인 연산이 생기기 때문에 성능 저하가 있을 수 있습니다. [(참고)](https://godbolt.org/z/vjnnM1eoT)
 
 ## 3. Montgomery Reduction
