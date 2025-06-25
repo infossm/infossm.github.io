@@ -98,7 +98,7 @@ using u32 = unsigned int;
 struct intdiv_barrett {
 	intdiv_barrett() {}
 	intdiv_barrett(u32 m) : x(((u128(1) << 64) + m - 1) / m) {}
-	u32 div(u32 n) {
+	u32 div(u32 n) const {
 		return u128(n) * x >> 64;
 	}
 private:
@@ -106,7 +106,7 @@ private:
 };
 ```
 
-해당 코드는 $2 \leq m < 2^{32}$인 고정된 $m$에 대해 $0 \leq n < 2^{32}$인 $n$이 주어질 때 $n / m$을 $k = 64$인 Barrett Reduction을 이용해 빠르게 계산합니다.
+해당 코드는 $2 \leq m < 2^{32}$인 고정된 $m$에 대해 $0 \leq n < 2^{32}$인 정수 $n$이 주어질 때 $n / m$을 $k = 64$인 Barrett Reduction을 이용해 빠르게 계산합니다.
 
 **Note.**
 
@@ -134,10 +134,10 @@ using u32 = unsigned int;
 struct modmul_barrett {
 	modmul_barrett() {}
 	modmul_barrett(u32 m) : m(m), x(((u128(1) << 93) + m - 1) / m) {}
-	u64 div(u64 n) {
+	u64 div(u64 n) const {
 		return n * x >> 93;
 	}
-	u32 mul(u32 a, u32 b) {
+	u32 mul(u32 a, u32 b) const {
 		u64 n = u64(a) * b;
 		return n - div(n) * m;
 	}
@@ -161,7 +161,50 @@ private:
 
 ## 3. Montgomery Reduction
 
+Montgomery Reduction은 모듈러 연산을 빠르게 처리하는 기법으로, $m \leq r$이고 $\gcd(m, r) = 1$인 두 정수 $m, r$에 대해, $0 \leq n < m^2$인 정수 $n$이 주어질 때
+$$
+n \cdot r^{-1} \equiv \frac{n - (n \cdot m' \bmod r) \cdot m}{r} \; \bmod m
+$$
+이 성립함을 이용합니다. 여기서 $r^{-1}, m'$은 $r \cdot r^{-1} + m \cdot m' = 1$을 만족하는 정수입니다.
+
+### 3.1 Montgomery Space
+
+정수 $n$에 대해 $\overline{n} = n \cdot r \bmod m$을 $n$의 Montgomery Form이라 정의합시다.
+
+### 3.2 Montgomery Reduction
+
+두 정수 $a, b$에 대해 $\overline{a + b}$는 $\overline{a} + \overline{b} \bmod m$으로, $\overline{a - b}$는 $\overline{a} - \overline{b} \bmod m$으로 구할 수 있습니다. 하지만 $\overline{a \cdot b}$는 $(a \cdot b) \cdot r \not\equiv (a \cdot r) \cdot (b \cdot r) \bmod m$이니 $\overline{a} \cdot \overline{b}$로 구할 수 없습니다.
+
+이를 위해 $\overline{a} * \overline{b} = \overline{a \cdot b}$를 만족하는 연산 $*$를 정의합시다. 이는 $\overline{a} * \overline{b} = \overline{a} \cdot \overline{b} \cdot r^{-1} \bmod m$을 이용해 가능합니다. 해당 연산을 빠르게 구현하기 위해선 $0 \leq n < m^2$인 정수 $n$에 대해 $n \cdot r^{-1} \bmod m$을 빠르게 계산할 수 있어야 합니다.
+
+$\gcd(m, r) = 1$이니 Bezout's Identity에 의해 $r \cdot r^{-1} + m \cdot m' = 1$인 두 정수 $r^{-1}, m'$이 존재합니다.
+
+이때
+$$
+\begin{align*}
+n \cdot r^{-1} &= n \cdot \frac{r \cdot r^{-1}}{r} \\
+               &= n \cdot \frac{1 - m \cdot m'}{r} \\
+			   &= \frac{n - n \cdot m \cdot m'}{r} \\
+			   &\equiv \frac{n - n \cdot m \cdot m' + k \cdot r \cdot n}{r} \; \bmod m \\
+			   &\equiv \frac{n - (n \cdot m' - k \cdot r)m}{r} \; \bmod m \\
+			   &\equiv \frac{n - (n \cdot m' \bmod r)n}{r} \; \bmod m
+\end{align*}
+$$
+이 성립합니다.
+
+여기서 $\operatorname{REDC}(n) = \frac{n - (n \cdot m' \bmod r)n}{r}$을 정의합시다. $\frac{n}{r} < m$이고, $\frac{(n \cdot m' \bmod r)n}{r} < m$이니 $-m < \operatorname{REDC}(n) < m$이 성립합니다.
+
+$\operatorname{REDC}(n)$을 이용하면 $n \cdot r^{-1} \bmod m$의 계산에서 <code>% m</code> 연산을 <code>% r</code>, <code>/ r</code> 연산으로 대체할 수 있습니다. 이때 $r = 2^k$를 이용하면 <code>% r</code>, <code>/ r</code> 연산을 비트 연산으로 고속화할 수 있으니, $n \cdot r^{-1} \bmod m$을 정수 나눗셈, 모듈러 연산 없이 구할 수 있습니다.
+
+### 3.3 Fast Inverse and Transformation
+
 ~
+
+### 3.4  Modular Multiplication in $\mathbb{Z}_m$ using Montgomery Reduction
+
+~
+
+Barrett Reduction은 정수 나눗셈 $\lfloor \frac{n}{m} \rfloor$을 $\lfloor \frac{n \cdot \lceil \frac{2^k}{m} \rceil}{2^k} \rfloor$로 대체하는 기법으로, $n \bmod m = n - \lfloor \frac{n}{m} \rfloor m$임을 이용해 모듈러 연산도 빠르게 처리할 수 있었습니다.
 
 ## References
 
