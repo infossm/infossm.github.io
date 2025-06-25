@@ -110,8 +110,11 @@ private:
 
 **Note.**
 
-- GNU 계열 컴파일러(GCC/Clang)와 달리 Microsoft Visual C++(MSVC)는 <code>__int128</code> 자료형을 지원하지 않기에 128비트 정수 곱셈을 직접 구현해야 합니다.
+- $2 \leq m < 2^{31}$, $0 \leq n < 2^{31}$이라면 $k = 62$와 128비트 정수 곱셈을 이용하면 됩니다.
+- $2 \leq m < 2^{63}$, $0 \leq n < 2^{63}$이라면 $k = 126$과 256비트 정수 곱셈을 이용하면 됩니다.
 - $2 \leq m < 2^{64}$, $0 \leq n < 2^{64}$라면 $k = 128$과 256비트 정수 곱셈을 이용하면 됩니다.
+- $k = 64$인 경우 $x = \lceil \frac{2^{64}}{m} \rceil$을 <code>u64(-1) / m + 1</code>로 구할 수 있습니다. [(참고)](https://github.com/atcoder/ac-library/blob/master/atcoder/internal_math.hpp)
+- GNU 계열 컴파일러(GCC/Clang)와 달리 Microsoft Visual C++(MSVC)는 <code>__int128</code> 자료형을 지원하지 않기에 128비트 정수 곱셈을 직접 구현해야 합니다.
 
 ### 2.3 Modular Multiplication in $\mathbb{Z}_m$ using Barrett Reduction
 
@@ -164,14 +167,16 @@ private:
 
 [1] [https://www.agner.org/optimize/instruction_tables.pdf](https://www.agner.org/optimize/instruction_tables.pdf)
 
-[2] [https://modoocode.com/313](https://modoocode.com/313)
+[2] [https://en.wikipedia.org/wiki/Barrett_reduction](https://en.wikipedia.org/wiki/Barrett_reduction)
 
-[3] [https://cp-algorithms.com/algebra/montgomery_multiplication.html](https://cp-algorithms.com/algebra/montgomery_multiplication.html)
+[3] [https://modoocode.com/313](https://modoocode.com/313)
 
-[4] [https://en.algorithmica.org/hpc/number-theory/montgomery/](https://en.algorithmica.org/hpc/number-theory/montgomery/)
+[4] [https://cp-algorithms.com/algebra/montgomery_multiplication.html](https://cp-algorithms.com/algebra/montgomery_multiplication.html)
 
-[5] [https://codeforces.com/blog/entry/103374](https://codeforces.com/blog/entry/103374)
+[5] [https://en.algorithmica.org/hpc/number-theory/montgomery/](https://en.algorithmica.org/hpc/number-theory/montgomery/)
 
-[6] [https://simonlindholm.github.io/files/bincoef.pdf](https://simonlindholm.github.io/files/bincoef.pdf)
+[6] [https://codeforces.com/blog/entry/103374](https://codeforces.com/blog/entry/103374)
 
-[7] [https://github.com/atcoder/ac-library/blob/master/atcoder/internal_math.hpp](https://github.com/atcoder/ac-library/blob/master/atcoder/internal_math.hpp)
+[7] [https://simonlindholm.github.io/files/bincoef.pdf](https://simonlindholm.github.io/files/bincoef.pdf)
+
+[8] [https://github.com/atcoder/ac-library/blob/master/atcoder/internal_math.hpp](https://github.com/atcoder/ac-library/blob/master/atcoder/internal_math.hpp)
