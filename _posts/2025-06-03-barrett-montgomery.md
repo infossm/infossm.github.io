@@ -149,7 +149,7 @@ private:
 };
 ```
 
-해당 코드는 $2 \leq m < 2^{31}$인 고정된 $m$에 대해 $0 \leq a, b < m$인 두 정수 $a, b$가 주어질 때 $ab \bmod m = ab - \lfloor \frac{ab}{m} \rfloor m$을 $k = 93$인 Barrett Reduction을 이용해 빠르게 계산합니다.
+해당 코드는 $2 \leq m < 2^{31}$인 정수 $m$에 대해 $0 \leq a, b < m$인 두 정수 $a, b$가 주어질 때 $ab \bmod m = ab - \lfloor \frac{ab}{m} \rfloor m$을 $k = 93$인 Barrett Reduction을 이용해 빠르게 계산합니다.
 
 사용 예시는 다음과 같습니다. [(코드)](http://boj.kr/233deb0addff442ebdd782ac500d9298)
 
@@ -173,7 +173,7 @@ $$n \cdot r^{-1} \equiv \frac{n - (n \cdot m' \bmod r) \cdot m}{r} \bmod m$$
 
 $m > 2$를 만족하는 홀수 정수 $m$에 대해 $0 \leq a, b < m$인 두 정수 $a, b$가 주어질 때 $a \cdot b \bmod m$을 효율적으로 계산하는 문제를 생각해보겠습니다.
 
-$m \leq r$이면서 $\gcd(m, r) = 1$인 정수 $r$을 하나 선택합시다. 그러면 Bezout's Identity에 의해 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 두 정수 $r^{-1}, m'$이 존재합니다. 이를 이용하면 정수 $n$에 대해 $\overline{n} = n \cdot r \bmod m$과 $f(n) = n \cdot r^{-1} \bmod m$을 정의할 수 있습니다. 이때 $\overline{n}$을 $n$의 Montgomery Form, 함수 $f$를 Montgomery Reduction이라 합니다.
+$m \leq r$이면서 $\gcd(m, r) = 1$인 정수 $r$을 하나 선택합시다. 그러면 Bezout 항등식에 의해 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 두 정수 $r^{-1}, m'$이 존재합니다. 이를 이용하면 정수 $n$에 대해 $\overline{n} = n \cdot r \bmod m$과 $f(n) = n \cdot r^{-1} \bmod m$을 정의할 수 있습니다. 이때 $\overline{n}$을 $n$의 Montgomery Form, 함수 $f$를 Montgomery Reduction이라 합니다.
 
 Montgomery Form과 Montgomery Reduction 사이에는 다음 성질이 성립합니다.
 
@@ -203,13 +203,13 @@ n \cdot r^{-1} &= n \cdot \frac{r \cdot r^{-1}}{r} \\
 $$
 이 성립합니다.
 
-즉, $x = n \cdot m' \bmod r$, $y = x \cdot m$을 이용하면 $n \cdot r^{-1} \bmod m$을 $\frac{n - y}{r} \bmod m$으로 대체할 수 있습니다.
+즉, $x = n \cdot m' \bmod r$, $y = x \cdot m$에 대해 $n \cdot r^{-1} \bmod m = \frac{n - y}{r} \bmod m$이 성립합니다.
 
-이때 $0 \leq n < m^2$이라면 $m \leq r$에서 $\frac{n}{r} < \frac{m^2}{r} < m$이고, $\frac{y}{r} = \frac{x \cdot m}{r} < \frac{r \cdot m}{r} = m$이니 $-m < \frac{n - y}{r} < m$이 성립하고, 따라서 $\frac{n - y}{r}$이 $0$ 미만이라면 $m$을 더해주며 $\frac{n - y}{r} \bmod m$을 구할 수 있습니다.
+이때 $0 \leq n < m^2$를 가정하면, $m \leq r \Rightarrow \frac{n}{r} < \frac{m^2}{r} < m$이고, $\frac{y}{r} = \frac{x \cdot m}{r} < \frac{r \cdot m}{r} = m$이니 $-m < \frac{n - y}{r} < m$이 성립합니다. 따라서 $n < y$라면 $\frac{n - y}{r} + m$, $n \geq y$라면 $\frac{n - y}{r}$로 $n \cdot r^{-1} \bmod m$을 구할 수 있습니다.
 
-또한, $m$이 $2^{32}$ 미만인 홀수라면 $r = 2^{32}$를, $2^{64}$ 미만인 홀수라면 $r = 2^{64}$를 이용하며 $r$에 대한 모듈러 연산과 정수 나눗셈을 비트 연산으로 대체할 수 있습니다.
+또한 $m$이 홀수라는 조건을 이용하면 $r$을 $m$ 이상인 $2^w$로 선택할 수 있습니다. 그러면 $r$에 대한 모듈러 연산은 bitwise and로, 정수 나눗셈은 bitwise shift로 대체할 수 있습니다.
 
-따라서 $m$이 홀수라면 $r$을 $2$의 거듭제곱으로 선택한 뒤 $n \cdot r^{-1} \bmod m$을 $\frac{n - y}{r}$로 대체하며 $1$번의 뺄셈, $2$번의 곱셈과 $r$에 대한 모듈러 연산, 정수 나눗셈으로 구할 수 있습니다.
+즉, $m$이 홀수이고 $0 \leq n < m^2$라면 $f(n)$을 $m$에 대한 모듈러 연산 없이 빠르게 계산할 수 있습니다.
 
 다음은 구현 코드입니다.
 
@@ -227,17 +227,48 @@ u32 f(u64 n) {               // 0 <= n < m^2
 }
 ```
 
-이때 결과가 $[0, m)$ 범위가 아니라 $[0, 2m)$ 범위여도 상관없다면, 마지막 비교 연산을 생략할 수 있습니다.
+해당 코드는 $2 < m < 2^{32}$인 홀수 정수 $m$에 대해 $0 \leq n < m^2$인 정수 $n$이 주어질 때 모듈러 연산 없이 $f(n) = n \cdot r^{-1} \bmod m$을 계산합니다.
 
-### 3.3 Fast Inverse and Transformation
+이때 $r$은 $2^{32}$를 이용하였으며, $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 정수 $m'$를 <code>mr</code>에 미리 구해뒀다 가정합니다. $r = 2^{32}$를 이용하면 $r$에 대한 모듈러 연산을 32비트 정수 자료형의 오버플로우를 이용해 추가 연산 없이 처리할 수 있습니다.
 
-~
+### 3.3 Fast Inverse
 
-### 3.4  Modular Multiplication in $\mathbb{Z}_m$ using Montgomery Reduction
+$m$이 홀수이고 $0 \leq n < m^2$이라면 $r = 2^w$를 이용해 $f(n)$을 빠르게 계산할 수 있습니다. 이를 위해선 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 정수 $m'$를 미리 구해둬야 합니다.
 
-~
+이는 확장 유클리드 알고리즘을 이용해 $\mathcal{O}(\log r)$에 구할 수 있지만, $r$이 $2$의 거듭제곱이라면 더 간단한 방법으로 $m'$를 구할 수 있습니다.
 
-Barrett Reduction은 정수 나눗셈 $\lfloor \frac{n}{m} \rfloor$을 $\lfloor \frac{n \cdot \lceil \frac{2^k}{m} \rceil}{2^k} \rfloor$로 대체하는 기법으로, $n \bmod m = n - \lfloor \frac{n}{m} \rfloor m$임을 이용해 모듈러 연산도 빠르게 처리할 수 있었습니다.
+$m > 2$인 홀수 정수 $m$과 $k \geq 1$에 대해 다음이 성립합니다.
+
+$$m \cdot x \equiv 1 \bmod 2^k \Rightarrow m \cdot x \cdot (2 - m \cdot x) \equiv 2^{2k}$$
+
+증명은 다음과 같습니다.
+
+$$
+\begin{align*}
+m \cdot x \cdot (2 - m \cdot x) &= 2 \cdot m \cdot x - (m \cdot x)^2 \\
+                                &= 2 \cdot (1 + n \cdot 2^k) - (1 + n \cdot 2^k)^2 \\
+				                &= 2 + 2 \cdot n \cdot 2^k  - 1 - 2 \cdot n \cdot 2^k - n^2 \cdot 2^{2k} \\
+								&= 1 - n^2 \cdot 2^{2k} \\
+								&\equiv 1 \bmod 2^{2k}
+\end{align*}
+$$
+
+따라서 $m \cdot 1 \equiv 1 \bmod 2^1$를 이용해 $x = 1$에서 시작해서 $\mathcal{O}(\log_2(w))$번 $x \leftarrow x \cdot (2 - m \cdot x)$를 수행하면 $m \cdot m' \equiv 1 \bmod 2^w$를 구할 수 있습니다.
+
+구현 코드는 다음과 같습니다.
+
+```cpp
+using u64 = unsigned long long;
+using u32 = unsigned int;
+
+u32 calc_mr(u32 m) { // return mr s.t. r * r^-1 + m * mr = 1
+	u32 x = 1;
+	for (int i = 0; i < 5; i++) x *= 2 - m * x;
+	return x;
+}
+```
+
+해당 코드는 $2 < m < 2^{32}$인 홀수 정수 $m$과 $r = 2^{32}$에 대해 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 정수 $m'$를 계산합니다.
 
 ## References
 
