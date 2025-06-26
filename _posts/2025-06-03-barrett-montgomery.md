@@ -18,15 +18,17 @@ tags: [algorithm, mathematics, problem-solving]
 
 ## 2. Barrett Reduction
 
-Barrett Reduction은 $n \geq 0$, $m \geq 2$일 때, 충분히 큰 $k$에 대해
+Barrett Reduction은 두 정수 $n, m(n \geq 0, m \geq 2)$이 주어질 때, 충분히 큰 $k$에 대해
 
 $$
 \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k} \right\rfloor
 $$
 
-가 성립함을 이용하는 정수 나눗셈 최적화 기법입니다. 여기서 $\left\lceil \frac{2^k}{m} \right\rceil$은 미리 계산해둔 뒤 곱할 수 있고, $2^k$로 나누는 과정은 시프트 연산으로 처리할 수 있습니다.
+가 성립함을 이용하는 정수 나눗셈 최적화 기법입니다.
 
-### 2.1 Determining $k$ for Barrett Reduction
+여기서 $\left\lceil \frac{2^k}{m} \right\rceil$은 미리 계산해둔 뒤 곱할 수 있고, $2^k$로 나누는 과정은 시프트 연산으로 처리할 수 있습니다.
+
+### 2.1 Basic Idea
 
 등식이 성립하는 $k$를 구하기 위해 먼저 다음의 보조 정리를 증명하겠습니다.
 
@@ -113,7 +115,7 @@ private:
 - $2 \leq m < 2^{31}$, $0 \leq n < 2^{31}$이라면 $k = 62$와 128비트 정수 곱셈을 이용하면 됩니다.
 - $2 \leq m < 2^{63}$, $0 \leq n < 2^{63}$이라면 $k = 126$과 256비트 정수 곱셈을 이용하면 됩니다.
 - $2 \leq m < 2^{64}$, $0 \leq n < 2^{64}$라면 $k = 128$과 256비트 정수 곱셈을 이용하면 됩니다.
-- $k = 64$인 경우 $x = \lceil \frac{2^{64}}{m} \rceil$을 <code>u64(-1) / m + 1</code>로 구할 수 있습니다. [(참고)](https://github.com/atcoder/ac-library/blob/master/atcoder/internal_math.hpp)
+- $k = 64$인 경우 $x = \lceil \frac{2^{64}}{m} \rceil$을 <code>u64(-1) / m + 1</code>로 구할 수 있습니다. 대표적으로 ac-library가 이 방식을 사용합니다. [(참고)](https://github.com/atcoder/ac-library/blob/master/atcoder/internal_math.hpp)
 - GNU 계열 컴파일러(GCC/Clang)와 달리 Microsoft Visual C++(MSVC)는 <code>__int128</code> 자료형을 지원하지 않기에 128비트 정수 곱셈을 직접 구현해야 합니다.
 
 ### 2.3 Modular Multiplication in $\mathbb{Z}_m$ using Barrett Reduction
@@ -161,15 +163,28 @@ private:
 
 ## 3. Montgomery Reduction
 
-Montgomery Reduction은 모듈러 연산을 빠르게 처리하는 기법으로, $m \leq r$이고 $\gcd(m, r) = 1$인 두 정수 $m, r$에 대해, $0 \leq n < m^2$인 정수 $n$이 주어질 때
-$$
-n \cdot r^{-1} \equiv \frac{n - (n \cdot m' \bmod r) \cdot m}{r} \; \bmod m
-$$
-이 성립함을 이용합니다. 여기서 $r^{-1}, m'$은 $r \cdot r^{-1} + m \cdot m' = 1$을 만족하는 정수입니다.
+Montgomery Reduction은 $m > 2$인 홀수 정수 $m$이 주어질 때, $m \leq r$이면서 $\gcd(m, r) = 1$인 정수 $r$과 $0 \leq n < m^2$인 정수 $n$에 대해
+$$n \cdot r^{-1} \equiv \frac{n - (n \cdot m' \bmod r) \cdot m}{r} \bmod m$$
+이 성립함을 이용하는 모듈러 연산 최적화 기법입니다.
 
-### 3.1 Montgomery Space
+여기서 $r^{-1}, m'$은 $r\cdot r^{-1} + m \cdot m' = 1$을 만족하는 정수이고, $n \bmod m$는 $n = qm + r$, $0 \leq r < m$을 만족하는 정수 $r$입니다.
 
-정수 $n$에 대해 $\overline{n} = n \cdot r \bmod m$을 $n$의 Montgomery Form이라 정의합시다.
+### 3.1 Basic Idea
+
+$m > 2$를 만족하는 홀수 정수 $m$에 대해 $0 \leq a, b < m$인 두 정수 $a, b$가 주어질 때 $a \cdot b \bmod m$을 효율적으로 계산하는 문제를 생각해보겠습니다.
+
+$m \leq r$이면서 $\gcd(m, r) = 1$인 정수 $r$을 하나 선택합시다. 그러면 Bezout's Identity에 의해 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 두 정수 $r^{-1}, m'$이 존재합니다. 이를 바탕으로 정수 $n$에 대해 $\overline{n} = n \cdot r \bmod m$을 정의하고, 이를 $n$의 Montgomery Form이라 부르겠습니다.
+
+두 정수 $a, b$와 $a \cdot b$의 Montgomery Form 사이에는 다음 곱셈 규칙이 성립합니다.
+$$\overline{a} * \overline{b} := \overline{a \cdot b} = \overline{a} \cdot \overline{b} \cdot r^{-1} \bmod m$$
+
+이때 정수 $n$에 대해 $f(n) = n \cdot r^{-1} \bmod m$을 정의하면 $f(\overline{a} \cdot \overline{b}) = \overline{a} * \overline{b}$가 성립합니다. 또한 $f(\overline{n}) = \overline{n} \cdot r^{-1} \bmod m = n \bmod m$을 이용하면 $\overline{n}$으로부터 $n \bmod m$을 구할 수 있습니다. 이 사실을 이용하면 $f(f(\overline{a} \cdot \overline{b}))$를 이용해 $a \cdot b \bmod m$을 계산할 수 있습니다.
+
+이제 $n \rightarrow \overline{n}$, $n \rightarrow f(n)$ 변환을 빠르게 계산하는 방법을 알아보겠습니다.
+
+### 3.2 Montgomery Form
+
+$0 \leq n < m$인 정수 $n$에 대해 $\overline{n}$은 
 
 ### 3.2 Montgomery Reduction
 
