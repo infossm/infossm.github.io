@@ -164,30 +164,37 @@ private:
 ## 3. Montgomery Reduction
 
 Montgomery Reduction은 $m > 2$인 홀수 정수 $m$이 주어질 때, $m \leq r$이면서 $\gcd(m, r) = 1$인 정수 $r$과 $0 \leq n < m^2$인 정수 $n$에 대해
-$$n \cdot r^{-1} \equiv \frac{n - (n \cdot m' \bmod r) \cdot m}{r} \bmod m$$
+
+$$
+n \cdot r^{-1} \equiv \frac{n - (n \cdot m' \bmod r) \cdot m}{r} \bmod m
+$$
+
 이 성립함을 이용하는 모듈러 연산 최적화 기법입니다.
 
 여기서 $r^{-1}, m'$은 $r\cdot r^{-1} + m \cdot m' = 1$을 만족하는 정수이고, $n \bmod m$는 $n = qm + r$, $0 \leq r < m$을 만족하는 정수 $r$입니다.
 
 ### 3.1 Basic Idea
 
-$m > 2$를 만족하는 홀수 정수 $m$에 대해 $0 \leq a, b < m$인 두 정수 $a, b$가 주어질 때 $a \cdot b \bmod m$을 효율적으로 계산하는 문제를 생각해보겠습니다.
-
-$m \leq r$이면서 $\gcd(m, r) = 1$인 정수 $r$을 하나 선택합시다. 그러면 Bezout 항등식에 의해 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 두 정수 $r^{-1}, m'$이 존재합니다. 이를 이용하면 정수 $n$에 대해 $\overline{n} = n \cdot r \bmod m$과 $f(n) = n \cdot r^{-1} \bmod m$을 정의할 수 있습니다. 이때 $\overline{n}$을 $n$의 Montgomery Form, 함수 $f$를 Montgomery Reduction이라 합니다.
-
-Montgomery Form과 Montgomery Reduction 사이에는 다음 성질이 성립합니다.
+$\gcd(m, r) = 1$인 정수 $m, r$은 Bezout 항등식에 의해 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 두 정수 $r^{-1}, m'$이 존재합니다.
 
 $$
 \begin{align*}
-f(\overline{a} \cdot \overline{b}) = \overline{a} \cdot \overline{b} \cdot r^{-1} \bmod m = \overline{a \cdot b} \\
-f(\overline{n}) = \overline{n} \cdot r^{-1} \bmod m = n \bmod m \\
-f(n \cdot r^2) = n \cdot r^2 \cdot r^{-1} \bmod m = \overline{n}
+\overline{n} &= n \cdot r \bmod m \\
+f(n) &= n \cdot r^{-1} \bmod m
 \end{align*}
 $$
 
-즉, Montgomery Reduction $f$를 이용하면 $a, b, a \cdot b$의 Montgomery Form 간의 관계를 나타낼 수 있고, $n \bmod m \leftrightarrow \overline{n}$ 변환을 표현할 수 있습니다. 따라서 Montgomery Reduction $f$를 빠르게 계산할 수 있다면 $a, b \rightarrow \overline{a}, \overline{b} \rightarrow f(\overline{a} \cdot \overline{b}) = \overline{a \cdot b} \rightarrow a \cdot b \bmod m$로 $a \cdot b \bmod m$을 빠르게 구할 수 있습니다.
+정수 $n$에 대해 $n$의 Montgomery Form $\overline{n}$과 Montgomery Reduction $f(n)$을 위와 같이 정의합시다.
+
+Montgomery Reduction을 이용하면 세 정수 $a, b, a \cdot b$의 Montgomery Form 간의 관계를 $\overline{a \cdot b} = \overline{a} \cdot \overline{b} \cdot r^{-1} \bmod m = f(\overline{a} \cdot \overline{b})$로 나타낼 수 있습니다. 또한 $f(\overline{n}) = n \bmod m$과 $f(n \cdot r^2) = \overline{n}$을 이용하면 $n \bmod m \leftrightarrow \overline{n}$ 변환을 표현할 수 있습니다.
+
+$$a, b \; \longrightarrow \; \overline{a}, \overline{b} \; \longrightarrow \; f(\overline{a} \cdot \overline{b}) = \overline{a \cdot b} \; \longrightarrow \; a \cdot b \bmod m$$
+
+따라서 Montgomery Reduction $f$를 빠르게 수행할 수 있다면, $a, b$의 Montgomery Form을 구한 뒤 $f(\overline{a} \cdot \overline{b})$를 구하고 다시 역변환을 하며 $a \cdot b \bmod m$을 빠르게 구할 수 있습니다.
 
 ### 3.2 Montgomery Reduction
+
+이제 Montgomery Reduction을 빠르게 수행하는 방법을 알아보겠습니다.
 
 $r \cdot r^{-1} + m \cdot m' = 1$에서 임의의 $k \in \mathbb{Z}$에 대해
 
@@ -201,17 +208,23 @@ n \cdot r^{-1} &= n \cdot \frac{r \cdot r^{-1}}{r} \\
 			   &\equiv \frac{n - (n \cdot m' \bmod r) \cdot m}{r} \; \bmod m
 \end{align*}
 $$
-이 성립합니다.
+이 성립하니, 이를 이용하면 $x = n \cdot m' \bmod r$과 $y = x \cdot m$에 대해 $n \cdot r^{-1} \bmod m = \frac{n - y}{r} \bmod m$으로 $f(n)$을 표현할 수 있습니다.
 
-즉, $x = n \cdot m' \bmod r$, $y = x \cdot m$에 대해 $n \cdot r^{-1} \bmod m = \frac{n - y}{r} \bmod m$이 성립합니다.
+이제 $0 \leq n < m^2$을 가정합시다. $m \leq r$이니 $\frac{n}{r} < \frac{m^2}{r} < m$이고, $x < r$이니 $\frac{y}{r} = \frac{x \cdot m}{r} < \frac{r \cdot m}{r} = m$이 성립합니다. 따라서 $-m < \frac{n - y}{r} < m$이 성립하고, $n < y$라면 $\frac{n - y}{r} + m$, $n \geq y$라면 $\frac{n - y}{r}$을 이용해 $f(n) = \frac{n - y}{r} \bmod m$을 구할 수 있습니다.
 
-이때 $0 \leq n < m^2$를 가정하면, $m \leq r \Rightarrow \frac{n}{r} < \frac{m^2}{r} < m$이고, $\frac{y}{r} = \frac{x \cdot m}{r} < \frac{r \cdot m}{r} = m$이니 $-m < \frac{n - y}{r} < m$이 성립합니다. 따라서 $n < y$라면 $\frac{n - y}{r} + m$, $n \geq y$라면 $\frac{n - y}{r}$로 $n \cdot r^{-1} \bmod m$을 구할 수 있습니다.
+또한 $m$이 홀수라는 가정을 추가하면, $r$을 $m$보다 큰 $2$의 거듭제곱 $2^w$로 선택할 수 있습니다. 이때 $r$을 $2^w$ 꼴로 선택하면 $r$에 대한 모듈러 연산과 정수 나눗셈을 비트 연산으로 대체할 수 있습니다.
 
-또한 $m$이 홀수라는 조건을 이용하면 $r$을 $m$ 이상인 $2^w$로 선택할 수 있습니다. 그러면 $r$에 대한 모듈러 연산은 bitwise and로, 정수 나눗셈은 bitwise shift로 대체할 수 있습니다.
+$$
+\begin{align*}
+f(n) &= n \cdot r^{-1} \bmod m \\
+     &= \frac{n - y}{r} \bmod m \; (x = n \cdot m' \bmod r, \; y = x \cdot m) \\
+	 &= \begin{cases} \frac{n - y}{r} + m & (n < y) \\ \frac{n - y}{r} & (n \geq y) \end{cases}
+\end{align*}
+$$
 
-즉, $m$이 홀수이고 $0 \leq n < m^2$라면 $f(n)$을 $m$에 대한 모듈러 연산 없이 빠르게 계산할 수 있습니다.
+정리하면, $m$이 홀수이고 $0 \leq n < m^2$이라면 $f(n) = n \cdot r^{-1} \bmod m$을 $r = 2^w$를 이용해 비트 연산과 조건 분기로 계산할 수 있습니다.
 
-다음은 구현 코드입니다.
+구현 코드는 다음과 같습니다.
 
 ```cpp
 using u64 = unsigned long long;
@@ -227,9 +240,16 @@ u32 f(u64 n) {               // 0 <= n < m^2
 }
 ```
 
-해당 코드는 $2 < m < 2^{32}$인 홀수 정수 $m$에 대해 $0 \leq n < m^2$인 정수 $n$이 주어질 때 모듈러 연산 없이 $f(n) = n \cdot r^{-1} \bmod m$을 계산합니다.
+해당 코드는 $2 < m < 2^{32}$인 홀수 정수 $m$에 대해 $0 \leq n < m^2$인 정수 $n$이 주어질 때, $r = 2^{32}$를 이용해 모듈러 연산 없이 $f(n) = n \cdot r^{-1} \bmod m$을 계산합니다.
 
-이때 $r$은 $2^{32}$를 이용하였으며, $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 정수 $m'$를 <code>mr</code>에 미리 구해뒀다 가정합니다. $r = 2^{32}$를 이용하면 $r$에 대한 모듈러 연산을 32비트 정수 자료형의 오버플로우를 이용해 추가 연산 없이 처리할 수 있습니다.
+이때 <code>mr</code>에는 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 정수 $m'$을 미리 구해뒀다 가정합니다.
+
+**Note.**
+
+- $m < 2^{32}$라면 $r = 2^{32}$를 이용하면 $r$에 대한 모듈러 연산을 32비트 정수 자료형의 오버플로우를 이용해 추가 연산 없이 구현할 수 있습니다.
+- $m < 2^{64}$라면 $r = 2^{64}$를 이용하면 $r$에 대한 모듈러 연산을 64비트 정수 자료형의 오버플로우를 이용해 추가 연산 없이 구현할 수 있습니다.
+- $m$이 홀수가 아니라면 $m = 2^a \cdot b$에서 $n \bmod 2^a$는 비트 연산으로, $n \bmod b$는 Montgomery Reduction으로 구한 뒤 Chinese Remainder Theorem을 이용하면 $n \bmod m$을 구할 수 있습니다.
+- <code>mr</code>는 $r, m$에 대해 확장 유클리드 알고리즘을 사용해 $\mathcal{O}(\log r)$에 구할 수 있습니다.
 
 ### 3.3 Fast Inverse
 
@@ -269,6 +289,8 @@ u32 calc_mr(u32 m) { // return mr s.t. r * r^-1 + m * mr = 1
 ```
 
 해당 코드는 $2 < m < 2^{32}$인 홀수 정수 $m$과 $r = 2^{32}$에 대해 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 정수 $m'$를 계산합니다.
+
+
 
 ## References
 
