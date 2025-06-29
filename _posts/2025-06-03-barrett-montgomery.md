@@ -253,15 +253,9 @@ u32 f(u64 n) {               // 0 <= n < m^2
 
 ### 3.3 Fast Inverse
 
-$m$이 홀수이고 $0 \leq n < m^2$이라면 $r = 2^w$를 이용해 $f(n)$을 빠르게 계산할 수 있습니다. 이를 위해선 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 정수 $m'$를 미리 구해둬야 합니다.
+$f(n)$을 빠르게 계산하기 위해선 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 정수 $m'$를 미리 구해둬야 합니다. 일반적인 경우에는 확장 유클리드 알고리즘을 이용해 $\mathcal{O}(\log r)$에 두 정수 $r^{-1}, m'$을 구할 수 있지만, $r$이 $2$의 거듭제곱이라면 더 간단한 방법으로 $m'$를 구할 수 있습니다.
 
-이는 확장 유클리드 알고리즘을 이용해 $\mathcal{O}(\log r)$에 구할 수 있지만, $r$이 $2$의 거듭제곱이라면 더 간단한 방법으로 $m'$를 구할 수 있습니다.
-
-$m > 2$인 홀수 정수 $m$과 $k \geq 1$에 대해 다음이 성립합니다.
-
-$$m \cdot x \equiv 1 \bmod 2^k \Rightarrow m \cdot x \cdot (2 - m \cdot x) \equiv 2^{2k}$$
-
-증명은 다음과 같습니다.
+$m > 2$인 홀수 정수 $m$과 $k \geq 1$에 대해 $m \cdot x \equiv 1 \bmod 2^k$라면,
 
 $$
 \begin{align*}
@@ -273,7 +267,9 @@ m \cdot x \cdot (2 - m \cdot x) &= 2 \cdot m \cdot x - (m \cdot x)^2 \\
 \end{align*}
 $$
 
-따라서 $m \cdot 1 \equiv 1 \bmod 2^1$를 이용해 $x = 1$에서 시작해서 $\mathcal{O}(\log_2(w))$번 $x \leftarrow x \cdot (2 - m \cdot x)$를 수행하면 $m \cdot m' \equiv 1 \bmod 2^w$를 구할 수 있습니다.
+에서 $m \cdot x \cdot (2 - m \cdot x) \equiv 1 \bmod 2^{2k}$가 성립합니다.
+
+따라서 $x_0 = 1$에서 시작해 $x_{i+1} = x_i(2 - m x_i) \bmod 2^{2^i}$를 반복하면 $r = 2^w$에 대한 $m \cdot m' \equiv 1 \bmod 2^w$인 정수 $m'$을 $\mathcal{O}(\log w)$에 구할 수 있습니다.
 
 구현 코드는 다음과 같습니다.
 
@@ -281,7 +277,7 @@ $$
 using u64 = unsigned long long;
 using u32 = unsigned int;
 
-u32 calc_mr(u32 m) { // return mr s.t. r * r^-1 + m * mr = 1
+u32 minv(u32 m) { // m^{-1} mod 2^32
 	u32 x = 1;
 	for (int i = 0; i < 5; i++) x *= 2 - m * x;
 	return x;
@@ -289,8 +285,6 @@ u32 calc_mr(u32 m) { // return mr s.t. r * r^-1 + m * mr = 1
 ```
 
 해당 코드는 $2 < m < 2^{32}$인 홀수 정수 $m$과 $r = 2^{32}$에 대해 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 정수 $m'$를 계산합니다.
-
-
 
 ## References
 
