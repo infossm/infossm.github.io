@@ -18,15 +18,13 @@ tags: [algorithm, mathematics, problem-solving]
 
 ## 2. Barrett Reduction
 
-Barrett Reduction은 두 정수 $n, m(n \geq 0, m \geq 2)$이 주어질 때, 충분히 큰 $k$에 대해
+Barrett Reduction은 두 정수 $n, m$이 $n \geq 0$, $m \geq 2$라면, 충분히 큰 $k$에 대해
 
 $$
 \left\lfloor \frac{n}{m} \right\rfloor = \left\lfloor n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k} \right\rfloor
 $$
 
 가 성립함을 이용하는 정수 나눗셈 최적화 기법입니다.
-
-여기서 $\left\lceil \frac{2^k}{m} \right\rceil$은 미리 계산해둔 뒤 곱할 수 있고, $2^k$로 나누는 과정은 시프트 연산으로 처리할 수 있습니다.
 
 ### 2.1 Basic Idea
 
@@ -57,7 +55,7 @@ $$
 
 를 정의합시다.
 
-$e$의 정의를 전개하면,
+$e$의 정의를 전개하면
 
 $$
 \begin{align*}
@@ -69,13 +67,17 @@ $$
 
 이 성립합니다.
 
-따라서 $\left\lfloor \frac{n}{m} + e \right\rfloor = \left\lfloor n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k} \right\rfloor$에서 $0 \leq e < \frac{1}{m}$이니 $\left\lfloor n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k} \right\rfloor = \left\lfloor \frac{n}{m} \right\rfloor$ 이 성립합니다.
+즉, $2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) \leq 2^k$인 정수 $k$에 대해 $\frac{n}{m} + e = n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k}$에서 $e$는 항상 $0 \leq e < \frac{1}{m}$를 만족하고, 따라서 $\left\lfloor n \cdot \left\lceil \frac{2^k}{m} \right\rceil \cdot \frac{1}{2^k} \right\rfloor = \left\lfloor \frac{n}{m} \right\rfloor$ 이 성립합니다.
+
+이때 $x = \left\lceil \frac{2^k}{m} \right\rceil$는 미리 구해둘 수 있고, $\left\lfloor \frac{n x}{2^k} \right\rfloor$는 <code>(n * x) >> k</code>를 이용해 계산할 수 있으니, <code>(n * x) >> k</code>로 $\left\lfloor \frac{n}{m} \right\rfloor$를 빠르게 계산할 수 있습니다.
 
 ### 2.2 Integer Division using Barrett Reduction
 
-$2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) \leq 2^k$를 만족하는 정수 $k$를 이용하면, $x = \left\lceil \frac{2^k}{m} \right\rceil$를 미리 계산한 뒤 <code>n / m</code>을 <code>(n * x) >> k</code>로 대체하며 Barrett Reduction을 구현할 수 있습니다.
+고정된 $2$ 이상의 정수 $m$에 대해 $n \leq 0$인 정수 $n$이 주어질 때마다 $\left\lfloor \frac{n}{m} \right\rfloor$를 구하는 상황을 생각해봅시다.
 
-이때 $k$를 너무 크게 잡으면 <code>n * x</code>에서 overflow가 발생할 수 있으니, 가능한 작은 $k$를 이용하는 게 좋습니다. $k$의 최솟값은 $\lfloor \log_2 (m - 1) \rfloor + \lceil \log_2 (\max(2n, m)) \rceil$입니다. 따라서 $n, m$의 범위가 주어지면 해당 값을 계산해 $k$의 하한을 구할 수 있습니다.
+$m$이 변하지 않는다는 사실을 이용하면, $2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) \leq 2^k$를 만족하는 정수 $k$를 이용해 $x = \left\lceil \frac{2^k}{m} \right\rceil$를 미리 계산한 뒤 <code>n / m</code>을 <code>(n * x) >> k</code>로 대체하며 Barrett Reduction을 구현할 수 있습니다.
+
+이때 $k$를 너무 크게 잡으면 <code>n * x</code>에서 overflow가 발생할 수 있으니, 가능한 작은 $k$를 이용하는 게 좋습니다. 조건을 만족하는 $k$의 최솟값은 $\lfloor \log_2 (m - 1) \rfloor + \lceil \log_2 (\max(2n, m)) \rceil$입니다. 따라서 $n, m$의 범위가 주어지면 해당 값을 계산해 $k$의 하한을 구할 수 있습니다.
 
 한편 $k$를 최대한 작게 선택하더라도 $nx$의 범위가 커질 수 있음에 주의해야 합니다. 예를 들어 $n = m = 2^{32} - 1$인 경우, $k \geq 31 + 33$에서 $k = 64$를 선택하면 $x = \lceil \frac{2^{64}}{2^{32} - 1} \rceil = 2^{32} + 2$가 되므로 $nx = (2^{32} - 1)(2^{32} + 2) = 2^{64} + 2^{32} - 2$가 64비트 정수 자료형의 범위를 초과하게 됩니다. 따라서 $n, m$의 범위를 고려하여 $nx$의 최댓값을 계산하고, 이에 맞는 충분한 자료형을 선택하는 것이 중요합니다.
 
@@ -97,19 +99,21 @@ private:
 };
 ```
 
-해당 코드는 $2 \leq m < 2^{32}$인 고정된 $m$에 대해 $0 \leq n < 2^{32}$인 정수 $n$이 주어질 때 $n / m$을 $k = 64$인 Barrett Reduction을 이용해 빠르게 계산합니다.
+해당 코드는 $2 \leq m < 2^{32}$인 고정된 정수 $m$에 대해 $0 \leq n < 2^{32}$인 정수 $n$이 주어질 때, $n / m$을 $k = 64$인 Barrett Reduction을 이용해 빠르게 계산합니다.
 
 **Note.**
 
 - $2 \leq m < 2^{31}$, $0 \leq n < 2^{31}$이라면 $k = 62$와 128비트 정수 곱셈을 이용하면 됩니다.
 - $2 \leq m < 2^{63}$, $0 \leq n < 2^{63}$이라면 $k = 126$과 256비트 정수 곱셈을 이용하면 됩니다.
 - $2 \leq m < 2^{64}$, $0 \leq n < 2^{64}$라면 $k = 128$과 256비트 정수 곱셈을 이용하면 됩니다.
-- $k = 64$인 경우 $x = \lceil \frac{2^{64}}{m} \rceil$을 <code>u64(-1) / m + 1</code>로 구할 수 있습니다. 대표적으로 ac-library가 이 방식을 사용합니다. [(참고)](https://github.com/atcoder/ac-library/blob/master/atcoder/internal_math.hpp)
+- $k = 64$인 경우 $x = \lceil \frac{2^{64}}{m} \rceil$을 <code>u64(-1) / m + 1</code>로 구할 수 있습니다. ac-library 등의 여러 라이브러리가 이 방식을 사용합니다. [(참고)](https://github.com/atcoder/ac-library/blob/master/atcoder/internal_math.hpp)
 - GNU 계열 컴파일러(GCC/Clang)와 달리 Microsoft Visual C++(MSVC)는 <code>__int128</code> 자료형을 지원하지 않기에 128비트 정수 곱셈을 직접 구현해야 합니다.
 
 ### 2.3 Modular Multiplication in $\mathbb{Z}_m$ using Barrett Reduction
 
-두 정수 $0 \leq a, b < m$에 대해 <code>(a * b) % m</code>는 <code>(a * b) - ((a * b) / m) * m</code>에서 <code>(a * b) / m</code>에 Barrett Reduction을 적용해 빠르게 구할 수 있습니다.
+이번엔 고정된 $2$ 이상의 정수 $m$에 대해 $0 \leq a, b < m$인 정수 $a, b$가 주어질 때마다 $a \cdot b \bmod m$을 구하는 상황을 생각해봅시다.
+
+마찬가지로 $2^{\lfloor \log_2 (m - 1) \rfloor} \cdot \max(2n, m) \leq 2^k$를 만족하는 정수 $k$를 이용하면, <code>(a * b) - ((a * b) / m) * m</code>에서 <code>(a * b) / m</code>에 Barrett Reduction을 적용하며 <code>(a * b) % m</code>을 빠르게 구할 수 있습니다.
 
 이 경우 $0 \leq ab < m^2$이 성립하니 $k$의 하한은 $\lfloor \log_2(m - 1) \rfloor + \lceil \log_2(m^2 - 1) \rceil + 1$이고, $nx$의 상한은 $nx < m^2(\frac{2^k}{m} + 1) < m \cdot 2^k + m^2$입니다.
 
@@ -138,7 +142,7 @@ private:
 };
 ```
 
-해당 코드는 $2 \leq m < 2^{31}$인 정수 $m$에 대해 $0 \leq a, b < m$인 두 정수 $a, b$가 주어질 때 $ab \bmod m = ab - \lfloor \frac{ab}{m} \rfloor m$을 $k = 93$인 Barrett Reduction을 이용해 빠르게 계산합니다.
+해당 코드는 $2 \leq m < 2^{31}$인 정수 $m$에 대해 $0 \leq a, b < m$인 두 정수 $a, b$가 주어질 때, $ab \bmod m = ab - \lfloor \frac{ab}{m} \rfloor m$을 $k = 93$인 Barrett Reduction을 이용해 빠르게 계산합니다.
 
 사용 예시는 다음과 같습니다. [(코드)](http://boj.kr/233deb0addff442ebdd782ac500d9298)
 
@@ -362,6 +366,22 @@ private:
 
 - Montgomery Reduction과 마찬가지로 Exact Division을 사용하기 위해서는 $m$이 홀수여야 합니다.
 - $m < 2^{64}$, $n < 2^{64}$라면 $2^{64}$를 이용하면 됩니다.
+
+## 5. Application
+
+지금까지 정수 나눗셈을 최적화하는 Barrett Reduction과 모듈러 연산을 최적화하는 Montgomery Reduction을 알아보고, 추가로 $n$이 $m$의 배수인지 여부를 판단하는 Exact Division 기법을 알아보았습니다.
+
+각 최적화 기법은 적용할 수 있는 조건이 정해져있기 때문에 피연산자의 범위와 홀수 여부, 최적화하고자 하는 연산의 종류에 따라 적합한 기법을 선택하는게 중요합니다. 이번 단락에서는 몇 가지 에시를 통해 상황에 맞는 기법을 선택하는 방법을 알아보겠습니다.
+
+### 5.1 Factorial, Binomial
+
+[BOJ 11401](https://www.acmicpc.net/problem/11401)은 $1 \leq n \leq 4 \cdot 10^6$, $0 \leq k \leq n$을 만족하는 두 정수 $n, k$에 대해 $\binom{n}{k} \bmod 10^9 + 7$을 계산하는 문제입니다.
+
+이는 모듈러가 정해져 있기 때문에 <code>const</code>를 이용해 모듈러를 선언하기만 해도 컴파일러 최적화에 의해 빠르게 작동하는 모듈러 연산 코드를 구할 수 있지만, 
+
+## 6. Conclusion
+
+~
 
 ## References
 
