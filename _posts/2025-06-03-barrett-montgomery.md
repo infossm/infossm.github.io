@@ -99,7 +99,7 @@ private:
 };
 ```
 
-해당 코드는 $2 \leq m < 2^{32}$인 고정된 정수 $m$에 대해 $0 \leq n < 2^{32}$인 정수 $n$이 주어질 때, $n / m$을 $k = 64$인 Barrett Reduction을 이용해 빠르게 계산합니다.
+해당 코드는 $2 \leq m < 2^{32}$인 고정된 정수 $m$에 대해 $0 \leq n < 2^{32}$인 정수 $n$이 주어질 때, $k = 64$를 이용해 $n / m$을 나눗셈 연산 없이 계산합니다.
 
 **Note.**
 
@@ -142,7 +142,7 @@ private:
 };
 ```
 
-해당 코드는 $2 \leq m < 2^{31}$인 정수 $m$에 대해 $0 \leq a, b < m$인 두 정수 $a, b$가 주어질 때, $ab \bmod m = ab - \lfloor \frac{ab}{m} \rfloor m$을 $k = 93$인 Barrett Reduction을 이용해 빠르게 계산합니다.
+해당 코드는 $2 \leq m < 2^{31}$인 정수 $m$에 대해 $0 \leq a, b < m$인 두 정수 $a, b$가 주어질 때, $k = 93$을 이용해 $ab \bmod m = ab - \lfloor \frac{ab}{m} \rfloor m$을 모듈러 연산 없이 계산합니다.
 
 사용 예시는 다음과 같습니다. [(코드)](http://boj.kr/233deb0addff442ebdd782ac500d9298)
 
@@ -156,7 +156,7 @@ private:
 
 ## 3. Montgomery Reduction
 
-Montgomery Reduction은 $m > 2$인 홀수 정수 $m$이 주어질 때, $m \leq r$이면서 $\gcd(m, r) = 1$인 정수 $r$과 $0 \leq n < rm$인 정수 $n$에 대해
+Montgomery Reduction은 두 정수 $m, r$이 $\gcd(m, r) = 1$이라면, 임의의 정수 $n$에 대해
 
 $$
 n \cdot r^{-1} \equiv \frac{n - (n \cdot m' \bmod r) \cdot m}{r} \bmod m
@@ -164,7 +164,7 @@ $$
 
 이 성립함을 이용하는 모듈러 연산 최적화 기법입니다.
 
-여기서 $r^{-1}, m'$은 $r\cdot r^{-1} + m \cdot m' = 1$을 만족하는 정수이고, $n \bmod m$는 $n = qm + r$, $0 \leq r < m$을 만족하는 정수 $r$입니다.
+여기서 $r^{-1}, m'$은 $r\cdot r^{-1} + m \cdot m' = 1$을 만족하는 정수이고, $n \bmod m$은 $n = qm + r$, $0 \leq r < m$을 만족하는 정수 $r$입니다.
 
 ### 3.1 Basic Idea
 
@@ -187,9 +187,9 @@ $$a, b \; \longrightarrow \; \overline{a}, \overline{b} \; \longrightarrow \; f(
 
 ### 3.2 Montgomery Reduction
 
-이제 Montgomery Reduction을 빠르게 수행하는 방법을 알아보겠습니다.
+이제 $\gcd(m, r) = 1$인 두 정수 $m, r$이 주어질 때 Montgomery Reduction을 빠르게 계산하는 방법을 알아보겠습니다.
 
-$r \cdot r^{-1} + m \cdot m' = 1$에서 임의의 $k \in \mathbb{Z}$에 대해
+$r \cdot r^{-1} + m \cdot m' = 1$이니, 임의의 $n, k \in \mathbb{Z}$에 대해
 
 $$
 \begin{align*}
@@ -201,9 +201,11 @@ n \cdot r^{-1} &= n \cdot \frac{r \cdot r^{-1}}{r} \\
 			   &\equiv \frac{n - (n \cdot m' \bmod r) \cdot m}{r} \; \bmod m
 \end{align*}
 $$
-이 성립하니, 이를 이용하면 $x = n \cdot m' \bmod r$과 $y = x \cdot m$에 대해 $n \cdot r^{-1} \bmod m = \frac{n - y}{r} \bmod m$으로 $f(n)$을 표현할 수 있습니다.
+이 성립합니다.
 
-이제 $0 \leq n < rm$을 가정하면 $\frac{n}{r} < m$이고, $x < r$에서 $\frac{y}{r} = \frac{x \cdot m}{r} < \frac{r \cdot m}{r} = m$이니 $-m < \frac{n - y}{r} < m$이 성립합니다. 따라서 $n < y$라면 $\frac{n - y}{r} + m$, $n \geq y$라면 $\frac{n - y}{r}$을 이용해 $f(n) = \frac{n - y}{r} \bmod m$을 구할 수 있습니다.
+이를 이용하면 $x = n \cdot m' \bmod r$과 $y = x \cdot m$에 대해 $n \cdot r^{-1} \bmod m = \frac{n - y}{r} \bmod m$으로 $f(n)$을 표현할 수 있습니다.
+
+이때 $0 \leq n < rm$을 가정하면 $\frac{n}{r} < m$이고, $x < r$에서 $\frac{y}{r} = \frac{x \cdot m}{r} < \frac{r \cdot m}{r} = m$이니 $-m < \frac{n - y}{r} < m$이 성립합니다. 따라서 $n < y$라면 $\frac{n - y}{r} + m$, $n \geq y$라면 $\frac{n - y}{r}$을 이용해 $f(n) = \frac{n - y}{r} \bmod m$을 구할 수 있습니다.
 
 또한 $m$이 홀수라는 가정을 추가하면, $r$을 $m$보다 큰 $2$의 거듭제곱 $2^w$로 선택할 수 있습니다. 이때 $r$을 $2^w$ 꼴로 선택하면 $r$에 대한 모듈러 연산과 정수 나눗셈을 비트 연산으로 대체할 수 있습니다.
 
@@ -215,7 +217,7 @@ f(n) &= n \cdot r^{-1} \bmod m \\
 \end{align*}
 $$
 
-정리하면, $m$이 홀수이고 $0 \leq n < rm$이라면 $f(n) = n \cdot r^{-1} \bmod m$을 $r = 2^w$를 이용해 비트 연산과 조건 분기로 계산할 수 있습니다.
+정리하면, $m$이 홀수이고 $0 \leq n < rm$이라면 $r = 2^w$를 이용해 $f(n) = n \cdot r^{-1} \bmod m$을 비트 연산과 조건 분기로 계산할 수 있습니다.
 
 구현 코드는 다음과 같습니다.
 
@@ -223,7 +225,7 @@ $$
 using u64 = unsigned long long;
 using u32 = unsigned int;
 
-u32 m, mr; // r * r^-1 + m * mr = 1
+u32 m, mr; // mr = m^{-1} mod 2^32; r * r^{-1} + m * mr = 1
 
 u32 reduce(u64 n) {          // 0 <= n < rm
 	u32 x = u32(n) * mr;     // n * mr mod r
@@ -233,24 +235,22 @@ u32 reduce(u64 n) {          // 0 <= n < rm
 }
 ```
 
-해당 코드는 $2 < m < 2^{32}$인 홀수 정수 $m$에 대해 $0 \leq n < rm$인 정수 $n$이 주어질 때, $r = 2^{32}$를 이용해 모듈러 연산 없이 $f(n) = n \cdot r^{-1} \bmod m$을 계산합니다.
+해당 코드는 $m < 2^{32}$인 홀수 정수 $m$에 대해 $0 \leq n < rm$인 정수 $n$이 주어질 때, $r = 2^{32}$를 이용해 $f(n) = n \cdot r^{-1} \bmod m$을 모듈러 연산 없이 계산합니다.
 
-이때 <code>mr</code>에는 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 정수 $m'$을 미리 구해뒀다 가정합니다.
+코드에서 <code>mr</code>은 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 정수입니다. 즉, <code>mr</code>은 $m^{-1} \bmod 2^{32}$입니다.
 
 **Note.**
 
-- $m < 2^{32}$라면 $r = 2^{32}$를 이용해 $r$에 대한 모듈러 연산을 32비트 정수 자료형의 오버플로우를 이용해 추가 연산 없이 구현할 수 있습니다.
-- $m < 2^{64}$라면 $r = 2^{64}$를 이용해 $r$에 대한 모듈러 연산을 64비트 정수 자료형의 오버플로우를 이용해 추가 연산 없이 구현할 수 있습니다.
-- $m$이 홀수가 아니라면 $m = 2^a \cdot b$에서 $n \bmod 2^a$는 비트 연산으로, $n \bmod b$는 Montgomery Reduction으로 구한 뒤 Chinese Remainder Theorem을 이용하면 $n \bmod m$을 구할 수 있습니다.
+- $m < 2^{32}$일 때 $r = 2^{32}$를 이용하면 $r$에 대한 모듈러 연산을 32비트 정수 자료형의 오버플로우를 이용해 추가 연산 없이 구현할 수 있습니다.
+- $m < 2^{64}$일 때 $r = 2^{64}$를 이용하면 $r$에 대한 모듈러 연산을 64비트 정수 자료형의 오버플로우를 이용해 추가 연산 없이 구현할 수 있습니다.
+- $m$이 홀수가 아니라면 $m = 2^a \cdot b$에서 $n \bmod 2^a$는 비트 연산으로, $n \bmod b$는 Montgomery Reduction으로 구한 뒤 Chinese Remainder Theorem을 이용해 $n \bmod m$을 구할 수 있습니다.
 - <code>mr</code>는 $r, m$에 대해 확장 유클리드 알고리즘을 사용해 $\mathcal{O}(\log r)$에 구할 수 있습니다.
 
 ### 3.3 Fast Inverse
 
 $f(n)$을 빠르게 계산하기 위해선 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 정수 $m'$를 미리 구해둬야 합니다. 일반적인 경우에는 확장 유클리드 알고리즘을 이용해 $\mathcal{O}(\log r)$에 두 정수 $r^{-1}, m'$을 구할 수 있지만, $r$이 $2$의 거듭제곱이라면 더 간단한 방법으로 $m'$를 구할 수 있습니다.
 
-$m$이 $m > 2$인 홀수 정수이고, $i$가 $i \geq 1$인 정수라 합시다.
-
-$m \cdot x \equiv 1 \bmod 2^i$라면 임의의 $k \in \mathbb{Z}$에 대해
+홀수 정수 $m$과 $i \geq 1$인 정수 $i$가 $m \cdot x \equiv 1 \bmod 2^i$를 만족한다면, 임의의 $k \in \mathbb{Z}$에 대해
 
 $$
 \begin{align*}
@@ -279,17 +279,16 @@ u32 minv(u32 m) { // m^{-1} mod 2^32
 }
 ```
 
-해당 코드는 $2 < m < 2^{32}$인 홀수 정수 $m$과 $r = 2^{32}$에 대해 $r \cdot r^{-1} + m \cdot m' = 1$이고 $0 < m' < r$인 정수 $m'$를 계산합니다.
+해당 코드는 $r = 2^{32}$에 대해 $m < 2^{32}$인 홀수 정수 $m$이 주어질 때, $r \cdot r^{-1} + m \cdot m' = 1$과 $0 < m' < r$을 만족하는 정수 $m'$를 계산합니다.
 
 **Note.**
 
-- $m < 2^{64}$라면 $r = 2^{64}$에 대해 $m' = m^{-1} \bmod 2^{64}$를 구하면 됩니다.
-- $r = 2^{32}$는 $\log_2 32 = 5$번의 반복으로 모듈러 역원을 구할 수 있습니다.
-- $r = 2^{64}$는 $\log_2 64 = 6$번의 반복으로 모듈러 역원을 구할 수 있습니다.
+- $m^{-1} \bmod 2^{32}$는 $\log_2 32 = 5$번의 계산으로 모듈러 역원을 구할 수 있습니다.
+- $m^{-1} \bmod 2^{64}$는 $\log_2 64 = 6$번의 계산으로 모듈러 역원을 구할 수 있습니다.
 
 ### 3.4 Modular Multiplication in $\mathbb{Z}_m$ using Montgomery Reduction
 
-지금까지의 논의를 종합하면 $2 < m < 2^{32}$인 홀수 정수 $m$에 대해 $\mathbb{Z}_m$에서의 곱셈을 효율적으로 구현할 수 있습니다.
+지금까지의 논의를 종합하면 $m < 2^{32}$인 홀수 정수 $m$에 대해 $\mathbb{Z}_m$에서의 곱셈을 효율적으로 구현할 수 있습니다.
 
 구현 코드는 다음과 같습니다.
 
@@ -319,23 +318,26 @@ private:
 };
 ```
 
-해당 코드는 $2 < m < 2^{32}$인 홀수 정수 $m$에 대해 $0 \leq a, b < 2^{32}$인 두 정수 $a, b$가 주어질 때 $a \cdot b \bmod m$을 $r = 2^{32}$인 Montgomery Reduction을 이용해 빠르게 계산합니다.
+해당 코드는 $m < 2^{32}$인 홀수 정수 $m$에 대해 $0 \leq a, b < 2^{32}$인 두 정수 $a, b$가 주어질 때, $r = 2^{32}$를 이용해 $a \cdot b \bmod m$을 모듈러 연산 없이 계산합니다.
 
-코드에서 <code>mr</code>는 $m^{-1} \bmod 2^{32}$, <code>r2</code>는 $2^{64} \bmod m$을 나타냅니다. <code>r2</code>의 계산은 $(2^{64} - m) \bmod m = 2^{64} \bmod m$을 이용합니다.
+코드에서 <code>mr</code>는 $m^{-1} \bmod 2^{32}$를, <code>r2</code>는 $2^{64} \bmod m$을 나타냅니다. <code>r2</code>는 $(2^{64} - m) \bmod m = 2^{64} \bmod m$을 이용해 구할 수 있습니다.
 
-<code>transform</code> 함수는 $0 \leq n < 2^{32}$인 정수 $n$에 대해 $\overline{n} = n \cdot 2^{32} \bmod m$을 구합니다. 이는 $\overline{n} = f(n \cdot r^2)$을 이용해 <code>n</code>과 <code>r2</code>를 Montgomery Form으로 취급해 곱셈을 수행하며 계산할 수 있습니다. <code>reduce</code> 함수는 $0 \leq n < rm$인 정수 $n$에 대해 $f(n) = n \cdot 2^{-32} \bmod m$을 구하며, <code>mul</code> 함수는 <code>reduce</code> 함수를 이용해 $0 \leq ab < rm$인 두 정수 $a, b$에 대해 $f(a \cdot b) = a \cdot b \cdot 2^{-32} \bmod m$을 구합니다.
+<code>reduce</code> 함수는 $0 \leq n < rm$인 정수 $n$에 대해 $f(n) = n \cdot r^{-1} \bmod m$을 구하며, <code>mul</code> 함수는 <code>reduce</code> 함수를 이용해 $0 \leq ab < rm$인 두 정수 $a, b$에 대해 $f(a \cdot b) = a \cdot b \cdot r^{-1} \bmod m$을 구합니다. <code>transform</code> 함수는 <code>mul</code> 함수를 이용해 $0 \leq n < r$인 정수 $n$에 대해 $f(n \cdot r^2) = n \cdot r \bmod m = \overline{n}$을 구합니다.
+
+
 
 사용 예시는 다음과 같습니다. [(코드)](http://boj.kr/88279849af73438c80aa6d05a4c8f707)
 
 **Note.**
 
+- $m < 2^{64}$라면 $r = 2^{64}$와 128비트 정수 자료형을 이용하면 됩니다.
 - Barrett Reduction과 달리 Montgomery Reduction을 사용하기 위해선 $m$이 홀수여야 합니다.
-- 곱셈 연산 이전과 이후에는 <code>transform</code>, <code>reduce</code>를 이용한 Montgomery Form으로의 변환과 역변환을 사용해야 합니다.
-- $2 < m < 2^{64}$라면 $r = 2^{64}$와 128비트 정수 자료형을 이용하면 됩니다.
+- 곱셈 연산 이전에는 <code>transform</code>을 이용해 값을 Montgomery Form으로 변환해야 합니다.
+- 곱셈 연산 이후에는 <code>reduce</code>를 이용해 값을 $\mathbb{Z}_m$으로 다시 변환해야 합니다.
 
 ## 4. Exact Division
 
-$2 < m < 2^{32}$인 홀수 정수 $m$에 대해 $0 \leq n < 2^{32}$인 정수 $n$이 $m$의 배수인지 여부를 알기 위해서는 <code>n % m == 0</code>와 같은 모듈러 연산이 필요합니다. 이때 $m$이 홀수 정수라면 $m^{-1} \bmod 2^{32}$가 존재함을 이용해 해당 연산을 최적화할 수 있습니다.
+$m < 2^{32}$인 홀수 정수 $m$에 대해 $0 \leq n < 2^{32}$인 정수 $n$이 $m$의 배수인지 여부를 알기 위해서는 <code>n % m == 0</code>와 같은 모듈러 연산이 필요합니다. 이때 $m$이 홀수 정수라면 $m^{-1} \bmod 2^{32}$가 존재함을 이용해 해당 연산을 최적화할 수 있습니다.
 
 $0 \leq n < 2^{32}$에 대해 $x = n \cdot m^{-1} \bmod 2^{32}$를 정의합시다. $n$이 $m$의 배수라면 $0 \leq x \leq \lfloor \frac{2^{32} - 1}{m} \rfloor$이 성립합니다. 반대로 $0 \leq x \leq \lfloor \frac{2^{32} - 1}{m} \rfloor$이라면 $xm < 2^{32}$에서 $n = n \bmod 2^{32} = n \cdot m^{-1} \cdot m \bmod 2^{32} = x \cdot m$이 성립하니 $n$은 $m$의 배수입니다.
 
@@ -360,28 +362,12 @@ private:
 };
 ```
 
-해당 코드는 $2 < m < 2^{32}$인 홀수 정수 $m$에 대해 $0 \leq n < 2^{32}$인 정수 $n$이 $m$의 배수인지 여부를 Exact Division을 이용해 빠르게 계산합니다.
+해당 코드는 $m < 2^{32}$인 홀수 정수 $m$에 대해 $0 \leq n < 2^{32}$인 정수 $n$이 $m$의 배수인지 여부를 Exact Division을 이용해 빠르게 계산합니다.
 
 **Note.**
 
 - Montgomery Reduction과 마찬가지로 Exact Division을 사용하기 위해서는 $m$이 홀수여야 합니다.
 - $m < 2^{64}$, $n < 2^{64}$라면 $2^{64}$를 이용하면 됩니다.
-
-## 5. Application
-
-지금까지 정수 나눗셈을 최적화하는 Barrett Reduction과 모듈러 연산을 최적화하는 Montgomery Reduction을 알아보고, 추가로 $n$이 $m$의 배수인지 여부를 판단하는 Exact Division 기법을 알아보았습니다.
-
-각 최적화 기법은 적용할 수 있는 조건이 정해져있기 때문에 피연산자의 범위와 홀수 여부, 최적화하고자 하는 연산의 종류에 따라 적합한 기법을 선택하는게 중요합니다. 이번 단락에서는 몇 가지 에시를 통해 상황에 맞는 기법을 선택하는 방법을 알아보겠습니다.
-
-### 5.1 Factorial, Binomial
-
-[BOJ 11401](https://www.acmicpc.net/problem/11401)은 $1 \leq n \leq 4 \cdot 10^6$, $0 \leq k \leq n$을 만족하는 두 정수 $n, k$에 대해 $\binom{n}{k} \bmod 10^9 + 7$을 계산하는 문제입니다.
-
-이는 모듈러가 정해져 있기 때문에 <code>const</code>를 이용해 모듈러를 선언하기만 해도 컴파일러 최적화에 의해 빠르게 작동하는 모듈러 연산 코드를 구할 수 있지만, 
-
-## 6. Conclusion
-
-~
 
 ## References
 
