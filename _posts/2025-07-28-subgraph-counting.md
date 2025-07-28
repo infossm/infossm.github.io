@@ -8,7 +8,7 @@ tags: [algorithm, graph-theory, problem-solving]
 
 ## 1. Introduction
 
-그래프 $G$에서 특정 패턴 그래프 $H$와 동형인 subgraph를 찾거나 그 개수를 계산하는 문제는 알고리즘 경시대회 뿐만 아니라 여러 분야에서 중요한 주제입니다. 특히 삼각형($C_3$)이나 $4$-사이클($C_4$), 경로($P_k$), 클리크($K_k$) 등 잘 알려진 그래프를 대상으로 한 문제는 이미 많은 문제로 출제된 바가 있습니다.
+그래프 $G$에서 특정 패턴 그래프 $H$와 동형인 subgraph를 찾거나 그 개수를 계산하는 문제는 알고리즘 대회 뿐만 아니라 여러 분야에서 중요한 주제입니다. 특히 삼각형($C_3$)이나 $4$-사이클($C_4$), 경로($P_k$), 클리크($K_k$) 등 잘 알려진 그래프를 대상으로 한 문제는 이미 많은 문제로 출제된 바가 있습니다.
 
 이번 글에서는 graph degeneracy 개념을 이용해 subgraph counting 문제를 해결하는 일반적인 방법을 소개합니다. 그래프는 무방향 단순 연결 그래프를 대상으로 하며, 이분 그래프(bipartite graph), 평면 그래프(planar graph), 트리(tree) 등 특수한 경우에만 적용 가능한 기법은 제외하였습니다.
 
@@ -124,9 +124,7 @@ degeneracy ordering은 $G_i \subseteq G$에서 $\displaystyle \max_i \operatorna
 
 그래프 $G$의 degeneracy $d(G)$를 $k$라 하면, 어떤 $H \subseteq G$가 존재해서
 $$k = \min_{v \in V(H)}\operatorname{deg}_H(v)$$
-여야 합니다.
-
-이때
+여야 합니다. 이때
 $$2|E(H)| = \sum_{v \in V(H)}\operatorname{deg}_H(v) \ge k |V(H)| \ge k(k+1)$$
 에서 $k(k+1) \le 2|E(G)|$이고, 따라서 $k = \mathcal{O}(\sqrt{|E(G)|})$입니다.
 
@@ -212,6 +210,54 @@ i64 count_3_cycle(int n, const vector<vector<int>>& adj) {
 
 다음은 해당 방법으로 [BOJ 1762번](https://www.acmicpc.net/problem/1762) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/7db5ba908ee6446f8531ee452a3d4a73)
 
+## 4.3 $C_3$ case alternative
+
+각 정점 $u$에 대해 degeneracy ordering에서 $u$보다 늦게 등장하는 $v$로 이어지는 $(u, v) \in E(G)$의 개수를 $\operatorname{outdeg}(u)$라 하면, $\operatorname{outdeg}(u) \le d(G)$가 성립합니다.
+
+$V_i = \{ v \in V(G) \mid \operatorname{deg}(v) \ge i \}$, $E_i = \{ (u, v) \in E(G) \mid u, v \in V_i \}$를 정의합시다.
+
+다음 사실이 성립합니다.
+
+$$
+\begin{align*}
+\sum_{i=1}^{\infty}|V_i| &= \sum_{v\in V(G)}\operatorname{deg}(v) = 2m \\
+|E_i| &\le \sum_{v \in V_i}\operatorname{outdeg}(v) \le d(G) \cdot |V_i| \\
+\end{align*}
+$$
+
+이때 $(u, v) \in E(G)$에 대한 $\min(\operatorname{deg}(u), \operatorname{deg}(v))$의 합은 $\sum_{i=1}^{\infty}|E_i|$와 같으니 $2m \cdot d(G)$ 이하입니다.
+
+이 사실을 이용하면 degeneracy ordering을 명시적으로 구하지 않더라도 $(\operatorname{deg}(u), u)$가 감소하는 순서대로 $i \rightarrow j \rightarrow k$를 순회하면 같은 복잡도를 얻을 수 있습니다.
+
+구현 코드는 다음과 같습니다.
+
+```cpp
+i64 count_3_cycle(int n, const vector<vector<int>>& adj) {
+	vector<vector<int>> g(n + 1);
+	for (int i = 1; i <= n; i++) {
+		for (int j : adj[i]) {
+			if (adj[i].size() < adj[j].size()) continue;
+			if (adj[i].size() == adj[j].size() && i <= j) continue;
+			g[i].push_back(j);
+		}
+	}
+	i64 ret = 0;
+	vector<int> c(n + 1, 0);
+	for (int i = 1; i <= n; i++) {
+		for (int j : adj[i]) c[j] = 1;
+		for (int j : g[i]) for (int k : g[j]) if (c[k]) ret++;
+		for (int j : adj[i]) c[j] = 0;
+	}
+	return ret;
+}
+```
+
+해당 코드는 $(i, j)$ 간선마다 $\min(\operatorname{deg}(u), \operatorname{deg}(v))$만큼의 연산을 수행하니
+$$\mathcal{O}(\sum_{(u, v) \in E(G)}\min(\operatorname{deg}(u), \operatorname{deg}(v))) = \mathcal{O}(m \cdot d(G))$$
+의 시간복잡도를 가집니다.
+
+다음은 해당 방법으로 [BOJ 1762번](https://www.acmicpc.net/problem/1762) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/1c5271bff4d24a6fa8a8e1c627d7249b)
+
 ## 5. Subgraph Counting ($4$-nodes)
 
 ![Fig.2](/assets/images/2025-07-28-subgraph-counting/fig2.png)
@@ -228,21 +274,20 @@ $H = S_4$인 경우는 중심 정점 $v$를 고정한 뒤 $\binom{\operatorname{
 
 ### 5.3 $C_4$ case
 
-$H = C_4$인 경우는 $\operatorname{rank}$가 최대인 정점 $i$를 고정한 뒤, $\operatorname{rank}(i) > \operatorname{rank}(j), \operatorname{rank}(i) > \operatorname{rank}(k)$인 $i \rightarrow j \rightarrow k$ 경로를 순회하면 해결할 수 있습니다.
+$H = C_4$인 경우는 $(\operatorname{deg}(u), u)$가 최대인 정점 $i$를 고정한 뒤, $(\operatorname{deg}(u), u)$가 $i$보다 작은 두 정점 $j, k$에 대해 $i \rightarrow j \rightarrow k$ 경로를 순회하면 해결할 수 있습니다.
 
 ```cpp
 i64 count_4_cycle(int n, const vector<vector<int>>& adj) {
-	vector<int> L = degeneracy_ordering(n, adj);
-	vector<int> rank(n + 1, 0);
-	for (int i = 0; i < n; i++) rank[L[i]] = i;
 	i64 ret = 0;
 	vector<int> c(n + 1, 0);
 	for (int i = 1; i <= n; i++) {
 		vector<int> buc;
 		for (int j : adj[i]) {
-			if (rank[i] <= rank[j]) continue;
+			if (adj[i].size() < adj[j].size()) continue;
+			if (adj[i].size() == adj[j].size() && i <= j) continue;
 			for (int k : adj[j]) {
-				if (rank[i] <= rank[k]) continue;
+				if (adj[i].size() < adj[k].size()) continue;
+				if (adj[i].size() == adj[k].size() && i <= k) continue;
 				if (c[k] == 0) buc.push_back(k);
 				ret += c[k]++;
 			}
@@ -253,9 +298,9 @@ i64 count_4_cycle(int n, const vector<vector<int>>& adj) {
 }
 ```
 
-시간복잡도는 $\mathcal{O}(m \cdot d(G))$입니다.
+시간복잡도는 $(u, v) \in E(G)$마다 $\min(\operatorname{deg}(u), \operatorname(v))$의 연산을 수행하니 $\mathcal{O}(m \cdot d(G))$입니다.
 
-다음은 해당 방법으로 [BOJ 32395번](https://www.acmicpc.net/problem/32395) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/0530d4712ff7484cafd74869e8a3ca6a)
+다음은 해당 방법으로 [BOJ 32395번](https://www.acmicpc.net/problem/32395) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/cf800fdbe5cc4b27b2a1b2387f717f8a)
 
 ## References
 
