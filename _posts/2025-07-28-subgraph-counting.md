@@ -126,7 +126,7 @@ degeneracy ordering은 $G_i \subseteq G$에서 $\displaystyle \max_i \operatorna
 $$k = \min_{v \in V(H)}\operatorname{deg}_H(v)$$
 여야 합니다. 이때
 $$2|E(H)| = \sum_{v \in V(H)}\operatorname{deg}_H(v) \ge k |V(H)| \ge k(k+1)$$
-에서 $k(k+1) \le 2|E(G)|$이고, 따라서 $k = \mathcal{O}(\sqrt{|E(G)|})$입니다.
+에서 $k(k+1) \le 2|E(G)|$이고, 따라서 $d(G) = \mathcal{O}(\sqrt{|E(G)|})$입니다.
 
 각 정점 $i$에 대해 $(i, j) \in E(G)$이면서 degeneracy ordering에서 $i$보다 $j$가 늦게 등장하는 $(i, j)$ 간선은 최대 $d(G)$개입니다. 위에서 보인 것처럼 그래프의 간선 개수를 $m$이라 할 때 $d(G)$는 $\mathcal{O}(\sqrt m)$에 bound되는 작은 값이니 이 사실을 이용하면 degeneracy ordering을 이용해 효율적으로 문제를 해결할 수 있습니다.
 
@@ -208,9 +208,11 @@ i64 count_3_cycle(int n, const vector<vector<int>>& adj) {
 
 시간복잡도는 각 간선 $(i, j)$마다 $\mathcal{O}(d(G))$개의 $k$를 탐색하니 $\mathcal{O}(m \cdot d(G))$입니다.
 
+이때 코드에서 $C_3$을 이루는 세 정점 $(i, j, k)$ tuple을 순회하며 직접 개수를 세니, $G$에서 $C_3$과 동형인 subgraph는 실제로 $\mathcal{O}(m \cdot d(G))$개입니다.
+
 다음은 해당 방법으로 [BOJ 1762번](https://www.acmicpc.net/problem/1762) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/7db5ba908ee6446f8531ee452a3d4a73)
 
-## 4.3 $C_3$ case alternative
+## 4.3 $C_3$ case (alternative)
 
 각 정점 $u$에 대해 degeneracy ordering에서 $u$보다 늦게 등장하는 $v$로 이어지는 $(u, v) \in E(G)$의 개수를 $\operatorname{outdeg}(u)$라 하면, $\operatorname{outdeg}(u) \le d(G)$가 성립합니다.
 
@@ -276,6 +278,8 @@ $H = S_4$인 경우는 중심 정점 $v$를 고정한 뒤 $\binom{\operatorname{
 
 $H = C_4$인 경우는 $(\operatorname{deg}(u), u)$가 최대인 정점 $i$를 고정한 뒤, $(\operatorname{deg}(u), u)$가 $i$보다 작은 두 정점 $j, k$에 대해 $i \rightarrow j \rightarrow k$ 경로를 순회하면 해결할 수 있습니다.
 
+구현 코드는 다음과 같습니다.
+
 ```cpp
 i64 count_4_cycle(int n, const vector<vector<int>>& adj) {
 	i64 ret = 0;
@@ -298,9 +302,73 @@ i64 count_4_cycle(int n, const vector<vector<int>>& adj) {
 }
 ```
 
-시간복잡도는 $(u, v) \in E(G)$마다 $\min(\operatorname{deg}(u), \operatorname(v))$의 연산을 수행하니 $\mathcal{O}(m \cdot d(G))$입니다.
+시간복잡도는 $(u, v) \in E(G)$마다 $\min(\operatorname{deg}(u), \operatorname{deg}(v))$의 연산을 수행하니 $\mathcal{O}(m \cdot d(G))$입니다.
 
 다음은 해당 방법으로 [BOJ 32395번](https://www.acmicpc.net/problem/32395) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/cf800fdbe5cc4b27b2a1b2387f717f8a)
+
+### 5.4 Paw Graph
+
+$C_3$에 간선 하나가 붙어있는 형태의 그래프를 paw graph라 부릅니다.
+
+$H$가 paw graph일 때 subgraph counting 문제는 $C_3$을 순회하며 $\mathcal{O}(m \cdot d(G))$에 해결할 수 있습니다.
+
+### 5.5 Diamond Graph
+
+$K_4$에서 간선 하나를 제거한 그래프를 diamond graph라 부릅니다.
+
+$H$가 diamond graph일 때  subgraph counting 문제는 $C_3$을 순회하며 각 $(u, v) \in E(G)$마다 $(u, v)$를 포함하는 $C_3$의 개수 $f(u, v)$를 구해둔 뒤 $\binom{f(u, v)}{2}$의 합을 구하면 $\mathcal{O}(m \cdot d(G))$에 해결할 수 있습니다.
+
+### 5.6 $K_4$ case
+
+$H = K_4$인 경우는 $(\operatorname{deg}(u), u)$가 최대인 대표 정점 $u$를 고정한 뒤, $(u, v, w)$가 $C_3$을 이루는 tuple을 순회하며 $(v, w) \in E(G)$를 모아 새로운 그래프 $G'$를 구성해 $C_3$ 개수의 합을 구하면 해결할 수 있습니다.
+
+풀이의 시간복잡도는 $G'$에서 $C_3$의 개수를 구하는 시간복잡도가 $\mathcal{O}(|E(G')| \cdot d(G'))$이고, $d(G') \le d(G)$, $\sum|E(G')| = \mathcal{O}(m \cdot d(G))$이니 $\mathcal{O}(m \cdot d(G)^2)$입니다. 이는 일반적인 상황에서 $d(G)$가 $\mathcal{O}(\sqrt m)$임을 생각해보면 너무 느립니다.
+
+이때 $G'$에서 $C_3$의 개수를 구하는 부분을 bitset으로 대체하면 시간복잡도를 $\mathcal{O}(|V(G')||E(G')|/64)$로 만들 수 있고, 명시적으로 degeneracy ordering을 이용하면 $V(G') \le d(G)$이니 $\mathcal{O}(m \cdot d(G)^2 / 64)$에 문제를 해결할 수 있습니다.
+
+구현 코드는 다음과 같습니다.
+
+```cpp
+i64 count_4_clique(int n, const vector<vector<int>>& adj) {
+	vector<int> L = degeneracy_ordering(n, adj);
+	vector<int> rank(n + 1, 0);
+	for (int i = 0; i < n; i++) rank[L[i]] = i;
+	vector<vector<int>> g(n + 1);
+	for (int i = 1; i <= n; i++) {
+		for (int j : adj[i]) {
+			if (rank[i] >= rank[j]) continue;
+			g[i].push_back(j);
+		}
+	}
+	i64 ret = 0;
+	vector<int> v(n + 1), c(n + 1);
+	for (int i = 1; i <= n; i++) {
+		int s = 0;
+		vector<pair<int, int>> e;
+		for (int j : g[i]) v[j] = 1;
+		for (int j : g[i]) {
+			for (int k : g[j]) {
+				if (v[k] == 0) continue;
+				if (c[j] == 0) c[j] = ++s;
+				if (c[k] == 0) c[k] = ++s;
+				e.push_back({ c[j], c[k] });
+			}
+		}
+		for (int j : g[i]) v[j] = c[j] = 0;
+		vector<vector<u64>> bs(s + 1, vector<u64>(s / 64 + 1));
+		for (auto [a, b] : e) {
+			bs[a][b >> 6] |= 1ULL << (b & 63);
+			bs[b][a >> 6] |= 1ULL << (a & 63);
+			for (int k = 0; k < bs[a].size(); k++) {
+				ret += __builtin_popcountll(bs[a][k] & bs[b][k]);
+			}
+		}
+	}
+	return ret;
+}
+```
+
+다음은 해당 방법으로 [BOJ 28200번](https://www.acmicpc.net/problem/28200) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/7ee57704e4ef473b827e8294f6041051)
 
 ## References
 
