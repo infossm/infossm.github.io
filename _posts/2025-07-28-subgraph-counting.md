@@ -35,7 +35,7 @@ $$
 $$p_0 = u,\;p_k = v,\;(p_i, p_{i+1}) \in E(G)\;(\forall 0 \le i < k)$$
 를 만족하는 경로 $p_0, p_1, \cdots, p_k$가 존재함을 의미합니다.
 
-정점 $u$의 이웃 집합은 $N(u) = \{ v \mid (u, v) \in E(G) \}$로 정의하며, 이로부터 정점 $u$의 차수 $\operatorname{deg}(u) = |N(u)|$를 정의할 수 있습니다.
+정점 $u$의 이웃 집합은 $N_G(u) = \{ v \mid (u, v) \in E(G) \}$로 정의하며, 이로부터 정점 $u$의 차수 $\operatorname{deg}_G(u) = |N_G(u)|$를 정의할 수 있습니다.
 
 ### 2.2 Graph Isomorphism
 
@@ -96,11 +96,13 @@ $$d(G) = \max_{H \subseteq G}\min_{v \in V(H)} \operatorname{deg}_H(v)$$
 
 정의에 의해 $G$의 임의의 subgraph $H$에는 항상 차수가 $d(G)$ 이하인 정점이 존재합니다.
 
-예를 들어 트리의 subgraph는 forest이기 때문에 트리는 degeneracy가 항상 $1$이고, 완전 그래프 $K_n$는 $S_n$ 등의 subgraph를 가지니 degeneracy가 $n - 1$입니다.
+예를 들어 트리의 subgraph는 forest이기 때문에 트리는 degeneracy가 항상 $1$이고, 평면 그래프는 $|E| \le 3|V| - 6$에서 차수가 $5$ 이하인 정점을 적어도 하나 가지며, 평면 그래프의 subgraph는 평면 그래프이니 degeneracy가 $5$ 이하입니다.
+
+완전 그래프 $K_n$은 $S_n$를 subgraph로 가지니 degeneracy가 $n - 1$입니다.
 
 ### 3.2 Degeneracy Ordering
 
-degeneracy ordering은 그래프 $G$에서 차수가 최소인 정점을 제거하는 걸 반복할 때 얻어지는 정점 배열 $L$을 말합니다.
+degeneracy ordering은 그래프 $G$에서 차수가 최소인 정점을 제거하는 걸 반복할 때 얻어지는 정점 배열 $L$을 의미합니다.
 
 1. 시작 단계에서 그래프를 $G_0 = G$라 두고, 빈 리스트 $L$을 준비한다.
 
@@ -114,19 +116,60 @@ degeneracy ordering은 그래프 $G$에서 차수가 최소인 정점을 제거�
 
 3. 반복이 끝난 뒤 $L = [v_0, v_1, \cdots, v_{n-1}]$를 얻는다.
 
-이때 다음이 성립합니다.
+<br>
 
-- $G_i \subseteq G$에서 $\displaystyle \max_i \operatorname{deg}_{G_i}(v_i) \le d(G)$
+degeneracy ordering은 $G_i \subseteq G$에서 $\displaystyle \max_i \operatorname{deg}_{G_i}(v_i) \le d(G)$가 성립합니다. 또한, 임의의 $H \subseteq G$에 대해 $v_i \in V(H)$인 가장 빠른 $v_i$를 구하면 $H \subseteq G_i$에서 $\operatorname{deg}_H(v_i) \le \operatorname{deg}_{G_i}(v_i)$이니, $\displaystyle\min_{u \in V(H)} \operatorname{deg}_H(u) \le \operatorname{deg}_{G_i}(v_i)$이고 $d(G) \le \displaystyle \max_i \operatorname{deg}_{G_i}(v_i)$가 성립합니다.
 
-- 임의의 $H \subseteq G$에 대해 $v_i \in V(H)$인 가장 빠른 $v_i$를 구하면 $H \subseteq G_i$에서 $\displaystyle\min_{u \in V(H)} \operatorname{deg}_H(u) $
+따라서 $\max_i \operatorname{deg}_{G_i}(v_i) = d(G)$이고, degeneracy ordering을 이용하면 제거되는 정점의 차수의 최댓값으로 degeneracy를 구할 수 있습니다.
 
-그래프 $G$의 정점 집합 $V(G) = \{ 1, 2, \cdots, n \}$에 대해 $(\operatorname{deg}(i), i)$를 오름차순으로 정렬한 배열을 $A[1], A[2], \cdots, A[n]$이라 합시다.
+### 3.3 Property
 
-## 4. $C_4$ Counting Techniques
+그래프 $G$의 degeneracy $d(G)$를 $k$라 하면, 어떤 $H \subseteq G$가 존재해서
+$$k = \min_{v \in V(H)}\operatorname{deg}_H(v)$$
+여야 합니다.
+
+이때
+$$2|E(H)| = \sum_{v \in V(H)}\operatorname{deg}_H(v) \ge k |V(H)| \ge k(k+1)$$
+에서 $k(k+1) \le 2|E(G)|$이고, 따라서 $d(G) = \mathcal{O}(\sqrt{2|E(G)|})$가 성립합니다.
+
+degeneracy ordering에서 각 정점 $i$에 대해 $(i, j) \in E(G)$이면서 $i$보다 $j$가 늦게 등장하는 $(i, j)$ 간선은 최대 $d(G)$개입니다. 위에서 보인 것처럼 그래프의 간선 개수를 $m$이라 할 때 $d(G)$는 $\mathcal{O}(\sqrt m)$에 bound되는 작은 값이니 이 사실을 이용하면 degeneracy ordering을 이용해 효율적으로 문제를 해결할 수 있습니다.
+
+### 3.4 구현 코드
+
+```cpp
+vector<int> degeneracy_ordering(int n, const vector<vector<int>>& adj) {
+	vector<int> deg(n + 1);
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
+	for (int i = 1; i <= n; i++) {
+		deg[i] = adj[i].size();
+		pq.push({ deg[i], i });
+	}
+	vector<bool> removed(n + 1);
+	vector<int> ret;
+	while (pq.size()) {
+		auto [val, i] = pq.top();
+		pq.pop();
+		if (removed[i]) continue;
+		if (deg[i] != val) continue;
+		removed[i] = 1;
+		ret.push_back(i);
+		for (int j : adj[i]) {
+			if (removed[j]) continue;
+			deg[j]--;
+			pq.push({ deg[j], j });
+		}
+	}
+	return ret;
+}
+```
+
+degeneracy ordering은 `std::priority_queue`를 이용해 $\mathcal{O}((n + m)\log(n + m))$, `std::set`을 이용해 $\mathcal{O}((n + m)\log n)$에 구할 수 있고, 버킷 큐를 이용한 $\mathcal{O}(n + m)$ 알고리즘도 존재합니다.
+
+이번 글에서는 편의를 위해 $\mathcal{O}((n + m)\log(n + m))$ 코드를 예시로 사용하겠습니다.
+
+## 4. Subgraph Counting ($3$-nodes)
 
 ~
-
-## 5. $K_4$ Counting Techniques
 
 ## References
 
