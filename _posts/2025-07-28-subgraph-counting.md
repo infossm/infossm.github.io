@@ -68,7 +68,7 @@ $$
 
 두 무방향 그래프 $G, H$가 주어질 때, $G$에 $H$와 동형인 subgraph가 몇 개나 존재하는지 세는 문제를 subgraph counting이라 합니다. 이때 두 subgraph가 정점 집합이나 간선 집합 중 적어도 하나가 다르다면 둘을 다른 subgraph로 구분합니다.
 
-예를 들어 $H$가 세 정점으로 이루어진 단순 사이클 $C_3$라면 $G$에서 삼각형의 개수를 구하는 문제가 되고, 정점이 $4$개인 경로 그래프 $P_4$라면 $G$에서 길이가 $4$인 경로의 개수를 구하는 문제가 됩니다.
+예를 들어 $H$가 세 정점으로 이루어진 단순 사이클 $C_3$라면 $G$에서 삼각형의 개수를 구하는 문제가 되고, 정점이 $4$개인 경로 그래프 $P_4$라면 $G$에서 길이가 $3$인 경로의 개수를 구하는 문제가 됩니다.
 
 ### 2.4 Graph Families
 
@@ -97,8 +97,6 @@ $$d(G) = \max_{H \subseteq G}\min_{v \in V(H)} \operatorname{deg}_H(v)$$
 정의에 의해 $G$의 임의의 subgraph $H$에는 항상 차수가 $d(G)$ 이하인 정점이 존재합니다.
 
 예를 들어 트리의 subgraph는 forest이기 때문에 트리는 degeneracy가 항상 $1$이고, 평면 그래프는 $|E| \le 3|V| - 6$에서 차수가 $5$ 이하인 정점을 적어도 하나 가지며, 평면 그래프의 subgraph는 평면 그래프이니 degeneracy가 $5$ 이하입니다.
-
-완전 그래프 $K_n$은 $S_n$를 subgraph로 가지니 degeneracy가 $n - 1$입니다.
 
 ### 3.2 Degeneracy Ordering
 
@@ -130,9 +128,9 @@ $$k = \min_{v \in V(H)}\operatorname{deg}_H(v)$$
 
 이때
 $$2|E(H)| = \sum_{v \in V(H)}\operatorname{deg}_H(v) \ge k |V(H)| \ge k(k+1)$$
-에서 $k(k+1) \le 2|E(G)|$이고, 따라서 $d(G) = \mathcal{O}(\sqrt{2|E(G)|})$가 성립합니다.
+에서 $k(k+1) \le 2|E(G)|$이고, 따라서 $k = \mathcal{O}(\sqrt{|E(G)|})$입니다.
 
-degeneracy ordering에서 각 정점 $i$에 대해 $(i, j) \in E(G)$이면서 $i$보다 $j$가 늦게 등장하는 $(i, j)$ 간선은 최대 $d(G)$개입니다. 위에서 보인 것처럼 그래프의 간선 개수를 $m$이라 할 때 $d(G)$는 $\mathcal{O}(\sqrt m)$에 bound되는 작은 값이니 이 사실을 이용하면 degeneracy ordering을 이용해 효율적으로 문제를 해결할 수 있습니다.
+각 정점 $i$에 대해 $(i, j) \in E(G)$이면서 degeneracy ordering에서 $i$보다 $j$가 늦게 등장하는 $(i, j)$ 간선은 최대 $d(G)$개입니다. 위에서 보인 것처럼 그래프의 간선 개수를 $m$이라 할 때 $d(G)$는 $\mathcal{O}(\sqrt m)$에 bound되는 작은 값이니 이 사실을 이용하면 degeneracy ordering을 이용해 효율적으로 문제를 해결할 수 있습니다.
 
 ### 3.4 구현 코드
 
@@ -169,9 +167,95 @@ degeneracy ordering은 `std::priority_queue`를 이용해 $\mathcal{O}((n + m)\l
 
 ## 4. Subgraph Counting ($3$-nodes)
 
+subgraph counting 문제에서 패턴 그래프 $H$의 정점 개수를 $k$라 할 때, $k = 3, 4$인 경우 여러 효율적인 알고리즘이 알려져 있습니다.
+
 ![Fig.2](/assets/images/2025-07-28-subgraph-counting/fig2.png)
 
-~
+이번 단락에서는 $k = 3$인 두 가지 경우를 살펴보고, 다음 단락에서는 $k = 4$인 경우를 살펴보겠습니다.
+
+표기의 편의를 위해 앞으로 별 다른 언급 없이 $n = |V(G)|, m = |E(G)|, k = |V(H)|, \operatorname{deg}(v) = \operatorname{deg}_G(v)$를 사용하겠습니다. 또한, 그래프 $G$의 degeneracy ordering $L = [v_0, v_1, \cdots, v_{n-1}]$에서 $i$번 정점이 등장하는 인덱스를 $\operatorname{rank}(i)$로 정의해 사용하겠습니다.
+
+### 4.1 $P_3$ case
+
+$H = P_3$인 경우는 중심 정점 $v$를 고정한 뒤 $\binom{\operatorname{deg}(v)}{2}$를 계산해 더해주면 $\mathcal{O}(n + m)$에 해결할 수 있습니다.
+
+### 4.2 $C_3$ case
+
+$H = C_3$인 경우는 그래프 $G$의 degeneracy ordering을 구한 뒤 $\operatorname{rank}(i) < \operatorname{rank}(j) < \operatorname{rank}(k)$인 $i \rightarrow j \rightarrow k$ 경로를 순회하면 해결할 수 있습니다.
+
+구현 코드는 다음과 같습니다.
+
+```cpp
+i64 count_3_cycle(int n, const vector<vector<int>>& adj) {
+	vector<int> L = degeneracy_ordering(n, adj);
+	vector<int> rank(n + 1, 0);
+	for (int i = 0; i < n; i++) rank[L[i]] = i;
+	vector<vector<int>> g(n + 1);
+	for (int i = 1; i <= n; i++) {
+		for (int j : adj[i]) {
+			if (rank[i] >= rank[j]) continue;
+			g[i].push_back(j);
+		}
+	}
+	i64 ret = 0;
+	vector<int> c(n + 1, 0);
+	for (int i = 1; i <= n; i++) {
+		for (int j : adj[i]) c[j] = 1;
+		for (int j : g[i]) for (int k : g[j]) if (c[k]) ret++;
+		for (int j : adj[i]) c[j] = 0;
+	}
+	return ret;
+}
+```
+
+시간복잡도는 각 간선 $(i, j)$마다 $\mathcal{O}(d(G))$개의 $k$를 탐색하니 $\mathcal{O}(m \cdot d(G))$입니다.
+
+다음은 해당 방법으로 [BOJ 1762번](https://www.acmicpc.net/problem/1762) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/7db5ba908ee6446f8531ee452a3d4a73)
+
+## 5. Subgraph Counting ($4$-nodes)
+
+![Fig.2](/assets/images/2025-07-28-subgraph-counting/fig2.png)
+
+$k = 4$인 경우는 $P_4, S_4, C_4$를 포함해 총 $6$가지 case가 있습니다.
+
+### 5.1 $P_4$ case
+
+$H = P_4$인 경우는 중심 간선 $(u, v)$를 고정한 뒤 $(\operatorname{deg}(u) - 1) \cdot (\operatorname{deg}(v) - 1)$를 계산해 더한 값을 $S$, $C_3$의 개수를 $T$라 할 때 $S - 3T$를 구하면 $C_3$와 마찬가지로 $\mathcal{O}(m \cdot d(G))$에 해결할 수 있습니다.
+
+### 5.2 $S_4$ case
+
+$H = S_4$인 경우는 중심 정점 $v$를 고정한 뒤 $\binom{\operatorname{deg}(v)}{3}$을 계산해 더해주면 $\mathcal{O}(n + m)$에 해결할 수 있습니다.
+
+### 5.3 $C_4$ case
+
+$H = C_4$인 경우는 $\operatorname{rank}$가 최대인 정점 $i$를 고정한 뒤, $\operatorname{rank}(i) > \operatorname{rank}(j), \operatorname{rank}(i) > \operatorname{rank}(k)$인 $i \rightarrow j \rightarrow k$ 경로를 순회하면 해결할 수 있습니다.
+
+```cpp
+i64 count_4_cycle(int n, const vector<vector<int>>& adj) {
+	vector<int> L = degeneracy_ordering(n, adj);
+	vector<int> rank(n + 1, 0);
+	for (int i = 0; i < n; i++) rank[L[i]] = i;
+	i64 ret = 0;
+	vector<int> c(n + 1, 0);
+	for (int i = 1; i <= n; i++) {
+		vector<int> buc;
+		for (int j : adj[i]) {
+			if (rank[i] <= rank[j]) continue;
+			for (int k : adj[j]) {
+				if (rank[i] <= rank[k]) continue;
+				if (c[k] == 0) buc.push_back(k);
+				ret += c[k]++;
+			}
+		}
+		for (int x : buc) c[x] = 0;
+	}
+	return ret;
+}
+```
+
+시간복잡도는 $\mathcal{O}(m \cdot d(G))$입니다.
+
+다음은 해당 방법으로 [BOJ 32395번](https://www.acmicpc.net/problem/32395) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/0530d4712ff7484cafd74869e8a3ca6a)
 
 ## References
 
