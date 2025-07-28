@@ -169,6 +169,8 @@ degeneracy ordering은 `std::priority_queue`를 이용해 $\mathcal{O}((n + m)\l
 
 ## 4. Subgraph Counting ($3$-nodes)
 
+![Fig.2](/assets/images/2025-07-28-subgraph-counting/fig2.png)
+
 ~
 
 ## References
