@@ -324,7 +324,7 @@ $H = K_4$인 경우는 $(\operatorname{deg}(u), u)$가 최대인 대표 정점 $
 
 풀이의 시간복잡도는 $G'$에서 $C_3$의 개수를 구하는 시간복잡도가 $\mathcal{O}(|E(G')| \cdot d(G'))$이고, $d(G') \le d(G)$, $\sum|E(G')| = \mathcal{O}(m \cdot d(G))$이니 $\mathcal{O}(m \cdot d(G)^2)$입니다. 이는 일반적인 상황에서 $d(G)$가 $\mathcal{O}(\sqrt m)$임을 생각해보면 너무 느립니다.
 
-이때 $G'$에서 $C_3$의 개수를 구하는 부분을 bitset으로 대체하면 시간복잡도를 $\mathcal{O}(|V(G')||E(G')|/64)$로 만들 수 있고, 명시적으로 degeneracy ordering을 이용하면 $V(G') \le d(G)$이니 $\mathcal{O}(m \cdot d(G)^2 / 64)$에 문제를 해결할 수 있습니다.
+이때 $G'$에서 $C_3$의 개수를 구하는 부분을 bitset으로 대체하면 시간복잡도를 $\mathcal{O}(|V(G')||E(G')|/64)$로 만들 수 있고, 명시적으로 degeneracy ordering을 이용하면 $V(G') \le d(G)$이니 $\mathcal{O}(m \cdot d(G) + m \cdot d(G)^2 / 64)$에 문제를 해결할 수 있습니다.
 
 구현 코드는 다음과 같습니다.
 
