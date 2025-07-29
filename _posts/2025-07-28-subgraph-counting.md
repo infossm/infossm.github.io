@@ -82,7 +82,7 @@ $$
 
 - 클리크($K_n$): $n$개의 정점과 $\frac{n(n-1)}{2}$개의 간선으로 이루어진 단순 연결 무방향 그래프. 모든 정점 쌍이 간선으로 연결되어 있으며 각 정점의 차수는 $n - 1$이다.
 
-$H$가 $C_3, C_4, S_k$ 등의 특정 그래프인 경우에는 subgraph counting 문제를 효율적으로 해결할 수 있음이 알려져 있습니다.
+$H$가 $C_3, C_4, S_k$ 등의 그래프인 경우에는 subgraph counting 문제를 효율적으로 해결할 수 있음이 알려져 있습니다.
 
 ## 3. Graph Degeneracy
 
@@ -116,7 +116,7 @@ degeneracy ordering은 그래프 $G$에서 차수가 최소인 정점을 제거�
 
 <br>
 
-degeneracy ordering은 $G_i \subseteq G$에서 $\displaystyle \max_i \operatorname{deg}_{G_i}(v_i) \le d(G)$가 성립합니다. 또한, 임의의 $H \subseteq G$에 대해 $v_i \in V(H)$인 가장 빠른 $v_i$를 구하면 $H \subseteq G_i$에서 $\operatorname{deg}_H(v_i) \le \operatorname{deg}_{G_i}(v_i)$이니, $\displaystyle\min_{u \in V(H)} \operatorname{deg}_H(u) \le \operatorname{deg}_{G_i}(v_i)$이고 $d(G) \le \displaystyle \max_i \operatorname{deg}_{G_i}(v_i)$가 성립합니다.
+이때 $G_i \subseteq G$에서 $\displaystyle \max_i \operatorname{deg}_{G_i}(v_i) \le d(G)$가 성립합니다. 또한, 임의의 $H \subseteq G$에 대해 $v_i \in V(H)$인 가장 빠른 $v_i$를 구하면 $H \subseteq G_i$에서 $\operatorname{deg}_H(v_i) \le \operatorname{deg}_{G_i}(v_i)$이니, $\displaystyle\min_{u \in V(H)} \operatorname{deg}_H(u) \le \operatorname{deg}_{G_i}(v_i)$이고 $d(G) \le \displaystyle \max_i \operatorname{deg}_{G_i}(v_i)$가 성립합니다.
 
 따라서 $\max_i \operatorname{deg}_{G_i}(v_i) = d(G)$이고, degeneracy ordering을 이용하면 제거되는 정점의 차수의 최댓값으로 degeneracy를 구할 수 있습니다.
 
@@ -212,7 +212,7 @@ i64 count_3_cycle(int n, const vector<vector<int>>& adj) {
 
 다음은 해당 방법으로 [BOJ 1762번](https://www.acmicpc.net/problem/1762) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/7db5ba908ee6446f8531ee452a3d4a73)
 
-## 4.3 $C_3$ case (alternative)
+### 4.3 $C_3$ case (alternative)
 
 각 정점 $u$에 대해 degeneracy ordering에서 $u$보다 늦게 등장하는 $v$로 이어지는 $(u, v) \in E(G)$의 개수를 $\operatorname{outdeg}(u)$라 하면, $\operatorname{outdeg}(u) \le d(G)$가 성립합니다.
 
@@ -324,7 +324,7 @@ $H = K_4$인 경우는 $(\operatorname{deg}(u), u)$가 최대인 대표 정점 $
 
 풀이의 시간복잡도는 $G'$에서 $C_3$의 개수를 구하는 시간복잡도가 $\mathcal{O}(|E(G')| \cdot d(G'))$이고, $d(G') \le d(G)$, $\sum|E(G')| = \mathcal{O}(m \cdot d(G))$이니 $\mathcal{O}(m \cdot d(G)^2)$입니다. 이는 일반적인 상황에서 $d(G)$가 $\mathcal{O}(\sqrt m)$임을 생각해보면 너무 느립니다.
 
-이때 $G'$에서 $C_3$의 개수를 구하는 부분을 bitset으로 대체하면 시간복잡도를 $\mathcal{O}(|V(G')||E(G')|/64)$로 만들 수 있고, 명시적으로 degeneracy ordering을 이용하면 $V(G') \le d(G)$이니 $\mathcal{O}(m \cdot d(G) + m \cdot d(G)^2 / 64)$에 문제를 해결할 수 있습니다.
+이때 $G'$에서 $C_3$의 개수를 구하는 부분을 bitset으로 대체하면 시간복잡도를 $\mathcal{O}(|V(G')||E(G')|/64)$로 만들 수 있고, 명시적으로 degeneracy ordering을 이용하면 $|V(G')| \le d(G)$이니 $\mathcal{O}(m \cdot d(G) + m \cdot d(G)^2 / 64)$에 문제를 해결할 수 있습니다.
 
 구현 코드는 다음과 같습니다.
 
@@ -341,34 +341,29 @@ i64 count_4_clique(int n, const vector<vector<int>>& adj) {
 		}
 	}
 	i64 ret = 0;
-	vector<int> v(n + 1), c(n + 1);
+	vector<int> c(n + 1, -1);
 	for (int i = 1; i <= n; i++) {
-		int s = 0;
-		vector<pair<int, int>> e;
-		for (int j : g[i]) v[j] = 1;
+		vector<vector<u64>> bs(g[i].size(), vector<u64>(g[i].size() + 63 >> 6));
+		for (int j = 0; j < g[i].size(); j++) c[g[i][j]] = j;
 		for (int j : g[i]) {
 			for (int k : g[j]) {
-				if (v[k] == 0) continue;
-				if (c[j] == 0) c[j] = ++s;
-				if (c[k] == 0) c[k] = ++s;
-				e.push_back({ c[j], c[k] });
+				if (c[k] == -1) continue;
+				int a = c[j];
+				int b = c[k];
+				bs[a][b >> 6] |= 1ULL << (b & 63);
+				bs[b][a >> 6] |= 1ULL << (a & 63);
+				for (int i = 0; i < bs[a].size(); i++) {
+					ret += __builtin_popcountll(bs[a][i] & bs[b][i]);
+				}
 			}
 		}
-		for (int j : g[i]) v[j] = c[j] = 0;
-		vector<vector<u64>> bs(s + 1, vector<u64>(s / 64 + 1));
-		for (auto [a, b] : e) {
-			bs[a][b >> 6] |= 1ULL << (b & 63);
-			bs[b][a >> 6] |= 1ULL << (a & 63);
-			for (int k = 0; k < bs[a].size(); k++) {
-				ret += __builtin_popcountll(bs[a][k] & bs[b][k]);
-			}
-		}
+		for (int j : g[i]) c[j] = -1;
 	}
 	return ret;
 }
 ```
 
-다음은 해당 방법으로 [BOJ 28200번](https://www.acmicpc.net/problem/28200) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/7ee57704e4ef473b827e8294f6041051)
+다음은 해당 방법으로 [BOJ 28200번](https://www.acmicpc.net/problem/28200) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/d7a7121bfdc04d0cabb8faee86fa0e96)
 
 ## References
 
@@ -381,3 +376,7 @@ i64 count_4_clique(int n, const vector<vector<int>>& adj) {
 [4] [https://arxiv.org/abs/2410.08376](https://arxiv.org/abs/2410.08376)
 
 [5] [https://en.wikipedia.org/wiki/List_of_graphs#Graph_families](https://en.wikipedia.org/wiki/List_of_graphs#Graph_families)
+
+[6] [https://users.soe.ucsc.edu/~sesh/escape.pdf](https://users.soe.ucsc.edu/~sesh/escape.pdf)
+
+[7] [https://enac.hal.science/hal-03097484v1/document](https://enac.hal.science/hal-03097484v1/document)
