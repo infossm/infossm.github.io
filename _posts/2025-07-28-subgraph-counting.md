@@ -186,7 +186,7 @@ $H = C_3$인 경우는 그래프 $G$의 degeneracy ordering을 구한 뒤 $\oper
 ```cpp
 i64 count_3_cycle(int n, const vector<vector<int>>& adj) {
 	vector<int> L = degeneracy_ordering(n, adj);
-	vector<int> rank(n + 1, 0);
+	vector<int> rank(n + 1);
 	for (int i = 0; i < n; i++) rank[L[i]] = i;
 	vector<vector<int>> g(n + 1);
 	for (int i = 1; i <= n; i++) {
@@ -196,11 +196,11 @@ i64 count_3_cycle(int n, const vector<vector<int>>& adj) {
 		}
 	}
 	i64 ret = 0;
-	vector<int> c(n + 1, 0);
+	vector<int> c(n + 1);
 	for (int i = 1; i <= n; i++) {
-		for (int j : adj[i]) c[j] = 1;
+		for (int j : g[i]) c[j] = 1;
 		for (int j : g[i]) for (int k : g[j]) if (c[k]) ret++;
-		for (int j : adj[i]) c[j] = 0;
+		for (int j : g[i]) c[j] = 0;
 	}
 	return ret;
 }
@@ -210,7 +210,7 @@ i64 count_3_cycle(int n, const vector<vector<int>>& adj) {
 
 이때 코드에서 $C_3$을 이루는 세 정점 $(i, j, k)$ tuple을 순회하며 직접 개수를 세니, $G$에서 $C_3$과 동형인 subgraph는 실제로 $\mathcal{O}(m \cdot d(G))$개입니다.
 
-다음은 해당 방법으로 [BOJ 1762번](https://www.acmicpc.net/problem/1762) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/7db5ba908ee6446f8531ee452a3d4a73)
+다음은 해당 방법으로 [BOJ 1762번](https://www.acmicpc.net/problem/1762) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/ae92633648ac43af8b31a1023d87375f)
 
 ### 4.3 $C_3$ case (alternative)
 
@@ -244,11 +244,11 @@ i64 count_3_cycle(int n, const vector<vector<int>>& adj) {
 		}
 	}
 	i64 ret = 0;
-	vector<int> c(n + 1, 0);
+	vector<int> c(n + 1);
 	for (int i = 1; i <= n; i++) {
-		for (int j : adj[i]) c[j] = 1;
+		for (int j : g[i]) c[j] = 1;
 		for (int j : g[i]) for (int k : g[j]) if (c[k]) ret++;
-		for (int j : adj[i]) c[j] = 0;
+		for (int j : g[i]) c[j] = 0;
 	}
 	return ret;
 }
@@ -258,7 +258,7 @@ i64 count_3_cycle(int n, const vector<vector<int>>& adj) {
 $$\mathcal{O}(\sum_{(u, v) \in E(G)}\min(\operatorname{deg}(u), \operatorname{deg}(v))) = \mathcal{O}(m \cdot d(G))$$
 의 시간복잡도를 가집니다.
 
-다음은 해당 방법으로 [BOJ 1762번](https://www.acmicpc.net/problem/1762) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/1c5271bff4d24a6fa8a8e1c627d7249b)
+다음은 해당 방법으로 [BOJ 1762번](https://www.acmicpc.net/problem/1762) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/737d613e30d54a0e95d842fe7febc45b)
 
 ## 5. Subgraph Counting ($4$-nodes)
 
@@ -283,7 +283,7 @@ $H = C_4$인 경우는 $(\operatorname{deg}(u), u)$가 최대인 정점 $i$를 �
 ```cpp
 i64 count_4_cycle(int n, const vector<vector<int>>& adj) {
 	i64 ret = 0;
-	vector<int> c(n + 1, 0);
+	vector<int> c(n + 1);
 	for (int i = 1; i <= n; i++) {
 		vector<int> buc;
 		for (int j : adj[i]) {
@@ -304,7 +304,7 @@ i64 count_4_cycle(int n, const vector<vector<int>>& adj) {
 
 시간복잡도는 $(u, v) \in E(G)$마다 $\min(\operatorname{deg}(u), \operatorname{deg}(v))$의 연산을 수행하니 $\mathcal{O}(m \cdot d(G))$입니다.
 
-다음은 해당 방법으로 [BOJ 32395번](https://www.acmicpc.net/problem/32395) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/cf800fdbe5cc4b27b2a1b2387f717f8a)
+다음은 해당 방법으로 [BOJ 32395번](https://www.acmicpc.net/problem/32395) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/760615d1d1ca4bca82b396ca979d8ab0)
 
 ### 5.4 Paw Graph
 
@@ -331,7 +331,7 @@ $H = K_4$인 경우는 $(\operatorname{deg}(u), u)$가 최대인 대표 정점 $
 ```cpp
 i64 count_4_clique(int n, const vector<vector<int>>& adj) {
 	vector<int> L = degeneracy_ordering(n, adj);
-	vector<int> rank(n + 1, 0);
+	vector<int> rank(n + 1);
 	for (int i = 0; i < n; i++) rank[L[i]] = i;
 	vector<vector<int>> g(n + 1);
 	for (int i = 1; i <= n; i++) {
@@ -364,6 +364,37 @@ i64 count_4_clique(int n, const vector<vector<int>>& adj) {
 ```
 
 다음은 해당 방법으로 [BOJ 28200번](https://www.acmicpc.net/problem/28200) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/d7a7121bfdc04d0cabb8faee86fa0e96)
+
+## 6. Subgraph Counting (more than $5$-nodes)
+
+$k \ge 5$인 경우는 일반적으로 subquadratic 시간에 subgraph counting 문제를 해결하는 방법이 알려져 있지 않습니다. 이는 $k$가 커질 수록 패턴 그래프의 간선 수가 늘어나면서 탐색해야 하는 후보 집합이 기하급수적으로 커지기 때문입니다.
+
+$k = 5$인 경우로 문제를 한정하면 몇몇 특수한 경우를 제외하면 대부분 $\mathcal{O}(m \cdot d(G)^3)$ 또는 그 이상의 연산량이 필요합니다. 이때 [BOJ 14571](https://www.acmicpc.net/problem/14571)과 같이 특정 패턴 그래프에 대해서는 $\mathcal{O}(m \cdot d(G))$ scale의 알고리즘이 존재하기도 합니다.
+
+관련 연구 결과는 [3], [4], [6], [7]에서 확인해볼 수 있습니다.
+
+## 7. Conclusion
+
+이번 글에서는 그래프의 degeneracy를 이용한 subgraph counting 기법을 알아보았습니다.
+
+degeneracy ordering를 이용하면 그래프의 $\operatorname{outdeg}$를 $d(G)$ 이하로 한정시켜 subgraph counting을 효율적으로 해결할 수 있습니다. degeneracy는 일반적인 경우 $\mathcal{O}(\sqrt m)$ scale으로 작고, 그래프의 구조가 특수한 경우는 $\mathcal{O}(1)$이 되기도 합니다. 또한 많은 경우 degeneracy는 $\sqrt m$ 이하로 작은 경우가 많으니, 위 기법은 실험적으로도 좋은 성능을 보입니다.
+
+아래 표는 이 기법을 이용해 해결한 패턴별 알고리즘의 시간복잡도입니다.
+
+|패턴 그래프 $H$|$k$|시간복잡도|연습 문제|
+|:---:|:---:|:------:|:------:|
+|$P_3$|3|$\mathcal{O}(n + m)$|-|
+|$C_3$|3|$\mathcal{O}(m \cdot d(G))$|[BOJ 1762](https://www.acmicpc.net/problem/1762), [Library Checker](https://judge.yosupo.jp/problem/enumerate_triangles)|
+|$P_4$|4|$\mathcal{O}(m \cdot d(G))$|-|
+|$S_4$|4|$\mathcal{O}(n + m)$|[BOJ 31217](https://www.acmicpc.net/problem/31217)|
+|$C_4$|4|$\mathcal{O}(m \cdot d(G))$|[BOJ 32395](https://www.acmicpc.net/problem/32395), [Library Checker](https://judge.yosupo.jp/problem/counting_c4)|
+|paw graph|4|$\mathcal{O}(m \cdot d(G))$|-|
+|diamond graph|4|$\mathcal{O}(m \cdot d(G))$|-|
+|$K_4$|4|$\mathcal{O}(m \cdot d(G) + m \cdot d(G)^2 / 64)$|[BOJ 28200](https://www.acmicpc.net/problem/28200)|
+
+정점 수가 $k \ge 5$인 일반적인 경우에는 subquadratic 해법이 알려져 있지 않으나, 특정 그래프는 $k \le 4$의 기법을 응용해 효율적으로 해결할 수 있습니다.
+
+subgraph counting 문제는 알고리즘 대회에 종종 등장하며, 그래프 이론에서 중요한 주제 중 하나입니다. 이번 글에서 다룬 내용은 subgraph counting을 해결하는 핵심적인 접근법이니, 익혀두면 다양한 그래프 문제를 풀 때 많은 도움이 될 거라 생각합니다.
 
 ## References
 
