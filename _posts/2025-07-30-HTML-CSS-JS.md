@@ -66,7 +66,7 @@ Render tree는 실제 화면에 표시될 노드들만으로 구성된 트리로
 예컨대 `<body>` 안에 `<p>`가 있다면 DOM tree에는 `<p>` 노드가 있고, CSSOM에는 `p { font-size:16px; }` 규칙이 있을 때, render tree에는 `<p>` 노드에 `font-size:16px`이 적용된 형태로 나타나는 것입니다.
 참고로 `display: none`처럼 아예 표시되지 않는 요소는 render tree에서 제외되고, `visibility: hidden`처럼 공간만 차지하는 요소는 포함되는 식으로 **렌더링에 필요한 노드만** 걸러집니다.
 
-![출처: https://web.dev/articles/critical-rendering-path/render-tree-construction](/assets/images/2025-07-10-htmlcssjs/img1.png)
+![출처: https://web.dev/articles/critical-rendering-path/render-tree-construction](/assets/images/2025-07-30-htmlcssjs/img1.png)
 
 출처: https://web.dev/articles/critical-rendering-path/render-tree-construction
 
@@ -195,7 +195,7 @@ HTML 코드의 위치, CSS와 JS의 로딩 방식에 따라 페이지 **초기 �
 
 이제 **브라우저가 HTML/CSS/JS를 받아 화면에 픽셀을 그리기까지의 전체 흐름**을 정리해보겠습니다. 
 
-![출처: [https://web.dev/learn/performance/understanding-the-critical-path](https://web.dev/learn/performance/understanding-the-critical-path)](/assets/images/2025-07-10-htmlcssjs/img2.png)
+![출처: [https://web.dev/learn/performance/understanding-the-critical-path](https://web.dev/learn/performance/understanding-the-critical-path)](/assets/images/2025-07-30-htmlcssjs/img2.png)
 
 출처: [https://web.dev/learn/performance/understanding-the-critical-path](https://web.dev/learn/performance/understanding-the-critical-path)
 
