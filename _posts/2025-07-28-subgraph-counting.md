@@ -124,9 +124,9 @@ degeneracy ordering은 그래프 $G$에서 차수가 최소인 정점을 제거�
 
 이때 degeneracy ordering은 다음 성질을 만족합니다.
 
-1. $G_i \subseteq G$에서 $\displaystyle \max_i \text{deg}_{G_i}(v_i) \le d(G)$가 성립한다.
+1. $G_i \subseteq G$에서 $\max_i \text{deg}_{G_i}(v_i) \le d(G)$가 성립한다.
 
-2. 임의의 $H \subseteq G$에 대해 $v_i \in V(H)$인 가장 빠른 $v_i$를 구하면 $H \subseteq G_i$에서 $\text{deg}_H(v_i) \le \text{deg}_{G_i}(v_i)$이니, $\displaystyle\min_{u \in V(H)} \text{deg}_H(u) \le \text{deg}_{G_i}(v_i)$이고 $d(G) \le \displaystyle \max_i \text{deg}_{G_i}(v_i)$가 성립한다.
+2. 임의의 $H \subseteq G$에 대해 $v_i \in V(H)$인 가장 빠른 $v_i$를 구하면 $H \subseteq G_i$에서 $\text{deg}_H(v_i) \le \text{deg}_{G_i}(v_i)$이다. 따라서 $\min_{u \in V(H)} \text{deg}_H(u) \le \text{deg}_{G_i}(v_i)$이고 $d(G) \le \max_i \text{deg}_{G_i}(v_i)$가 성립한다.
 
 따라서 $\max_i \text{deg}_{G_i}(v_i) = d(G)$이고, degeneracy ordering을 이용하면 제거되는 정점의 차수의 최댓값으로 degeneracy를 구할 수 있습니다.
 
@@ -185,7 +185,18 @@ subgraph counting 문제에서 패턴 그래프 $H$의 정점 개수를 $k$라 �
 
 이번 단락에서는 $k = 3$인 두 가지 경우를 살펴보고, 다음 단락에서는 $k = 4$인 경우를 살펴보겠습니다.
 
-표기의 편의를 위해 앞으로 별 다른 언급 없이 $n = \lvert V(G)\rvert, m = \lvert E(G)\rvert, k = \lvert V(H)\rvert, \text{deg}(v) = \text{deg}_G(v)$를 사용하겠습니다. 또한, 그래프 $G$의 degeneracy ordering $L = [v_0, v_1, \cdots, v_{n-1}]$에서 $i$번 정점이 등장하는 인덱스를 $\text{rank}(i)$로 정의해 사용하겠습니다.
+앞으로 다음 값은 표기의 편의를 위해 별 다른 언급 없이 사용하겠습니다.
+
+$$
+\begin{align*}
+n &= \lvert V(G)\rvert \\
+m &= \lvert E(G)\rvert \\
+k &= \lvert V(H)\rvert \\
+\text{deg}(v) &= \text{deg}_G(v)
+\end{align*}
+$$
+
+또한, 그래프 $G$의 degeneracy ordering $L = [v_0, v_1, \cdots, v_{n-1}]$에서 $i$번 정점이 등장하는 인덱스를 $\text{rank}(i)$로 정의해 사용하겠습니다.
 
 ### 4.1 $P_3$ case
 
