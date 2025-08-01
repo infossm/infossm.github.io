@@ -122,11 +122,20 @@ degeneracy ordering은 그래프 $G$에서 차수가 최소인 정점을 제거�
 
 3. 반복이 끝난 뒤 $L = [v_0, v_1, \cdots, v_{n-1}]$를 얻는다.
 
-이때 degeneracy ordering은 다음 성질을 만족합니다.
+이때 degeneracy ordering은 $G_i \subseteq G$에서 
 
-1. $G_i \subseteq G$에서 $\max_i \text{deg}_{G_i}(v_i) \le d(G)$가 성립한다.
+$$\max_i \text{deg}_{G_i}(v_i) \le d(G)$$
 
-2. 임의의 $H \subseteq G$에 대해 $v_i \in V(H)$인 가장 빠른 $v_i$를 구하면 $H \subseteq G_i$에서 $\text{deg}_H(v_i) \le \text{deg}_{G_i}(v_i)$이다. 따라서 $\min_{u \in V(H)} \text{deg}_H(u) \le \text{deg}_{G_i}(v_i)$이고 $d(G) \le \max_i \text{deg}_{G_i}(v_i)$가 성립한다.
+가 성립합니다.
+
+또한 임의의 $H \subseteq G$에 대해, 첫 번째로 등장하는 $v_i \in V(H)$에 대하여
+
+$$
+\min_{u\in V(H)}\deg_H(u)\le\deg_H(v_i)\le\deg_{G_i}(v_i) \\
+\Rightarrow d(G)\le\max_i\deg_{G_i}(v_i)
+$$
+
+가 성립합니다.
 
 따라서 $\max_i \text{deg}_{G_i}(v_i) = d(G)$이고, degeneracy ordering을 이용하면 제거되는 정점의 차수의 최댓값으로 degeneracy를 구할 수 있습니다.
 
