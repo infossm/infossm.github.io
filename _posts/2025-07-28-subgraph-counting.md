@@ -250,7 +250,14 @@ i64 count_3_cycle(int n, const vector<vector<int>>& adj) {
 
 각 정점 $u$에 대해 degeneracy ordering에서 $u$보다 늦게 등장하는 $v$로 이어지는 $(u, v) \in E(G)$의 개수를 $\text{outdeg}(u)$라 하면, $\text{outdeg}(u) \le d(G)$가 성립합니다.
 
-$V_i = \{ v \in V(G) \mid \deg(v) \ge i \}$, $E_i = \{ (u, v) \in E(G) \mid u, v \in V_i \}$를 정의합시다.
+$$
+\begin{align*}
+V_i &= \{ v \in V(G) \mid \text{deg}(v) \ge i \} \\
+E_i &= \{ (u, v) \in E(G) \mid u, v \in V_i \}
+\end{align*}
+$$
+
+를 정의합시다.
 
 다음 사실이 성립합니다.
 
@@ -298,7 +305,7 @@ $$\mathcal{O}(\sum_{(u, v) \in E(G)}\min(\deg(u), \deg(v))) = \mathcal{O}(m \cdo
 
 ## 5. Subgraph Counting ($4$-nodes)
 
-![Fig.2](/assets/images/2025-07-28-subgraph-counting/fig2.png)
+![Fig.3](/assets/images/2025-07-28-subgraph-counting/fig2.png)
 
 $k = 4$인 경우는 $P_4, S_4, C_4$를 포함해 총 $6$가지 case가 있습니다.
 
