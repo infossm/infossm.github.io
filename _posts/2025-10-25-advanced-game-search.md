@@ -58,7 +58,7 @@ ATAXX는 $7 \times 7$ 보드에서 진행되는 $2$인 턴제 게임입니다.
 
 종료 시점에 돌이 더 많은 플레이어가 승리하며, 만약 두 플레이어의 돌 개수가 같다면 무승부로 마무리합니다.
 
-여기까지가 ATAXX 게임의 룰입니다. 이때 $400$턴을 초과하면 게임을 종료한다는 규칙은 게임이 무한히 길어지는 걸 방지하기 위해 제가 임의로 추가했습니다. 다른 플렛폼에서는 $3$회 동형, $50$수 규칙 등을 채택할 수 있음에 주의해주세요.
+여기까지가 ATAXX 게임의 룰입니다. $400$턴을 초과하면 게임을 종료한다는 규칙은 게임이 무한히 길어지는 걸 방지하기 위해 임의로 추가했습니다. 다른 플렛폼에서는 $3$회 동형, $50$수 규칙 등을 채택할 수 있음에 주의해주세요.
 
 해당 게임은 [링크](https://alphano.co.kr/problem/1/play)에서 플레이해볼 수 있습니다.
 
@@ -73,11 +73,99 @@ ATAXX는 $7 \times 7$ 보드에서 진행되는 $2$인 턴제 게임입니다.
 | **OPP** | `OPP x1 y1 x2 y2 time` | - | - | 상대가 직전에 둔 수와 사용한 시간을 알립니다. 상대가 `PASS`를 선택한 경우는 `OPP -1 -1 -1 -1 time`이 입력됩니다. |
 | **FINISH** | `FINISH` | - | - | 게임 종료를 알립니다. 에이전트는 추가 출력 없이 프로그램을 정상 종료해야 합니다. |
 
-각 에이전트의 제한 시간은 게임 당 `10000ms`로 주어지고, 에이전트는 주어진 총 시간을 잘 분배해서 사용해야 합니다.
+각 에이전트의 제한 시간은 게임 당 `10000ms`로 주어지고, 에이전트는 주어진 시간을 잘 분배해서 사용해야 합니다.
+
+이제 이 형식에 맞춰서 게임 에이전트를 구현해보며 여러 방법론의 장단점을 알아보겠습니다.
 
 ## 3. Random Agent
 
-~
+가장 먼저 생각해볼 수 있는 정책은 가능한 행동 중 아무 행동이나 랜덤하게 고르는 것입니다.
+
+랜덤 정책을 위의 입출력 형식에 맞게 구현한 코드는 다음과 같습니다.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int board[8][8];
+int turn;
+
+int gen_rand(int l, int r) {
+	static mt19937 rd(42);
+	return uniform_int_distribution(l, r)(rd);
+}
+
+auto find_move() {
+	tuple ret(-1, -1, -1, -1);
+	int cnt = 0;
+	for (int x1 = 1; x1 <= 7; x1++) {
+		for (int y1 = 1; y1 <= 7; y1++) {
+			if (board[x1][y1] != turn) continue;
+			for (int x2 = x1 - 2; x2 <= x1 + 2; x2++) {
+				if (x2 < 1 || x2 > 7) continue;
+				for (int y2 = y1 - 2; y2 <= y1 + 2; y2++) {
+					if (y2 < 1 || y2 > 7) continue;
+					if (x2 == x1 && y2 == y1) continue;
+					if (board[x2][y2] != 0) continue;
+					if (gen_rand(1, ++cnt) == 1) ret = tuple(x1, y1, x2, y2);
+				}
+			}
+		}
+	}
+	return ret;
+}
+
+void apply_move(int x1, int y1, int x2, int y2, int turn) {
+	if (x1 == -1 && y1 == -1 && x2 == -1 && y2 == -1) return;
+	int d = max(abs(x2 - x1), abs(y2 - y1));
+	if (d == 2) board[x1][y1] = 0;
+	board[x2][y2] = turn;
+	for (int x = x2 - 1; x <= x2 + 1; x++) {
+		for (int y = y2 - 1; y <= y2 + 1; y++) {
+			if (x < 1 || x > 7 || y < 1 || y > 7) continue;
+			if (board[x][y] == (turn ^ 3)) board[x][y] = turn;
+		}
+	}
+}
+
+int main() {
+	board[1][1] = board[7][7] = 1;
+	board[1][7] = board[7][1] = 2;
+	while (1) {
+		string s; getline(cin, s);
+		istringstream in(s);
+		string cmd; in >> cmd;
+		if (cmd == "READY") {
+			string t; in >> t;
+			turn = t == "FIRST" ? 1 : 2;
+			cout << "OK" << endl;
+		}
+		else if (cmd == "TURN") {
+			int t1, t2; in >> t1 >> t2;
+			auto [x1, y1, x2, y2] = find_move();
+			apply_move(x1, y1, x2, y2, turn);
+			cout << "MOVE " << x1 << ' ' << y1 << ' ' << x2 << ' ' << y2 << endl;
+		}
+		else if (cmd == "OPP") {
+			int x1, y1, x2, y2; in >> x1 >> y1 >> x2 >> y2;
+			int t2; in >> t2;
+			apply_move(x1, y1, x2, y2, turn ^ 3);
+		}
+		else if (cmd == "FINISH") {
+			break;
+		}
+		else {
+			assert(0);
+		}
+	}
+}
+```
+
+코드에서 `find_move` 함수는 $(x_1, y_1, x_2, y_2)$ 조합을 모두 확인하며 가능한 행동을 균등한 확률로 선택합니다. 만약 가능한 조합이 없다면 `PASS`를 의미하는 $(-1, -1, -1, -1)$을 반환합니다.
+
+`apply_move` 함수는 `turn`에 해당하는 플레이어가 $(x_1, y_1, x_2, y_2)$를 선택했을 때 보드의 변화를 반영하는 역할을 수행합니다.
+
+랜덤 정책은 이후 구현할 정책들의 성능을 비교하기 위한 기준선(Baseline)입니다. 새로운 정책이 효과적이라면 랜덤 정책보다 높은 승률을 보여야 하며, 이를 통해 최소한의 성능을 검증하고 구현상의 오류를 조기에 발견할 수 있습니다.
 
 ## 4. Greedy Agent
 
