@@ -8,7 +8,7 @@ tags: [algorithm, game-theory, problem-solving]
 
 ## 1. Introduction
 
-이번 글에서는 게임 에이전트의 가장 단순한 형태인 Random Agent부터 시작하여 Greedy, Minimax, Alpha-Beta Pruning의 핵심 원리를 다룹니다. 이후 이어지는 글에서는 MCTS 등의 현대적인 탐색 기법을 알아보고, NNUE 등의 neural network를 이용한 평가 방법과 여러 search prunning 방법을 살펴보겠습니다.
+이번 글에서는 게임 에이전트의 가장 단순한 형태인 Random Agent부터 시작하여 Greedy, Minimax, Alpha-Beta Pruning의 핵심 원리를 다룹니다. 이후 이어지는 글에서는 MCTS 등의 현대적인 탐색 기법을 알아보고, NNUE 등의 neural network를 이용한 평가 방법과 여러 search Pruning 방법을 살펴보겠습니다.
 
 또한 에이전트의 성능을 객관적으로 평가하기 위해 SPRT(Sequential Probability Ratio Test)라는 평가 기법을 소개합니다. 이를 이용하면 통계적으로 두 에이전트 간의 실력 차이를 엄밀하게 검증할 수 있습니다.
 
@@ -58,9 +58,9 @@ ATAXX는 $7 \times 7$ 보드에서 진행되는 $2$인 턴제 게임입니다.
 
 종료 시점에 돌이 더 많은 플레이어가 승리하며, 만약 두 플레이어의 돌 개수가 같다면 무승부로 마무리합니다.
 
-여기까지가 ATAXX 게임의 룰입니다. $400$턴을 초과하면 게임을 종료한다는 규칙은 게임이 무한히 길어지는 걸 방지하기 위해 임의로 추가했습니다. 다른 플렛폼에서는 $3$회 동형, $50$수 규칙 등을 채택할 수 있음에 주의해주세요.
+여기까지가 ATAXX 게임의 룰입니다. $400$턴을 초과하면 게임을 종료한다는 규칙은 게임이 무한히 길어지는 걸 방지하기 위해 임의로 추가했습니다. 다른 플랫폼에서는 $3$회 동형, $50$수 규칙 등을 채택할 수 있음에 주의해주세요.
 
-해당 게임은 [링크](https://alphano.co.kr/problem/1/play)에서 플레이해볼 수 있습니다.
+note. 해당 게임은 [링크](https://alphano.co.kr/problem/1/play)에서 플레이해볼 수 있습니다.
 
 ### 2.2 입출력 형식
 
@@ -227,7 +227,7 @@ auto find_move(board game, int turn) {
 
 이에 대한 대안으로는 `turn`에 해당하는 돌의 개수에서 `turn ^ 3`에 해당하는 돌의 개수를 뺀 값을 반환하도록 하는 휴리스틱 함수를 생각해볼 수 있습니다. 이는 돌 개수가 더 많다면 이길 가능성이 높다는 가정을 바탕으로 유리한 정도를 표현한 함수로, 실제로는 다음 턴에 상대가 어떤 행동을 고르는지에 따라 승패가 뒤집힐 수 있기에 정확한 모델링이 아니지만 근사적으로 `eval` 함수를 구성할 수 있다는 장점이 있습니다. 여기서는 이 방법을 사용하며, `eval` 함수를 개선하는 방법은 다음 글에서 다루겠습니다.
 
-`find_move` 함수는 `eval` 함수를 이용해 행동을 수행한 뒤의 보드의 평가값을 구하고, 이 값이 최대가 되는 행동을 반환합니다. 만약 평가값이 최대인 행동이 여러개라면 $(x_1, y_1, x_2, y_2)$가 사전순으로 최소인 행동을 반환하도록 했습니다.
+`find_move` 함수는 `eval` 함수를 이용해 행동을 수행한 뒤의 보드의 평가값을 구하고, 이 값이 최대가 되는 행동을 반환합니다. 만약 평가값이 최대인 행동이 여러 개라면 $(x_1, y_1, x_2, y_2)$가 사전순으로 최소인 행동을 반환하도록 했습니다.
 
 그리디 정책은 `eval` 함수가 게임의 유불리를 얼마나 정확히 모델링하는가에 따라 성능이 달라집니다. 하지만 돌 개수의 차이와 같은 간단한 모델링만 이용하더라도 랜덤 정책보다는 성능이 개선됨을 기대할 수 있습니다.
 
@@ -454,11 +454,11 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 
 마찬가지로 랜덤, 그리디 정책과 Minimax Algorithm을 이용한 정책을 SPRT를 이용해 비교해보면 개선이 되었음을 알 수 있습니다.
 
-## 7. Alpha-Beta Prunning
+## 7. Alpha-Beta Pruning
 
-마지막으로 Alpha-Beta Prunning 기법을 알아보겠습니다.
+마지막으로 Alpha-Beta Pruning 기법을 알아보겠습니다.
 
-### 7.1 Alpha-Beta Prunning
+### 7.1 Alpha-Beta Pruning
 
 6.1절의 Minimax Algorithm은 `max_depth`까지 모든 가능한 자식 노드를 탐색하기 때문에, 탐색해야 할 노드의 수가 깊이에 따라 지수적으로 증가한다는 단점이 있습니다.
 
@@ -468,7 +468,7 @@ Alpha-Beta Pruning(알파-베타 가지치기)은 Minimax Algorithm의 결과를
 
 $\alpha$와 $\beta$를 이용한 가지치기는 현재 플레이어의 차례에서 자식 노드의 반환값 `res`가 $\beta$ 이상인 경우와 상대 플레이어의 차례에서 자식 노드의 반환값 `res`가 $\alpha$ 이하인 경우 발생합니다. 전자는 부모 상태에서 상대 플레이어가 현재 상태를 절대 고르지 않을 것이기 때문에 최적의 플레이에서 나올 수 없는 상태이고, 후자도 마찬가지로 부모 상태에서 현재 플레이어가 절대 고르지 않을 상태이니 나올 수가 없어서 가지치기를 해도 결과가 변하지 않습니다.
 
-이를 정리하면, 탐색 도중 $\alpha \ge beta$가 되는 순간 가지치기를 하며 Minimax Algorithm을 개선할 수 있습니다. 이때 Alpha-Beta Prunning을 적용한 Minimax Algorithm은 기존과 항상 같은 결과를 반환합니다.
+이를 정리하면, 탐색 도중 $\alpha \ge beta$가 되는 순간 가지치기를 하며 Minimax Algorithm을 개선할 수 있습니다. 이때 Alpha-Beta Pruning을 적용한 Minimax Algorithm은 기존과 항상 같은 결과를 반환합니다.
 
 구현 코드는 다음과 같습니다.
 
@@ -564,7 +564,7 @@ auto find_move(board game, int turn) {
 
 `find_move` 함수는 `dfs`를 호출할 때 $\alpha$를 음의 무한대를 의미하는 `-(1 << 30)`, $\beta$를 양의 무한대를 의미하는 `1 << 30`으로 설정하여 탐색을 시작합니다.
 
-### 7.2 Negamax-Style Alpha-Beta Prunning
+### 7.2 Negamax-Style Alpha-Beta Pruning
 
 6.2절에서 Minimax Algorithm을 Negamax Algorithm으로 변환하여 코드를 간소화했듯이, 7.1절의 Alpha-Beta Pruning 또한 Negamax 스타일로 구현할 수 있습니다.
 
@@ -619,9 +619,9 @@ int dfs(board game, int turn, int dep, int alpha, int beta, auto& opt_move) {
 }
 ```
 
-다음 상태의 반환값을 재귀적으로 구할 때 `-dfs(nxt, turn ^ 3, dep + 1, -beta, -alpha, opt_move)`와 같이 `alpha`, `beta`의 인자로 $-\beta$와 $\alpha$를 이용함에 주의해야 합니다.
+다음 상태의 반환값을 재귀적으로 구할 때 `-dfs(nxt, turn ^ 3, dep + 1, -beta, -alpha, opt_move)`와 같이 `alpha`, `beta`의 인자로 $-\beta$와 $-\alpha$를 이용함에 주의해야 합니다.
 
-Alpha-Beta Prunning은 Minimax Algorithm의 결과를 바꾸지 않으면서 실행 시간만 단축시켜주기 때문에 `max_depth`를 바꾸지 않은 위의 코드는 기존 Minimax Algorithm을 이용한 정책과 동일한 성능을 보입니다. 이때 시간 제한에 맞춰서 `max_depth`를 늘리는 경우 Alpha-Beta Prunning을 이용한 코드는 `max_depth`를 더 크게 설정할 수 있다는 장점이 있습니다.
+Alpha-Beta Pruning은 Minimax Algorithm의 결과를 바꾸지 않으면서 실행 시간만 단축시켜주기 때문에 `max_depth`를 바꾸지 않은 위의 코드는 기존 Minimax Algorithm을 이용한 정책과 동일한 성능을 보입니다. 이때 시간 제한에 맞춰서 `max_depth`를 늘리는 경우 Alpha-Beta Pruning을 이용한 코드는 `max_depth`를 더 크게 설정할 수 있다는 장점이 있습니다.
 
 ## 8. Summary
 
