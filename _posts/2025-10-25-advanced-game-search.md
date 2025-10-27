@@ -18,7 +18,7 @@ tags: [algorithm, game-theory, problem-solving]
 
 게임 에이전트를 구현하는 방법을 알아보기에 앞서, 예시로 들 게임의 규칙을 먼저 소개하겠습니다.
 
-### 2-1. 게임 규칙
+### 2.1 게임 규칙
 
 ATAXX는 $7 \times 7$ 보드에서 진행되는 $2$인 턴제 게임입니다.
 
@@ -62,7 +62,7 @@ ATAXX는 $7 \times 7$ 보드에서 진행되는 $2$인 턴제 게임입니다.
 
 해당 게임은 [링크](https://alphano.co.kr/problem/1/play)에서 플레이해볼 수 있습니다.
 
-### 2-2. 입출력 형식
+### 2.2 입출력 형식
 
 이제 에이전트와 심판 프로그램 간의 상호작용 규칙을 정의하겠습니다.
 
@@ -182,9 +182,9 @@ int main() {
 ```cpp
 int eval(board game, int turn) {
 	int ret = 0;
-	for (int i = 1; i <= 7; i++) {
-		for (int j = 1; j <= 7; j++) {
-			int val = game.get(i, j);
+	for (int x = 1; x <= 7; x++) {
+		for (int y = 1; y <= 7; y++) {
+			int val = game.get(x, y);
 			if (val == turn) ret++;
 			if (val == (turn ^ 3)) ret--;
 		}
@@ -193,8 +193,8 @@ int eval(board game, int turn) {
 }
 
 auto find_move(board game, int turn) {
-	tuple ret(-1, -1, -1, -1);
-	int opt = -(1 << 30);
+	tuple opt_move(-1, -1, -1, -1);
+	int opt_val = -(1 << 30);
 	for (int x1 = 1; x1 <= 7; x1++) {
 		for (int y1 = 1; y1 <= 7; y1++) {
 			if (game.get(x1, y1) != turn) continue;
@@ -207,15 +207,15 @@ auto find_move(board game, int turn) {
 					board nxt = game;
 					nxt.apply_move(x1, y1, x2, y2, turn);
 					int val = eval(nxt, turn);
-					if (opt < val) {
-						ret = tuple(x1, y1, x2, y2);
-						opt = val;
+					if (opt_val < val) {
+						opt_move = tuple(x1, y1, x2, y2);
+						opt_val = val;
 					}
 				}
 			}
 		}
 	}
-	return ret;
+	return opt_move;
 }
 ```
 
@@ -291,13 +291,142 @@ $$S_n = \displaystyle\sum_{i=1}^n l_i = W_n \log \frac{p(W | H_1)}{p(W | H_0)} +
 
 일반적으로 SPRT를 이용할 때는 $\alpha = \beta = 0.05$를 사용합니다.
 
-이상의 내용을 이용해 랜덤 정책과 그리디 정책을 비교해보면 그리디 정책이 랜덤 정책보다 우수함을 보일 수 있습니다.
+이를 이용해 랜덤 정책과 그리디 정책을 비교해보면 그리디 정책이 랜덤 정책보다 우수함을 보일 수 있습니다.
 
 note. 수식의 수학적 유도는 [이 글](https://en.wikipedia.org/wiki/Sequential_probability_ratio_test)과 [이 글](https://mattlapa.com/sprt/)을 참고해주세요.
 
 ## 6. Minimax Algorithm
 
-~
+그리디 정책은 $1$턴 이후의 `eval` 값이 최대가 되는 행동을 고르는 전략을 사용합니다. 이때 $1$턴이 아니라 그 이상을 볼 수 있다면 성능을 개선할 수 있을 것입니다.
+
+### 6.1 Minimax Algorithm
+
+Minimax Algorithm은 두 플레이어가 최선의 행동만을 한다고 가정할 때 각 state에서 어느 값을 선택할 것인지를 구하는 알고리즘입니다. 이때 최선의 행동이란 게임이 끝난 시점에 자신의 `eval`값을 최대화하는 행동을 의미합니다. 즉, 첫 번째 플레이어는 첫 번째 플레이어를 기준으로 구한 `eval` 값을 최대화하려고 하고, 두 번째 플레이어는 두 번째 플레이어를 기준으로 구한 `eval` 값을 최대화하려고 합니다.
+
+이때 `eval` 함수의 정의가 대칭적이라면 두 플레이어를 각각 기준삼아 구한 `eval` 값의 합이 $0$일 것입니다. 이 경우에는 첫 번째 플레이어를 기준으로 구한 `eval` 값에 대해 첫 번째 플레이어는 이 값을 최대화하려고 할 것이고, 두 번째 플레이어는 이 값을 최소화하려고 할 것입니다.
+
+이 전략을 game tree에서 생각해보면 노드의 depth의 parity에 따라 자식 node의 반환값 중 최소, 최대인 값을 현재 노드의 반환값으로 삼으며 각 노드에서 최적의 행동을 할 때 반환값을 구할 수 있습니다. 이때 리프 노드의 반환값은 해당 노드의 `eval` 값입니다. 이를 Minimax Algorithm이라 합니다.
+
+이때 game tree를 모두 탐색하는 건 game tree가 지수적으로 커질 수 있기 때문에 현실적으로 어렵습니다. 따라서 대부분의 경우 Minimax Algorithm은 탐색 깊이를 제한한 뒤 최대 깊이에 도달하면 해당 노드의 `eval` 값을 반환하도록 하는 커팅을 수행합니다. 이는 해당 노드에서 플레이를 마저 이어나갈 때 얻어지는 최적의 `eval` 값를 직접 구하기가 어려우니 대안적으로 해당 노드의 평가값을 구하는 방식이기에 정확도가 떨어질 수 있습니다.
+
+다음은 탐색 깊이를 $3$으로 제한한 Minimax Algorithm의 구현입니다.
+
+```cpp
+constexpr int max_depth = 3;
+
+int dfs(board game, int turn, int dep, auto& opt_move) {
+	int mask = 0;
+	for (int x = 1; x <= 7; x++) {
+		for (int y = 1; y <= 7; y++) {
+			mask |= 1 << game.get(x, y);
+		}
+	}
+	if (dep == max_depth || mask != 7) {
+		return eval(game, turn);
+	}
+	if (dep % 2 == 0) {
+		int ret = -(1 << 30);
+		for (int x1 = 1; x1 <= 7; x1++) {
+			for (int y1 = 1; y1 <= 7; y1++) {
+				if (game.get(x1, y1) != turn) continue;
+				for (int x2 = x1 - 2; x2 <= x1 + 2; x2++) {
+					if (x2 < 1 || x2 > 7) continue;
+					for (int y2 = y1 - 2; y2 <= y1 + 2; y2++) {
+						if (y2 < 1 || y2 > 7) continue;
+						if (x2 == x1 && y2 == y1) continue;
+						if (game.get(x2, y2) != 0) continue;
+						board nxt = game;
+						nxt.apply_move(x1, y1, x2, y2, turn);
+						int res = dfs(nxt, turn, dep + 1, opt_move);
+						if (ret < res) {
+							ret = res;
+							if (dep == 0) opt_move = tuple(x1, y1, x2, y2);
+						}
+					}
+				}
+			}
+		}
+		return ret;
+	}
+	else {
+		int ret = 1 << 30;
+		for (int x1 = 1; x1 <= 7; x1++) {
+			for (int y1 = 1; y1 <= 7; y1++) {
+				if (game.get(x1, y1) != (turn ^ 3)) continue;
+				for (int x2 = x1 - 2; x2 <= x1 + 2; x2++) {
+					if (x2 < 1 || x2 > 7) continue;
+					for (int y2 = y1 - 2; y2 <= y1 + 2; y2++) {
+						if (y2 < 1 || y2 > 7) continue;
+						if (x2 == x1 && y2 == y1) continue;
+						if (game.get(x2, y2) != 0) continue;
+						board nxt = game;
+						nxt.apply_move(x1, y1, x2, y2, turn ^ 3);
+						int res = dfs(nxt, turn, dep + 1, opt_move);
+						if (ret > res) {
+							ret = res;
+						}
+					}
+				}
+			}
+		}
+		return ret;
+	}
+}
+
+auto find_move(board game, int turn) {
+	tuple opt_move(-1, -1, -1, -1);
+	dfs(game, turn, 0, opt_move);
+	return opt_move;
+}
+```
+
+코드에서 `dfs` 함수는 현재 탐색 깊이 `dep`를 인자로 가지고 있어 탐색이 최대 깊이에 도달하거나 게임이 종료되었다면 해당 상태의 `eval` 값을 반환합니다. 그렇지 않다면 `dep`의 parity에 따라 다음 상태의 반환값의 최대, 최솟값을 구하며 두 플레이어의 최적 행동을 구합니다.
+
+### 6.2 Negamax Algorithm
+
+이때 $\min(a, b) = -\max(-b, -a)$임을 이용하면 `dep`의 parity에 따른 조건분기 없이 하나의 로직으로 Minimax Algorithm을 구현할 수 있습니다. 이를 Negamax Algorithm이라 합니다.
+
+각 state에서 두 플레이어가 모두 자신을 기준으로 하는 `eval` 함수를 최대화하려 할 때, 최댓값을 반환한다고 합시다. 이 정의를 이용하면 다음 상태의 반환값에 $-1$을 곱한 값의 최댓값을 구하며 `dep`의 parity와 관계없이 일관된 로직으로 Minimax Algorithm을 구현할 수 있습니다.
+
+구현 코드는 다음과 같습니다.
+
+```cpp
+int dfs(board game, int turn, int dep, auto& opt_move) {
+	int mask = 0;
+	for (int x = 1; x <= 7; x++) {
+		for (int y = 1; y <= 7; y++) {
+			mask |= 1 << game.get(x, y);
+		}
+	}
+	if (dep == max_depth || mask != 7) {
+		return eval(game, turn);
+	}
+	int ret = -(1 << 30);
+	for (int x1 = 1; x1 <= 7; x1++) {
+		for (int y1 = 1; y1 <= 7; y1++) {
+			if (game.get(x1, y1) != turn) continue;
+			for (int x2 = x1 - 2; x2 <= x1 + 2; x2++) {
+				if (x2 < 1 || x2 > 7) continue;
+				for (int y2 = y1 - 2; y2 <= y1 + 2; y2++) {
+					if (y2 < 1 || y2 > 7) continue;
+					if (x2 == x1 && y2 == y1) continue;
+					if (game.get(x2, y2) != 0) continue;
+					board nxt = game;
+					nxt.apply_move(x1, y1, x2, y2, turn);
+					int res = -dfs(nxt, turn ^ 3, dep + 1, opt_move);
+					if (ret < res) {
+						ret = res;
+						if (dep == 0) opt_move = tuple(x1, y1, x2, y2);
+					}
+				}
+			}
+		}
+	}
+	return ret;
+}
+```
+
+마찬가지로 랜덤, 그리디 정책과 Minimax Algorithm을 이용한 정책을 SPRT를 이용해 비교해보면 개선이 되었음을 알 수 있습니다.
 
 ## 7. Alpha-Beta Prunning
 
