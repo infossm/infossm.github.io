@@ -87,26 +87,47 @@ ATAXX는 $7 \times 7$ 보드에서 진행되는 $2$인 턴제 게임입니다.
 #include <bits/stdc++.h>
 using namespace std;
 
-int board[8][8];
-int turn;
+struct board {
+	board() : v{} {
+		v[1][1] = v[7][7] = 1;
+		v[1][7] = v[7][1] = 2;
+	}
+	void apply_move(int x1, int y1, int x2, int y2, int turn) {
+		if (x1 == -1 && y1 == -1 && x2 == -1 && y2 == -1) return;
+		int d = max(abs(x2 - x1), abs(y2 - y1));
+		if (d == 2) v[x1][y1] = 0;
+		v[x2][y2] = turn;
+		for (int x = x2 - 1; x <= x2 + 1; x++) {
+			for (int y = y2 - 1; y <= y2 + 1; y++) {
+				if (x < 1 || x > 7 || y < 1 || y > 7) continue;
+				if (v[x][y] == (turn ^ 3)) v[x][y] = turn;
+			}
+		}
+	}
+	int get(int x, int y) const {
+		return v[x][y];
+	}
+private:
+	int v[8][8];
+};
 
 int gen_rand(int l, int r) {
 	static mt19937 rd(42);
 	return uniform_int_distribution(l, r)(rd);
 }
 
-auto find_move() {
+auto find_move(board game, int turn) {
 	tuple ret(-1, -1, -1, -1);
 	int cnt = 0;
 	for (int x1 = 1; x1 <= 7; x1++) {
 		for (int y1 = 1; y1 <= 7; y1++) {
-			if (board[x1][y1] != turn) continue;
+			if (game.get(x1, y1) != turn) continue;
 			for (int x2 = x1 - 2; x2 <= x1 + 2; x2++) {
 				if (x2 < 1 || x2 > 7) continue;
 				for (int y2 = y1 - 2; y2 <= y1 + 2; y2++) {
 					if (y2 < 1 || y2 > 7) continue;
 					if (x2 == x1 && y2 == y1) continue;
-					if (board[x2][y2] != 0) continue;
+					if (game.get(x2, y2) != 0) continue;
 					if (gen_rand(1, ++cnt) == 1) ret = tuple(x1, y1, x2, y2);
 				}
 			}
@@ -115,22 +136,9 @@ auto find_move() {
 	return ret;
 }
 
-void apply_move(int x1, int y1, int x2, int y2, int turn) {
-	if (x1 == -1 && y1 == -1 && x2 == -1 && y2 == -1) return;
-	int d = max(abs(x2 - x1), abs(y2 - y1));
-	if (d == 2) board[x1][y1] = 0;
-	board[x2][y2] = turn;
-	for (int x = x2 - 1; x <= x2 + 1; x++) {
-		for (int y = y2 - 1; y <= y2 + 1; y++) {
-			if (x < 1 || x > 7 || y < 1 || y > 7) continue;
-			if (board[x][y] == (turn ^ 3)) board[x][y] = turn;
-		}
-	}
-}
-
 int main() {
-	board[1][1] = board[7][7] = 1;
-	board[1][7] = board[7][1] = 2;
+	board game;
+	int turn;
 	while (1) {
 		string s; getline(cin, s);
 		istringstream in(s);
@@ -142,14 +150,14 @@ int main() {
 		}
 		else if (cmd == "TURN") {
 			int t1, t2; in >> t1 >> t2;
-			auto [x1, y1, x2, y2] = find_move();
-			apply_move(x1, y1, x2, y2, turn);
+			auto [x1, y1, x2, y2] = find_move(game, turn);
+			game.apply_move(x1, y1, x2, y2, turn);
 			cout << "MOVE " << x1 << ' ' << y1 << ' ' << x2 << ' ' << y2 << endl;
 		}
 		else if (cmd == "OPP") {
 			int x1, y1, x2, y2; in >> x1 >> y1 >> x2 >> y2;
 			int t2; in >> t2;
-			apply_move(x1, y1, x2, y2, turn ^ 3);
+			game.apply_move(x1, y1, x2, y2, turn ^ 3);
 		}
 		else if (cmd == "FINISH") {
 			break;
@@ -169,11 +177,67 @@ int main() {
 
 ## 4. Greedy Agent
 
-~
+다음으로 `find_move` 함수에서 평가 함수를 이용해 $(x_1, y_1, x_2, y_2)$ 중 평가값이 최대인 행동을 그리디하게 고르는 정책을 알아보겠습니다.
+
+```cpp
+int eval(board game, int turn) {
+	int ret = 0;
+	for (int i = 1; i <= 7; i++) {
+		for (int j = 1; j <= 7; j++) {
+			int val = game.get(i, j);
+			if (val == turn) ret++;
+			if (val == (turn ^ 3)) ret--;
+		}
+	}
+	return ret;
+}
+
+auto find_move(board game, int turn) {
+	tuple ret(-1, -1, -1, -1);
+	int opt = -(1 << 30);
+	for (int x1 = 1; x1 <= 7; x1++) {
+		for (int y1 = 1; y1 <= 7; y1++) {
+			if (game.get(x1, y1) != turn) continue;
+			for (int x2 = x1 - 2; x2 <= x1 + 2; x2++) {
+				if (x2 < 1 || x2 > 7) continue;
+				for (int y2 = y1 - 2; y2 <= y1 + 2; y2++) {
+					if (y2 < 1 || y2 > 7) continue;
+					if (x2 == x1 && y2 == y1) continue;
+					if (game.get(x2, y2) != 0) continue;
+					board nxt = game;
+					nxt.apply_move(x1, y1, x2, y2, turn);
+					int val = eval(nxt, turn);
+					if (opt < val) {
+						ret = tuple(x1, y1, x2, y2);
+						opt = val;
+					}
+				}
+			}
+		}
+	}
+	return ret;
+}
+```
+
+코드는 랜덤 정책에서 `eval` 함수를 새로 구현한 뒤 `find_move` 함수를 이에 맞춰 수정해주면 구현할 수 있습니다.
+
+`eval` 함수는 `game`과 `turn` 인자를 받아 현재 보드의 상태가 `game`일 때 `turn`에 해당하는 플레이어가 유리한 정도를 나타내는 값을 반환합니다.
+
+이를 구현하는 방법은 여러가지가 있습니다. 먼저 떠올릴 수 있는 방법은 두 플레이어가 최적으로 플레이할 때 결과가 승리라면 $1$, 무승부라면 $0$, 패배라면 $-1$을 반환하도록 하는 것입니다. 이 정의에 맞는 `eval` 함수를 구현할 수 있다면 그리디 정책은 실제로 최적의 수를 구합니다. 하지만 게임의 특성 상 game tree가 너무 커서 이 값을 실제로 구하기는 실질적으로 어렵습니다.
+
+이에 대한 대안으로는 `turn`에 해당하는 돌의 개수에서 `turn ^ 3`에 해당하는 돌의 개수를 뺀 값을 반환하도록 하는 휴리스틱 함수를 생각해볼 수 있습니다. 이는 돌 개수가 더 많다면 이길 가능성이 높다는 가정을 바탕으로 유리한 정도를 표현한 함수로, 실제로는 다음 턴에 상대가 어떤 행동을 고르는지에 따라 승패가 뒤집힐 수 있기에 정확한 모델링이 아니지만 근사적으로 `eval` 함수를 구성할 수 있다는 장점이 있습니다. 여기서는 이 방법을 사용하며, `eval` 함수를 개선하는 방법은 다음 글에서 다루겠습니다.
+
+`find_move` 함수는 `eval` 함수를 이용해 행동을 수행한 뒤의 보드의 평가값을 구하고, 이 값이 최대가 되는 행동을 반환합니다. 만약 평가값이 최대인 행동이 여러개라면 $(x_1, y_1, x_2, y_2)$가 사전순으로 최소인 행동을 반환하도록 했습니다.
+
+그리디 정책은 `eval` 함수가 게임의 유불리를 얼마나 정확히 모델링하는가에 따라 성능이 달라집니다. 하지만 돌 개수의 차이와 같은 간단한 모델링만 이용하더라도 랜덤 정책보다는 성능이 개선됨을 기대할 수 있습니다.
 
 ## 5. SPRT(Sequential Probability Ratio Test)
 
-~
+지금까지 랜덤 정책과 그리디 정책을 알아보았습니다. 이번 단락에서는 두 정책의 성능을 비교하는 통계적 기법인 SPRT(Sequential Probability Ratio Test)를 알아보겠습니다.
+
+두 정책의 성능을 비교하는 가장 간단한 방법은 여러 번 두 정책끼리 대결을 시켜보는 것입니다. 예를 들어 $100$번 매칭을 돌렸는데 첫 번째 정책이 $20$번, 두 번째 정책이 $80$번 승리했다면 두 번째 정책이 첫 번째 정책보다 더 우수하다고 판단할 수 있습니다. 하지만 이 방법은 두 정책의 실제 승률을 근사적으로 정확하게 구하기 위해선 많은 시행 횟수가 필요하고, 종료 시점 또한 명확히 정하기 어렵다는 단점이 있습니다.
+
+이를 보완하기 위해 일반적으로 사용하는 방법이 SPRT 기법입니다.
 
 ## 6. Minimax Algorithm
 
