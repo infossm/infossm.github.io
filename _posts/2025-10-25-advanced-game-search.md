@@ -321,11 +321,10 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 			mask |= 1 << game.get(x, y);
 		}
 	}
-	if (dep == max_depth || mask != 7) {
-		return eval(game, turn);
-	}
+	if (dep == max_depth || mask != 7) return eval(game, turn);
 	if (dep % 2 == 0) {
 		int ret = -(1 << 30);
+		int flag = 0;
 		for (int x1 = 1; x1 <= 7; x1++) {
 			for (int y1 = 1; y1 <= 7; y1++) {
 				if (game.get(x1, y1) != turn) continue;
@@ -337,6 +336,7 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 						if (game.get(x2, y2) != 0) continue;
 						board nxt = game;
 						nxt.apply_move(x1, y1, x2, y2, turn);
+						flag = 1;
 						int res = dfs(nxt, turn, dep + 1, opt_move);
 						if (ret < res) {
 							ret = res;
@@ -346,10 +346,18 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 				}
 			}
 		}
+		if (flag == 0) {
+			int res = dfs(game, turn, dep + 1, opt_move);
+			if (ret < res) {
+				ret = res;
+				if (dep == 0) opt_move = tuple(-1, -1, -1, -1);
+			}
+		}
 		return ret;
 	}
 	else {
 		int ret = 1 << 30;
+		int flag = 0;
 		for (int x1 = 1; x1 <= 7; x1++) {
 			for (int y1 = 1; y1 <= 7; y1++) {
 				if (game.get(x1, y1) != (turn ^ 3)) continue;
@@ -361,12 +369,19 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 						if (game.get(x2, y2) != 0) continue;
 						board nxt = game;
 						nxt.apply_move(x1, y1, x2, y2, turn ^ 3);
+						flag = 1;
 						int res = dfs(nxt, turn, dep + 1, opt_move);
 						if (ret > res) {
 							ret = res;
 						}
 					}
 				}
+			}
+		}
+		if (flag == 0) {
+			int res = dfs(game, turn, dep + 1, opt_move);
+			if (ret > res) {
+				ret = res;
 			}
 		}
 		return ret;
@@ -381,6 +396,8 @@ auto find_move(board game, int turn) {
 ```
 
 코드에서 `dfs` 함수는 현재 탐색 깊이 `dep`를 인자로 가지고 있어 탐색이 최대 깊이에 도달하거나 게임이 종료되었다면 해당 상태의 `eval` 값을 반환합니다. 그렇지 않다면 `dep`의 parity에 따라 다음 상태의 반환값의 최대, 최솟값을 구하며 두 플레이어의 최적 행동을 구합니다.
+
+현재 상태에서 가능한 행동이 존재하지 않는다면 `flag`를 이용하여 `PASS`를 수행해야 합니다.
 
 ### 6.2 Negamax Algorithm
 
@@ -402,6 +419,7 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 		return eval(game, turn);
 	}
 	int ret = -(1 << 30);
+	int flag = 0;
 	for (int x1 = 1; x1 <= 7; x1++) {
 		for (int y1 = 1; y1 <= 7; y1++) {
 			if (game.get(x1, y1) != turn) continue;
@@ -413,6 +431,7 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 					if (game.get(x2, y2) != 0) continue;
 					board nxt = game;
 					nxt.apply_move(x1, y1, x2, y2, turn);
+					flag = 1;
 					int res = -dfs(nxt, turn ^ 3, dep + 1, opt_move);
 					if (ret < res) {
 						ret = res;
@@ -420,6 +439,13 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 					}
 				}
 			}
+		}
+	}
+	if (flag == 0) {
+		int res = -dfs(game, turn ^ 3, dep + 1, opt_move);
+		if (ret < res) {
+			ret = res;
+			if (dep == 0) opt_move = tuple(-1, -1, -1, -1);
 		}
 	}
 	return ret;
@@ -430,7 +456,172 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 
 ## 7. Alpha-Beta Prunning
 
-~
+마지막으로 Alpha-Beta Prunning 기법을 알아보겠습니다.
+
+### 7.1 Alpha-Beta Prunning
+
+6.1절의 Minimax Algorithm은 `max_depth`까지 모든 가능한 자식 노드를 탐색하기 때문에, 탐색해야 할 노드의 수가 깊이에 따라 지수적으로 증가한다는 단점이 있습니다.
+
+Alpha-Beta Pruning(알파-베타 가지치기)은 Minimax Algorithm의 결과를 그대로 유지하면서, 탐색 트리의 최종 값에 영향을 주지 않는 것이 확실한 분기를 탐색하지 않고 잘라내는 최적화 기법입니다.
+
+이 알고리즘은 $\alpha$와 $\beta$ 두 개의 변수를 이용해 탐색 범위를 관리합니다. $\alpha$는 현재 플레이어가 현재까지 탐색한 노드에서 찾은 최대 `eval` 값입니다. $\beta$는 상대 플레이어가 현재까지 탐색한 노드에서 찾은 최소 `eval` 값입니다.
+
+$\alpha$와 $\beta$를 이용한 가지치기는 현재 플레이어의 차례에서 자식 노드의 반환값 `res`가 $\beta$ 이상인 경우와 상대 플레이어의 차례에서 자식 노드의 반환값 `res`가 $\alpha$ 이하인 경우 발생합니다. 전자는 부모 상태에서 상대 플레이어가 현재 상태를 절대 고르지 않을 것이기 때문에 최적의 플레이에서 나올 수 없는 상태이고, 후자도 마찬가지로 부모 상태에서 현재 플레이어가 절대 고르지 않을 상태이니 나올 수가 없어서 가지치기를 해도 결과가 변하지 않습니다.
+
+이를 정리하면, 탐색 도중 $\alpha \ge beta$가 되는 순간 가지치기를 하며 Minimax Algorithm을 개선할 수 있습니다. 이때 Alpha-Beta Prunning을 적용한 Minimax Algorithm은 기존과 항상 같은 결과를 반환합니다.
+
+구현 코드는 다음과 같습니다.
+
+```cpp
+constexpr int max_depth = 3;
+
+int dfs(board game, int turn, int dep, int alpha, int beta, auto& opt_move) {
+	int mask = 0;
+	for (int x = 1; x <= 7; x++) {
+		for (int y = 1; y <= 7; y++) {
+			mask |= 1 << game.get(x, y);
+		}
+	}
+	if (dep == max_depth || mask != 7) {
+		return eval(game, turn);
+	}
+	if (dep % 2 == 0) {
+		int ret = -(1 << 30);
+		int flag = 0;
+		for (int x1 = 1; x1 <= 7; x1++) {
+			for (int y1 = 1; y1 <= 7; y1++) {
+				if (game.get(x1, y1) != turn) continue;
+				for (int x2 = x1 - 2; x2 <= x1 + 2; x2++) {
+					if (x2 < 1 || x2 > 7) continue;
+					for (int y2 = y1 - 2; y2 <= y1 + 2; y2++) {
+						if (y2 < 1 || y2 > 7) continue;
+						if (x2 == x1 && y2 == y1) continue;
+						if (game.get(x2, y2) != 0) continue;
+						board nxt = game;
+						nxt.apply_move(x1, y1, x2, y2, turn);
+						flag = 1;
+						int res = dfs(nxt, turn, dep + 1, alpha, beta, opt_move);
+						if (alpha < res) alpha = res;
+						if (alpha >= beta) return alpha;
+						if (ret < res) {
+							ret = res;
+							if (dep == 0) opt_move = tuple(x1, y1, x2, y2);
+						}
+					}
+				}
+			}
+		}
+		if (flag == 0) {
+			int res = dfs(game, turn, dep + 1, alpha, beta, opt_move);
+			if (ret < res) {
+				ret = res;
+				if (dep == 0) opt_move = tuple(-1, -1, -1, -1);
+			}
+		}
+		return ret;
+	}
+	else {
+		int ret = 1 << 30;
+		int flag = 0;
+		for (int x1 = 1; x1 <= 7; x1++) {
+			for (int y1 = 1; y1 <= 7; y1++) {
+				if (game.get(x1, y1) != (turn ^ 3)) continue;
+				for (int x2 = x1 - 2; x2 <= x1 + 2; x2++) {
+					if (x2 < 1 || x2 > 7) continue;
+					for (int y2 = y1 - 2; y2 <= y1 + 2; y2++) {
+						if (y2 < 1 || y2 > 7) continue;
+						if (x2 == x1 && y2 == y1) continue;
+						if (game.get(x2, y2) != 0) continue;
+						board nxt = game;
+						nxt.apply_move(x1, y1, x2, y2, turn ^ 3);
+						flag = 1;
+						int res = dfs(nxt, turn, dep + 1, alpha, beta, opt_move);
+						if (beta > res) beta = res;
+						if (alpha >= beta) return beta;
+						if (ret > res) {
+							ret = res;
+						}
+					}
+				}
+			}
+		}
+		if (flag == 0) {
+			int res = dfs(game, turn, dep + 1, alpha, beta, opt_move);
+			if (ret > res) {
+				ret = res;
+			}
+		}
+		return ret;
+	}
+}
+
+auto find_move(board game, int turn) {
+	tuple opt_move(-1, -1, -1, -1);
+	dfs(game, turn, 0, -(1 << 30), 1 << 30, opt_move);
+	return opt_move;
+}
+```
+
+`find_move` 함수는 `dfs`를 호출할 때 $\alpha$를 음의 무한대를 의미하는 `-(1 << 30)`, $\beta$를 양의 무한대를 의미하는 `1 << 30`으로 설정하여 탐색을 시작합니다.
+
+### 7.2 Negamax-Style Alpha-Beta Prunning
+
+6.2절에서 Minimax Algorithm을 Negamax Algorithm으로 변환하여 코드를 간소화했듯이, 7.1절의 Alpha-Beta Pruning 또한 Negamax 스타일로 구현할 수 있습니다.
+
+아이디어는 6.2절과 동일하게 모든 노드에서 `eval` 값을 최대화하려고 시도하되, 자식 노드의 반환값에 $-1$을 곱하여 부호를 뒤집은 뒤 최댓값을 구하는 것입니다.
+
+구현 코드는 다음과 같습니다.
+
+```cpp
+int dfs(board game, int turn, int dep, int alpha, int beta, auto& opt_move) {
+	int mask = 0;
+	for (int x = 1; x <= 7; x++) {
+		for (int y = 1; y <= 7; y++) {
+			mask |= 1 << game.get(x, y);
+		}
+	}
+	if (dep == max_depth || mask != 7) {
+		return eval(game, turn);
+	}
+	int ret = -(1 << 30);
+	int flag = 0;
+	for (int x1 = 1; x1 <= 7; x1++) {
+		for (int y1 = 1; y1 <= 7; y1++) {
+			if (game.get(x1, y1) != turn) continue;
+			for (int x2 = x1 - 2; x2 <= x1 + 2; x2++) {
+				if (x2 < 1 || x2 > 7) continue;
+				for (int y2 = y1 - 2; y2 <= y1 + 2; y2++) {
+					if (y2 < 1 || y2 > 7) continue;
+					if (x2 == x1 && y2 == y1) continue;
+					if (game.get(x2, y2) != 0) continue;
+					board nxt = game;
+					nxt.apply_move(x1, y1, x2, y2, turn);
+					flag = 1;
+					int res = -dfs(nxt, turn ^ 3, dep + 1, -beta, -alpha, opt_move);
+					if (alpha < res) alpha = res;
+					if (alpha >= beta) return alpha;
+					if (ret < res) {
+						ret = res;
+						if (dep == 0) opt_move = tuple(x1, y1, x2, y2);
+					}
+				}
+			}
+		}
+	}
+	if (flag == 0) {
+		int res = -dfs(game, turn ^ 3, dep + 1, -beta, -alpha, opt_move);
+		if (ret < res) {
+			ret = res;
+			if (dep == 0) opt_move = tuple(-1, -1, -1, -1);
+		}
+	}
+	return ret;
+}
+```
+
+다음 상태의 반환값을 재귀적으로 구할 때 `-dfs(nxt, turn ^ 3, dep + 1, -beta, -alpha, opt_move)`와 같이 `alpha`, `beta`의 인자로 $-\beta$와 $\alpha$를 이용함에 주의해야 합니다.
+
+Alpha-Beta Prunning은 Minimax Algorithm의 결과를 바꾸지 않으면서 실행 시간만 단축시켜주기 때문에 `max_depth`를 바꾸지 않은 위의 코드는 기존 Minimax Algorithm을 이용한 정책과 동일한 성능을 보입니다. 이때 시간 제한에 맞춰서 `max_depth`를 늘리는 경우 Alpha-Beta Prunning을 이용한 코드는 `max_depth`를 더 크게 설정할 수 있다는 장점이 있습니다.
 
 ## 8. Summary
 
