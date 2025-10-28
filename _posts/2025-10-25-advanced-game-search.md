@@ -60,7 +60,7 @@ ATAXX는 $7 \times 7$ 보드에서 진행되는 $2$인 턴제 게임입니다.
 
 여기까지가 ATAXX 게임의 룰입니다. $400$턴을 초과하면 게임을 종료한다는 규칙은 게임이 무한히 길어지는 걸 방지하기 위해 임의로 추가했습니다. 다른 플랫폼에서는 $3$회 동형, $50$수 규칙 등을 채택할 수 있음에 주의해주세요.
 
-note. 해당 게임은 [링크](https://alphano.co.kr/problem/1/play)에서 플레이해볼 수 있습니다.
+note. 해당 게임은 [여기](https://alphano.co.kr/problem/1/play)에서 플레이해볼 수 있습니다.
 
 ### 2.2 입출력 형식
 
@@ -691,6 +691,8 @@ Alpha-Beta Pruning은 Minimax Algorithm의 결과를 바꾸지 않으면서 실�
 - Alpha-Beta Pruning: 마지막으로, Minimax/Negamax 알고리즘이 탐색 트리의 최종 결과에 영향을 주지 않는 불필요한 분기를 탐색하는 비효율을 제거하는 Alpha-Beta Pruning(알파-베타 가지치기) 기법을 적용했습니다. 이를 이용하면 동일한 시간 내에 더 깊은 깊이를 탐색할 수 있습니다.
 
 지금까지 다룬 기법들은 고전적이면서도 여전히 강력한 게임 탐색의 근간을 이룹니다.이어지는 글에서는 MCTS(Monte Carlo Tree Search)와 같은 현대적인 탐색 기법을 알아보고, 신경망을 이용한 평가 함수(NNUE) 및 다양한 탐색 최적화 방법들을 살펴보겠습니다.
+
+note. 이번 글에서 다룬 코드들은 [여기](https://alphano.co.kr/problem/1)에서 테스트해볼 수 있습니다.
 
 ## References
 
