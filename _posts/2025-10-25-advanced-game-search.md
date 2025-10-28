@@ -291,9 +291,22 @@ $$S_n = \displaystyle\sum_{i=1}^n l_i = W_n \log \frac{p(W | H_1)}{p(W | H_0)} +
 
 일반적으로 SPRT를 이용할 때는 $\alpha = \beta = 0.05$를 사용합니다.
 
-이를 이용해 랜덤 정책과 그리디 정책을 비교해보면 그리디 정책이 랜덤 정책보다 우수함을 보일 수 있습니다.
-
 note. 수식의 수학적 유도는 [이 글](https://en.wikipedia.org/wiki/Sequential_probability_ratio_test)과 [이 글](https://mattlapa.com/sprt/)을 참고해주세요.
+
+```
+Agent 1 (H1): test/greedy
+Agent 2 (H0): test/random
+Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
+LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
+LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
+
+--- SPRT Finished ---
+Total: 23, WLD: 23/0/0, LLR: 3.073 [-2.944, 2.944]
+Final LLR: 3.073
+Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
+```
+
+이를 이용해 랜덤 정책과 그리디 정책을 비교해보면 그리디 정책이 랜덤 정책보다 우수함을 보일 수 있습니다.
 
 ## 6. Minimax Algorithm
 
@@ -452,7 +465,37 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 }
 ```
 
+Negamax Algorithm을 이용한 코드는 Minimax Algorithm과 항상 동일한 결과를 반환합니다.
+
+```
+Agent 1 (H1): test/minimax
+Agent 2 (H0): test/greedy
+Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
+LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
+LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
+
+--- SPRT Finished ---
+Total: 23, WLD: 23/0/0, LLR: 3.073 [-2.944, 2.944]
+Final LLR: 3.073
+Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
+```
+
 마찬가지로 랜덤, 그리디 정책과 Minimax Algorithm을 이용한 정책을 SPRT를 이용해 비교해보면 개선이 되었음을 알 수 있습니다.
+
+```
+Agent 1 (H1): test/minimax
+Agent 2 (H0): test/negamax
+Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
+LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
+LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
+
+--- SPRT Finished ---
+Total: 286, WLD: 143/143/0, LLR: -2.951 [-2.944, 2.944]
+Final LLR: -2.951
+Result: Accept H0. Agent 1 is likely not better (Elo <= 0.0).
+```
+
+Minimax Algorithm과 Negamax Algorithm을 비교한 결과는 위와 같습니다. 두 코드는 정확히 같은 결과를 반환하며 SPRT에서 결과를 구할 때 선후공을 번갈아 진행하도록 하였기에 두 코드는 모두 $143$승 $143$패 $0$무로 같은 전적을 가집니다.
 
 ## 7. Alpha-Beta Pruning
 
@@ -620,6 +663,19 @@ int dfs(board game, int turn, int dep, int alpha, int beta, auto& opt_move) {
 ```
 
 다음 상태의 반환값을 재귀적으로 구할 때 `-dfs(nxt, turn ^ 3, dep + 1, -beta, -alpha, opt_move)`와 같이 `alpha`, `beta`의 인자로 $-\beta$와 $-\alpha$를 이용함에 주의해야 합니다.
+
+```
+Agent 1 (H1): test/abprun
+Agent 2 (H0): test/minimax
+Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
+LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
+LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
+
+--- SPRT Finished ---
+Total: 286, WLD: 143/143/0, LLR: -2.951 [-2.944, 2.944]
+Final LLR: -2.951
+Result: Accept H0. Agent 1 is likely not better (Elo <= 0.0).
+```
 
 Alpha-Beta Pruning은 Minimax Algorithm의 결과를 바꾸지 않으면서 실행 시간만 단축시켜주기 때문에 `max_depth`를 바꾸지 않은 위의 코드는 기존 Minimax Algorithm을 이용한 정책과 동일한 성능을 보입니다. 이때 시간 제한에 맞춰서 `max_depth`를 늘리는 경우 Alpha-Beta Pruning을 이용한 코드는 `max_depth`를 더 크게 설정할 수 있다는 장점이 있습니다.
 
