@@ -468,7 +468,7 @@ Alpha-Beta Pruning(알파-베타 가지치기)은 Minimax Algorithm의 결과를
 
 $\alpha$와 $\beta$를 이용한 가지치기는 현재 플레이어의 차례에서 자식 노드의 반환값 `res`가 $\beta$ 이상인 경우와 상대 플레이어의 차례에서 자식 노드의 반환값 `res`가 $\alpha$ 이하인 경우 발생합니다. 전자는 부모 상태에서 상대 플레이어가 현재 상태를 절대 고르지 않을 것이기 때문에 최적의 플레이에서 나올 수 없는 상태이고, 후자도 마찬가지로 부모 상태에서 현재 플레이어가 절대 고르지 않을 상태이니 나올 수가 없어서 가지치기를 해도 결과가 변하지 않습니다.
 
-이를 정리하면, 탐색 도중 $\alpha \ge beta$가 되는 순간 가지치기를 하며 Minimax Algorithm을 개선할 수 있습니다. 이때 Alpha-Beta Pruning을 적용한 Minimax Algorithm은 기존과 항상 같은 결과를 반환합니다.
+이를 정리하면, 탐색 도중 $\alpha \ge \beta$가 되는 순간 가지치기를 하며 Minimax Algorithm을 개선할 수 있습니다. 이때 Alpha-Beta Pruning을 적용한 Minimax Algorithm은 기존과 항상 같은 결과를 반환합니다.
 
 구현 코드는 다음과 같습니다.
 
