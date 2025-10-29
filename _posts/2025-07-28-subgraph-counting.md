@@ -41,7 +41,7 @@ $$p_0 = u,\;p_k = v,\;(p_i, p_{i+1}) \in E(G)\;(\forall 0 \le i < k)$$
 
 $$N_G(u) = \{ v \mid (u, v) \in E(G) \}$$
 
-로 정의하며, 이로부터 정점 $u$의 차수 $\deg_G(u) = \lvert N_G(u)\rvert$를 정의할 수 있습니다.
+로 정의하며, 이로부터 정점 $u$의 차수 $\text{deg}_G(u) = \lvert N_G(u)\rvert$를 정의할 수 있습니다.
 
 ### 2.2 Graph Isomorphism
 
@@ -100,7 +100,7 @@ $H$가 $C_3, C_4, S_k$ 등의 그래프인 경우에는 subgraph counting 문제
 
 무방향 그래프 $G$의 degeneracy $d(G)$는 다음과 같이 정의됩니다.
 
-$$d(G) = \max_{H \subseteq G}\min_{v \in V(H)} \deg_H(v)$$
+$$d(G) = \max_{H \subseteq G}\min_{v \in V(H)} \text{deg}_H(v)$$
 
 정의에 의해 $G$의 임의의 subgraph $H$에는 항상 차수가 $d(G)$ 이하인 정점이 존재합니다.
 
@@ -122,32 +122,23 @@ degeneracy ordering은 그래프 $G$에서 차수가 최소인 정점을 제거�
 
 3. 반복이 끝난 뒤 $L = [v_0, v_1, \cdots, v_{n-1}]$를 얻는다.
 
-이때 degeneracy ordering은 $G_i \subseteq G$에서 
+이때 degeneracy ordering은 다음 성질을 만족합니다.
 
-$$\max_i \deg_{G_i}(v_i) \le d(G)$$
+1. $G_i \subseteq G$에서 $\displaystyle \max_i \text{deg}_{G_i}(v_i) \le d(G)$가 성립한다.
 
-가 성립합니다.
+2. 임의의 $H \subseteq G$에 대해 $v_i \in V(H)$인 가장 빠른 $v_i$를 구하면 $H \subseteq G_i$에서 $\text{deg}_H(v_i) \le \text{deg}_{G_i}(v_i)$이니, $\displaystyle\min_{u \in V(H)} \text{deg}_H(u) \le \text{deg}_{G_i}(v_i)$이고 $d(G) \le \displaystyle \max_i \text{deg}_{G_i}(v_i)$가 성립한다.
 
-또한 임의의 $H \subseteq G$에 대해, 첫 번째로 등장하는 $v_i \in V(H)$에 대하여
-
-$$
-\min_{u\in V(H)}\deg_H(u)\le\deg_H(v_i)\le\deg_{G_i}(v_i) \\
-\Rightarrow d(G)\le\max_i\deg_{G_i}(v_i)
-$$
-
-가 성립합니다.
-
-따라서 $\max_i \deg_{G_i}(v_i) = d(G)$이고, degeneracy ordering을 이용하면 제거되는 정점의 차수의 최댓값으로 degeneracy를 구할 수 있습니다.
+따라서 $\max_i \text{deg}_{G_i}(v_i) = d(G)$이고, degeneracy ordering을 이용하면 제거되는 정점의 차수의 최댓값으로 degeneracy를 구할 수 있습니다.
 
 ### 3.3 Property
 
 그래프 $G$의 degeneracy $d(G)$를 $k$라 하면, 어떤 $H \subseteq G$가 존재해서
 
-$$k = \min_{v \in V(H)}\deg_H(v)$$
+$$k = \min_{v \in V(H)}\text{deg}_H(v)$$
 
 여야 합니다. 이때
 
-$$2\lvert E(H)\rvert = \sum_{v \in V(H)}\deg_H(v) \ge k \lvert V(H)\rvert \ge k(k+1)$$
+$$2\lvert E(H)\rvert = \sum_{v \in V(H)}\text{deg}_H(v) \ge k \lvert V(H)\rvert \ge k(k+1)$$
 
 에서 $k(k+1) \le 2\lvert E(G)\rvert$이고, 따라서 $d(G) = \mathcal{O}(\sqrt{\lvert E(G)\rvert})$입니다.
 
@@ -194,22 +185,11 @@ subgraph counting 문제에서 패턴 그래프 $H$의 정점 개수를 $k$라 �
 
 이번 단락에서는 $k = 3$인 두 가지 경우를 살펴보고, 다음 단락에서는 $k = 4$인 경우를 살펴보겠습니다.
 
-앞으로 다음 값은 표기의 편의를 위해 별 다른 언급 없이 사용하겠습니다.
-
-$$
-\begin{align*}
-n &= \lvert V(G)\rvert \\
-m &= \lvert E(G)\rvert \\
-k &= \lvert V(H)\rvert \\
-\deg(v) &= \deg_G(v)
-\end{align*}
-$$
-
-또한, 그래프 $G$의 degeneracy ordering $L = [v_0, v_1, \cdots, v_{n-1}]$에서 $i$번 정점이 등장하는 인덱스를 $\text{rank}(i)$로 정의해 사용하겠습니다.
+표기의 편의를 위해 앞으로 별 다른 언급 없이 $n = \lvert V(G)\rvert, m = \lvert E(G)\rvert, k = \lvert V(H)\rvert, \text{deg}(v) = \text{deg}_G(v)$를 사용하겠습니다. 또한, 그래프 $G$의 degeneracy ordering $L = [v_0, v_1, \cdots, v_{n-1}]$에서 $i$번 정점이 등장하는 인덱스를 $\text{rank}(i)$로 정의해 사용하겠습니다.
 
 ### 4.1 $P_3$ case
 
-$H = P_3$인 경우는 중심 정점 $v$를 고정한 뒤 $\binom{\deg(v)}{2}$를 계산해 더해주면 $\mathcal{O}(n + m)$에 해결할 수 있습니다.
+$H = P_3$인 경우는 중심 정점 $v$를 고정한 뒤 $\binom{\text{deg}(v)}{2}$를 계산해 더해주면 $\mathcal{O}(n + m)$에 해결할 수 있습니다.
 
 ### 4.2 $C_3$ case
 
@@ -250,27 +230,20 @@ i64 count_3_cycle(int n, const vector<vector<int>>& adj) {
 
 각 정점 $u$에 대해 degeneracy ordering에서 $u$보다 늦게 등장하는 $v$로 이어지는 $(u, v) \in E(G)$의 개수를 $\text{outdeg}(u)$라 하면, $\text{outdeg}(u) \le d(G)$가 성립합니다.
 
-$$
-\begin{align*}
-V_i &= \{ v \in V(G) \mid \text{deg}(v) \ge i \} \\
-E_i &= \{ (u, v) \in E(G) \mid u, v \in V_i \}
-\end{align*}
-$$
-
-를 정의합시다.
+$V_i = \{ v \in V(G) \mid \text{deg}(v) \ge i \}$, $E_i = \{ (u, v) \in E(G) \mid u, v \in V_i \}$를 정의합시다.
 
 다음 사실이 성립합니다.
 
 $$
 \begin{align*}
-\sum_{i=1}^{\infty}\lvert V_i\rvert &= \sum_{v\in V(G)}\deg(v) = 2m \\
+\sum_{i=1}^{\infty}\lvert V_i\rvert &= \sum_{v\in V(G)}\text{deg}(v) = 2m \\
 \lvert E_i\rvert &\le \sum_{v \in V_i}\text{outdeg}(v) \le d(G) \cdot \lvert V_i\rvert \\
 \end{align*}
 $$
 
-이때 $(u, v) \in E(G)$에 대한 $\min(\deg(u), \deg(v))$의 합은 $\sum_{i=1}^{\infty}\lvert E_i\rvert$와 같으니 $2m \cdot d(G)$ 이하입니다.
+이때 $(u, v) \in E(G)$에 대한 $\min(\text{deg}(u), \text{deg}(v))$의 합은 $\sum_{i=1}^{\infty}\lvert E_i\rvert$와 같으니 $2m \cdot d(G)$ 이하입니다.
 
-이 사실을 이용하면 degeneracy ordering을 명시적으로 구하지 않더라도 $(\deg(u), u)$가 감소하는 순서대로 $i \rightarrow j \rightarrow k$를 순회하면 같은 복잡도를 얻을 수 있습니다.
+이 사실을 이용하면 degeneracy ordering을 명시적으로 구하지 않더라도 $(\text{deg}(u), u)$가 감소하는 순서대로 $i \rightarrow j \rightarrow k$를 순회하면 같은 복잡도를 얻을 수 있습니다.
 
 구현 코드는 다음과 같습니다.
 
@@ -295,9 +268,9 @@ i64 count_3_cycle(int n, const vector<vector<int>>& adj) {
 }
 ```
 
-해당 코드는 $(i, j)$ 간선마다 $\min(\deg(u), \deg(v))$만큼의 연산을 수행하니
+해당 코드는 $(i, j)$ 간선마다 $\min(\text{deg}(u), \text{deg}(v))$만큼의 연산을 수행하니
 
-$$\mathcal{O}(\sum_{(u, v) \in E(G)}\min(\deg(u), \deg(v))) = \mathcal{O}(m \cdot d(G))$$
+$$\mathcal{O}(\sum_{(u, v) \in E(G)}\min(\text{deg}(u), \text{deg}(v))) = \mathcal{O}(m \cdot d(G))$$
 
 의 시간복잡도를 가집니다.
 
@@ -305,21 +278,21 @@ $$\mathcal{O}(\sum_{(u, v) \in E(G)}\min(\deg(u), \deg(v))) = \mathcal{O}(m \cdo
 
 ## 5. Subgraph Counting ($4$-nodes)
 
-![Fig.3](/assets/images/2025-07-28-subgraph-counting/fig2.png)
+![Fig.2](/assets/images/2025-07-28-subgraph-counting/fig2.png)
 
 $k = 4$인 경우는 $P_4, S_4, C_4$를 포함해 총 $6$가지 case가 있습니다.
 
 ### 5.1 $P_4$ case
 
-$H = P_4$인 경우는 중심 간선 $(u, v)$를 고정한 뒤 $(\deg(u) - 1) \cdot (\deg(v) - 1)$를 계산해 더한 값을 $S$, $C_3$의 개수를 $T$라 할 때 $S - 3T$를 구하면 $C_3$와 마찬가지로 $\mathcal{O}(m \cdot d(G))$에 해결할 수 있습니다.
+$H = P_4$인 경우는 중심 간선 $(u, v)$를 고정한 뒤 $(\text{deg}(u) - 1) \cdot (\text{deg}(v) - 1)$를 계산해 더한 값을 $S$, $C_3$의 개수를 $T$라 할 때 $S - 3T$를 구하면 $C_3$와 마찬가지로 $\mathcal{O}(m \cdot d(G))$에 해결할 수 있습니다.
 
 ### 5.2 $S_4$ case
 
-$H = S_4$인 경우는 중심 정점 $v$를 고정한 뒤 $\binom{\deg(v)}{3}$을 계산해 더해주면 $\mathcal{O}(n + m)$에 해결할 수 있습니다.
+$H = S_4$인 경우는 중심 정점 $v$를 고정한 뒤 $\binom{\text{deg}(v)}{3}$을 계산해 더해주면 $\mathcal{O}(n + m)$에 해결할 수 있습니다.
 
 ### 5.3 $C_4$ case
 
-$H = C_4$인 경우는 $(\deg(u), u)$가 최대인 정점 $i$를 고정한 뒤, $(\deg(u), u)$가 $i$보다 작은 두 정점 $j, k$에 대해 $i \rightarrow j \rightarrow k$ 경로를 순회하면 해결할 수 있습니다.
+$H = C_4$인 경우는 $(\text{deg}(u), u)$가 최대인 정점 $i$를 고정한 뒤, $(\text{deg}(u), u)$가 $i$보다 작은 두 정점 $j, k$에 대해 $i \rightarrow j \rightarrow k$ 경로를 순회하면 해결할 수 있습니다.
 
 구현 코드는 다음과 같습니다.
 
@@ -345,7 +318,7 @@ i64 count_4_cycle(int n, const vector<vector<int>>& adj) {
 }
 ```
 
-시간복잡도는 $(u, v) \in E(G)$마다 $\min(\deg(u), \deg(v))$의 연산을 수행하니 $\mathcal{O}(m \cdot d(G))$입니다.
+시간복잡도는 $(u, v) \in E(G)$마다 $\min(\text{deg}(u), \text{deg}(v))$의 연산을 수행하니 $\mathcal{O}(m \cdot d(G))$입니다.
 
 다음은 해당 방법으로 [BOJ 32395번](https://www.acmicpc.net/problem/32395) 문제를 해결하는 코드입니다. [(코드)](http://boj.kr/760615d1d1ca4bca82b396ca979d8ab0)
 
@@ -363,7 +336,7 @@ $H$가 diamond graph일 때  subgraph counting 문제는 $C_3$을 순회하며 �
 
 ### 5.6 $K_4$ case
 
-$H = K_4$인 경우는 $(\deg(u), u)$가 최대인 대표 정점 $u$를 고정한 뒤, $(u, v, w)$가 $C_3$을 이루는 tuple을 순회하며 $(v, w) \in E(G)$를 모아 새로운 그래프 $G'$를 구성해 $C_3$ 개수의 합을 구하면 해결할 수 있습니다.
+$H = K_4$인 경우는 $(\text{deg}(u), u)$가 최대인 대표 정점 $u$를 고정한 뒤, $(u, v, w)$가 $C_3$을 이루는 tuple을 순회하며 $(v, w) \in E(G)$를 모아 새로운 그래프 $G'$를 구성해 $C_3$ 개수의 합을 구하면 해결할 수 있습니다.
 
 풀이의 시간복잡도는 $G'$에서 $C_3$의 개수를 구하는 시간복잡도가 $\mathcal{O}(\lvert E(G')\rvert \cdot d(G'))$이고, $d(G') \le d(G)$, $\sum\lvert E(G')\rvert = \mathcal{O}(m \cdot d(G))$이니 $\mathcal{O}(m \cdot d(G)^2)$입니다. 이는 일반적인 상황에서 $d(G)$가 $\mathcal{O}(\sqrt m)$임을 생각해보면 너무 느립니다.
 
