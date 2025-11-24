@@ -48,4 +48,5 @@ $dp[i][j] = \max dp[i-1][k]\times p(b_{i,j}|a_i)\times p_t(d_{i,j})$
 특이한 점은 gps정보로부터 heading(어느 방향을 향하는지) 정보를 얻을 수 있음에도 활용하지 않는다는 것입니다. 이는 heading 데이터는 측정 사이의 시간 간격이 긴 경우 별 쓸모가 없고 오히려 정확도를 떨어뜨릴 수 있기 때문입니다. 
 저는 처음 이 논문을 보고 간결하고 우아한 접근만으로 실용적인 문제를 해결할 수 있다는 점이 감명깊었습니다. 이 포스팅을 보고 많은 분들이 geoengineering에 관심이 생기면 좋겠습니다.
 
-
+## 참고문헌
+P. Newson and J. Krumm, "Hidden Markov map matching through noise and sparseness," in Proc. 17th ACM SIGSPATIAL Int. Conf. Advances in Geographic Information Systems (ACM GIS), Seattle, WA, USA, Nov. 2009, pp. 336-343.
