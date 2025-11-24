@@ -137,6 +137,16 @@ $$= \sum_{i=1}^{d} \sum_{j=1}^{d} A_{ji} (\vert i \rangle \otimes \vert j \rangl
 
 하지만 tensor network diagram에서는 이 관계가 직관적으로 이해됩니다. 그림 5-1의 가운데 figure을 봅시다. 행렬 A를 오른쪽으로 밀어서 넘겨주면 자연스럽게 뒤집히게 되고, 선의 방향이 바뀌면서 transpose가 되는 것입니다. 즉, tensor network diagram에서는 vectorization의 두 표현이 동일하게 보이기 때문에 자연스럽게 성립하는 관계가 되는 것입니다.
 
+#### Row Vectorization
+
+Row vectorization 도 존재합니다. Row vectorization 은 행렬의 행(row)들을 차례대로 이어붙여서 하나의 열벡터로 만드는 연산입니다. 수식으로 표현하면 다음과 같습니다.
+
+$$\langle \langle A \vert = \langle \Omega \vert A \otimes I = \sum_{i=1}^{d} \langle i \vert \otimes \langle i \vert A$$
+
+Row vectorization 의 tensor network diagram 표기법은 다음과 같습니다.
+
+
+
 ## 참고문헌
 
 [1] Mele, Antonio Anna. "Introduction to Haar measure tools in quantum information: A beginner's tutorial." Quantum 8 (2024): 1340.
