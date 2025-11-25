@@ -8,9 +8,9 @@ tags: [algorithm, game-theory, problem-solving]
 
 ## 1. Introduction
 
-이번 글에서는 게임 에이전트의 가장 단순한 형태인 Random Agent부터 시작하여 Greedy, Minimax, Alpha-Beta Pruning의 핵심 원리를 다룹니다. 이후 이어지는 글에서는 Minimax 기반 에이전트의 추가적인 search pruning 기법을 알아보고, MCTS 등의 현대적인 탐색 기법과 NNUE와 같은 neural network를 이용한 평가 방법 등을 살펴보겠습니다.
+이번 글에서는 게임 에이전트의 가장 단순한 형태인 Random Agent부터 시작하여 Greedy, Minimax, Alpha-Beta Pruning의 핵심 원리를 다룹니다. 또한 에이전트의 성능을 객관적으로 평가하기 위해 SPRT(Sequential Probability Ratio Test)라는 평가 기법을 소개합니다. 이를 이용하면 통계적으로 두 에이전트 간의 실력 차이를 엄밀하게 검증할 수 있습니다.
 
-또한 에이전트의 성능을 객관적으로 평가하기 위해 SPRT(Sequential Probability Ratio Test)라는 평가 기법을 소개합니다. 이를 이용하면 통계적으로 두 에이전트 간의 실력 차이를 엄밀하게 검증할 수 있습니다.
+이후 이어지는 글에서는 Minimax의 추가적인 search pruning 기법을 알아보고, MCTS 등의 현대적인 탐색 기법과 NNUE와 같은 neural network를 이용한 평가 방법을 살펴보겠습니다.
 
 이번 글에서 소개하는 방법론은 $2$인, 제로섬, 턴제, 완전정보, 결정론적 전이를 만족하는 게임에 적용이 가능하며, 구체적인 설명을 위해서 ATAXX를 예시로 각 알고리즘을 구현해보겠습니다.
 
@@ -225,7 +225,7 @@ auto find_move(board game, int turn) {
 
 이를 구현하는 방법은 여러가지가 있습니다. 먼저 떠올릴 수 있는 방법은 두 플레이어가 최적으로 플레이할 때 결과가 승리라면 $1$, 무승부라면 $0.5$, 패배라면 $0$을 반환하도록 하는 것입니다. 이 정의에 맞는 `eval` 함수를 구현할 수 있다면 그리디 정책은 실제로 최적의 수를 구합니다. 하지만 게임의 특성 상 game tree가 너무 커서 이 값을 실제로 구하기는 실질적으로 어렵습니다.
 
-이에 대한 대안으로는 `turn`에 해당하는 돌의 개수에서 `turn ^ 3`에 해당하는 돌의 개수를 뺀 값을 반환하도록 하는 휴리스틱 함수를 생각해볼 수 있습니다. 이는 돌 개수가 더 많다면 이길 가능성이 높다는 가정을 바탕으로 유리한 정도를 표현한 함수로, 정확한 모델링이 아니지만 휴리스틱하게 적당히 `eval` 함수를 구현할 수 있다는 장점이 있습니다. 여기서는 이 방법을 사용하며, `eval` 함수를 개선하는 방법은 다음 글에서 다루겠습니다.
+이에 대한 대안으로는 `turn`에 해당하는 돌의 개수에서 `turn ^ 3`에 해당하는 돌의 개수를 뺀 값을 반환하도록 하는 휴리스틱 함수를 생각해볼 수 있습니다. 이는 돌 개수가 더 많다면 이길 가능성이 높다는 가정을 바탕으로 유리한 정도를 표현한 함수로, 정확한 모델링이 아니지만 휴리스틱하게 적당한 `eval` 함수를 구현할 수 있다는 장점이 있습니다. 여기서는 이 방법을 사용하며, `eval` 함수를 개선하는 방법은 다음 글에서 다루겠습니다.
 
 `find_move` 함수는 `eval` 함수를 이용해 행동을 수행한 뒤의 보드의 평가값을 구하고, 이 값이 최대가 되는 행동을 반환합니다. 만약 평가값이 최대인 행동이 여러 개라면 $(x_1, y_1, x_2, y_2)$가 사전순으로 최소인 행동을 반환하도록 했습니다.
 
@@ -233,7 +233,7 @@ auto find_move(board game, int turn) {
 
 ## 5. SPRT(Sequential Probability Ratio Test)
 
-지금까지 랜덤 정책과 그리디 정책을 알아보았습니다. 이번 단락에서는 두 정책의 성능을 비교하는 통계적 기법인 SPRT(Sequential Probability Ratio Test)를 알아보겠습니다.
+지금까지 랜덤 정책과 그리디 정책을 알아보았습니다. 이번 단락에서는 두 정책의 성능을 비교하는 통계적 기법인 SPRT<sup>Sequential Probability Ratio Test</sup>를 알아보겠습니다.
 
 ### 5.1 SPRT를 쓰는 이유
 
@@ -241,7 +241,7 @@ auto find_move(board game, int turn) {
 
 하지만 첫 번째 정책이 $51$번, 두 번째 정책이 $49$번 승리한 상황을 생각해봅시다. 이는 첫 번째 정책이 더 좋아서 나온 결과일 수도 있고, 둘의 성능 차이가 없지만 random walking의 결과로 승패가 갈린 것일 수도 있습니다. 따라서 정해진 횟수의 대결로 정책을 평가하는 건 두 정책의 실제 승률을 정확하게 구하기 위해서 많은 시행 횟수가 필요하고, 구한 승률이 얼마나 정확한지에 대한 정량적인 지표를 알려주지 않기에 종료 시점 또한 명확히 정하기 어렵다는 단점이 있습니다.
 
-이를 보완하기 위해 사용하는 방법이 SPRT<sup>sequential probability ratio test</sup> 기법입니다. SPRT 기법은 전체 판 수를 정해두지 않고, 판정에 필요한 충분한 결과가 모일 때까지 대결을 진행하는 방식으로 동작합니다.
+이를 보완하기 위해 사용하는 방법이 SPRT 기법입니다. SPRT 기법은 전체 판 수를 정해두지 않고, 판정에 필요한 충분한 결과가 모일 때까지 대결을 진행하는 방식으로 동작합니다.
 
 ### 5.2 Elo Rating
 
@@ -341,7 +341,7 @@ end function
 
 일반적으로 SPRT를 이용할 때는 $\alpha = \beta = 0.05$를 사용합니다.
 
-note. 알고리즘의 수학적 유도는 [이 글](https://en.wikipedia.org/wiki/Sequential_probability_ratio_test)과 [이 글](https://mattlapa.com/sprt/)을 참고해주세요.
+이를 이용해 랜덤 정책과 그리디 정책을 비교한 결과는 다음과 같습니다.
 
 ```
 Agent 1 (H1): test/greedy
@@ -356,7 +356,7 @@ Final LLR: 3.073
 Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
 ```
 
-이를 이용해 랜덤 정책과 그리디 정책을 비교해보면 그리디 정책이 랜덤 정책보다 우수함을 보일 수 있습니다.
+결과는 그리디 정책이 $23$승 $0$패 $0$무로 그리디 정책이 랜덤 정책보다 개선이 되었음을 알 수 있습니다.
 
 ## 6. Minimax Algorithm
 
@@ -376,6 +376,7 @@ Minimax Algorithm은 두 플레이어가 최선의 행동만을 한다고 가정
 
 ```cpp
 constexpr int max_depth = 3;
+constexpr int inf = 1 << 30;
 
 int dfs(board game, int turn, int dep, auto& opt_move) {
 	int mask = 0;
@@ -384,7 +385,12 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 			mask |= 1 << game.get(x, y);
 		}
 	}
-	if (dep == max_depth || mask != 7) return eval(game, turn);
+	if (mask != 7) {
+		return eval(game, turn) > 0 ? inf - dep : -(inf - dep);
+	}
+	if (dep == max_depth) {
+		return eval(game, turn);
+	}
 	if (dep % 2 == 0) {
 		int ret = -(1 << 30);
 		int flag = 0;
@@ -458,9 +464,11 @@ auto find_move(board game, int turn) {
 }
 ```
 
-코드에서 `dfs` 함수는 현재 탐색 깊이 `dep`를 인자로 가지고 있어 탐색이 최대 깊이에 도달하거나 게임이 종료되었다면 해당 상태의 `eval` 값을 반환합니다. 그렇지 않다면 `dep`의 parity에 따라 다음 상태의 반환값의 최대, 최솟값을 구하며 두 플레이어의 최적 행동을 구합니다.
+코드에서 `dfs` 함수는 `dep`의 parity에 따라 다음 상태의 반환값의 최대, 최솟값을 구하며 두 플레이어의 최적 행동을 구합니다.
 
-현재 상태에서 가능한 행동이 존재하지 않는다면 `flag`를 이용하여 `PASS`를 수행해야 합니다.
+게임이 종료되었을 때는 승패에 따라 `inf - dep` 또는 `dep - inf`를 반환해도록 해서 가능한 빠른 승리나 가능한 늦은 패배를 고르도록 합니다. 또한 `dep`이 최대 깊이에 도달했다면 해당 상태의 `eval` 값을 반환해 game tree가 커지는 걸 방지합니다.
+
+ 현재 상태에서 가능한 행동이 존재하지 않는다면 `flag`를 이용하여 `PASS`를 수행해야 합니다.
 
 ### 6.2 Negamax Algorithm
 
@@ -478,7 +486,10 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 			mask |= 1 << game.get(x, y);
 		}
 	}
-	if (dep == max_depth || mask != 7) {
+	if (mask != 7) {
+		return eval(game, turn) > 0 ? inf - dep : -(inf - dep);
+	}
+	if (dep == max_depth) {
 		return eval(game, turn);
 	}
 	int ret = -(1 << 30);
@@ -575,7 +586,10 @@ int dfs(board game, int turn, int dep, int alpha, int beta, auto& opt_move) {
 			mask |= 1 << game.get(x, y);
 		}
 	}
-	if (dep == max_depth || mask != 7) {
+	if (mask != 7) {
+		return eval(game, turn) > 0 ? inf - dep : -(inf - dep);
+	}
+	if (dep == max_depth) {
 		return eval(game, turn);
 	}
 	if (dep % 2 == 0) {
@@ -673,7 +687,10 @@ int dfs(board game, int turn, int dep, int alpha, int beta, auto& opt_move) {
 			mask |= 1 << game.get(x, y);
 		}
 	}
-	if (dep == max_depth || mask != 7) {
+	if (mask != 7) {
+		return eval(game, turn) > 0 ? inf - dep : -(inf - dep);
+	}
+	if (dep == max_depth) {
 		return eval(game, turn);
 	}
 	int ret = -(1 << 30);
