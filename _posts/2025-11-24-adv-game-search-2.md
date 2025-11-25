@@ -319,11 +319,74 @@ int main() {
 
 [/expand]
 
-baseline 코드는 이전 글에서 Depth-Limited Negamax-Style Minimax 에이전트와 동일하게 동작합니다.
+baseline 코드는 이전 글에서 Depth-Limited Negamax-Style Minimax 에이전트와 동일한 결과를 더 빠르게 구합니다.
 
 ## 3. Alpha-Beta Pruning
 
-~
+Minimax 에이전트를 개선하는 가장 대표적이면서 효과적인 방법은 이전 글에서 소개한 Alpha-Beta Pruning입니다. 이번 글에서는 baseline이 바뀌었으니, 복습 겸 다시 간단히 코드를 살펴봅시다.
+
+```cpp
+board_move ab_prun(board game, int lim) {
+	board_move opt(u16(0));
+	auto rec = [&](const auto& self, board cur, int dep, int alpha, int beta) -> int {
+		if (cur.is_finish()) {
+			return cur.eval() > 0 ? inf - dep : -(inf - dep);
+		}
+		if (dep == lim) {
+			return cur.eval();
+		}
+		if (cur.is_pass()) {
+			board nxt = cur;
+			nxt.change_turn();
+			return -self(self, nxt, dep + 1, -beta, -alpha);
+		}
+		int ret = -inf;
+		for (board_move op : cur.gen_move()) {
+			board nxt = cur;
+			nxt.apply_move(op);
+			nxt.change_turn();
+			int res = -self(self, nxt, dep + 1, -beta, -alpha);
+			if (ret < res) { ret = res; if (dep == 0) opt = op; }
+			if (alpha < res) alpha = res;
+			if (alpha >= beta) return alpha;
+		}
+		return ret;
+	};
+	rec(rec, game, 0, -inf, inf);
+	return opt;
+}
+```
+
+Negamax-Style Minimax Algorithm에서 조상 노드에서 현재 플레이어가 얻은 반환값의 최댓값을 $\alpha$, 상대 플레이어가 얻은 반환값의 최솟값을 $\beta$로 관리하면 $\alpha \ge \beta$가 되는 시점에 가지치기를 적용할 수 있었습니다.
+
+이유는 현재 반환값이 $\beta$ 이상이 된다면 조상 노드 중 $\beta$를 얻은 상대 플레이어는 현재 보고있는 노드 쪽으로 game tree를 호출하지 않을 것이기 때문입니다.
+
+이를 이용하면 Alpha-Beta Pruning을 이용해 Minimax Algorithm과 동일한 결과를 더 빠르게 구할 수 있습니다.
+
+```
+Agent 1 (H1): test/abprun
+Agent 2 (H0): test/base
+Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
+LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
+LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
+
+...
+
+agent1(O) WINS 26-23 | T89 | A1 84ms / A2 974ms
+Total: 285, WLD: 143/142/0, LLR: -2.797 [-2.944, 2.944]
+
+agent2(O) WINS 26-23 | T89 | A1 101ms / A2 758ms
+Total: 286, WLD: 143/143/0, LLR: -2.951 [-2.944, 2.944]
+
+[SPRT Finished]
+Total: 286, WLD: 143/143/0, LLR: -2.951 [-2.944, 2.944]
+Final LLR: -2.951
+Result: Accept H0. Agent 1 is likely not better (Elo <= 0.0).
+```
+
+Alpha-Beta Pruning을 사용한 코드를 SPRT를 이용해 baseline과 비교한 결과는 위와 같습니다.
+
+두 코드는 정확히 같은 결과를 반환하며 SPRT에서 결과를 구할 때 선후공을 번갈아 진행하도록 하였기에 두 코드는 모두 $143$승 $143$패 $0$무로 같은 전적을 가집니다. 이때 Pruning을 이용한 코드가 baseline보다 $7\sim10$배가량 빠르게 동작하는 걸 알 수 있습니다.
 
 ## References
 

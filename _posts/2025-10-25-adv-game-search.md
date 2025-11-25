@@ -112,7 +112,7 @@ private:
 };
 
 int gen_rand(int l, int r) {
-	static mt19937 rd(42);
+	static mt19937 rd(chrono::steady_clock::now().time_since_epoch().count());
 	return uniform_int_distribution(l, r)(rd);
 }
 
