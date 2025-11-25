@@ -16,7 +16,7 @@ tags: [algorithm, game-theory, problem-solving]
 
 ## 2. Baseline Code
 
-이번 글에서 구현할 에이전트들은 게임 트리 탐색을 이용하기 때문에 많은 수의 노드를 확인할 수록 더 좋은 move를 선택할 수 있습니다. 그러므로 제한 시간 내에 최대한 많은 노드를 확인할 수 있도록 성능을 최적화하는게 필요합니다.
+이번 글에서 구현할 에이전트들은 게임 트리 탐색을 이용하기 때문에 많은 수의 노드를 확인할 수록 더 좋은 move를 선택할 수 있습니다. 그러므로 제한 시간 내에 최대한 많은 노드를 확인할 수 있도록 성능을 최적화하는 것이 필요합니다.
 
 이를 위해 우선 move $(x_1, y_1, x_2, y_2)$를 효율적으로 표현하는 struct를 구현했습니다.
 
@@ -272,7 +272,7 @@ board_move minimax(board game, int lim) {
 	board_move opt(u16(0));
 	auto rec = [&](const auto& self, board cur, int dep) -> int {
 		if (cur.is_finish()) {
-			return cur.eval() > 0 ? inf - dep : -(inf - dep);
+			return cur.eval() > 0 ? inf - dep : -inf + dep;
 		}
 		if (dep == lim) {
 			return cur.eval();
@@ -348,7 +348,7 @@ board_move ab_prun(board game, int lim) {
 	board_move opt(u16(0));
 	auto rec = [&](const auto& self, board cur, int dep, int alpha, int beta) -> int {
 		if (cur.is_finish()) {
-			return cur.eval() > 0 ? inf - dep : -(inf - dep);
+			return cur.eval() > 0 ? inf - dep : -inf + dep;
 		}
 		if (dep == lim) {
 			return cur.eval();
@@ -420,7 +420,7 @@ pair<int, board_move> ab_prun(board game, int lim, const auto& is_timeout) {
 	auto rec = [&](const auto& self, board cur, int dep, int alpha, int beta) -> int {
 		if (is_timeout()) return 0;
 		if (cur.is_finish()) {
-			return cur.eval() > 0 ? inf - dep : -(inf - dep);
+			return cur.eval() > 0 ? inf - dep : -inf + dep;
 		}
 		if (dep == lim) {
 			return cur.eval();
@@ -449,7 +449,7 @@ pair<int, board_move> ab_prun(board game, int lim, const auto& is_timeout) {
 
 board_move find_move(board game, int t1, int t2) {
 	if (game.is_pass()) return board_move(u16(-1));
-	int timeout_ms = 100;
+	int timeout_ms = 150;
 	if (t1 - timeout_ms < 1000) timeout_ms = 10;
 	auto deadline = chrono::steady_clock::now() + chrono::milliseconds(timeout_ms);
 	auto is_timeout = [&] { return chrono::steady_clock::now() >= deadline; };
@@ -466,11 +466,11 @@ board_move find_move(board game, int t1, int t2) {
 
 구현은 `max_depth`를 $1$씩 증가시키며 수행하되, `chrono::steady_clock`을 사용하여 `timeout_ms`가 경과하면 즉시 중단하도록 설계했습니다.
 
-시간 초과로 탐색이 중단된 경우 해당 깊이의 결과는 신뢰할 수 없으므로, 이전 `max_depth`에서 구했던 해를 최종 결과로 사용합니다. 또한, `ab_prun` 함수의 반환 타입을 `pair<int, board_move>`로 변경하여 평가 점수도 함께 반환받도록 수정했습니다. 만약 반환된 점수가 `inf`나 `-inf`에 근접한 값이라면, 더 깊이 탐색하더라도 결과가 바뀌지 않으므로 즉시 반복문을 종료하여 불필요한 연산을 방지했습니다.
+시간 초과로 탐색이 중단된 경우 해당 깊이의 결과는 신뢰할 수 없으므로, 이전 `max_depth`에서 구했던 해를 최종 결과로 사용합니다. 또한, `ab_prun` 함수의 반환 타입을 `pair<int, board_move>`로 변경하여 평가 점수도 함께 반환받도록 수정했습니다. 만약 반환된 점수가 `inf`나 `-inf`에 근접한 값이라면(즉, 승패가 확정된 경우), 더 깊이 탐색하더라도 결과가 바뀌지 않으므로 즉시 반복문을 종료하여 불필요한 연산을 방지했습니다.
 
 이렇게 `max_depth`를 순차적으로 늘려주는 방식은 탐색 시간이 충분히 주어지는 경우에는 더 좋은 수를 찾을 것이고, 그렇지 않은 경우에는 제한 시간 내에서 valid한 move를 골라 시간 초과를 방지할 것입니다.
 
-코드에서 현재 턴에 사용할 시간 제한은 남은 시간이 $1\,000$ ms 이상이라면 $100$ ms로, 그렇지 않다면 $10$ ms로 설정했습니다. 이 글에 등장하는 모든 에이전트는 이와 동일한 시간 관리 전략이 적용됩니다. 시간 배분은 선택하는 move의 품질에 결정적인 영향을 미치므로, 초반, 중반, 후반부로 나누어 시간을 다르게 배분하는 등 더 정교한 전략을 도입한다면 성능을 더욱 개선할 수 있을 것입니다.
+코드에서 현재 턴에 사용할 시간 제한은 남은 시간이 $1000$ ms 이상이라면 $150$ ms로, 그렇지 않다면 $10$ ms로 설정했습니다. 이 글에 등장하는 모든 에이전트는 이와 동일한 시간 관리 전략이 적용됩니다. 시간 배분은 선택하는 move의 품질에 결정적인 영향을 미치므로, 초반, 중반, 후반부로 나누어 시간을 다르게 배분하는 등 더 정교한 전략을 도입한다면 성능을 더욱 개선할 수 있을 것입니다.
 
 ```
 Agent 1 (H1): test/idab
@@ -480,14 +480,14 @@ LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
 LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
 
 [SPRT Finished]
-Total: 29, WLD: 26/3/0, LLR: 3.011 [-2.944, 2.944]
-Final LLR: 3.011
+Total: 27, WLD: 25/2/0, LLR: 3.031 [-2.944, 2.944]
+Final LLR: 3.031
 Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
 ```
 
 Iterative Deepening을 적용한 Alpha-Beta Pruning 코드를 baseline과 비교한 결과는 위와 같습니다.
 
-Iterative Deepening 자체는 탐색하는 노드의 수를 줄여주지 않지만, 다음 장에서 다룰 Transposition Table과 결합될 때 Move Ordering을 통해 Alpha-Beta Pruning의 효율을 크게 늘리며 극적인 성능 향상을 보입니다.
+note. Iterative Deepening 자체는 탐색하는 노드의 수를 줄여주지 않지만, 다음 장에서 다룰 Transposition Table과 결합될 때 Move Ordering을 통해 Alpha-Beta Pruning의 효율을 크게 늘리며 추가적인 성능 향상을 보입니다.
 
 ## 5. Transposition Table
 
