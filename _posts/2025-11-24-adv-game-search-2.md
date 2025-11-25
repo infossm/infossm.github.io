@@ -12,11 +12,15 @@ tags: [algorithm, game-theory, problem-solving]
 
 이번 글에서는 Minimax 에이전트를 개선하는 Iterative Deepening 기법과 여러 Search Pruning 기법을 알아보겠습니다. 이는 주어진 탐색 시간을 더 효율적으로 사용하며 깊은 깊이까지 game tree를 탐색해 에이전트의 성능을 극적으로 개선합니다.
 
+이번 글에서 다룬 코드들은 [여기](https://alphano.co.kr/problem/1)에서 테스트해볼 수 있습니다.
+
 ## 2. Baseline Code
 
 이번 글에서 구현할 에이전트들은 게임 트리 탐색을 이용하기 때문에 많은 수의 노드를 확인할 수록 더 좋은 move를 선택할 수 있습니다. 그러므로 제한 시간 내에 최대한 많은 노드를 확인할 수 있도록 성능을 최적화하는게 필요합니다.
 
 이를 위해 우선 move $(x_1, y_1, x_2, y_2)$를 효율적으로 표현하는 struct를 구현했습니다.
+
+[expand Show 28 lines of code]
 
 ```cpp
 struct board_move {
@@ -49,6 +53,8 @@ struct board_move {
 };
 ```
 
+[/expand]
+
 `board_move` 자료형에서 데이터는 $16$비트 정수 자료형을 이용해 저장됩니다.
 
 처음 $6$개 비트는 $(x_1 - 1) \cdot 7 + (y_1 - 1)$을 나타내며, 다음 $6$개 비트는 $(x_2 - 1) \cdot 7 + (y_2 - 1)$을 나타냅니다. 추가로 $1$개 비트를 사용해 $\max(\lvert x_1 - x_2 \rvert, \lvert y_1 - y_2 \rvert)$가 $2$인지 여부를 저장해 이후 연산을 board에 적용할 때 jump인지 여부를 빠르게 알 수 있도록 합니다.
@@ -56,6 +62,8 @@ struct board_move {
 pass는 $-1$을 이용해 표현했습니다.
 
 다음은 보드의 상태를 저장하는 struct입니다.
+
+[expand Show 71 lines of code]
 
 ```cpp
 int gen_rand(int l, int r) {
@@ -131,6 +139,8 @@ struct board {
 };
 ```
 
+[/expand]
+
 board 자료형은 내부적으로 64비트 정수 자료형 $a$, $b$를 이용해 내가 점유한 칸과 상대가 점유한 칸을 관리합니다.
 
 세부적인 구현 사항은 다음과 같습니다.
@@ -145,6 +155,8 @@ board 자료형은 내부적으로 64비트 정수 자료형 $a$, $b$를 이용�
 `board_move`와 마찬가지로 `board` 자료형은 비트 연산을 이용해 최적화해서 구현했습니다. `is_pass`, `apply_move`, `gen_move` 함수에서 중복해서 사용하는 `bitmask`나 인덱스 집합은 `board_info`를 이용해 전처리를 한 뒤 사용했습니다.
 
 다음은 이번 글의 baseline이 될 `board_move`, `board` 자료형을 이용한 Minimax 에이전트 코드입니다.
+
+[expand Show 174 lines of code]
 
 ```cpp
 #include <bits/stdc++.h>
@@ -322,6 +334,8 @@ int main() {
 	}
 }
 ```
+
+[/expand]
 
 baseline 코드는 이전 글에서 Depth-Limited Negamax-Style Minimax 에이전트와 동일한 결과를 더 빠르게 구합니다.
 
