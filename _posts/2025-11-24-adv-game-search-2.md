@@ -377,6 +377,8 @@ board_move ab_prun(board game, int lim) {
 
 Negamax-Style Minimax Algorithm에서 조상 노드에서 현재 플레이어가 얻은 반환값의 최댓값을 $\alpha$, 상대 플레이어가 얻은 반환값의 최솟값을 $\beta$로 관리하면 $\alpha \ge \beta$가 되는 시점에 가지치기를 적용할 수 있었습니다.
 
+![Fig.1](/assets/images/2025-11-24-advanced-game-search/fig1.png)
+
 이유는 현재 반환값이 $\beta$ 이상이 된다면 조상 노드 중 $\beta$를 얻은 상대 플레이어는 현재 보고있는 노드 쪽으로 game tree를 호출하지 않을 것이기 때문입니다.
 
 이를 이용하면 Alpha-Beta Pruning을 이용해 Minimax Algorithm과 동일한 결과를 더 빠르게 구할 수 있습니다.
@@ -589,7 +591,9 @@ pair<int, board_move> ab_prun(board game, int lim, const auto& is_timeout) {
 
 코드는 전치표에서 해시값을 `tt_sz`로 나눈 나머지에 해당하는 `tt_node`를 이용해 Move Ordering을 수행합니다.
 
-이때 `tt_node.h == h` 조건을 통해 해시값이 일치하는지 확인해야 합니다. 이는 인덱스가 같더라도 실제 보드 상태가 다를 수 있기 때문입니다. 해시값까지 우연히 같을 확률은 무시할 만큼 낮다고 가정합니다. 조건을 만족하면 저장된 수를 우선 탐색하고, 탐색 루프가 종료되면 최종적으로 구한 최적해를 전치표에 기록합니다.
+이때 `tt_node.h == h` 조건을 통해 해시값이 일치하는지 확인해야 합니다. 이는 인덱스가 같더라도 실제 보드 상태가 다를 수 있기 때문입니다. 해시값까지 우연히 같을 확률은 무시할 만큼 낮기에 만약 충돌이 발생하더라도 성능에 미치는 영향은 매우 작다고 가정합니다.
+
+탐색 루프가 종료되면 최종적으로 구한 최적해를 전치표에 기록합니다.
 
 ```
 [SPRT Finished]
@@ -607,9 +611,13 @@ Final LLR: 2.948
 Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
 ```
 
-전치표와 Move Ordering을 적용한 코드와 baseline, Iterative Deepening 코드를 비교한 결과는 위와 같습니다. 이는 Move Ordering이 실제로 Alpha-Beta Pruning에서 가지치기 효율을 높여 더 깊은 깊이까지 탐색을 가능하게 한다는 걸 의미합니다.
+전치표와 Move Ordering을 적용한 코드와 baseline, Iterative Deepening 코드를 비교한 결과는 위와 같습니다.
 
-![Fig.1](/assets/images/2025-11-24-advanced-game-search/fig1.png)
+![Fig.2](/assets/images/2025-11-24-advanced-game-search/fig2.png)
+
+$150$ ms 제한에서 두 코드가 Iterative Deepening 과정에서 사용하는 최대 깊이를 그래프로 그려보면 실제로 전치표를 이용할 때가 최대 깊이가 늘어나는 걸 알 수 있습니다.
+
+이는 Move Ordering이 실제로 Alpha-Beta Pruning에서 가지치기 효율을 높여 더 깊은 깊이까지 탐색을 가능하게 한다는 걸 의미합니다.
 
 ### 5.3 TT Cutoff
 
