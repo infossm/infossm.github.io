@@ -637,7 +637,7 @@ enum tt_flag {
 
 노드의 타입은 `PV_NODE`, `CUT_NODE`, `ALL_NODE` $3$가지로 나뉩니다.
 
-`PV_NODE`는 이전에 해당 상태를 방문했을 때 구한 반환값 $x$가 초기 $\alpha$, $\beta$에 대해 $\alpha < x < \beta$를 만족했음을 의미합니다. 이는 현재 노드가 기존 값보다 좋은 값을 반환하면서 $\beta$에 의해 cutoff되지 않았은 해당 시점에서 최적의 노드였음을 의미합니다. `CUT_NODE`는 $x \ge \beta$를 만족해 cutoff된 노드를 의미합니다. 이때 $x$값은 game tree를 모두 탐색하기 전에 cutoff되었기 때문에 실제 값보다 작을 수 있습니다. 마지막으로 `ALL_NODE`는 $x \le \alpha$를 만족한 경우로 game tree를 모두 탐색했지만 더 좋은 값을 구하지 못했음을 의미합니다.
+`PV_NODE`는 이전에 해당 상태를 방문했을 때 구한 반환값 $x$가 초기 $\alpha$, $\beta$에 대해 $\alpha < x < \beta$를 만족했음을 의미합니다. 이는 현재 노드가 기존 값보다 좋은 값을 반환하면서 $\beta$에 의해 cutoff되지 않은 해당 시점에서 최적의 노드였음을 의미합니다. `CUT_NODE`는 $x \ge \beta$를 만족해 cutoff된 노드를 의미합니다. 이때 $x$값은 game tree를 모두 탐색하기 전에 cutoff되었기 때문에 실제 값보다 작을 수 있습니다. 마지막으로 `ALL_NODE`는 $x \le \alpha$를 만족한 경우로 game tree를 모두 탐색했지만 더 좋은 값을 구하지 못했음을 의미합니다.
 
 ```
 struct tt_node {
