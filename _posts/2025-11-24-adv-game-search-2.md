@@ -456,7 +456,7 @@ board_move find_move(board game, int t1, int t2) {
 		auto [val, res] = ab_prun(game, lim, is_timeout);
 		if (is_timeout()) break;
 		ret = res;
-		if (val <= -inf + 400 || inf - 400 <= val) break;
+		if (val <= -inf + 800 || inf - 800 <= val) break;
 	}
 	return ret;
 }
@@ -521,7 +521,7 @@ struct board {
 
 ### 5.2 Move Ordering
 
-전치표의 첫 번째 이점은 Move Ordering입니다.
+전치표를 이용한 첫 번째 최적화 기법은 Move Ordering입니다.
 
 Iterative Deepening의 이전 깊이나 이전 턴에서 찾은 move를 현재 탐색에서 가장 먼저 사용하도록 하면 가능한 move 중 좋은 move를 먼저 탐색할 확률이 높아집니다. 이는 Alpha-Beta Pruning 과정에서 더 큰 반환값을 빠르게 찾도록 해서 $\alpha \ge \beta$ 조건을 이용하는 pruning의 효율을 높입니다.
 
@@ -621,11 +621,139 @@ $150$ ms 제한에서 두 코드가 Iterative Deepening 과정에서 사용하�
 
 ### 5.3 TT Cutoff
 
-~
+전치표를 이용한 두 번째 최적화 기법은 TT Cutoff입니다.
 
-## 6. ~
+Move Ordering이 탐색의 순서를 최적화하여 가지치기 확률을 높여준다면, TT Cutoff는 이미 탐색한 결과를 재사용하여 탐색 자체를 생략하는 기법입니다. 만약 현재 도달한 보드 상태를 이전에 현재 깊이 이상으로 탐색한 기록이 있고, 그 결과가 현재의 $\alpha$, $\beta$ 범위 내에서 유효하다면, 저장된 값을 즉시 반환할 수 있습니다.
 
-~
+이를 구현하기 위해서는 `tt_node`에 노드의 타입 `flag`, 평가 점수 `val`, 탐색 깊이 `dep`을 추가로 저장해야 합니다.
+
+```cpp
+enum tt_flag {
+	PV_NODE,
+	CUT_NODE,
+	ALL_NODE
+};
+```
+
+노드의 타입은 `PV_NODE`, `CUT_NODE`, `ALL_NODE` $3$가지로 나뉩니다.
+
+`PV_NODE`는 이전에 해당 상태를 방문했을 때 구한 반환값 $x$가 초기 $\alpha$, $\beta$에 대해 $\alpha < x < \beta$를 만족했음을 의미합니다. 이는 현재 노드가 기존 값보다 좋은 값을 반환하면서 $\beta$에 의해 cutoff되지 않았은 해당 시점에서 최적의 노드였음을 의미합니다. `CUT_NODE`는 $x \ge \beta$를 만족해 cutoff된 노드를 의미합니다. 이때 $x$값은 game tree를 모두 탐색하기 전에 cutoff되었기 때문에 실제 값보다 작을 수 있습니다. 마지막으로 `ALL_NODE`는 $x \le \alpha$를 만족한 경우로 game tree를 모두 탐색했지만 더 좋은 값을 구하지 못했음을 의미합니다.
+
+```
+struct tt_node {
+	u64 h;
+	board_move op;
+	tt_flag flag;
+	int dep;
+	int val;
+	tt_node() : h{}, op(u16(0)), flag(PV_NODE), dep(-1), val(0) {}
+	void set_val(int x, int dep) {
+		if (x <= -inf + 800) val = x - dep;
+		else if (x >= inf - 800) val = x + dep;
+		else val = x;
+	}
+	int get_val(int dep) const {
+		if (val <= -inf + 800) return val + dep;
+		else if (val >= inf - 800) return val - dep;
+		else return val;
+	}
+} tt[tt_sz];
+```
+
+`flag`, `dep`, `val`을 추가한 `tt_node` 코드는 위와 같습니다.
+
+이때 `set_val`, `get_val`은 반환한 값이 `inf`에 가까운 값일 때 최대한 빠른 승리와 늦은 패배를 고르도록 하기 위해 정규화를 수행합니다.
+
+이를 이용해 TT Cutoff를 적용한 코드는 다음과 같습니다.
+
+```cpp
+pair<int, board_move> ab_prun(board game, int lim, const auto& is_timeout) {
+	board_move opt(u16(0));
+	auto rec = [&](const auto& self, board cur, int dep, int alpha, int beta) -> int {
+		if (is_timeout()) return 0;
+		if (cur.is_finish()) {
+			return cur.eval() > 0 ? inf - dep : -(inf - dep);
+		}
+		if (dep == lim) {
+			return cur.eval();
+		}
+		if (cur.is_pass()) {
+			board nxt = cur;
+			nxt.change_turn();
+			return -self(self, nxt, dep + 1, -beta, -alpha);
+		}
+		u64 h = cur.get_hash();
+		tt_node& tt_data = tt[h % tt_sz];
+		// TT Cutoff
+		if (dep > 0 && tt_data.h == h && tt_data.dep >= lim - dep) {
+			if (tt_data.flag == PV_NODE) return tt_data.get_val(dep);
+			if (tt_data.flag == CUT_NODE && tt_data.get_val(dep) >= beta) return tt_data.get_val(dep);
+			if (tt_data.flag == ALL_NODE && tt_data.get_val(dep) <= alpha) return tt_data.get_val(dep);
+		}
+		// Move Ordering
+		vector<board_move> cand = cur.gen_move();
+		if (tt_data.h == h) {
+			for (int i = 0; i < cand.size(); i++) {
+				if (cand[i].data != tt_data.op.data) continue;
+				swap(cand[0], cand[i]);
+				break;
+			}
+		}
+		int ret = -inf;
+		int prv_alpha = alpha;
+		board_move copt(0);
+		for (board_move op : cand) {
+			if (is_timeout()) return 0;
+			board nxt = cur;
+			nxt.apply_move(op);
+			nxt.change_turn();
+			int res = -self(self, nxt, dep + 1, -beta, -alpha);
+			if (ret < res) ret = res, copt = op;
+			if (alpha < res) alpha = res;
+			if (alpha >= beta) break;
+		}
+		if (dep == 0) opt = copt;
+		if (tt_data.h != h || tt_data.dep <= lim - dep) {
+			tt_data.h = h;
+			tt_data.op = copt;
+			tt_data.flag = ret <= prv_alpha ? ALL_NODE : ret >= beta ? CUT_NODE : PV_NODE;
+			tt_data.dep = lim - dep;
+			tt_data.set_val(ret, dep);
+		}
+		return ret;
+	};
+	int val = rec(rec, game, 0, -inf, inf);
+	return pair(val, opt);
+}
+```
+
+TT Cutoff를 적용할 때는 몇 가지 주의사항이 있습니다. 먼저, 루트 노드 `dep == 0`에서는 최적의 수를 갱신해야 하므로 Cutoff를 수행하지 않습니다. 또한, 전치표에 저장된 탐색 깊이가 현재 남은 깊이보다 얕다면 정보의 신뢰도가 낮으므로 역시 Cutoff를 적용하지 않습니다. 나머지 경우는 `flag`를 확인하며 가능하다면 TT Cutoff를 적용해 바로 이전에 구한 값을 반환합니다.
+
+또한, 전치표의 데이터 갱신 전략을 Depth-Based 방식으로 변경하였습니다. 단순히 최신 데이터로 덮어쓰는 것이 아니라, `tt_data.dep <= lim - dep` 조건이 성립할 때만 갱신하며 더 얕은 깊이의 정보로 깊은 깊이의 정보를 덮어쓰는 경우를 방지했습니다.
+
+이를 기존 코드와 비교한 결과는 다음과 같습니다.
+
+```
+[SPRT Finished]
+Agent 1 (H1): test/ttco
+Agent 2 (H0): test/base
+Total: 25, WLD: 24/1/0, LLR: 3.052 [-2.944, 2.944]
+Final LLR: 3.052
+Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
+
+[SPRT Finished]
+Agent 1 (H1): test/ttco
+Agent 2 (H0): test/ttmo
+Total: 59, WLD: 42/17/0, LLR: 2.989 [-2.944, 2.944]
+Final LLR: 2.989
+Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
+```
+
+SPRT 검증 결과, TT Cutoff를 적용한 코드는 Move Ordering만 적용한 에이전트보다 좋은 성능을 보였습니다.
+
+![Fig.3](/assets/images/2025-11-24-advanced-game-search/fig3.png)
+
+Iterative Deepening 과정에서 사용하는 깊이를 보면 중복 탐색이 줄어들어 동일한 제한 시간 내에 탐색 깊이가 크게 증가했음을 알 수 있습니다.
 
 ## References
 
@@ -634,3 +762,5 @@ $150$ ms 제한에서 두 코드가 Iterative Deepening 과정에서 사용하�
 [2] [https://www.chessprogramming.org/Transposition_Table](https://www.chessprogramming.org/Transposition_Table)
 
 [3] [https://www.dogeystamp.com/chess4/](https://www.dogeystamp.com/chess4/)
+
+[4] [https://www.chessprogramming.org/Node_Types](https://www.chessprogramming.org/Node_Types)
