@@ -337,7 +337,9 @@ int main() {
 
 [/expand]
 
-baseline 코드는 이전 글에서 Depth-Limited Negamax-Style Minimax 에이전트와 동일한 결과를 더 빠르게 구합니다.
+이상으로 깊이 제한이 $3$인 Negamax-Style의 Minimax 에이전트를 효율적으로 구현했습니다.
+
+이후 구현하는 모든 코드는 기본적으로 baseline과의 비교를 수행합니다.
 
 ## 3. Alpha-Beta Pruning
 
@@ -384,6 +386,9 @@ Negamax-Style Minimax Algorithm에서 조상 노드에서 현재 플레이어가
 이를 이용하면 Alpha-Beta Pruning을 이용해 Minimax Algorithm과 동일한 결과를 더 빠르게 구할 수 있습니다.
 
 ```
+Agent 1 (H1): test/abprun
+Agent 2 (H0): test/base
+
 ...
 
 agent2(X) WINS 27-22 | T78 | A1 104ms / A2 592ms
@@ -393,8 +398,6 @@ agent2(O) WINS 30-19 | T99 | A1 127ms / A2 1313ms
 Total: 434, WLD: 222/212/0, LLR: -3.040 [-2.944, 2.944]
 
 [SPRT Finished]
-Agent 1 (H1): test/abprun
-Agent 2 (H0): test/base
 Total: 434, WLD: 222/212/0, LLR: -3.040 [-2.944, 2.944]
 Final LLR: -3.040
 Result: Accept H0. Agent 1 is likely not better (Elo <= 0.0).
@@ -471,9 +474,10 @@ board_move find_move(board game, int t1, int t2) {
 코드에서 현재 턴에 사용할 시간 제한은 남은 시간이 $1000$ ms 이상이라면 $150$ ms로, 그렇지 않다면 $10$ ms로 설정했습니다. 이 글에 등장하는 모든 에이전트는 이와 동일한 시간 관리 전략이 적용됩니다. 시간 배분은 선택하는 move의 품질에 결정적인 영향을 미치므로, 초반, 중반, 후반부로 나누어 시간을 다르게 배분하는 등 더 정교한 전략을 도입한다면 성능을 더욱 개선할 수 있을 것입니다.
 
 ```
-[SPRT Finished]
 Agent 1 (H1): test/idab
 Agent 2 (H0): test/base
+
+[SPRT Finished]
 Total: 27, WLD: 25/2/0, LLR: 3.031 [-2.944, 2.944]
 Final LLR: 3.031
 Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
@@ -596,16 +600,20 @@ pair<int, board_move> ab_prun(board game, int lim, const auto& is_timeout) {
 탐색 루프가 종료되면 최종적으로 구한 최적해를 전치표에 기록합니다.
 
 ```
-[SPRT Finished]
 Agent 1 (H1): test/ttmo
 Agent 2 (H0): test/base
+
+[SPRT Finished]
 Total: 25, WLD: 24/1/0, LLR: 3.052 [-2.944, 2.944]
 Final LLR: 3.052
 Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
+```
 
-[SPRT Finished]
+```
 Agent 1 (H1): test/ttmo
 Agent 2 (H0): test/idab
+
+[SPRT Finished]
 Total: 63, WLD: 44/19/0, LLR: 2.948 [-2.944, 2.944]
 Final LLR: 2.948
 Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
@@ -727,33 +735,41 @@ pair<int, board_move> ab_prun(board game, int lim, const auto& is_timeout) {
 }
 ```
 
-TT Cutoff를 적용할 때는 몇 가지 주의사항이 있습니다. 먼저, 루트 노드 `dep == 0`에서는 최적의 수를 갱신해야 하므로 Cutoff를 수행하지 않습니다. 또한, 전치표에 저장된 탐색 깊이가 현재 남은 깊이보다 얕다면 정보의 신뢰도가 낮으므로 역시 Cutoff를 적용하지 않습니다. 나머지 경우는 `flag`를 확인하며 가능하다면 TT Cutoff를 적용해 바로 이전에 구한 값을 반환합니다.
+TT Cutoff를 적용할 때는 몇 가지 주의사항이 있습니다. 먼저 루트 노드 `dep == 0`에서는 최적의 수를 갱신해야 하므로 Cutoff를 수행하지 않습니다. 또한 전치표에 저장된 탐색 깊이가 현재 남은 깊이보다 얕다면 정보의 신뢰도가 낮으므로 역시 Cutoff를 적용하지 않습니다. 나머지 경우는 `flag`를 확인하며 가능하다면 TT Cutoff를 적용해 바로 이전에 구한 값을 반환합니다.
 
 또한, 전치표의 데이터 갱신 전략을 Depth-Based 방식으로 변경하였습니다. 단순히 최신 데이터로 덮어쓰는 것이 아니라, `tt_data.dep <= lim - dep` 조건이 성립할 때만 갱신하며 더 얕은 깊이의 정보로 깊은 깊이의 정보를 덮어쓰는 경우를 방지했습니다.
 
 이를 기존 코드와 비교한 결과는 다음과 같습니다.
 
 ```
-[SPRT Finished]
 Agent 1 (H1): test/ttco
 Agent 2 (H0): test/base
+
+[SPRT Finished]
 Total: 25, WLD: 24/1/0, LLR: 3.052 [-2.944, 2.944]
 Final LLR: 3.052
 Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
-
-[SPRT Finished]
-Agent 1 (H1): test/ttco
-Agent 2 (H0): test/ttmo
-Total: 59, WLD: 42/17/0, LLR: 2.989 [-2.944, 2.944]
-Final LLR: 2.989
-Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
 ```
 
-SPRT 검증 결과, TT Cutoff를 적용한 코드는 Move Ordering만 적용한 에이전트보다 좋은 성능을 보였습니다.
+```
+Agent 1 (H1): test/ttco
+Agent 2 (H0): test/ttmo
+
+...
+
+agent1(X) WINS 25-24 | T80 | A1 5434ms / A2 5553ms
+Total: 100, WLD: 55/45/0, LLR: 0.407 [-2.944, 2.944]
+
+...
+```
+
+baseline과의 비교는 Move Ordering만 적용한 코드와 비슷한 성능을 보였습니다.
+
+Move Ordering만 적용한 코드와의 비교는 $50$ elo 차이에 해당하는 유의미한 성능 개선을 보이지 않았습니다. 이는 평균적인 탐색 깊이가 $4 \sim 5$로 깊지 않아서 TT Cutoff가 줄이는 탐색 시간을 TT Cutoff를 구현하기 위해 들어가는 계산 오버헤드가 상쇄시키기 때문이라 생각됩니다.
 
 ![Fig.3](/assets/images/2025-11-24-advanced-game-search/fig3.png)
 
-Iterative Deepening 과정에서 사용하는 깊이를 보면 중복 탐색이 줄어들어 동일한 제한 시간 내에 탐색 깊이가 크게 증가했음을 알 수 있습니다.
+그래프를 보면 Move Ordering만 적용한 `ttmo.cpp` 코드와 TT Cutoff를 같이 적용한 `ttco.cpp` 코드 모두 평균적인 탐색 깊이가 $5$ 정도임을 알 수 있습니다.
 
 ## References
 
