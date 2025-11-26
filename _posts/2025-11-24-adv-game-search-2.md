@@ -382,12 +382,6 @@ Negamax-Style Minimax Algorithm에서 조상 노드에서 현재 플레이어가
 이를 이용하면 Alpha-Beta Pruning을 이용해 Minimax Algorithm과 동일한 결과를 더 빠르게 구할 수 있습니다.
 
 ```
-Agent 1 (H1): test/abprun
-Agent 2 (H0): test/base
-Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
-LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
-LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
-
 ...
 
 agent2(X) WINS 27-22 | T78 | A1 104ms / A2 592ms
@@ -397,6 +391,8 @@ agent2(O) WINS 30-19 | T99 | A1 127ms / A2 1313ms
 Total: 434, WLD: 222/212/0, LLR: -3.040 [-2.944, 2.944]
 
 [SPRT Finished]
+Agent 1 (H1): test/abprun
+Agent 2 (H0): test/base
 Total: 434, WLD: 222/212/0, LLR: -3.040 [-2.944, 2.944]
 Final LLR: -3.040
 Result: Accept H0. Agent 1 is likely not better (Elo <= 0.0).
@@ -473,13 +469,9 @@ board_move find_move(board game, int t1, int t2) {
 코드에서 현재 턴에 사용할 시간 제한은 남은 시간이 $1000$ ms 이상이라면 $150$ ms로, 그렇지 않다면 $10$ ms로 설정했습니다. 이 글에 등장하는 모든 에이전트는 이와 동일한 시간 관리 전략이 적용됩니다. 시간 배분은 선택하는 move의 품질에 결정적인 영향을 미치므로, 초반, 중반, 후반부로 나누어 시간을 다르게 배분하는 등 더 정교한 전략을 도입한다면 성능을 더욱 개선할 수 있을 것입니다.
 
 ```
+[SPRT Finished]
 Agent 1 (H1): test/idab
 Agent 2 (H0): test/base
-Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
-LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
-LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
-
-[SPRT Finished]
 Total: 27, WLD: 25/2/0, LLR: 3.031 [-2.944, 2.944]
 Final LLR: 3.031
 Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
@@ -490,6 +482,136 @@ Iterative Deepening을 적용한 Alpha-Beta Pruning 코드를 baseline과 비교
 note. Iterative Deepening 자체는 탐색하는 노드의 수를 줄여주지 않지만, 다음 장에서 다룰 Transposition Table과 결합될 때 Move Ordering을 통해 Alpha-Beta Pruning의 효율을 크게 늘리며 추가적인 성능 향상을 보입니다.
 
 ## 5. Transposition Table
+
+전치표<sup>Transposition Table</sup>은 탐색 과정에서 얻은 정보를 저장해두는 해시 테이블<sup>hash table</sup>입니다. 게임 트리 탐색을 하다 보면 서로 다른 수순을 거쳤더라도 결과적으로 동일한 보드 상태<sup>transposition</sup>에 도달하는 경우가 빈번합니다. 이때 이전 탐색 결과를 저장해두었다가 재사용하면 중복 계산을 줄이고 탐색 효율을 비약적으로 높일 수 있습니다.
+
+이 기법은 크게 두 가지 상황에서 탐색 효율을 비약적으로 높여줍니다.
+
+- Move Ordering: 이전 탐색에서 찾은 최적의 수를 현재 탐색에서도 가장 먼저 확인하도록 순서를 조정합니다. 이는 Iterative Deepening을 사용하는 Alpha-Beta Pruning 탐색의 효율을 극대화합니다.
+
+- TT Cutoff: 이전에 충분히 깊은 깊이까지 탐색해 둔 결과가 있다면 다시 계산하지 않고 그 값을 바로 반환합니다. 이는 중복 탐색을 막아 탐색 효율을 높입니다.
+
+### 5.1 Hash Function
+
+전치표를 구현하기 위해서는 우선 보드의 상태를 고유한 정수로 변환하는 해시 함수가 필요합니다.
+
+```cpp
+struct board {
+	u64 a, b;
+	u64 get_hash() const {
+		u64 x = a;
+		x ^= x << 13;
+		x ^= x >> 17;
+		x ^= x << 5;
+		x += b;
+		x ^= x << 13;
+		x ^= x >> 17;
+		x ^= x << 5;
+		return x;
+	}
+	// ...
+};
+```
+
+`get_hash`는 `board` 내부의 $a$와 $b$를 비트 연산으로 섞어 64비트 해시값을 생성하는 함수입니다.
+
+해시 함수는 계산 비용과 품질을 고려해 zobrist hashing 등의 다른 함수로 대체할 수 있습니다. 이 글에서는 해시 함수로 빠른 계산 속도와 적당한 충돌 확률을 갖는 xorshift의 변형을 사용합니다.
+
+### 5.2 Move Ordering
+
+전치표의 첫 번째 이점은 Move Ordering입니다.
+
+Iterative Deepening의 이전 깊이나 이전 턴에서 찾은 move를 현재 탐색에서 가장 먼저 사용하도록 하면 가능한 move 중 좋은 move를 먼저 탐색할 확률이 높아집니다. 이는 Alpha-Beta Pruning 과정에서 더 큰 반환값을 빠르게 찾도록 해서 $\alpha \ge \beta$ 조건을 이용하는 pruning의 효율을 높입니다.
+
+Move Ordering을 지원하기 위해서는 아래와 같이 전치표를 먼저 구성해야 합니다.
+
+```cpp
+constexpr int tt_sz = 4'000'000;
+
+struct tt_node {
+	u64 h;
+	board_move op;
+	tt_node() : h{}, op(u16(0)) {}
+} tt[tt_sz];
+```
+
+전치표는 `tt_sz`개의 `tt_node`로 구성됩니다. `tt_node`는 해당 상태의 해시값 `h`와 그 상태에서 가장 좋았던 수 `op`를 저장합니다.
+
+전치표를 이용하면 다음과 같이 Move Ordering을 구현할 수 있습니다.
+
+```cpp
+pair<int, board_move> ab_prun(board game, int lim, const auto& is_timeout) {
+	board_move opt(u16(0));
+	auto rec = [&](const auto& self, board cur, int dep, int alpha, int beta) -> int {
+		if (is_timeout()) return 0;
+		if (cur.is_finish()) {
+			return cur.eval() > 0 ? inf - dep : -(inf - dep);
+		}
+		if (dep == lim) {
+			return cur.eval();
+		}
+		if (cur.is_pass()) {
+			board nxt = cur;
+			nxt.change_turn();
+			return -self(self, nxt, dep + 1, -beta, -alpha);
+		}
+		u64 h = cur.get_hash();
+		tt_node& tt_data = tt[h % tt_sz];
+		vector<board_move> cand = cur.gen_move();
+		if (tt_data.h == h) {
+			for (int i = 0; i < cand.size(); i++) {
+				if (cand[i].data != tt_data.op.data) continue;
+				swap(cand[0], cand[i]);
+				break;
+			}
+		}
+		int ret = -inf;
+		board_move copt(0);
+		for (board_move op : cand) {
+			if (is_timeout()) return 0;
+			board nxt = cur;
+			nxt.apply_move(op);
+			nxt.change_turn();
+			int res = -self(self, nxt, dep + 1, -beta, -alpha);
+			if (ret < res) ret = res, copt = op;
+			if (alpha < res) alpha = res;
+			if (alpha >= beta) break;
+		}
+		if (dep == 0) opt = copt;
+		tt_data.h = h;
+		tt_data.op = copt;
+		return ret;
+	};
+	int val = rec(rec, game, 0, -inf, inf);
+	return pair(val, opt);
+}
+```
+
+코드는 전치표에서 해시값을 `tt_sz`로 나눈 나머지에 해당하는 `tt_node`를 이용해 Move Ordering을 수행합니다.
+
+이때 `tt_node.h == h` 조건을 통해 해시값이 일치하는지 확인해야 합니다. 이는 인덱스가 같더라도 실제 보드 상태가 다를 수 있기 때문입니다. 해시값까지 우연히 같을 확률은 무시할 만큼 낮다고 가정합니다. 조건을 만족하면 저장된 수를 우선 탐색하고, 탐색 루프가 종료되면 최종적으로 구한 최적해를 전치표에 기록합니다.
+
+```
+[SPRT Finished]
+Agent 1 (H1): test/ttmo
+Agent 2 (H0): test/base
+Total: 25, WLD: 24/1/0, LLR: 3.052 [-2.944, 2.944]
+Final LLR: 3.052
+Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
+
+[SPRT Finished]
+Agent 1 (H1): test/ttmo
+Agent 2 (H0): test/idab
+Total: 63, WLD: 44/19/0, LLR: 2.948 [-2.944, 2.944]
+Final LLR: 2.948
+Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
+```
+
+전치표와 Move Ordering을 적용한 코드와 baseline, Iterative Deepening 코드를 비교한 결과는 위와 같습니다. 이는 Move Ordering이 실제로 Alpha-Beta Pruning에서 가지치기 효율을 높여 더 깊은 깊이까지 탐색을 가능하게 한다는 걸 의미합니다.
+
+![Fig.1](/assets/images/2025-11-24-advanced-game-search/fig1.png)
+
+### 5.3 TT Cutoff
 
 ~
 
@@ -502,3 +624,5 @@ note. Iterative Deepening 자체는 탐색하는 노드의 수를 줄여주지 �
 [1] [https://www.chessprogramming.org/Iterative_Deepening](https://www.chessprogramming.org/Iterative_Deepening)
 
 [2] [https://www.chessprogramming.org/Transposition_Table](https://www.chessprogramming.org/Transposition_Table)
+
+[3] [https://www.dogeystamp.com/chess4/](https://www.dogeystamp.com/chess4/)
