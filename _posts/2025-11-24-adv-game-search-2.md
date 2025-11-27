@@ -152,7 +152,7 @@ board 자료형은 내부적으로 64비트 정수 자료형 $a$, $b$를 이용�
 - `is_finish`: $a$ 또는 $b$가 $0$이거나, 남은 빈 칸이 하나도 없다면 `true`, 아니라면 `false`를 반환합니다.
 - `eval`: 내가 점유한 칸의 개수에서 상대가 점유한 칸의 개수를 뺀 값을 반환합니다.
 - `apply_move`: `board_move` 자료형으로 move를 입력받아서 $a$, $b$에 연산을 수행합니다.
-- `gen_move`: 가능한 move의 리스트를 `vector<board_move>` 자료형으로 반환합니다. 결과는 무작위로 셔플해서 반환하며, 이는 에이전트에 랜덤성을 줘서 두 에이전트의 성능을 통계적으로 평가하기 위함입니다.
+- `gen_move`: 가능한 move의 리스트를 `vector<board_move>` 자료형으로 반환합니다. 결과는 무작위로 셔플해서 반환합니다.
 
 `board_move`와 마찬가지로 `board` 자료형은 비트 연산을 이용해 최적화해서 구현했습니다. `is_pass`, `apply_move`, `gen_move` 함수에서 중복해서 사용하는 `bitmask`나 인덱스 집합은 `board_info`를 이용해 전처리를 한 뒤 사용했습니다.
 
@@ -792,7 +792,7 @@ Move Ordering만 적용한 코드와의 비교는 $50$ elo 차이에 해당하�
 
 Alpha-Beta Pruning은 탐색 공간을 줄여주지만, 여전히 개선의 여지가 남아 있습니다. PVS<sup>Principal Variation Search</sup>는 Alpha-Beta Pruning을 더 최적화한 알고리즘입니다.
 
-PVS는 우리가 Move Ordering을 잘 수행헀다면, 첫 번째로 확인하는 수가 최선의 수(PV, Principal Variation)일 것이란 가정을 이용합니다. 만약 첫 번째 수가 실제로 최선이라면, 나머지 수들은 첫 번째 수보다 나쁘다는 것만 증명하면 됩니다.
+PVS는 우리가 Move Ordering을 잘 수행했다면, 첫 번째로 확인하는 수가 최선의 수(PV, Principal Variation)일 것이란 가정을 이용합니다. 만약 첫 번째 수가 실제로 최선이라면, 나머지 수들은 첫 번째 수보다 나쁘다는 것만 증명하면 됩니다.
 
 이를 위해 PVS는 첫 번째가 아닌 수에서 Null Window라고 불리는 아주 좁은 탐색 범위를 사용합니다. 일반적인 탐색이 $(\alpha, \beta)$ 범위를 사용한다면, Null Window는 $(\alpha, \alpha+1)$ 범위를 사용합니다. 이는 $\beta$ 대신 더 작은 값을 이용해 추가적인 Cutoff가 가능하도록 합니다.
 
