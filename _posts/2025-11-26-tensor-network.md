@@ -122,7 +122,12 @@ $$ \textbf{그림 5.} \vert \Omega \rangle 의 \text{tensor diagram 표기법} $
 <p align="center"><img src="/assets/images/red1108/tn_5_1.png" width="70%"></p>
 <center><b>그림 5-1.</b> 행렬 A의 vectorization의 tensor diagram 표기법</center><br/>
 
-복잡해 보여도, 분해해 보면 간단합니다. Vectorization 연산은 $A \otimes I$ 에 $\vert \Omega \rangle$ 를 곱하는 연산이므로,
+복잡해 보여도, $A^T$ 의 성질을 이용해서 다시 그려보면 직관적으로 이해할 수 있습니다.
+
+<p align="center"><img src="/assets/images/red1108/tn_5_1_1.png" width="70%"></p>
+<center><b>그림 5-1-1.</b> 행렬 A의 vectorization 다시보기</center><br/>
+
+이제 수식적으로 이해해 봅시다. 분해해 보면 간단합니다. Vectorization 연산은 $A \otimes I$ 에 $\vert \Omega \rangle$ 를 곱하는 연산이므로,
 
 <p align="center"><img src="/assets/images/red1108/tn_5_2.png" width="20%"></p>
 <center><b>그림 5-2.</b> 행렬 A x I의 tensor diagram 표기법</center><br/>
@@ -135,7 +140,12 @@ $$I \otimes A^T \vert \Omega \rangle = I \otimes A^T \sum_{i=1}^{d} \vert i \ran
 $$ = \sum_{i=1}^{d} \vert i \rangle \otimes A^T \vert i \rangle = \sum_{i=1}^{d} \vert i \rangle \otimes (\sum_{j=1}^{d} A_{ji} \vert j \rangle)$$
 $$= \sum_{i=1}^{d} \sum_{j=1}^{d} A_{ji} (\vert i \rangle \otimes \vert j \rangle) = \vert A \rangle\rangle$$
 
-하지만 tensor network diagram에서는 이 관계가 직관적으로 이해됩니다. 그림 5-1의 가운데 figure을 봅시다. 행렬 A를 오른쪽으로 밀어서 넘겨주면 자연스럽게 뒤집히게 되고, 선의 방향이 바뀌면서 transpose가 되는 것입니다. 즉, tensor network diagram에서는 vectorization의 두 표현이 동일하게 보이기 때문에 자연스럽게 성립하는 관계가 되는 것입니다.
+하지만 tensor network diagram에서는 이 관계가 직관적으로 이해됩니다. 그림 5-1의 가운데 figure을 봅시다. 행렬 A를 오른쪽으로 밀어서 넘겨주면 자연스럽게 뒤집히게 되고, 선의 방향이 바뀌면서 transpose가 되는 것입니다. 즉, tensor network diagram에서는 vectorization의 두 표현이 동일하게 보이기 때문에 자연스럽게 성립하는 관계가 되는 것입니다. 이 옮김을 자연스럽게 해보면 ABC rule 을 얻습니다.
+
+<p align="center"><img src="/assets/images/red1108/tn_5_3.png" width="90%"></p>
+<center><b>그림 5-3.</b> ABC rule</center><br/>
+
+만약 행렬 A가 $A \in L(\mathbb{C}^d) \otimes L(\mathbb{C}^{d'})$
 
 #### Row Vectorization
 
@@ -145,7 +155,20 @@ $$\langle \langle A \vert = \langle \Omega \vert A \otimes I = \sum_{i=1}^{d} \l
 
 Row vectorization 의 tensor network diagram 표기법은 다음과 같습니다.
 
+<p align="center"><img src="/assets/images/red1108/tn_6.png" width="70%"></p>
+<center><b>그림 6.</b> 행렬 A의 row vectorization tensor diagram 표기법</center><br/>
 
+행렬 $A$와 $B$의 내적값은 보통 $tr(A^T B)$ 로 정의하는데, 이 값은 벡터화한 값들 사이의 내적과 동일합니다. 따라서 $\langle \langle A\vert B\rangle \rangle = \text{Tr}(A^T B)$ 가 성립하고, tensor diagram으로 표현한다면
+
+
+<p align="center"><img src="/assets/images/red1108/tn_6_1.png" width="35%"></p>
+<center><b>그림 6-1.</b> 행렬 사이의 내적과 vectorization 사이의 내적</center><br/>
+
+뭔가 일관성이 보이기 시작합니다.
+
+#### Row Vectorization
+
+Row vectorization 도 존재
 
 ## 참고문헌
 
