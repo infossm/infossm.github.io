@@ -346,9 +346,6 @@ end function
 ```
 Agent 1 (H1): test/greedy
 Agent 2 (H0): test/random
-Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
-LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
-LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
 
 [SPRT Finished]
 Total: 23, WLD: 23/0/0, LLR: 3.073 [-2.944, 2.944]
@@ -531,9 +528,6 @@ Negamax Algorithm을 이용한 코드는 Minimax Algorithm과 항상 동일한 �
 ```
 Agent 1 (H1): test/minimax
 Agent 2 (H0): test/greedy
-Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
-LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
-LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
 
 [SPRT Finished]
 Total: 23, WLD: 23/0/0, LLR: 3.073 [-2.944, 2.944]
@@ -546,9 +540,6 @@ Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
 ```
 Agent 1 (H1): test/minimax
 Agent 2 (H0): test/negamax
-Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
-LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
-LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
 
 [SPRT Finished]
 Total: 286, WLD: 143/143/0, LLR: -2.951 [-2.944, 2.944]
@@ -734,9 +725,6 @@ int dfs(board game, int turn, int dep, int alpha, int beta, auto& opt_move) {
 ```
 Agent 1 (H1): test/abprun
 Agent 2 (H0): test/minimax
-Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
-LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
-LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
 
 [SPRT Finished]
 Total: 286, WLD: 143/143/0, LLR: -2.951 [-2.944, 2.944]

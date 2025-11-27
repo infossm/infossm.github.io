@@ -63,7 +63,7 @@ pass는 $-1$을 이용해 표현했습니다.
 
 다음은 보드의 상태를 저장하는 struct입니다.
 
-[expand Show 71 lines of code]
+[expand Show 73 lines of code]
 
 ```cpp
 int gen_rand(int l, int r) {
@@ -72,8 +72,10 @@ int gen_rand(int l, int r) {
 }
 
 struct board_info {
-	u64 mask1[49], mask2[49];
-	vector<int> nxt1[49], nxt2[49];
+	u64 mask1[49];
+	u64 mask2[49];
+	vector<int> nxt1[49];
+	vector<int> nxt2[49];
 	board_info() {
 		for (int i = 0; i < 49; i++) {
 			mask1[i] = 0;
@@ -156,7 +158,7 @@ board 자료형은 내부적으로 64비트 정수 자료형 $a$, $b$를 이용�
 
 다음은 이번 글의 baseline이 될 `board_move`, `board` 자료형을 이용한 Minimax 에이전트 코드입니다.
 
-[expand Show 174 lines of code]
+[expand Show 176 lines of code]
 
 ```cpp
 #include <bits/stdc++.h>
@@ -202,8 +204,10 @@ struct board_move {
 };
 
 struct board_info {
-	u64 mask1[49], mask2[49];
-	vector<int> nxt1[49], nxt2[49];
+	u64 mask1[49];
+	u64 mask2[49];
+	vector<int> nxt1[49];
+	vector<int> nxt2[49];
 	board_info() {
 		for (int i = 0; i < 49; i++) {
 			mask1[i] = 0;
@@ -504,15 +508,20 @@ note. Iterative Deepening 자체는 탐색하는 노드의 수를 줄여주지 �
 ```cpp
 struct board {
 	u64 a, b;
+	u64 xorshift(u64 x) const {
+		x ^= x << 13;
+		x ^= x >> 7;
+		x ^= x << 17;
+		return x;
+	}
 	u64 get_hash() const {
-		u64 x = a;
-		x ^= x << 13;
-		x ^= x >> 17;
-		x ^= x << 5;
+		u64 x = 0x814814;
+		x += a;
+		x = xorshift(x);
+		x = xorshift(x);
 		x += b;
-		x ^= x << 13;
-		x ^= x >> 17;
-		x ^= x << 5;
+		x = xorshift(x);
+		x = xorshift(x);
 		return x;
 	}
 	// ...
@@ -614,8 +623,8 @@ Agent 1 (H1): test/ttmo
 Agent 2 (H0): test/idab
 
 [SPRT Finished]
-Total: 63, WLD: 44/19/0, LLR: 2.948 [-2.944, 2.944]
-Final LLR: 2.948
+Total: 57, WLD: 41/16/0, LLR: 3.010 [-2.944, 2.944]
+Final LLR: 3.010
 Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
 ```
 
@@ -753,23 +762,150 @@ Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
 
 ```
 Agent 1 (H1): test/ttco
-Agent 2 (H0): test/ttmo
+Agent 2 (H0): test/idab
 
-...
-
-agent1(X) WINS 25-24 | T80 | A1 5434ms / A2 5553ms
-Total: 100, WLD: 55/45/0, LLR: 0.407 [-2.944, 2.944]
-
-...
+[SPRT Finished]
+Total: 61, WLD: 43/18/0, LLR: 2.968 [-2.944, 2.944]
+Final LLR: 2.968
+Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
 ```
 
-baseline과의 비교는 Move Ordering만 적용한 코드와 비슷한 성능을 보였습니다.
+```
+Agent 1 (H1): test/ttco
+Agent 2 (H0): test/ttmo
 
-Move Ordering만 적용한 코드와의 비교는 $50$ elo 차이에 해당하는 유의미한 성능 개선을 보이지 않았습니다. 이는 평균적인 탐색 깊이가 $4 \sim 5$로 깊지 않아서 TT Cutoff가 줄이는 탐색 시간을 TT Cutoff를 구현하기 위해 들어가는 계산 오버헤드가 상쇄시키기 때문이라 생각됩니다.
+[SPRT Finished]
+Total: 366, WLD: 186/180/0, LLR: -2.914 [-2.944, 2.944]
+Final LLR: -3.068
+Result: Accept H0. Agent 1 is likely not better (Elo <= 0.0).x
+```
+
+baseline, Iterative Deepening 코드와의 비교는 Move Ordering만 적용한 코드와 비슷한 성능을 보였습니다.
+
+Move Ordering만 적용한 코드와의 비교는 $50$ elo 차이에 해당하는 유의미한 성능 개선을 보이지 않았습니다. 이는 평균적인 탐색 깊이가 $4 \sim 5$로 깊지 않아서 TT Cutoff가 줄이는 탐색 시간을 TT Cutoff 구현의 오버헤드가 상쇄시키기 때문이라 생각됩니다.
 
 ![Fig.3](/assets/images/2025-11-24-advanced-game-search/fig3.png)
 
 그래프를 보면 Move Ordering만 적용한 `ttmo.cpp` 코드와 TT Cutoff를 같이 적용한 `ttco.cpp` 코드 모두 평균적인 탐색 깊이가 $5$ 정도임을 알 수 있습니다.
+
+## 6. Principal Variation Search
+
+Alpha-Beta Pruning은 탐색 공간을 줄여주지만, 여전히 개선의 여지가 남아 있습니다. PVS<sup>Principal Variation Search</sup>는 Alpha-Beta Pruning을 더 최적화한 알고리즘입니다.
+
+PVS는 우리가 Move Ordering을 잘 수행헀다면, 첫 번째로 확인하는 수가 최선의 수(PV, Principal Variation)일 것이란 가정을 이용합니다. 만약 첫 번째 수가 실제로 최선이라면, 나머지 수들은 첫 번째 수보다 나쁘다는 것만 증명하면 됩니다.
+
+이를 위해 PVS는 첫 번째가 아닌 수에서 Null Window라고 불리는 아주 좁은 탐색 범위를 사용합니다. 일반적인 탐색이 $(\alpha, \beta)$ 범위를 사용한다면, Null Window는 $(\alpha, \alpha+1)$ 범위를 사용합니다. 이는 $\beta$ 대신 더 작은 값을 이용해 추가적인 Cutoff가 가능하도록 합니다.
+
+구현 코드는 다음과 같습니다. 전치표를 이용한 TT Cutoff는 적용하지 않았습니다.
+
+```cpp
+pair<int, board_move> pvs(board game, int lim, const auto& is_timeout) {
+	board_move opt(u16(0));
+	auto rec = [&](const auto& self, board cur, int dep, int alpha, int beta) -> int {
+		if (is_timeout()) return 0;
+		if (cur.is_finish()) {
+			return cur.eval() > 0 ? inf - dep : -(inf - dep);
+		}
+		if (dep == lim) {
+			return cur.eval();
+		}
+		if (cur.is_pass()) {
+			board nxt = cur;
+			nxt.change_turn();
+			return -self(self, nxt, dep + 1, -beta, -alpha);
+		}
+		u64 h = cur.get_hash();
+		tt_node& tt_data = tt[h % tt_sz];
+		vector<board_move> cand = cur.gen_move();
+		if (tt_data.h == h) {
+			for (int i = 0; i < cand.size(); i++) {
+				if (cand[i].data != tt_data.op.data) continue;
+				swap(cand[0], cand[i]);
+				break;
+			}
+		}
+		int ret = -inf;
+		board_move copt(0);
+		for (int i = 0; i < cand.size(); i++) {
+			if (is_timeout()) return 0;
+			board_move op = cand[i];
+			board nxt = cur;
+			nxt.apply_move(op);
+			nxt.change_turn();
+			// PVS
+			int nxt_alpha = i ? -alpha - 1 : -beta;
+			int res = -self(self, nxt, dep + 1, nxt_alpha, -alpha);
+			if (i && alpha < res && res < beta) {
+				res = -self(self, nxt, dep + 1, -beta, -alpha);
+			}
+			if (ret < res) ret = res, copt = op;
+			if (alpha < res) alpha = res;
+			if (alpha >= beta) break;
+		}
+		if (dep == 0) opt = copt;
+		tt_data.h = h;
+		tt_data.op = copt;
+		return ret;
+	};
+	int val = rec(rec, game, 0, -inf, inf);
+	return pair(val, opt);
+}
+```
+
+PVS에서 첫 번째 수는 Full Window $(\alpha, \beta)$를 이용해 탐색을 진행합니다. 나머지 수는 Null Window $(\alpha, \alpha + 1)$을 이용해 빠르게 확인한 뒤, $\alpha$보다 좋은 값을 찾았다면 다시 Full Window로 재탐색을 해줍니다.
+
+PVS가 Alpha-Beta Pruning보다 빠르게 동작하기 위해선 첫 번째로 확인하는 수가 충분히 좋은 수여야 합니다. 만약 첫 번째 수가 최선이 아니라면 PVS는 재탐색으로 인해 오히려 더 느리게 동작할 수도 있습니다. 이후에도 Null Window에서 사용하는 $\alpha$ 값이 크다면 Cutoff가 더 많이 일어날 것이기 때문에 좋은 수를 먼저 확인할 수록 더 많은 개선을 얻을 수 있습니다.
+
+따라서 PVS를 이용하기 위해선 전치표 등을 이용한 Move Ordering이 필수적입니다.
+
+```
+Agent 1 (H1): test/pvs
+Agent 2 (H0): test/base
+
+[SPRT Finished]
+Total: 23, WLD: 23/0/0, LLR: 3.073 [-2.944, 2.944]
+Final LLR: 3.073
+Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
+```
+
+```
+Agent 1 (H1): test/pvs
+Agent 2 (H0): test/idab
+
+[SPRT Finished]
+Total: 40, WLD: 32/8/0, LLR: 3.041 [-2.944, 2.944]
+Final LLR: 3.041
+Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
+```
+
+```
+Agent 1 (H1): test/pvs
+Agent 2 (H0): test/ttmo
+
+[SPRT Finished]
+Total: 61, WLD: 43/18/0, LLR: 2.968 [-2.944, 2.944]
+Final LLR: 2.968
+Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
+```
+
+기존 코드와의 비교 결과는 PVS를 이용하는 경우가 더 좋은 성능을 보였습니다.
+
+![Fig.4](/assets/images/2025-11-24-advanced-game-search/fig4.png)
+
+또한, PVS를 사용하는 경우 탐색 깊이가 더 증가하는 걸 알 수 있습니다.
+
+## 7. Summary
+
+이번 글에서는 Minimax 에이전트의 탐색 속도와 효율을 개선하기 위한 다양한 기법들을 단계적으로 적용하고 검증해보았습니다.
+
+- Alpha-Beta Pruning: 탐색할 필요가 없는 가지를 쳐내어 Baseline 대비 $5\sim10$배 빠른 연산 속도를 얻습니다.
+- Iterative Deepening: 고정 깊이 탐색을 시간 제한 내에서 가능한 가장 깊은 수를 찾도록 변형해 제한 시간에 맞는 깊이를 선택합니다.
+- Transposition Table: 해시 테이블을 도입하여 중복 연산을 방지하고, Move Ordering을 통해 좋은 수를 먼저 탐색하며 Pruning 효율을 높입니다.
+- Principal Variation Search: Move Ordering이 잘 되었다는 가정하에 첫 번째 수(PV)를 제외한 나머지 수들에 Null Window Search를 적용하여 추가적인 성능 향상을 얻습니다.
+
+실험 결과, Minimax 에이전트를 Alpha-Beta Pruning을 기본으로 Iterative Deepening, Transposition Table을 이용한 Move Ordering, PVS와 같은 최적화를 적용함에 따라 에이전트의 성능이 개선되는 걸 확인할 수 있었습니다. 이는 여러 탐색 최적화가 성능 개선에 큰 영향을 미친다는 걸 의미합니다.
+
+다음 글에서는 탐색 알고리즘만큼이나 중요한 Evaluation Function을 정교하게 설계하는 방법이나, 신경망을 접목한 NNUE, 그리고 Minimax와는 다른 탐색 방식인 MCTS 등에 대해 다뤄보겠습니다.
 
 ## References
 
@@ -780,3 +916,5 @@ Move Ordering만 적용한 코드와의 비교는 $50$ elo 차이에 해당하�
 [3] [https://www.dogeystamp.com/chess4/](https://www.dogeystamp.com/chess4/)
 
 [4] [https://www.chessprogramming.org/Node_Types](https://www.chessprogramming.org/Node_Types)
+
+[5] [https://www.chessprogramming.org/Principal_Variation_Search](https://www.chessprogramming.org/Principal_Variation_Search)
