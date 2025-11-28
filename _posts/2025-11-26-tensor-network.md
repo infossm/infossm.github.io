@@ -110,7 +110,7 @@ $$A \otimes I \vert \Omega \rangle = A \otimes I \sum_{i=1}^{d} \vert i \rangle 
 
 $$ = \sum_{i=1}^{d} (\sum_{j=1}^{d} A_{ji} \vert j \rangle) \otimes \vert i \rangle = \sum_{i=1}^{d} \sum_{j=1}^{d} A_{ji} (\vert j \rangle \otimes \vert i \rangle) = \vert A \rangle\rangle$$
 
-> (<b>관찰 5)</b> $\vert \Omega \rangle = \sum_{i=1}^{d} \vert i \rangle \otimes \vert i \rangle$ 는 사실 항등행렬을 vectorization 한 것입니다. 즉, $\vert \Omega \rangle = \vert I \rangle\rangle$ 입니다. 항등행렬을 이어서 붙여보면 자명함을 쉽게 알 수 있습니다.
+> <b>(관찰 5)</b> $\vert \Omega \rangle = \sum_{i=1}^{d} \vert i \rangle \otimes \vert i \rangle$ 는 사실 항등행렬을 vectorization 한 것입니다. 즉, $\vert \Omega \rangle = \vert I \rangle\rangle$ 입니다. 항등행렬을 이어서 붙여보면 자명함을 쉽게 알 수 있습니다.
 
 드디어 tensor network diagram에서 vectorization을 어떻게 표현하는지 살펴볼 차례입니다. $\vert \Omega \rangle = \vert I \rangle\rangle$ 의 tensor network diagram 표기법은 아래와 같습니다.
 
@@ -126,6 +126,9 @@ $$ \textbf{그림 5.} \vert \Omega \rangle 의 \text{tensor diagram 표기법} $
 
 <p align="center"><img src="/assets/images/red1108/tn_5_1_1.png" width="70%"></p>
 <center><b>그림 5-1-1.</b> 행렬 A의 vectorization 다시보기</center><br/>
+
+
+> <b>(관찰 6)</b> tensor network diagram에서 행렬을 밀어서 밑으로 보내면 전치 행렬이 된다. 다시 밑에서 위로 올리면 원래 행렬이 된다.
 
 이제 수식적으로 이해해 봅시다. 분해해 보면 간단합니다. Vectorization 연산은 $A \otimes I$ 에 $\vert \Omega \rangle$ 를 곱하는 연산이므로,
 
@@ -145,7 +148,11 @@ $$= \sum_{i=1}^{d} \sum_{j=1}^{d} A_{ji} (\vert i \rangle \otimes \vert j \rangl
 <p align="center"><img src="/assets/images/red1108/tn_5_3.png" width="90%"></p>
 <center><b>그림 5-3.</b> ABC rule</center><br/>
 
-만약 행렬 A가 $A \in L(\mathbb{C}^d) \otimes L(\mathbb{C}^{d'})$
+만약 행렬 A가 $A \in L(\mathbb{C}^d) \otimes L(\mathbb{C}^{d'})$ 에 속하는 행렬이라면, vectorization 결과는 $\vert A \rangle\rangle \in \mathbb{C}^d \otimes \mathbb{C}^{d'} \otimes \mathbb{C}^d \otimes \mathbb{C}^{d'}$ 에 속하는 벡터가 됩니다. tensor network diagram 표기법은 다음과 같습니다.
+
+<p align="center"><img src="/assets/images/red1108/tn_5_5.png" width="30%"></p>
+<center><b>그림 5-5. </b> 2개의 subsystem을 가지는 행렬 A의 vectorization tensor diagram 표기법</center><br/>
+
 
 #### Row Vectorization
 
@@ -158,17 +165,41 @@ Row vectorization 의 tensor network diagram 표기법은 다음과 같습니다
 <p align="center"><img src="/assets/images/red1108/tn_6.png" width="70%"></p>
 <center><b>그림 6.</b> 행렬 A의 row vectorization tensor diagram 표기법</center><br/>
 
-행렬 $A$와 $B$의 내적값은 보통 $tr(A^T B)$ 로 정의하는데, 이 값은 벡터화한 값들 사이의 내적과 동일합니다. 따라서 $\langle \langle A\vert B\rangle \rangle = \text{Tr}(A^T B)$ 가 성립하고, tensor diagram으로 표현한다면
-
+행렬 $A$와 $B$의 내적값은 보통 $tr(A^T B)$ 로 정의하는데, 이 값은 벡터화한 값들 사이의 내적과 동일합니다. 따라서 $\langle \langle A\vert B\rangle \rangle = \text{Tr}(A^T B)$ 가 성립하고, tensor diagram으로 표현한다면 아래와 같이 표현됩니다.
 
 <p align="center"><img src="/assets/images/red1108/tn_6_1.png" width="35%"></p>
 <center><b>그림 6-1.</b> 행렬 사이의 내적과 vectorization 사이의 내적</center><br/>
 
-뭔가 일관성이 보이기 시작합니다.
+Tensor network의 표기법에 뭔가 일관성이 보이기 시작합니다.
 
-#### Row Vectorization
+### Swap Operator
 
-Row vectorization 도 존재
+두 subsystem 의 상태를 맞바꾸는 연산을 swap operator 라고 합니다. 수식으로 표현하면 다음과 같습니다.
+
+$$\mathbb{F} \vert \psi \rangle \otimes \vert \phi \rangle = \vert \phi \rangle \otimes \vert \psi \rangle$$
+
+이를 tensor network diagram 으로 표현하면 다음과 같습니다.
+
+<p align="center"><img src="/assets/images/red1108/tn_7.png" width="70%"></p>
+<center><b>그림 7.</b> Swap operator의 tensor diagram 표기법</center><br/>
+
+마지막으로 swap trick $\text{Tr}_2(AB) = \text{Tr}_2((A \otimes B)\mathbb{F})$ 를 tensor network diagram으로 표현해 봅시다.
+
+<p align="center"><img src="/assets/images/red1108/tn_7_1.png" width="70%"></p>
+<center><b>그림 7-1.</b> swap trick의 tensor diagram 표기법</center><br/>
+
+이걸 조금만 응용하면, 동일한 방식으로 $\text{Tr}_2(\mathbb{F}(A \otimes B)) = \text{Tr}BA)$ 도 쉽게 보일 수 있습니다.
+
+## Example problem
+
+1. $A, B \in \mathbb{C}^{d}$ 일 때, $\text{Tr}(AB) = \text{Tr}(BA)$ 임을 tensor network diagram을 사용해서 이해하시오.
+
+풀이: B행렬을 오른쪽으로 밀어서 밑으로 내리면 $B^T$ 가 됩니다. 이번엔 왼쪽으로 밀어서 다시 올린다면 A왼쪽에 B가 붙게 됩니다. 따라서 $\text{Tr}(AB) = \text{Tr}(BA)$ 임을 알 수 있습니다.
+
+2. $A, B, X \in \mathbb{C}^{d}$ 일 때, $\vert AXB^T \rangle\rangle = A \otimes B \vert X \rangle\rangle$ 임을 tensor network diagram을 사용해서 이해하시오.
+
+풀이: TODO: image 추가.
+
 
 ## 참고문헌
 
