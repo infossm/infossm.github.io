@@ -194,12 +194,18 @@ $$\mathbb{F} \vert \psi \rangle \otimes \vert \phi \rangle = \vert \phi \rangle 
 
 1. $A, B \in \mathbb{C}^{d}$ 일 때, $\text{Tr}(AB) = \text{Tr}(BA)$ 임을 tensor network diagram을 사용해서 이해하시오.
 
-풀이: B행렬을 오른쪽으로 밀어서 밑으로 내리면 $B^T$ 가 됩니다. 이번엔 왼쪽으로 밀어서 다시 올린다면 A왼쪽에 B가 붙게 됩니다. 따라서 $\text{Tr}(AB) = \text{Tr}(BA)$ 임을 알 수 있습니다.
+<details>
+<summary>정답 보기</summary>
+풀이: B행렬을 오른쪽으로 밀어서 밑으로 내리면 B^T 가 됩니다. 이번엔 왼쪽으로 밀어서 다시 올린다면 A왼쪽에 B가 붙게 됩니다.
+</details>
+
 
 2. $A, B, X \in \mathbb{C}^{d}$ 일 때, $\vert AXB^T \rangle\rangle = A \otimes B \vert X \rangle\rangle$ 임을 tensor network diagram을 사용해서 이해하시오.
 
-풀이: TODO: image 추가.
-
+<details>
+<summary>정답 보기</summary>
+<p align="center"><img src="/assets/images/red1108/tn_test.png" width="70%"></p>
+</details>
 
 ## 참고문헌
 
