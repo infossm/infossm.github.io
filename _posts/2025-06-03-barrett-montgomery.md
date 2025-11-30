@@ -201,6 +201,7 @@ n \cdot r^{-1} &= n \cdot \frac{r \cdot r^{-1}}{r} \\
 			   &\equiv \frac{n - (n \cdot m' \bmod r) \cdot m}{r} \; \bmod m
 \end{align*}
 $$
+
 이 성립합니다.
 
 이를 이용하면 $x = n \cdot m' \bmod r$과 $y = x \cdot m$에 대해 $n \cdot r^{-1} \bmod m = \frac{n - y}{r} \bmod m$으로 $f(n)$을 표현할 수 있습니다.
