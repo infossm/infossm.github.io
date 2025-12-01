@@ -8,9 +8,9 @@ tags: [algorithm, game-theory, problem-solving]
 
 ## 1. Introduction
 
-이번 글에서는 게임 에이전트의 가장 단순한 형태인 Random Agent부터 시작하여 Greedy, Minimax, Alpha-Beta Pruning의 핵심 원리를 다룹니다. 이후 이어지는 글에서는 MCTS 등의 현대적인 탐색 기법을 알아보고, NNUE 등의 neural network를 이용한 평가 방법과 여러 search Pruning 방법을 살펴보겠습니다.
+이번 글에서는 게임 에이전트의 가장 단순한 형태인 Random Agent부터 시작하여 Greedy, Minimax, Alpha-Beta Pruning의 핵심 원리를 다룹니다. 또한 에이전트의 성능을 객관적으로 평가하기 위해 SPRT(Sequential Probability Ratio Test)라는 평가 기법을 소개합니다. 이를 이용하면 통계적으로 두 에이전트 간의 실력 차이를 엄밀하게 검증할 수 있습니다.
 
-또한 에이전트의 성능을 객관적으로 평가하기 위해 SPRT(Sequential Probability Ratio Test)라는 평가 기법을 소개합니다. 이를 이용하면 통계적으로 두 에이전트 간의 실력 차이를 엄밀하게 검증할 수 있습니다.
+이후 이어지는 글에서는 Minimax Algorithm의 추가적인 Search Pruning 기법을 알아보고, MCTS 등의 현대적인 탐색 기법과 NNUE와 같은 neural network를 이용한 평가 방법을 살펴보겠습니다.
 
 이번 글에서 소개하는 방법론은 $2$인, 제로섬, 턴제, 완전정보, 결정론적 전이를 만족하는 게임에 적용이 가능하며, 구체적인 설명을 위해서 ATAXX를 예시로 각 알고리즘을 구현해보겠습니다.
 
@@ -68,7 +68,7 @@ note. 해당 게임은 [여기](https://alphano.co.kr/problem/1/play)에서 플�
 
 | 명령어 | 심판→에이전트(입력) | 에이전트→심판 (출력) | 시간 제한(ms) | 설명 |
 |:--|:--|:--|:--|:--|
-| **READY** | `READY (FIRST \| SECOND)` | `OK` | `3000` | 선공/후공 정보를 알립니다. |
+| **READY** | `READY (FIRST or SECOND)` | `OK` | `3000` | 선공/후공 정보를 알립니다. |
 | **TURN** | `TURN my_time opp_time` | `MOVE x1 y1 x2 y2` | `my_time` | 내 남은 시간과 상대의 남은 시간을 알립니다. 이번 턴에 내가 선택한 수의 $(x_1, y_1)$, $(x_2, y_2)$를 출력합니다. `PASS`를 선택한 경우는 `MOVE -1 -1 -1 -1`을 출력합니다. |
 | **OPP** | `OPP x1 y1 x2 y2 time` | - | - | 상대가 직전에 둔 수와 사용한 시간을 알립니다. 상대가 `PASS`를 선택한 경우는 `OPP -1 -1 -1 -1 time`이 입력됩니다. |
 | **FINISH** | `FINISH` | - | - | 게임 종료를 알립니다. 에이전트는 추가 출력 없이 프로그램을 정상 종료해야 합니다. |
@@ -112,7 +112,7 @@ private:
 };
 
 int gen_rand(int l, int r) {
-	static mt19937 rd(42);
+	static mt19937 rd(chrono::steady_clock::now().time_since_epoch().count());
 	return uniform_int_distribution(l, r)(rd);
 }
 
@@ -225,7 +225,7 @@ auto find_move(board game, int turn) {
 
 이를 구현하는 방법은 여러가지가 있습니다. 먼저 떠올릴 수 있는 방법은 두 플레이어가 최적으로 플레이할 때 결과가 승리라면 $1$, 무승부라면 $0.5$, 패배라면 $0$을 반환하도록 하는 것입니다. 이 정의에 맞는 `eval` 함수를 구현할 수 있다면 그리디 정책은 실제로 최적의 수를 구합니다. 하지만 게임의 특성 상 game tree가 너무 커서 이 값을 실제로 구하기는 실질적으로 어렵습니다.
 
-이에 대한 대안으로는 `turn`에 해당하는 돌의 개수에서 `turn ^ 3`에 해당하는 돌의 개수를 뺀 값을 반환하도록 하는 휴리스틱 함수를 생각해볼 수 있습니다. 이는 돌 개수가 더 많다면 이길 가능성이 높다는 가정을 바탕으로 유리한 정도를 표현한 함수로, 실제로는 다음 턴에 상대가 어떤 행동을 고르는지에 따라 승패가 뒤집힐 수 있기에 정확한 모델링이 아니지만 근사적으로 `eval` 함수를 구성할 수 있다는 장점이 있습니다. 여기서는 이 방법을 사용하며, `eval` 함수를 개선하는 방법은 다음 글에서 다루겠습니다.
+이에 대한 대안으로는 `turn`에 해당하는 돌의 개수에서 `turn ^ 3`에 해당하는 돌의 개수를 뺀 값을 반환하도록 하는 휴리스틱 함수를 생각해볼 수 있습니다. 이는 돌 개수가 더 많다면 이길 가능성이 높다는 가정을 바탕으로 유리한 정도를 표현한 함수로, 정확한 모델링이 아니지만 휴리스틱하게 적당한 `eval` 함수를 구현할 수 있다는 장점이 있습니다. 여기서는 이 방법을 사용하며, `eval` 함수를 개선하는 방법은 다음 글에서 다루겠습니다.
 
 `find_move` 함수는 `eval` 함수를 이용해 행동을 수행한 뒤의 보드의 평가값을 구하고, 이 값이 최대가 되는 행동을 반환합니다. 만약 평가값이 최대인 행동이 여러 개라면 $(x_1, y_1, x_2, y_2)$가 사전순으로 최소인 행동을 반환하도록 했습니다.
 
@@ -233,11 +233,19 @@ auto find_move(board game, int turn) {
 
 ## 5. SPRT(Sequential Probability Ratio Test)
 
-지금까지 랜덤 정책과 그리디 정책을 알아보았습니다. 이번 단락에서는 두 정책의 성능을 비교하는 통계적 기법인 SPRT(Sequential Probability Ratio Test)를 알아보겠습니다.
+지금까지 랜덤 정책과 그리디 정책을 알아보았습니다. 이번 단락에서는 두 정책의 성능을 비교하는 통계적 기법인 SPRT<sup>Sequential Probability Ratio Test</sup>를 알아보겠습니다.
 
-두 정책의 성능을 비교하는 가장 간단한 방법은 여러 번 두 정책끼리 대결을 시켜보는 것입니다. 예를 들어 $100$번 매칭을 돌렸는데 첫 번째 정책이 $20$번, 두 번째 정책이 $80$번 승리했다면 두 번째 정책이 첫 번째 정책보다 더 우수하다고 판단할 수 있습니다. 하지만 이 방법은 두 정책의 실제 승률을 근사적으로 정확하게 구하기 위해선 많은 시행 횟수가 필요하고, 종료 시점 또한 명확히 정하기 어렵다는 단점이 있습니다.
+### 5.1 SPRT를 쓰는 이유
 
-이를 보완하기 위해 일반적으로 사용하는 방법이 SPRT 기법입니다. SPRT 기법을 알아보기에 앞서 먼저 Elo Rating 체계를 알아보겠습니다.
+두 정책의 성능을 비교하는 가장 간단한 방법은 여러 번 두 정책끼리 대결을 시켜보는 것입니다. 예를 들어 $100$번 매칭을 돌렸는데 첫 번째 정책이 $20$번, 두 번째 정책이 $80$번 승리했다면 두 번째 정책이 첫 번째 정책보다 더 우수하다고 판단할 수 있습니다.
+
+하지만 첫 번째 정책이 $51$번, 두 번째 정책이 $49$번 승리한 상황을 생각해봅시다. 이는 첫 번째 정책이 더 좋아서 나온 결과일 수도 있고, 둘의 성능 차이가 없지만 random walking의 결과로 승패가 갈린 것일 수도 있습니다. 따라서 정해진 횟수의 대결로 정책을 평가하는 건 두 정책의 실제 승률을 정확하게 구하기 위해서 많은 시행 횟수가 필요하고, 구한 승률이 얼마나 정확한지에 대한 정량적인 지표를 알려주지 않기에 종료 시점 또한 명확히 정하기 어렵다는 단점이 있습니다.
+
+이를 보완하기 위해 사용하는 방법이 SPRT 기법입니다. SPRT 기법은 전체 판 수를 정해두지 않고, 판정에 필요한 충분한 결과가 모일 때까지 대결을 진행하는 방식으로 동작합니다.
+
+### 5.2 Elo Rating
+
+SPRT 기법을 알아보기에 앞서 먼저 Elo Rating 체계를 알아보겠습니다.
 
 Elo Rating 체계는 다음과 같은 수식으로 두 에이전트 $A, B$의 실력을 두 실수 $R_A, R_B$로 모델링합니다.
 
@@ -252,14 +260,22 @@ $E_A, E_B$는 $A, B$의 예상 승률을 나타내며, $E_A = \frac{1}{1 + u}, E
 
 예를 들어서 $R_A = 1900, R_B = 1500$는 $E_A = 0.9091, E_B = 0.0909$에서 $A$가 $90.91$%의 승률을 보일 것을 의미합니다. 여기서 $R_A, R_B$를 Elo Rating이라 부르며, Elo Rating의 단위는 elo입니다.
 
-이제 SPRT 기법을 이용해 에이전트 $A$보다 $B$가 좋은지 여부를 판별하는 방법을 알아보겠습니다. SPRT 기법은 에이전트 $A, B$의 Elo Rating의 차이가 $0$ 또는 $50$ 두 가지 값 중 하나라는 걸 가정하며, 이 가정 하에서 둘 중 어느 가설이 더 확률적으로 타당한지 검증합니다.
+### 5.3 SPRT의 가정
 
-다음의 두 가지 가설을 세워보겠습니다.
+이제 SPRT 기법을 이용해 에이전트 $A$보다 $B$가 좋은지를 판별하는 방법을 알아보겠습니다.
 
-- $H_0$: 에이전트 $A$는 에이전트 $B$보다 Elo Rating이 $0$ elo 더 높다.
-- $H_1$: 에이전트 $A$는 에이전트 $B$보다 Elo Rating이 $50$ elo 더 높다.
+다음의 두 가정을 해봅시다.
 
-두 가설에서 에이전트 $A$가 이기거나 질 확률은 다음과 같습니다.
+- $H_0$: $A$는 $B$보다 Elo Rating이 $0$ elo 더 높다.
+- $H_1$: $A$는 $B$보다 Elo Rating이 $50$ elo 더 높다. (즉, 승률이 $57.15$%이다)
+
+SPRT 기법은 $H_0$과 $H_1$ 두 가설 중 어느 가설이 더 그럴듯한지 검정하는 기법입니다. SPRT는 실제로 $A$의 실력이 유의미하게 좋다면 $H_1$이 맞다고 판정할 것이고, 둘의 실력이 비슷하거나 $A$가 더 안 좋다면 $H_0$이 맞다고 판정할 것입니다. 이때 $A$의 승률이 대략 $53$% 정도로 약간 더 좋은 수준이라면 SPRT는 판정을 보류하며 추가로 대결을 진행합니다.
+
+여기서 SPRT는 $A$와 $B$의 실제 elo rating의 차이 등을 구하지 못한다는 점에 주의해야 합니다. SPRT는 둘 중 누가 얼마나 잘하는지를 구하지 않으며, $H_0$과 $H_1$ 중 어느 가설이 더 말이 되는지만 확인합니다.
+
+### 5.4 LLR(Log Likelihood Ratio)
+
+두 가설에서 $A$가 이기거나 질 확률은 다음과 같습니다. (무승부가 나올 확률은 없다고 가정합니다. 만약 무승부가 있는 상황을 모델링해야 한다면 무승부인 대결은 승부가 날 때까지 재대결을 시키며 처리할 수 있습니다)
 
 $$
 \begin{align*}
@@ -270,35 +286,66 @@ p(L | H_1) &= 0.4285 \\
 \end{align*}
 $$
 
-두 에이전트를 $n$판 대결시킨 결과를 $x_1, \cdots, x_n$이라 하겠습니다. $i$번째 판에서 에이전트 $A$가 승리했다면 $x_i = 1$, 패배했다면 $x_i = 0$입니다. 편의를 위해 무승부인 경우는 없다고 가정하겠습니다.
+이를 이용하면 게임을 한 판 했을 때 결과가 $x$일 때, 각 가설에서 해당 결과가 나올 확률을 구할 수 있습니다. 여기서 $x = 1$은 $A$가 이긴 결과를, $x = 0$은 $A$가 진 결과를 의미합니다.
 
-$i$번째 판의 로그 우도비(log-likelihood ratio)은 다음과 같이 계산됩니다.
+$$x \cdot P(W | H_0) + (1 - x) \cdot P(L | H_0)$$
 
-$$l_i = \log \frac{p(x_i | H_1)}{p(x_i | H_0)} = x_i \log \frac{p(W | H_1)}{p(W | H_0)} + (1 - x_i)\log \frac{p(L | H_1)}{p(L | H_0)}$$
+$$x \cdot P(W | H_1) + (1 - x) \cdot P(L | H_1)$$
 
-이를 누적한 값은 다음과 같습니다.
+이를 $x$에 대한 $H_0$, $H_1$의 가능도<sup>likelihood</sup>라 합시다.
 
-$$S_n = \displaystyle\sum_{i=1}^n l_i = W_n \log \frac{p(W | H_1)}{p(W | H_0)} + (n - W_n) \log \frac{p(L | H_1)}{p(L | H_0)}$$
+비슷하게, 게임을 $n$판 했을 때 결과를 $x_1, \cdots, x_n$이라 하면, 해당 결과가 나올 확률은 다음과 같이 계산됩니다.
 
-여기서 $W_n = \sum x_i$는 $n$판 중 에이전트 $A$가 승리한 횟수입니다.
+$$L_0 = \prod_{i=1}^{n}\left(x_i \cdot P(W | H_0) + (1 - x_i) \cdot P(L | H_0)\right)$$
 
-이제 $S_n$을 이용하면 두 가설 중 어느 가설이 옳은지를 검증할 수 있습니다. $H_0$이 참인데 $H_1$를 잘못 채택하는 확률을 $\alpha$, $H_1$이 참인데 $H_0$을 잘못 채택하는 확률을 $\beta$로 설정합시다. 다음 사실이 알려져있습니다.
+$$L_1 = \prod_{i=1}^{n}\left(x_i \cdot P(W | H_1) + (1 - x_i) \cdot P(L | H_1)\right)$$
 
-- $S_n \ge log(\frac{1 - \beta}{\alpha})$라면 $H_1$을 선택한다.
-- $S_n \le log(\frac{\beta}{1 - \alpha})$라면 $H_0$을 선택한다.
-- 둘 다 아니라면 대결을 더 진행하며 위의 과정을 반복한다.
-- 이 방식을 이용하면 $\alpha, \beta$의 정의에 맞게 가설을 검정할 수 있다.
+이를 $x_1, \cdots, x_n$에 대한 $H_0$, $H_1$의 가능도라 합시다.
+
+각 판의 가능도는 $[0, 1]$ 범위의 실수이니, 여러 판의 가능도는 $n$이 늘어날 수록 점점 더 작아지게 됩니다. 이때 로그 함수를 이용하면 가능도가 너무 작은 값이 되는 걸 방지할 수 있습니다.
+
+이를 이용하면
+
+$$LLR = \log \left( \frac{L_1}{L_0} \right) = \sum_{i=1}^{n} \left( x_i \log \frac{p(W | H_1)}{p(W | H_0)} + (1 - x_i)\log \frac{p(L | H_1)}{p(L | H_0)} \right)$$
+
+와 같이 $x_1, \cdots, x_n$에 대한 LLR<sup>log-likelihood ratio</sup>를 정의할 수 있습니다.
+
+### 5.5 SPRT(Sequential Probability Ratio Test)
+
+$H_0$이 참인데 $H_1$를 잘못 채택하는 확률을 $\alpha$, $H_1$이 참인데 $H_0$을 잘못 채택하는 확률을 $\beta$로 설정하겠습니다.
+
+다음과 같은 알고리즘을 생각해봅시다.
+
+```
+function SPRT_TEST(α, β):
+	A → log((1 - β) / α)
+	B → log(β / (1 - α))
+	LLR → 0
+	while true
+		x → PLAY_GAME()
+		if x == 1 then
+			LLR → LLR + log(P(W | H_1)/P(W | H_0))
+		else if x == 0 then
+			LLR → LLR + log(P(L | H_1)/P(L | H_0))
+		end if
+		if LLR >= A then
+			return ACCEPT H_1
+		else if LLR <= B then
+			return ACCEPT H_0
+		end if
+	end while
+end function
+```
+
+이를 이용하면 $\alpha, \beta$의 정의에 맞게 가설을 검정할 수 있다는 사실이 알려져 있습니다. 증명은 LLR의 정의를 이용하며 $LLR \ge A$, $LLR \le B$ 조건에 대한 부등식을 세우면 가능합니다.
 
 일반적으로 SPRT를 이용할 때는 $\alpha = \beta = 0.05$를 사용합니다.
 
-note. 수식의 수학적 유도는 [이 글](https://en.wikipedia.org/wiki/Sequential_probability_ratio_test)과 [이 글](https://mattlapa.com/sprt/)을 참고해주세요.
+이를 이용해 랜덤 정책과 그리디 정책을 비교한 결과는 다음과 같습니다.
 
 ```
 Agent 1 (H1): test/greedy
 Agent 2 (H0): test/random
-Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
-LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
-LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
 
 [SPRT Finished]
 Total: 23, WLD: 23/0/0, LLR: 3.073 [-2.944, 2.944]
@@ -306,7 +353,7 @@ Final LLR: 3.073
 Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
 ```
 
-이를 이용해 랜덤 정책과 그리디 정책을 비교해보면 그리디 정책이 랜덤 정책보다 우수함을 보일 수 있습니다.
+결과는 그리디 정책이 $23$승 $0$패 $0$무로 그리디 정책이 랜덤 정책보다 개선이 되었음을 알 수 있습니다.
 
 ## 6. Minimax Algorithm
 
@@ -326,6 +373,7 @@ Minimax Algorithm은 두 플레이어가 최선의 행동만을 한다고 가정
 
 ```cpp
 constexpr int max_depth = 3;
+constexpr int inf = 1 << 30;
 
 int dfs(board game, int turn, int dep, auto& opt_move) {
 	int mask = 0;
@@ -334,7 +382,12 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 			mask |= 1 << game.get(x, y);
 		}
 	}
-	if (dep == max_depth || mask != 7) return eval(game, turn);
+	if (mask != 7) {
+		return eval(game, turn) > 0 ? inf - dep : -(inf - dep);
+	}
+	if (dep == max_depth) {
+		return eval(game, turn);
+	}
 	if (dep % 2 == 0) {
 		int ret = -(1 << 30);
 		int flag = 0;
@@ -408,9 +461,11 @@ auto find_move(board game, int turn) {
 }
 ```
 
-코드에서 `dfs` 함수는 현재 탐색 깊이 `dep`를 인자로 가지고 있어 탐색이 최대 깊이에 도달하거나 게임이 종료되었다면 해당 상태의 `eval` 값을 반환합니다. 그렇지 않다면 `dep`의 parity에 따라 다음 상태의 반환값의 최대, 최솟값을 구하며 두 플레이어의 최적 행동을 구합니다.
+코드에서 `dfs` 함수는 `dep`의 parity에 따라 다음 상태의 반환값의 최대, 최솟값을 구하며 두 플레이어의 최적 행동을 구합니다.
 
-현재 상태에서 가능한 행동이 존재하지 않는다면 `flag`를 이용하여 `PASS`를 수행해야 합니다.
+게임이 종료되었을 때는 승패에 따라 `inf - dep` 또는 `dep - inf`를 반환해도록 해서 가능한 빠른 승리나 가능한 늦은 패배를 고르도록 합니다. 또한 `dep`이 최대 깊이에 도달했다면 해당 상태의 `eval` 값을 반환해 game tree가 커지는 걸 방지합니다.
+
+ 현재 상태에서 가능한 행동이 존재하지 않는다면 `flag`를 이용하여 `PASS`를 수행해야 합니다.
 
 ### 6.2 Negamax Algorithm
 
@@ -428,7 +483,10 @@ int dfs(board game, int turn, int dep, auto& opt_move) {
 			mask |= 1 << game.get(x, y);
 		}
 	}
-	if (dep == max_depth || mask != 7) {
+	if (mask != 7) {
+		return eval(game, turn) > 0 ? inf - dep : -(inf - dep);
+	}
+	if (dep == max_depth) {
 		return eval(game, turn);
 	}
 	int ret = -(1 << 30);
@@ -470,9 +528,6 @@ Negamax Algorithm을 이용한 코드는 Minimax Algorithm과 항상 동일한 �
 ```
 Agent 1 (H1): test/minimax
 Agent 2 (H0): test/greedy
-Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
-LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
-LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
 
 [SPRT Finished]
 Total: 23, WLD: 23/0/0, LLR: 3.073 [-2.944, 2.944]
@@ -485,9 +540,6 @@ Result: Accept H1. Agent 1 is likely better (Elo >= 50.0).
 ```
 Agent 1 (H1): test/minimax
 Agent 2 (H0): test/negamax
-Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
-LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
-LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
 
 [SPRT Finished]
 Total: 286, WLD: 143/143/0, LLR: -2.951 [-2.944, 2.944]
@@ -507,9 +559,9 @@ Minimax Algorithm과 Negamax Algorithm을 비교한 결과는 위와 같습니�
 
 Alpha-Beta Pruning(알파-베타 가지치기)은 Minimax Algorithm의 결과를 그대로 유지하면서, 탐색 트리의 최종 값에 영향을 주지 않는 것이 확실한 분기를 탐색하지 않고 잘라내는 최적화 기법입니다.
 
-이 알고리즘은 $\alpha$와 $\beta$ 두 개의 변수를 이용해 탐색 범위를 관리합니다. $\alpha$는 현재 플레이어가 현재까지 탐색한 노드에서 찾은 최대 `eval` 값입니다. $\beta$는 상대 플레이어가 현재까지 탐색한 노드에서 찾은 최소 `eval` 값입니다.
+이 알고리즘은 $\alpha$와 $\beta$ 두 개의 변수를 이용해 탐색 범위를 관리합니다. $\alpha$는 조상 노드에서 현재 플레이어가 찾은 최대 `eval` 값입니다. $\beta$는 조상 노드에서 상대 플레이어가 찾은 최소 `eval` 값입니다.
 
-$\alpha$와 $\beta$를 이용한 가지치기는 현재 플레이어의 차례에서 자식 노드의 반환값 `res`가 $\beta$ 이상인 경우와 상대 플레이어의 차례에서 자식 노드의 반환값 `res`가 $\alpha$ 이하인 경우 발생합니다. 전자는 부모 상태에서 상대 플레이어가 현재 상태를 절대 고르지 않을 것이기 때문에 최적의 플레이에서 나올 수 없는 상태이고, 후자도 마찬가지로 부모 상태에서 현재 플레이어가 절대 고르지 않을 상태이니 나올 수가 없어서 가지치기를 해도 결과가 변하지 않습니다.
+$\alpha$와 $\beta$를 이용한 가지치기는 현재 플레이어의 차례에서 자식 노드의 반환값 `res`가 $\beta$ 이상인 경우와 상대 플레이어의 차례에서 자식 노드의 반환값 `res`가 $\alpha$ 이하인 경우 발생합니다. 전자는 조상 노드에서 상대 플레이어가 현재 상태를 절대 고르지 않을 것이기 때문에 최적의 플레이에서 나올 수 없는 상태이고, 후자도 마찬가지로 조상 노드에서 현재 플레이어가 절대 고르지 않을 상태이니 나올 수가 없어서 가지치기를 해도 결과가 변하지 않습니다.
 
 이를 정리하면, 탐색 도중 $\alpha \ge \beta$가 되는 순간 가지치기를 하며 Minimax Algorithm을 개선할 수 있습니다. 이때 Alpha-Beta Pruning을 적용한 Minimax Algorithm은 기존과 항상 같은 결과를 반환합니다.
 
@@ -525,7 +577,10 @@ int dfs(board game, int turn, int dep, int alpha, int beta, auto& opt_move) {
 			mask |= 1 << game.get(x, y);
 		}
 	}
-	if (dep == max_depth || mask != 7) {
+	if (mask != 7) {
+		return eval(game, turn) > 0 ? inf - dep : -(inf - dep);
+	}
+	if (dep == max_depth) {
 		return eval(game, turn);
 	}
 	if (dep % 2 == 0) {
@@ -623,7 +678,10 @@ int dfs(board game, int turn, int dep, int alpha, int beta, auto& opt_move) {
 			mask |= 1 << game.get(x, y);
 		}
 	}
-	if (dep == max_depth || mask != 7) {
+	if (mask != 7) {
+		return eval(game, turn) > 0 ? inf - dep : -(inf - dep);
+	}
+	if (dep == max_depth) {
 		return eval(game, turn);
 	}
 	int ret = -(1 << 30);
@@ -667,9 +725,6 @@ int dfs(board game, int turn, int dep, int alpha, int beta, auto& opt_move) {
 ```
 Agent 1 (H1): test/abprun
 Agent 2 (H0): test/minimax
-Elo [H0, H1]: [0.0, 50.0] -> P [P0, P1]: [0.5000, 0.5715]
-LLR bounds: [-2.944, 2.944] (Alpha=0.05, Beta=0.05)
-LLR updates: Win=+0.1336, Loss=-0.1542, Draw=0.0
 
 [SPRT Finished]
 Total: 286, WLD: 143/143/0, LLR: -2.951 [-2.944, 2.944]
@@ -690,7 +745,7 @@ Alpha-Beta Pruning은 Minimax Algorithm의 결과를 바꾸지 않으면서 실�
 - Minimax & Negamax Algorithm: $1$수 앞만 보는 그리디 정책의 한계를 넘어, 정해진 깊이까지 상대방의 최선의 대응을 고려하며 탐색하는 Minimax Algorithm을 알아보았습니다. 또한 $\min(a, b) = -\max(-b, -a)$ 관계를 이용해 Max/Min 노드의 로직을 통합, 코드를 간결하게 만든 Negamax 변형도 다루었습니다.
 - Alpha-Beta Pruning: 마지막으로, Minimax/Negamax 알고리즘이 탐색 트리의 최종 결과에 영향을 주지 않는 불필요한 분기를 탐색하는 비효율을 제거하는 Alpha-Beta Pruning(알파-베타 가지치기) 기법을 적용했습니다. 이를 이용하면 동일한 시간 내에 더 깊은 깊이를 탐색할 수 있습니다.
 
-지금까지 다룬 기법들은 고전적이면서도 여전히 강력한 게임 탐색의 근간을 이룹니다. 이어지는 글에서는 MCTS(Monte Carlo Tree Search)와 같은 현대적인 탐색 기법을 알아보고, 신경망을 이용한 평가 함수(NNUE) 및 다양한 탐색 최적화 방법들을 살펴보겠습니다.
+지금까지 다룬 기법들은 고전적이면서도 여전히 강력한 게임 탐색의 근간을 이룹니다. 이어지는 글에서는 Alpha-Beta Prunning에서 더 나아가 Minimax Algorithm을 최적화하는 여러 Search Pruning 기법을 알아보겠습니다.
 
 note. 이번 글에서 다룬 코드들은 [여기](https://alphano.co.kr/problem/1)에서 테스트해볼 수 있습니다.
 
