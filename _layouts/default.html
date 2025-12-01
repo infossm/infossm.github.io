@@ -26,15 +26,16 @@
 <script src="{{ site.asset_url | relative_url }}/lib/jquery.magnific-popup.min.js"></script>
 <script src="{{ site.asset_url | relative_url }}/js/index.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script>
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ [ '$', '$' ] ],
-        processEscapes: true
-    }
-});
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true
+  }
+};
 </script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <!-- 
 {% if site.google_analytics %}
