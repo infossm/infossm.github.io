@@ -27,7 +27,7 @@ $$p_m(b_{i,j}|a_i) = \frac{1}{\sqrt{2\pi}\sigma}e^{-0.5(\frac{||b_{i,j}-a_i||_{\
 당연하게도 지구상의 모든 도로에 대해 이를 계산할 필요는 없습니다. 연산량을 줄이기 위하여 일정 거리 이내의 도로에 내린 수선의 발들에 대해서만 계산해야합니다. 이 논문에서는 200m로 설정하였습니다.
 
 ## Transition Probabilities
-도로상에서 $b_{i-1,k}$에서 $b_{i,j}$로 이동한 경로를 그려보았을 때 어떤 경로는 매우 이상하고 어떤 경로는 그럴듯합니다. 예를 들면 10초동안 유턴을 5번 하는 건 직관적으로 이상합니다. 이것을 정량적인 형태로 표현할 수 있을까요? 이 논문에서는 도로상의 최단거리(route distance)가 측정점 사이의 great circle distance와 비슷할수록 좋다고 주장합니다. 즉 $$|\, {|| a_i-a_{i-1}||}_{\text{great circle}} - ||b_{i,j} - b_{i-1,k}||_{\text{route}}\,|$$가 작을수록 확률이 높습니다. 이 확률을 transition probablity라고 합니다. transition probability는 실험적으로 지수분포를 따름이 밝혀졌습니다. 즉 다음 식이 성립합니다. 
+도로상에서 $b_{i-1,k}$에서 $b_{i,j}$로 이동한 경로를 그려보았을 때 어떤 경로는 매우 이상하고 어떤 경로는 그럴듯합니다. 예를 들면 10초동안 유턴을 5번 하는 건 직관적으로 이상합니다. 이것을 정량적인 형태로 표현할 수 있을까요? 이 논문에서는 도로상의 최단거리(route distance)가 측정점 사이의 great circle distance와 비슷할수록 좋다고 주장합니다. 즉 $|\, || a_i-a_{i-1}||_{\text{great circle}} - ||b_{i,j} - b_{i-1,k}||_{\text{route}}\,|$가 작을수록 확률이 높습니다. 이 확률을 transition probablity라고 합니다. transition probability는 실험적으로 지수분포를 따름이 밝혀졌습니다. 즉 다음 식이 성립합니다. 
 $$p_t(d_{i,j}) = \frac{1}{\beta}e^{d_{i,j}/\beta} \\ d_i = |\, || a_i-a_{i-1}||_{\text{great circle}} - ||b_{i,j} - b_{i-1,k}||_{\text{route}}\,|$$
 
 이제 다음과 같은 점화식을 얻을 수 있습니다. 
