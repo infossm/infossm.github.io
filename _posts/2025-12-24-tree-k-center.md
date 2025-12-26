@@ -28,7 +28,7 @@ $$\min_{S \subseteq V, |S| = k} \max_{v \in V} \min_{s \in S} \text{dist}(v, s)$
 
 예를 들면, 위와 같은 그래프에서 $k = 3$인 k-center problem의 최적해는 $2$입니다. 가능한 $|S| = 3$이고, $\max_{v\in v}\min_{s\in S}\text{dist}(v, s) = 2$인 집합 $S$는 $\{ 1, 3, 7 \}, \{ 1, 4, 7 \}, \{ 2, 3, 7 \}, \{ 2, 4, 7 \}$이 있습니다.
 
-일반 그래프에서 k-center problem은 다항 시간 풀이가 알려져 있기 않기에 그 자체로는 자주 출제되지는 않으며, 추가 조건이 있는 경우가 많습니다. 예시로는 $k = 1$이고 $\text{dist}$ 함수가 metric이라는 조건을 추가한 [BOJ 19352](https://www.acmicpc.net/problem/19352), [4360](https://www.acmicpc.net/problem/4360), [20631](https://www.acmicpc.net/problem/20631)이 있습니다.
+일반 그래프에서 k-center problem은 다항 시간 풀이가 알려져 있기 않기에 그 자체로는 자주 출제되지는 않으며, $k = 1$이거나 $\text{dist}$ 함수가 metric이라는 조건을 추가한 변형 문제가 종종 출제됩니다.
 
 ## 3. K-Center Problem In Tree
 
@@ -70,37 +70,31 @@ $1$번 정점을 루트로 두고, $i$번 정점을 루트로 하는 subtree를 
 
 ## 4. Practice Problems
 
-지금까지 알아본 내용을 이용해 해결할 수 있는 문제들을 살펴보겠습니다.
+지금까지의 논의를 이용하면 다음의 문제를 해결할 수 있습니다.
 
-### 4.1 [BOJ 19352 - Factory](https://www.acmicpc.net/problem/19352)
+### 4.1 [BOJ 23572 - Logistical Warehouse 2](https://www.acmicpc.net/problem/23572)
 
-~
+제한: $1 \le K \le N \le 10^5$
 
-### 4.2 [BOJ 20632 - All your base belong to us](https://www.acmicpc.net/problem/20631)
+$N$개의 정점으로 이루어진 트리 $T = (V, E)$가 주어집니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 개수로 정의합시다. 다음 조건을 만족하는 $S \subseteq V$에 대해 $|S|$의 최솟값을 구해야 합니다.
 
-~
+$$\forall v \in V, \; \min_{s \in S}{\text{dist}(v, s)} \le K$$
 
-### 4.3 [BOJ 23572 - Logistical Warehouse 2](https://www.acmicpc.net/problem/23572)
+위에서 정의한 $f(x)$를 이용하면, 문제에서 요구하는 값은 $f(K)$임을 알 수 있습니다.
 
-~
+따라서 기존 논의를 이용하면 greedy하게 $\mathcal{O}(N)$에 문제를 해결할 수 있습니다.
 
-### 4.4 [BOJ 28219 - 주유소](https://www.acmicpc.net/problem/28219)
+### 4.2 [BOJ 28219 - 주유소](https://www.acmicpc.net/problem/28219)
 
-~
+제한: $2 \le N \le 2 \cdot 10^5; 1 \le K \le N - 1$
 
-### 4.5 [BOJ 8213 - Dynamite](https://www.acmicpc.net/problem/8213)
+$N$개의 정점으로 이루어진 트리 $T = (V, E)$가 주어집니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 개수로 정의합시다. 또한 $a$와 $b$를 잇는 유일한 단순 경로를 $P(a, b)$라 하겠습니다. 다음 조건을 만족하는 $S \subseteq V$에 대해 $|S|$의 최솟값을 구해야 합니다.
 
-~
+$$\forall a, b \in V \land \text{dist}(a, b) = K, \; \exists u \in P(a, b), u \in S$$
 
-### 4.6 [BOJ 24472 - Parkovi](https://www.acmicpc.net/problem/24472)
+이는 어떤 정점 $u$를 골라 트리에서 제거하는 연산을 최소한으로 이용해 각 component의 지름을 $k$ 미만으로 만드는 문제와 동치입니다.
 
-~
-
-### 4.7 [BOJ 34184 - Opening Time](https://www.acmicpc.net/problem/34184)
-
-~
-
-## 5. Conclusion
+트리의 k-center problem를 해결할 때와 비슷하게, subtree의 지름이 $k$ 이상인 정점을 검은색 정점, 나머지 정점을 하얀색 정점이라 하겠습니다. 이러면 dfs 과정에서 검은색 정점이 나올 때마다 해당 정점을 $S$에 포함시키는 greedy 전략이 성립하고, 따라서 $\mathcal{O}(N)$에 문제를 해결할 수 있습니다.
 
 ## References
 
