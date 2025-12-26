@@ -76,7 +76,7 @@ $1$번 정점을 루트로 두고, $i$번 정점을 루트로 하는 subtree를 
 
 제한: $1 \le K \le N \le 10^5$
 
-$N$개의 정점으로 이루어진 트리 $T = (V, E)$가 주어집니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 개수로 정의합시다. 다음 조건을 만족하는 $S \subseteq V$에 대해 $|S|$의 최솟값을 구해야 합니다.
+$N$개의 정점으로 이루어진 트리 $T = (V, E)$가 주어집니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 개수로 정의합니다. 다음 조건을 만족하는 $S \subseteq V$에 대해 $|S|$의 최솟값을 구해야 합니다.
 
 $$\forall v \in V, \; \min_{s \in S}{\text{dist}(v, s)} \le K$$
 
@@ -86,15 +86,33 @@ $$\forall v \in V, \; \min_{s \in S}{\text{dist}(v, s)} \le K$$
 
 ### 4.2 [BOJ 28219 - 주유소](https://www.acmicpc.net/problem/28219)
 
-제한: $2 \le N \le 2 \cdot 10^5; 1 \le K \le N - 1$
+제한: $1 \le K < N \le 2 \cdot 10^5$
 
-$N$개의 정점으로 이루어진 트리 $T = (V, E)$가 주어집니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 개수로 정의합시다. 또한 $a$와 $b$를 잇는 유일한 단순 경로를 $P(a, b)$라 하겠습니다. 다음 조건을 만족하는 $S \subseteq V$에 대해 $|S|$의 최솟값을 구해야 합니다.
+$N$개의 정점으로 이루어진 트리 $T = (V, E)$가 주어집니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 개수로 정의합니다. 또한 $a$와 $b$를 잇는 유일한 단순 경로를 $P(a, b)$라 하겠습니다. 다음 조건을 만족하는 $S \subseteq V$에 대해 $|S|$의 최솟값을 구해야 합니다.
 
 $$\forall a, b \in V \land \text{dist}(a, b) = K, \; \exists u \in P(a, b), u \in S$$
 
 이는 어떤 정점 $u$를 골라 트리에서 제거하는 연산을 최소한으로 이용해 각 component의 지름을 $k$ 미만으로 만드는 문제와 동치입니다.
 
 트리의 k-center problem를 해결할 때와 비슷하게, subtree의 지름이 $k$ 이상인 정점을 검은색 정점, 나머지 정점을 하얀색 정점이라 하겠습니다. 이러면 dfs 과정에서 검은색 정점이 나올 때마다 해당 정점을 $S$에 포함시키는 greedy 전략이 성립하고, 따라서 $\mathcal{O}(N)$에 문제를 해결할 수 있습니다.
+
+### 4.3 [BOJ 8213 - Dynamite](https://www.acmicpc.net/problem/8213)
+
+제한: $1 \le K \le N \le 3 \cdot 10^5$
+
+$N$개의 정점으로 이루어진 트리 $T = (V, E)$와 다이너마이트가 설치된 정점의 집합 $D \subseteq V$가 주어집니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 개수로 정의합니다. 다음 조건을 만족하는 $S \subseteq V$이고 $|S| \le K$인 집합 $S$에 대해 $\max_{v \in D} \min_{s \in S} \text{dist}(v, s)$의 최솟값을 구해야 합니다.
+
+$f(x)$를 $\max_{v \in D} \min_{s \in S} \text{dist}(v, s) \le x$를 만족하는 $S$에 대한 $|S|$의 최솟값으로 정의하면, $f(x) \le K$를 만족하는 $x$의 최솟값을 구하면 됩니다.
+
+이렇게 정의한 $f(x)$는 기존 문제와 마찬가지로 정점을 선택해야만 하는 경우에만 선택하는 greedy를 이용해 $\mathcal{O}(N)$에 구할 수 있습니다.
+
+### 4.4 [BOJ 24472 - Parkovi](https://www.acmicpc.net/problem/24472)
+
+제한: $1 \le K \le N \le 2 \cdot 10^5$
+
+$N$개의 정점으로 이루어진 트리 $T = (V, E)$가 주어집니다. 트리의 각 간선에는 $[1, 10^9]$ 범위의 정수 가중치가 부여되어 있습니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 가중치 합으로 정의합니다. 다음 조건을 만족하는 $S \subseteq V$이고 $|S| = K$인 집합 $S$에 대해 $\max_{v \in V} \min_{s \in S} \text{dist}(v, s)$의 최솟값을 구해야 합니다.
+
+본문에서 다룬 weighted tree with discrete centers case에 해당하는 k-center problem입니다. 설명한 것과 같이 자식 노드를 선택해야 할 수도 있음에 유의하면서 greedy하게 결정 문제를 $\mathcal{O}(N)$에 해결하면, 이분 탐색으로 $\mathcal{O}(N\log(\max(w_i)))$에 문제를 해결할 수 있습니다.
 
 ## References
 
