@@ -26,10 +26,84 @@ $$\min_{S \subseteq V, |S| = k} \max_{v \in V} \min_{s \in S} \text{dist}(v, s)$
 
 ![Fig.1](/assets/images/2025-12-24-tree-k-center/fig1.png)
 
-예를 들면, 위와 같은 그래프에서 $k = 3$인 k-center problem의 최적해는 $2$입니다. 가능한 $|S| = 3$이면서 $\max_{v\in v}\min_{s\in S}\text{dist}(v, s)$가 최소인 집합 $S$로는 $\{ 1, 3, 7 \}, \{ 1, 4, 7 \}, \{ 2, 3, 7 \}, \{ 2, 4, 7 \}$이 있습니다.
+예를 들면, 위와 같은 그래프에서 $k = 3$인 k-center problem의 최적해는 $2$입니다. 가능한 $|S| = 3$이고, $\max_{v\in v}\min_{s\in S}\text{dist}(v, s) = 2$인 집합 $S$는 $\{ 1, 3, 7 \}, \{ 1, 4, 7 \}, \{ 2, 3, 7 \}, \{ 2, 4, 7 \}$이 있습니다.
 
 일반 그래프에서 k-center problem은 다항 시간 풀이가 알려져 있기 않기에 그 자체로는 자주 출제되지는 않으며, 추가 조건이 있는 경우가 많습니다. 예시로는 $k = 1$이고 $\text{dist}$ 함수가 metric이라는 조건을 추가한 [BOJ 19352](https://www.acmicpc.net/problem/19352), [4360](https://www.acmicpc.net/problem/4360), [20631](https://www.acmicpc.net/problem/20631)이 있습니다.
 
+## 3. K-Center Problem In Tree
+
+k-center problem에서 그래프 $G$가 트리라는 조건이 있다면 문제를 효율적으로 해결할 수 있습니다.
+
+먼저 거리 제한 $x$가 주어질 때 필요한 최소 센터의 개수를 반환하는 함수 $f(x)$를 다음과 같이 정의합시다.
+
+$$f(x) := \min |S| \text{ s.t.} \max_{v\in v}\min_{s\in S}\text{dist}(v, s) \le x$$
+
+집합 $S$가 $\max_{v\in v}\min_{s\in S}\text{dist}(v, s) \le x$를 만족한다면 $\max_{v\in v}\min_{s\in S}\text{dist}(v, s) \le x + 1$ 또한 만족합니다. 따라서 정의에 의해 모든 $x$에 대해 $f(x) \le f(x + 1)$이 성립합니다.
+
+이러한 단조성을 이용하면 $f(x) \le k$를 만족하는 $x$의 최솟값을 이분 탐색<sup>binary search</sup>으로 구하며 k-center problem 문제의 최적해를 구할 수 있습니다. 일반적인 그래프에서는 $f(x)$를 계산하는 결정 문제 자체가 NP-hard에 해당하며 매우 어렵지만, 트리에서는 사이클이 없는 계층적 구조 덕분에 $f(x)$를 다항 시간 내에 빠르게 계산할 수 있습니다.
+
+### 3.1 Unweighted Tree with Discrete Centers
+
+모든 간선의 가중치가 $1$이면서 $S \subseteq V$인 경우에는 $f(x)$를 $\mathcal{O}(N)$에 구할 수 있습니다.
+
+$1$번 정점을 루트로 두고, $i$번 정점을 루트로 하는 subtree를 $T_i$로 정의합시다. $T_i$의 모든 정점 $u$에 대해 $\text{dist}(i, u) < x$라면 $i$번 정점을 하얀색 정점, 그렇지 않다면 검은색 정점이라 하겠습니다.
+
+어떤 정점 $i$가 검은색 정점이면서 $T_i$에 자기 자신을 제외한 다른 검은색 정점이 없다면 $i$를 포함하는 최적 집합 $S$가 존재합니다. 증명은 exchange argument를 이용합니다. $i$를 포함하지 않는 최적 집합 $S^\ast$가 있다고 가정합시다. 그러면 어떤 정점 $u \in T_i$가 존재해서 $u \in S^\ast$여야 합니다. 이때 $S^\ast$에서 $u$를 제거하고 $i$를 추가해 만든 집합 $S$ 또한 제한 조건을 만족하니 exchange argument가 성립합니다.
+
+비슷하게, $T_i$의 정점 중 가장 가까운 센터까지의 거리가 $x$ 초과인 모든 정점 $u$에 대해 $\text{dist}(i, u) < x$라면 $i$번 정점을 하얀색 정점, 그렇지 않다면 검은색 정점이라 하면 subtree 내에서 센터를 선택한 경우에도 같은 논리를 적용할 수 있습니다.
+
+따라서 dfs 과정에서 $T_i$에서 <sup>1)</sup>가장 가까운 센터까지의 거리가 $x$ 초과인 정점 $u$에 대한 $\max(\text{dist}(i, u))$값과 <sup>2)</sup>센터로 정한 정점 $v$에 대한 $\min(\text{dist}(i, v))$값을 관리하면서 greedy하게 $i$번 정점이 검은색 정점인지 여부를 판별하며 $f(x)$를 선형 시간에 계산할 수 있습니다. 이를 이용하면 이분 탐색으로 $\mathcal{O}(N\log(\max(w_i)))$에 k-center problem을 해결할 수 있습니다.
+
+### 3.2 Weighted Tree with Discrete Centers
+
+트리의 간선에 양의 가중치가 있는 경우에도 같은 논리를 적용할 수 있습니다.
+
+주의할 점은 간선의 가중치가 모두 $1$이라면 처음으로 가장 가까운 센터까지의 거리가 $x$ 초과이면서 $\text{dist}(i, u) \ge x$인 정점 $u$가 등장할 때에만 $i$번 정점을 센터로 지정하는 방법이 가능했지만, 간선의 가중치가 커질 수 있는 경우에는 $i$번 정점을 센터로 지정하더라도 $\text{dist}(i, u) > x$일 수 있다는 점입니다. 때문에 이러한 경우에는 $i$번 정점이 아니라 $u$를 포함하는 $i$번 정점의 자식 정점 $c$를 센터로 지정해야 합니다.
+
+정리하면, Unweighted Tree에서와 마찬가지로 dfs 과정에서 현재 정점 $i$를 선택하지 않으면 가장 가까운 센터까지의 거리가 $x$ 초과가 되는 정점 $u$가 생길 때, $i$번 정점 혹은 자식 정점 $c$를 센터로 지정하는 greedy 방법으로 $f(x)$를 $\mathcal{O}(N)$에 구할 수 있습니다. 이를 이용하면 이분 탐색으로 $\mathcal{O}(N\log(\max(w_i)))$에 k-center problem을 해결할 수 있습니다.
+
+### 3.3 Weighted Tree with Continuous Centers
+
+트리의 정점 뿐만 아니라 간선 위의 임의의 지점에서 센터를 고를 수 있을 때 k-center problem을 해결하는 방법을 생각해봅시다.
+
+이 경우 또한 마찬가지로 최대한 깊이가 얕은 지점을 센터로 정하면서 <sup>1)</sup>가장 먼 cover되지 않은 지점까지의 거리와 <sup>2)</sup>가장 가까운 센터까지의 거리를 관리하는 dfs로 greedy하게 $f(x)$를 $\mathcal{O}(N)$에 계산할 수 있습니다.
+
+## 4. Practice Problems
+
+지금까지 알아본 내용을 이용해 해결할 수 있는 문제들을 살펴보겠습니다.
+
+### 4.1 [BOJ 19352 - Factory](https://www.acmicpc.net/problem/19352)
+
+~
+
+### 4.2 [BOJ 20632 - All your base belong to us](https://www.acmicpc.net/problem/20631)
+
+~
+
+### 4.3 [BOJ 23572 - Logistical Warehouse 2](https://www.acmicpc.net/problem/23572)
+
+~
+
+### 4.4 [BOJ 28219 - 주유소](https://www.acmicpc.net/problem/28219)
+
+~
+
+### 4.5 [BOJ 8213 - Dynamite](https://www.acmicpc.net/problem/8213)
+
+~
+
+### 4.6 [BOJ 24472 - Parkovi](https://www.acmicpc.net/problem/24472)
+
+~
+
+### 4.7 [BOJ 34184 - Opening Time](https://www.acmicpc.net/problem/34184)
+
+~
+
+## 5. Conclusion
+
 ## References
 
-[1] [~](~)
+[1] [https://arxiv.org/abs/1705.02752](https://arxiv.org/abs/1705.02752)
+
+[2] [https://en.wikipedia.org/wiki/Metric_k-center](https://en.wikipedia.org/wiki/Metric_k-center)
