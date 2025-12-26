@@ -137,6 +137,42 @@ $$\forall a, b \in V \land \text{dist}(a, b) = K, \; \exists u \in P(a, b), u \i
 
 트리의 k-center problem를 해결할 때와 비슷하게, subtree의 지름이 $k$ 이상인 정점을 검은색 정점, 나머지 정점을 하얀색 정점이라 하겠습니다. 이러면 dfs 과정에서 검은색 정점이 나올 때마다 해당 정점을 $S$에 포함시키는 greedy 전략이 성립하고, 따라서 $\mathcal{O}(N)$에 문제를 해결할 수 있습니다.
 
+다음은 문제를 해결하는 예시 코드입니다.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+auto sol = [](int n, int k, auto adj) {
+	int ret = 0;
+	auto rec = [&](const auto& self, int cur, int prv) -> int {
+		int mx = 1, flag = 0;
+		for (int nxt : adj[cur]) {
+			if (nxt == prv) continue;
+			int res = self(self, nxt, cur);
+			if (mx + res > k) flag = 1;
+			mx = max(mx, res + 1);
+		}
+		if (flag) ret++, mx = 0;
+		return mx;
+	};
+	rec(rec, 1, 0);
+	return ret;
+};
+
+int main() {
+	cin.tie(0)->sync_with_stdio(0);
+	int n, k; cin >> n >> k;
+	vector adj(n + 1, vector(0, 0));
+	for (int i = 1; i < n; i++) {
+		int a, b; cin >> a >> b;
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+	}
+	cout << sol(n, k, adj) << '\n';
+}
+```
+
 ### 4.3 [BOJ 8213 - Dynamite](https://www.acmicpc.net/problem/8213)
 
 제한: $1 \le K \le N \le 3 \cdot 10^5$
@@ -146,6 +182,56 @@ $N$개의 정점으로 이루어진 트리 $T = (V, E)$와 다이너마이트가
 $f(x)$를 $\max_{v \in D} \min_{s \in S} \text{dist}(v, s) \le x$를 만족하는 $S$에 대한 $|S|$의 최솟값으로 정의하면, $f(x) \le K$를 만족하는 $x$의 최솟값을 구하면 됩니다.
 
 이렇게 정의한 $f(x)$는 기존 문제와 마찬가지로 정점을 선택해야만 하는 경우에만 선택하는 greedy를 이용해 $\mathcal{O}(N)$에 구할 수 있습니다.
+
+다음은 문제를 해결하는 예시 코드입니다.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+constexpr int inf = 1 << 30;
+
+auto sol = [](int n, int k, auto v, auto adj) {
+	auto check = [&](int x) {
+		int cnt = 0;
+		auto rec = [&](const auto& self, int cur, int prv) -> pair<int, int> {
+			int mn = inf, mx = v[cur] ? 0 : -inf;
+			for (int nxt : adj[cur]) {
+				if (nxt == prv) continue;
+				auto [a, b] = self(self, nxt, cur);
+				if (a != inf) mn = min(mn, a + 1);
+				if (b != -inf) mx = max(mx, b + 1);
+			}
+			if (mn != inf && mx != -inf && mn + mx <= x) mx = -inf;
+			if (mx == x) cnt++, mn = 0, mx = -inf;
+			return pair(mn, mx);
+		};
+		if (rec(rec, 1, 0).second != -inf) cnt++;
+		return cnt <= k;
+	};
+	int lo = -1, hi = n;
+	while (lo + 1 < hi) {
+		int mid = lo + hi >> 1;
+		if (!check(mid)) lo = mid;
+		else hi = mid;
+	}
+	return hi;
+};
+
+int main() {
+	cin.tie(0)->sync_with_stdio(0);
+	int n, k; cin >> n >> k;
+	vector v(n + 1, 0);
+	vector adj(n + 1, vector(0, 0));
+	for (int i = 1; i <= n; i++) cin >> v[i];
+	for (int i = 1; i < n; i++) {
+		int a, b; cin >> a >> b;
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+	}
+	cout << sol(n, k, v, adj) << '\n';
+}
+```
 
 ### 4.4 [BOJ 24472 - Parkovi](https://www.acmicpc.net/problem/24472)
 
