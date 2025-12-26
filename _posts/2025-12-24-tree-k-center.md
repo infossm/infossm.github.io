@@ -28,7 +28,7 @@ $$\min_{S \subseteq V, |S| = k} \max_{v \in V} \min_{s \in S} \text{dist}(v, s)$
 
 예를 들면, 위와 같은 그래프에서 $k = 3$인 k-center problem의 최적해는 $2$입니다. 가능한 $|S| = 3$이고, $\max_{v\in V}\min_{s\in S}\text{dist}(v, s) = 2$인 집합 $S$는 $\{ 1, 3, 7 \}, \{ 1, 4, 7 \}, \{ 2, 3, 7 \}, \{ 2, 4, 7 \}$이 있습니다.
 
-일반 그래프에서 k-center problem은 다항 시간 풀이가 알려져 있기 않기에 그 자체로는 자주 출제되지는 않으며, $k = 1$이거나 $\text{dist}$ 함수가 metric이라는 조건을 추가한 변형 문제가 종종 출제됩니다.
+일반 그래프에서 k-center problem은 다항 시간 풀이가 알려져 있지 않기에 그 자체로는 자주 출제되지는 않으며, $k = 1$이거나 $\text{dist}$ 함수가 metric이라는 조건을 추가한 변형 문제가 종종 출제됩니다.
 
 ## 3. K-Center Problem In Tree
 
@@ -38,9 +38,9 @@ k-center problem에서 그래프 $G$가 트리라는 조건이 있다면 문제�
 
 $$f(x) := \min |S| \text{ s.t.} \max_{v\in V}\min_{s\in S}\text{dist}(v, s) \le x$$
 
-집합 $S$가 $\max_{v\in V}\min_{s\in S}\text{dist}(v, s) \le x$를 만족한다면 $\max_{v\in V}\min_{s\in S}\text{dist}(v, s) \le x + 1$ 또한 만족합니다. 따라서 정의에 의해 모든 $x$에 대해 $f(x) \le f(x + 1)$이 성립합니다.
+집합 $S$가 $\max_{v\in V}\min_{s\in S}\text{dist}(v, s) \le x$를 만족한다면 $\max_{v\in V}\min_{s\in S}\text{dist}(v, s) \le x + 1$ 또한 만족합니다. 따라서 정의에 의해 모든 $x$에 대해 $f(x) \ge f(x + 1)$이 성립합니다.
 
-이러한 단조성을 이용하면 $f(x) \le k$를 만족하는 $x$의 최솟값을 이분 탐색<sup>binary search</sup>으로 구하며 k-center problem 문제의 최적해를 구할 수 있습니다. 일반적인 그래프에서는 $f(x)$를 계산하는 결정 문제 자체가 NP-hard에 해당하며 매우 어렵지만, 트리에서는 사이클이 없는 계층적 구조 덕분에 $f(x)$를 다항 시간 내에 빠르게 계산할 수 있습니다.
+이러한 단조성을 이용하면 $f(x) \le k$를 만족하는 $x$의 최솟값을 이분 탐색<sup>binary search</sup>으로 구하며 k-center problem의 최적해를 구할 수 있습니다. 일반적인 그래프에서는 $f(x)$를 계산하는 결정 문제 자체가 NP-hard에 해당하며 매우 어렵지만, 트리에서는 사이클이 없는 계층적 구조 덕분에 $f(x)$를 다항 시간 내에 빠르게 계산할 수 있습니다.
 
 ### 3.1 Unweighted Tree with Discrete Centers
 
