@@ -20,13 +20,13 @@ k-center problem은 그래프에서 $k$개의 센터를 선택하여 모든 정�
 
 그래프의 k-center problem은 일반 그래프 $G = (V, E)$에서 $k$개의 센터를 선택하여, 모든 정점으로부터 가장 가까운 센터까지의 거리의 최댓값을 최소화하는 문제입니다.
 
-$$\min_{S \subseteq V, |S| = k} \max_{v \in V} \min_{s \in S} \text{dist}(v, s)$$
+$$\min_{S \subseteq V, \vert S\vert = k} \max_{v \in V} \min_{s \in S} \text{dist}(v, s)$$
 
 그래프의 k-center problem이 어려운 이유는 그래프에서 한 정점의 선택이 다른 모든 정점에 미치는 영향이 서로 복잡하게 얽혀있기 때문입니다. 한 정점에서 다른 정점으로 이동하는 경로는 여러 개가 존재하기에, 일반 그래프에서는 거리의 전파가 국소적인 구조로 분해되지 않습니다.
 
 ![Fig.1](/assets/images/2025-12-24-tree-k-center/fig1.png)
 
-예를 들면, 위와 같은 그래프에서 $k = 3$인 k-center problem의 최적해는 $2$입니다. 가능한 $|S| = 3$이고, $\max_{v\in V}\min_{s\in S}\text{dist}(v, s) = 2$인 집합 $S$는 $\{ 1, 3, 7 \}, \{ 1, 4, 7 \}, \{ 2, 3, 7 \}, \{ 2, 4, 7 \}$이 있습니다.
+예를 들면, 위와 같은 그래프에서 $k = 3$인 k-center problem의 최적해는 $2$입니다. 가능한 $\vert S\vert = 3$이고, $\max_{v\in V}\min_{s\in S}\text{dist}(v, s) = 2$인 집합 $S$는 $\{ 1, 3, 7 \}, \{ 1, 4, 7 \}, \{ 2, 3, 7 \}, \{ 2, 4, 7 \}$이 있습니다.
 
 일반 그래프에서 k-center problem은 다항 시간 풀이가 알려져 있지 않기에 그 자체로는 자주 출제되지는 않으며, $k = 1$이거나 $\text{dist}$ 함수가 metric이라는 조건을 추가한 변형 문제가 종종 출제됩니다.
 
@@ -36,7 +36,7 @@ k-center problem에서 그래프 $G$가 트리라는 조건이 있다면 문제�
 
 먼저 거리 제한 $x$가 주어질 때 필요한 최소 센터의 개수를 반환하는 함수 $f(x)$를 다음과 같이 정의합시다.
 
-$$f(x) := \min |S| \text{ s.t.} \max_{v\in V}\min_{s\in S}\text{dist}(v, s) \le x$$
+$$f(x) := \min \vert S\vert \text{ s.t.} \max_{v\in V}\min_{s\in S}\text{dist}(v, s) \le x$$
 
 집합 $S$가 $\max_{v\in V}\min_{s\in S}\text{dist}(v, s) \le x$를 만족한다면 $\max_{v\in V}\min_{s\in S}\text{dist}(v, s) \le x + 1$ 또한 만족합니다. 따라서 정의에 의해 모든 $x$에 대해 $f(x) \ge f(x + 1)$이 성립합니다.
 
@@ -76,7 +76,7 @@ $1$번 정점을 루트로 두고, $i$번 정점을 루트로 하는 subtree를 
 
 제한: $1 \le K \le N \le 10^5$
 
-$N$개의 정점으로 이루어진 트리 $T = (V, E)$가 주어집니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 개수로 정의합니다. 다음 조건을 만족하는 $S \subseteq V$에 대해 $|S|$의 최솟값을 구해야 합니다.
+$N$개의 정점으로 이루어진 트리 $T = (V, E)$가 주어집니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 개수로 정의합니다. 다음 조건을 만족하는 $S \subseteq V$에 대해 $\vert S\vert$의 최솟값을 구해야 합니다.
 
 $$\forall v \in V, \; \min_{s \in S}{\text{dist}(v, s)} \le K$$
 
@@ -129,7 +129,7 @@ int main() {
 
 제한: $1 \le K < N \le 2 \cdot 10^5$
 
-$N$개의 정점으로 이루어진 트리 $T = (V, E)$가 주어집니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 개수로 정의합니다. 또한 $a$와 $b$를 잇는 유일한 단순 경로를 $P(a, b)$라 하겠습니다. 다음 조건을 만족하는 $S \subseteq V$에 대해 $|S|$의 최솟값을 구해야 합니다.
+$N$개의 정점으로 이루어진 트리 $T = (V, E)$가 주어집니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 개수로 정의합니다. 또한 $a$와 $b$를 잇는 유일한 단순 경로를 $P(a, b)$라 하겠습니다. 다음 조건을 만족하는 $S \subseteq V$에 대해 $\vert S\vert$의 최솟값을 구해야 합니다.
 
 $$\forall a, b \in V \land \text{dist}(a, b) = K, \; \exists u \in P(a, b), u \in S$$
 
@@ -177,9 +177,9 @@ int main() {
 
 제한: $1 \le K \le N \le 3 \cdot 10^5$
 
-$N$개의 정점으로 이루어진 트리 $T = (V, E)$와 다이너마이트가 설치된 정점의 집합 $D \subseteq V$가 주어집니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 개수로 정의합니다. 다음 조건을 만족하는 $S \subseteq V$이고 $|S| \le K$인 집합 $S$에 대해 $\max_{v \in D} \min_{s \in S} \text{dist}(v, s)$의 최솟값을 구해야 합니다.
+$N$개의 정점으로 이루어진 트리 $T = (V, E)$와 다이너마이트가 설치된 정점의 집합 $D \subseteq V$가 주어집니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 개수로 정의합니다. 다음 조건을 만족하는 $S \subseteq V$이고 $\vert S\vert \le K$인 집합 $S$에 대해 $\max_{v \in D} \min_{s \in S} \text{dist}(v, s)$의 최솟값을 구해야 합니다.
 
-$f(x)$를 $\max_{v \in D} \min_{s \in S} \text{dist}(v, s) \le x$를 만족하는 $S$에 대한 $|S|$의 최솟값으로 정의하면, $f(x) \le K$를 만족하는 $x$의 최솟값을 구하면 됩니다.
+$f(x)$를 $\max_{v \in D} \min_{s \in S} \text{dist}(v, s) \le x$를 만족하는 $S$에 대한 $\vert S\vert$의 최솟값으로 정의하면, $f(x) \le K$를 만족하는 $x$의 최솟값을 구하면 됩니다.
 
 이렇게 정의한 $f(x)$는 기존 문제와 마찬가지로 정점을 선택해야만 하는 경우에만 선택하는 greedy를 이용해 $\mathcal{O}(N)$에 구할 수 있습니다.
 
@@ -237,7 +237,7 @@ int main() {
 
 제한: $1 \le K \le N \le 2 \cdot 10^5$
 
-$N$개의 정점으로 이루어진 트리 $T = (V, E)$가 주어집니다. 트리의 각 간선에는 $[1, 10^9]$ 범위의 정수 가중치가 부여되어 있습니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 가중치 합으로 정의합니다. 다음 조건을 만족하는 $S \subseteq V$이고 $|S| = K$인 집합 $S$에 대해 $\max_{v \in V} \min_{s \in S} \text{dist}(v, s)$의 최솟값을 구해야 합니다.
+$N$개의 정점으로 이루어진 트리 $T = (V, E)$가 주어집니다. 트리의 각 간선에는 $[1, 10^9]$ 범위의 정수 가중치가 부여되어 있습니다. 트리의 두 정점 $a, b$에 대해 $\text{dist}(a, b)$를 $a$와 $b$를 잇는 유일한 단순 경로 상의 간선의 가중치 합으로 정의합니다. 다음 조건을 만족하는 $S \subseteq V$이고 $\vert S\vert = K$인 집합 $S$에 대해 $\max_{v \in V} \min_{s \in S} \text{dist}(v, s)$의 최솟값을 구해야 합니다.
 
 본문에서 다룬 weighted tree with discrete centers case에 해당하는 k-center problem입니다. 설명한 것과 같이 자식 노드를 선택해야 할 수도 있음에 유의하면서 greedy하게 결정 문제를 $\mathcal{O}(N)$에 해결하면, 이분 탐색으로 $\mathcal{O}(N\log(\max(w_i)))$에 문제를 해결할 수 있습니다.
 
