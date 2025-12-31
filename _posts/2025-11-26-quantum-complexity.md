@@ -6,6 +6,8 @@ author: red1108
 tags: [quantum, quantum-computing]
 ---
 
+아마도 복잡도 이론에서 가장 자주 들어봤을 만한 용어는 P, NP, BPP, BQP, PSPACE 등일 것이다. 이런 개념들의 관점은 특정 문제를 푸는 데에 필요한 자원(시간, 공간)을 기준으로 문제를 분류하는 것이다. 이번 글에서는 좀더 low-level 하게 특정 계산을 수행하는 '회로' 관점에서 복잡도를 살펴보고자 한다. 특히, 양자 복잡도 이론에서 가장 흥미롭게 연구되는 클래스인 $\text{QAC}^0$ 에 소개하는 것이 이번 글의 목표이다.
+
 AC, NC, TC 간단한 소개.
 complexity zoo
 
@@ -30,8 +32,12 @@ QAC0 가 parity를 풀 수 있을까? 아직까지 증명은 안 되었지만, �
 
 [1] learning shallow quantum circuits
 
-[2] pauli 저차집중 문제
+[2] On the Pauli Spectrum of QAC0
 
-[3] learning shallow quantum circuits multi qubits
+[3] On the Computational Power of QAC0 with Barely Superlinear Ancillae
 
-[2] PRU extremly low depth
+[4] learning shallow quantum circuits multi qubits
+
+[5] Random unitaries in extremely low depth
+
+[6] Random Unitaries in Constant (Quantum) Time
