@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Phase Transitions in Networks: Erdős–Rényi Model"
-date: 2025-11-15
+date: 2025-12-31
 author: defwin
 tags: [network theory, statistical physics]
 ---
