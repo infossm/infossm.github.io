@@ -8,9 +8,9 @@ tags: [algorithm, graph theory]
 
 ## 1. 서론
 
-지난 [글](https://infossm.github.io/blog/2025/12/01/f-deletion/)에서는 $\mathcal{F}$-deletion 문제의 FPT(Fixed-parameter tractable) 알고리즘에 대해 살펴보았다. 해당 알고리즘은, treewidth가 $t$  이하로 bounded인 그래프에서 $2^{2^{O(t \log t)}} n$ 시간에 동작하였다.
+지난 [글](https://infossm.github.io/blog/2025/12/01/f-deletion/)에서는 $\mathcal{F}$-deletion 문제의 FPT(Fixed-parameter tractable) 알고리즘에 대해 살펴보았다. 해당 알고리즘은 treewidth가 $t$ 이하로 bounded인 그래프에서 $2^{2^{O(t \log t)}} n$ 시간에 동작하였다.
 
-$\mathcal{F}$-(M-)deletion 문제는 널리 믿어지는 Exponential Time Hypothesis 하에서 일반적인 그래프 클래스($\mathcal{F}$가 chair 및 banner 로 불리는 작은 크기의 graph의 contraction으로 나타내어질 수 없는 연결 그래프를 포함하는 경우)에 대해 $2^{o(t \log t)} poly(n)$ 시간에 해결될 수 없음이 밝혀져 있는 문제다. 이 글에서는 2023년 논문 [1]에서 제시한 $2^{O(t \log t)} n$ 시간에 $\mathcal{F}$-(M-)deletion 문제를 해결하는 알고리즘을 소개한다.
+$\mathcal{F}$-(M-)deletion 문제는 널리 믿어지는 Exponential Time Hypothesis 하에서 일반적인 그래프 클래스($\mathcal{F}$가 chair 및 banner로 불리는 작은 크기의 그래프의 contraction으로 나타낼 수 없는 연결 그래프를 포함하는 경우)에 대해 $2^{o(t \log t)} poly(n)$ 시간에 해결될 수 없음이 밝혀져 있다. 이 글에서는 2023년 논문 [1]에서 제시한 $2^{O(t \log t)} n$ 시간에 $\mathcal{F}$-(M-)deletion 문제를 해결하는 알고리즘을 소개한다.
 
 ## 2. 글의 구성
 
@@ -22,11 +22,11 @@ $\mathcal{F}$-(M-)deletion 문제는 널리 믿어지는 Exponential Time Hypoth
 * 6장: Representative가 너무 클 수 없는 이유
 * 7장: 알고리즘 분석 및 결론
 
-논문이 상당히 난해한 만큼, 디테일을 다루기 보단 논문을 이해하기 위해 필요한 요소들을 종합적으로 담은 글로 구성하고자 하였다. 이 글을 읽고 나서 세부적인 증명의 디테일이 궁금하다면, [1]을 읽어보는 것을 추천한다. [1]을 바로 읽는 것 보다는 훨씬 읽기 수월하리라 확신한다.
+논문이 상당히 난해한 만큼, 디테일을 다루기보다는 논문을 이해하기 위해 필요한 요소들을 종합적으로 담은 글로 구성하고자 하였다. 이 글을 읽고 나서 세부적인 증명의 디테일이 궁금하다면 [1]을 읽어보는 것을 추천한다. [1]을 바로 읽는 것보다는 훨씬 수월하리라 확신한다.
 
 ## 3. 문제 정의
 
-지난 글에서 소개한 알고리즘과 풀고자 하는 문제도 당연히 동등하고, 마찬가지로, boundaried graph와 folio 등의 개념은 여전히 활용한다.  하지만, 세부적인 정의는 약간 다른 부분이 있다.
+지난 글에서 소개한 알고리즘과 풀고자 하는 문제도 당연히 동등하고, 마찬가지로 boundaried graph와 folio 등의 개념은 여전히 활용한다. 다만, 세부적인 정의에서 약간 다른 부분이 있다.
 
 **$\newcommand{\F}{\mathcal{F}}\mathcal{F}$-M-DELETION**: 그래프 $G$와 유한개의 그래프를 모아 놓은 $\mathcal{F} $가 주어졌을 때 $G\setminus S$가 $\F$의 원소를 minor로 포함하지 않도록 하는 $\vert S \vert \le k$가 존재하는가?
 
@@ -40,7 +40,7 @@ $\mathcal{F}$-(M-)deletion 문제는 널리 믿어지는 Exponential Time Hypoth
 
 이 글 전체에 걸쳐 $\mathcal{F} $를 하나 고정해두었다고 가정하자.
 
-$h$는 $\F$ 에만 의존하는 어떤 상수이고 (나중에 정의 됨), $t$는 입력으로 주어지는 graph의 treewidth 정도의 수라고 하자. $\Theta(tw)$ 스케일이라고 생각하면 좋다. $t$가 실제로 그런 수임이 중요해지는 부분에서는 명시적으로 treewidth에 대한 언급을 할 것이다. 그래프는 무향 그래프를 의미한다.
+$h$는 $\F$에만 의존하는 어떤 상수이고(나중에 정의됨), $t$는 입력으로 주어지는 그래프의 treewidth 정도의 수라고 하자. $\Theta(tw)$ 스케일이라고 생각하면 된다. $t$가 실제로 그런 수임이 중요해지는 부분에서는 명시적으로 treewidth에 대해 언급할 것이다. 그래프는 무향 그래프를 의미한다.
 
 ### Boundaried Graph
 
@@ -52,9 +52,9 @@ Boundary는 그래프의 경계로, 우리는 boundary가 똑같이 생겨 먹�
 
 $\G$와 gluing operation이 잘 정의되는 boundaried graph를 $\G$와 compatible 하다고 부르자.
 
-Boundary를 제외한 그래프의 '세부적인' 구성요소들을 graph의 detail이라 부를 것이고, formal 하게는 $detail(\G) := \max \{ \vert E(G) \vert, \vert V(G) \setminus B \vert \}$ 로 정의된다. Detail
+Boundary를 제외한 그래프의 '세부적인' 구성요소들을 그래프의 detail이라 부를 것이고, 수식으로는 $detail(\G) := \max \{ \vert E(G) \vert, \vert V(G) \setminus B \vert \}$로 정의된다.
 
-Boundar가 '동일하게 생긴' 두 boundaried graph $\G_1, \G_2$에 대해 equivalence relation $\equiv_h$ 를
+Boundary가 '동일하게 생긴' 두 boundaried graph $\G_1, \G_2$에 대해 equivalence relation $\equiv_h$를
 
 * $\G_1 \equiv_h \G_2$ 임은
 * 임의의 vertex, edge가 각 $h$개 이하인 graph $H$와 임의의 ($\G_1, \G_2$와)  compatible 한 $\mathbf{F}$ 에 대해
@@ -65,7 +65,7 @@ Boundar가 '동일하게 생긴' 두 boundaried graph $\G_1, \G_2$에 대해 equ
 
 ### Folio
 
-우리는 $\equiv_h$ 의 equivalence class를 직접적으로 관리하며 동적 계획법을 사용하고 싶지만, 이를 직관을 갖고 다루는 것은 어려운 일이다. 그래서, folio를 정의한다.
+우리는 $\equiv_h$의 equivalence class를 직접적으로 관리하며 동적 계획법을 사용하고 싶지만, 이를 직관적으로 다루는 것은 어려운 일이다. 그래서 folio를 정의한다.
 
 Boundaried graph $\G = (G, B, \rho)$ 의 $h$-folio를
 $\newcommand{fol}{\mathsf{-folio}} h\fol (\G) := \{ \G' \mid \G' \preceq_{tm} \G, \G'\text{has detail at most }h \}$ 로 하여 정의하자. (여기에서, $\preceq_{tm}$ 은 topological minor relation으로, boundaried graph 에서는 boundary vertex 를 '안 건드리고' subdivision을 subgraph로 가짐으로 하여 정의된다.)
@@ -76,7 +76,7 @@ $\newcommand{fol}{\mathsf{-folio}} h\fol (\G) := \{ \G' \mid \G' \preceq_{tm} \G
 
 ### 알고리즘
 
-지난 글에서 소개한 알고리즘과 동일하나, 글의 완결성을 위해 조금 더 상세히 설명하겠다.
+지난 글에서 소개한 알고리즘과 동일하지만, 글의 완결성을 위해 조금 더 상세히 설명하겠다.
 
 입력으로 주어지는 그래프의 rooted branch decomposition을 고려할 것이다. 자세한 정의는 이전 글을 참고하면 좋고, 요약은 아래 이미지를 참고하면 좋다.
 
@@ -130,7 +130,7 @@ Branchwidth와 treewidth 값은 선형적인 관계에 있음이 알려져 있�
 
 ![flatwall](/assets/images/2026-01-16-f-deletion/flatwall.png)
 
-높이 $r$인 벽돌 형태의 구조를 $r$-wall이라고 부르고, 위 그림 처럼 예쁘게 위치해 있으면 flat wall을 가진다고 부른다. 위 그림에서 빨갛게 표시된 부분이 flat wall이라 생각하면 된다.
+높이 $r$인 벽돌 형태의 구조를 $r$-wall이라고 부르고, 위 그림처럼 예쁘게 위치해 있으면 flat wall을 가진다고 부른다. 위 그림에서 빨갛게 표시된 부분이 flat wall이라고 생각하면 된다.
 
 Flat Wall Theorem은, 다시 말해, treewidth가 큰 graph에는 작은 boundary와 그에 의해 touch 되지 않는 영역의 flat wall이 존재함을 말한다. Flat Wall 이라는 structure가 주는 좋은 성질 때문에 우리는 많은 것을 논할 수 있다.
 
@@ -142,9 +142,9 @@ Representative graph의 treewidth가 아주 크다고 가정하자. 그러면, r
 
 Representative graph 위에서 우리가 찾는 minor $H$는 크기가 고정된 상수 $h$이다. 반대로, 우리가 찾은 railed annulus는 아주 크다. 따라서, minor model을 올려놓는 것 만으로 이 annulus를 전부 덮을 수 없다.
 
-그리고 railed annulus는 cycle과 rail이 직교하는 예쁜 구조를 이루고 있기 때문에, 아무리 복잡한 topological minor model 을 이 위에 올려놓더라도, model 상에서의 subdivision path 들이 특정한 rail 을 따라가는 등, 예쁜 형태를 강제할 수 있다.
+그리고 railed annulus는 cycle과 rail이 직교하는 예쁜 구조를 이루고 있기 때문에, 아무리 복잡한 topological minor model을 이 위에 올려놓더라도 model 상에서의 subdivision path들이 특정한 rail을 따라가는 등 예쁜 형태를 강제할 수 있다.
 
-그리고 아주 큰 wall 안에서는 wall의 조각(brick)들이 가지는 folio가 모두 같아지는 충분히 큰 subwall이 존재한다는 사실도 Flat Wall 관련 이론의 결과로 알려져 있다. 논문에서는 이 사실을 활용하여 wall의 가장 중심부를 지나도록 놓인 minor model을 '조금 더 바깥쪽'의 같은 folio를 가지는 brick 쪽으로 밀어내는 기법을 논한다.
+또한 아주 큰 wall 안에서는 wall의 조각(brick)들이 가지는 folio가 모두 같아지는 충분히 큰 subwall이 존재한다는 사실도 Flat Wall 관련 이론의 결과로 알려져 있다. 논문에서는 이 사실을 활용하여 wall의 가장 중심부를 지나도록 놓인 minor model을 '조금 더 바깥쪽'의 같은 folio를 가지는 brick 쪽으로 밀어내는 기법을 논한다.
 
 ![rerouting](/assets/images/2026-01-16-f-deletion/rerouting.png)
 
@@ -172,7 +172,7 @@ Representative graph 위에서 우리가 찾는 minor $H$는 크기가 고정된
 * $K_h$ : 이 분류에 속하는 그래프는 $K_h$ 단 1개이다.
 * $K_h$-minor-free: 이 분류에 속하는 그래프는 최대 $O_{\mathcal{F}}(t)$ 개의 간선만을 가질 수 있음이 Graph Minor Theory의 결과로 알려져있다.
 
-정점 $n$개, 간선 $m$개를 가지는 그래프가 ${n^2 \choose m} = 2^{O(n \log m)}$ 개 있으므로, $\mathcal{R}_h^{t}$의 크기 역시 $2^{O(t \log t)}$로 bound 됨을 알 수 있다.
+정점 $n$개, 간선 $m$개를 가지는 그래프가 ${n^2 \choose m} = 2^{O(n \log m)}$개 있으므로, $\mathcal{R}_h^{t}$의 크기 역시 $2^{O(t \log t)}$로 bound됨을 알 수 있다.
 
 ## 7. 결론
 
@@ -185,7 +185,7 @@ Representative graph 위에서 우리가 찾는 minor $H$는 크기가 고정된
 
 이로부터 알고리즘의 시간 복잡도가 $2^{O_{\mathcal{F}} (t \log t)} \cdot n$ 임을 살펴보았다.
 
-여담으로,  2월 초 이 논문을 해설하는 talk을 할 예정이고, 깊은 디테일을 담은 관련 자료가 정리된다면, 추후 첨부할 수 있도록 하겠다.
+여담으로, 2월 초에 이 논문을 해설하는 talk을 할 예정이고, 깊은 디테일을 담은 관련 자료가 정리되면 추후 첨부할 수 있도록 하겠다.
 
 ## Reference
 
