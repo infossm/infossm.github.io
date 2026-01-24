@@ -75,8 +75,6 @@ $$\sum_k k \cdot \frac{(k+1)p_{k+1}}{\langle k \rangle} = \frac{\langle k^2 \ran
 
 ER 모델에서 $p_k$가 푸아송 분포를 따름을 알고 있으므로, $c_1=\langle k \rangle = c$이고, $c_2 = \langle k^2 - k \rangle = \langle k \rangle^2$로, $c_1/c_2 = \langle k \rangle = c$입니다. 이를 통해 임계점이 $c=1$임을 알 수 있고, 이는 위에서 구한 결과와 정확히 일치합니다.
 
-### 2.3. 2nd GCC is Unlikely to Exist
-
 ## 3. Small Components
 작은 컴포넌트들의 크기는 임계점 근처에서 어떻게 변하는지 살펴봅시다. 어떤 차수가 $k$이고 GCC에 속하지 않은 노드가 연결된 연결 요소의 크기를 $s$라 합시다. 이전에도 언급했듯이 임계점 근처에서 이 노드가 연결된 연결요소를 트리로 가정할 수 있습니다. 노드 하나를 제거한다면 서브트리들이 생기고, 각각의 크기를 $t_1,\cdots t_k$라 합시다. 이 때 $s$의 평균을 내보면
 
