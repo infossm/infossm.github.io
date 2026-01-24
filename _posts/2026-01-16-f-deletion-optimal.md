@@ -80,7 +80,7 @@ $\newcommand{fol}{\mathsf{-folio}} h\fol (\G) := \{ \G' \mid \G' \preceq_{tm} \G
 
 입력으로 주어지는 그래프의 rooted branch decomposition을 고려할 것이다. 자세한 정의는 이전 글을 참고하면 좋고, 요약은 아래 이미지를 참고하면 좋다.
 
-![image-20260124224639971](/assets/images/2026-01-16-f-deletion/rooted branch.png)
+![image-20260124224639971](/assets/images/2026-01-16-f-deletion/rooted.png)
 
 Branchwidth와 treewidth 값은 선형적인 관계에 있음이 알려져 있으며(즉, 어느 하나가 bound 되어 있다면, 다른 하나 또한 그의 상수배 이내의 값을 가진다), rooted branch decomposition에 대해 다음의 사실도 관찰할 수 있다.
 
