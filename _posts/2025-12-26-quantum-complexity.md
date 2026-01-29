@@ -71,9 +71,41 @@ PARITY 문제는 회로 크기를 Poly(n) 으로 제한한다면 깊이 O(1) 로
 
 이처럼 회로 크기와 depth 사이에는 trade-off 관계가 존재하며, 특정 문제를 해결하는 데 필요한 최소 회로 깊이와 크기는 어떤 gate set을 허용하느냐에 따라 달라집니다.
 
-# AC, NC 클래스
+# AC, NC, LC, TC 클래스
 
-여기에 소개 입력
+모두 고전 회로를 의미합니다. 회로의 크기(게이트 수)는 Poly(n) 으로 제한합니다.
+
+기본적으로 AND, OR, NOT 게이트를 사용합니다.
+
+- AC: unbounded fan-in 게이트를 허용하는 회로 클래스입니다. AC^0, AC^1 등을 모두 포함하는 범주입니다.
+    - AC$^0$: 크기 Poly(n)에 깊이는 상수 깊이만 가능합니다.
+    - AC$^1$: 크기 Poly(n)에 깊이는 $\text{O}(\log n)$ 까지 허용됩니다.
+    - AC$^2$: 크기 Poly(n)에 깊이는 $\text{O}(\log^2 n)$ 까지 허용됩니다.
+    - 즉 AC$^i$: 크기 Poly(n)에 깊이는 $\text{O}(\log^i n)$ 까지 허용됩니다.
+- NC: bounded fan-in 게이트를 허용하는 회로 클래스입니다. NC^0, NC^1 등을 모두 포함하는 범주입니다.
+    - NC$^0$: 크기 Poly(n)에 깊이는 상수 깊이만 가능합니다.
+    - NC$^1$: 크기 Poly(n)에 깊이는 $\text{O}(\log n)$ 까지 허용됩니다.
+    - NC$^2$: 크기 Poly(n)에 깊이는 $\text{O}(\log^2 n)$ 까지 허용됩니다.
+    - 즉 NC$^i$: 크기 Poly(n)에 깊이는 $\text{O}(\log^i n)$ 까지 허용됩니다.
+- LC: bounded fan-in 게이트를 허용하는 회로 클래스입니다. 회로의 깊이는 $\text{O}(n)$ 까지 허용합니다.
+- TC: unbounded fan-in Threshold 게이트 (예: Majority gate)까지도 허용하는 회로 클래스입니다. TC^0, TC^1 등을 모두 포함하는 범주입니다.
+    - TC$^0$: 크기 Poly(n)에 깊이는 상수 깊이만 가능합니다.
+    - TC$^1$: 크기 Poly(n)에 깊이는 $\text{O}(\log n)$ 까지 허용됩니다.
+    - TC$^2$: 크기 Poly(n)에 깊이는 $\text{O}(\log^2 n)$ 까지 허용됩니다.
+    - 즉 TC$^i$: 크기 Poly(n)에 깊이는 $\text{O}(\log^i n)$ 까지 허용됩니다.
+
+# QAC, QAC$_f$, QNC 클래스
+
+
+~~대부분의 양자 컴퓨팅에서 사용되는 개념이 그렇듯이, ~~ 고전적인 회로 클래스에 대응되는 양자 회로 클래스들도 존재합니다.
+
+여기서 Fanout gate를 허용하면 밑첨자로 f가 붙습니다.
+
+$QAC^0 \subseteq QAC^0_f$ 임은 자명하지만, $QAC^0_f \subseteq QAC^1$ 임은 의외로 아직 증명되지 않은 open problem입니다.
+
+$QAC^0_f$ 는 굉장히 강력하단 것이 2005년에 밝혀졌는데[3], $QAC^0_f$ 는 Majority, Sorting, Arithematic operations, Phase estimation (따라서 QFT도) 등등을 계산할 수 있습니다. 하지만 $QAC^0$ 가 Majority를 계산할 수 있는지는 아직 미해결 문제입니다. 즉, 이들 중에 하나라도 $QAC^0$ 에 속하지 않는다면, $QAC^0 \subsetneq QAC^0_f$ 임이 증명됩니다.
+
+> Fun fact: Parity와 Fanout은 동치입니다. Parity는 CNOT을 n-1번 해서 계산 가능하고, Fanout도 CNOT을 n-1 번 해서 계산 가능합니다. 이때 CNOT의 control 과 target 비트의 위치가 다른데, 양쪽에서 Hadamard 게이트를 쳐주면 서로 바뀌어서 같아집니다.
 
 # Quantum Circuit Complexity
 
@@ -99,6 +131,35 @@ QAC0 <= QNC0 <= QAC1 은 well known.
 open problems:
 QAC0 가 parity를 풀 수 있을까? 아직까지 증명은 안 되었지만, 아마 불가능할 것으로 추정중.
 
+# Pauli Degree
+
+## Fourier Analysis of Boolean Functions
+
+고전적인 회로 복잡도 이론에서 Fourier 분석은 Boolean 함수의 특성을 이해하는 데 중요한 도구입니다. Fourier analysis를 편하게 하기 위해서 그동안은 boolean 값을 0,1 로 표현했지만, Fourier 분석에서는 이를 {-1,1} 으로 매핑합니다. 값의 대칭성이 있어야 Fourier 분석이 더 편해지기 때문입니다. 이때, 0은 1로, 1은 -1로 매핑하는데, {0, 1} 에서의 합 (XOR)이 {-1, 1} 에서의 곱에 대응되게 하기 위함입니다.
+
+Boolean 함수 f: {-1,1}^n → {-1,1} 는 입력 비트들의 조합에 따라 -1 또는 1을 출력하는 함수입니다. 이러한 함수는 다음과 같이 Fourier 급수로 표현될 수 있습니다.
+$$f(x) = \sum_{S \subseteq [n]} \hat{f}(S) \chi_S(x)$$
+여기서 $\chi_S(x) = \prod_{i \in S} x_i$ 는 S에 속한 입력 비트들의 곱을 나타내는 캐릭터 함수입니다. $\hat{f}(S)$ 는 Fourier 계수로, 함수 f의 특정 주파수 성분을 나타냅니다. Fourier 계수는 다음과 같이 계산됩니다.
+$$\hat{f}(S) = \frac{1}{2^n} \sum_{x \in \{-1,1\}^n} f(x) \chi_S(x)$$
+
+$\chi_S$ 가 기저를 형성하기 때문에 식이 위와 같이 만들어집니다. 주어진 boolean function을 쉬운 블럭들로 쪼개는 것일 뿐입니다(= $\chi_S$ 기저 위에서의 좌표로 표현). $f(x_1, x_2, x_3) = x_1 AND x_2 AND x_3$ 라는 함수가 있다고 해봅시다. 이 함수는 다음과 같이 쪼갤 수 있습니다.
+$$f(x_1, x_2, x_3) = \frac{1}{4} (1 + x_1)(1 + x_2)(1 + x_3) - \frac{1}{4} (1 - x_1)(1 - x_2)(1 - x_3)$$
+이를 전개하면 다음과 같이 됩니다.
+$$f(x_1, x_2, x_3) = \frac{1}{4} + \frac{1}{4} x_1 + \frac{1}{4} x_2 + \frac{1}{4} x_3 + \frac{1}{4} x_1 x_2 + \frac{1}{4} x_1 x_3 + \frac{1}{4} x_2 x_3 + \frac{1}{4} x_1 x_2 x_3 - \frac{1}{4} + \frac{1}{4} x_1 + \frac{1}{4} x_2 + \frac{1}{4} x_3 - \frac{1}{4} x_1 x_2 - \frac{1}{4} x_1 x_3 - \frac{1}{4} x_2 x_3 + \frac{1}{4} x_1 x_2 x_3$$
+최종적으로 정리하면 다음과 같습니다.
+$$f(x_1, x_2, x_3) = \frac{1}{4} x_1 + \frac{1}{4} x_2 + \frac{1}{4} x_3 + \frac{1}{2} x_1 x_2 x_3$$
+따라서 Fourier 계수는 다음과 같습니다.
+- $\hat{f}(\emptyset) = 0$
+- $\hat{f}(\{1\}) = \frac{1}{4}$
+- $\hat{f}(\{2\}) = \frac{1}{4}$
+- $\hat{f}(\{3\}) = \frac{1}{4}$
+- $\hat{f}(\{1,2\}) = 0$
+- $\hat{f}(\{1,3\}) = 0$
+- $\hat{f}(\{2,3\}) = 0$
+- $\hat{f}(\{1,2,3\}) = \frac{1}{2}$
+
+> 아래 관계가 성립
+$$\frac{1}{2^n} \| A \|_F^2 = \frac{1}{2^n} \sum_{x \in \{0,1\}^n} \langle x | A^\dagger A | x \rangle = \sum_{P \in \mathcal{P}^n} \hat{A}(P)^2$$
 
 # References
 
