@@ -241,15 +241,14 @@ Moore의 추측은 25년 넘도록 풀리지 않았지만, 최근 대부분의 �
 
 # References
 
-[1] Furst, Merrick, et al. "Parity, Circuits, and the Polynomial-Time Hierarchy." Mathematical Systems Theory, vol. 17, no. 1, 1984, pp. 13-27.
+[1] Furst, Merrick, James B. Saxe, and Michael Sipser. “Parity, Circuits, and the Polynomial-Time Hierarchy.” *Mathematical Systems Theory*, vol. 17, no. 1, 1984, pp. 13 to 27.
 
-[2] Arora, Sanjeev, and Boaz Barak. Computational Complexity: A Modern Approach. Cambridge UP, 2009. (Chapter 6: Circuit Complexity).
+[2] Arora, Sanjeev, and Boaz Barak. *Computational Complexity: A Modern Approach*. Cambridge University Press, 2009. Ch. 6.
 
-[3] Høyer, Peter, and Robert Špalek. "Quantum Fan-out is Powerful." Theory of Computing, vol. 1, 2005, theoryofcomputing.org/articles/v001a005/. Accessed 29 Jan. 2026.
+[3] Høyer, Peter, and Robert Špalek. “Quantum Fan-out Is Powerful.” *Theory of Computing*, vol. 1, no. 5, 2005, pp. 81 to 103. doi:10.4086/toc.2005.v001a005.
 
-[4] Moore, Cristopher, and Yaoyun Shi. "Quantum Circuits: Fanout, Parity, and Counting." arXiv, 12 Mar. 1999, arxiv.org/abs/quant-ph/9903046. Accessed 29 Jan. 2026.
+[4] Moore, Cristopher. “Quantum Circuits: Fanout, Parity, and Counting.” *arXiv*, 17 Mar. 1999, arXiv:quant-ph/9903046.
 
-[5] Vasconcelos, Francisca, et al. "On the Pauli Spectrum of QAC0." arXiv, 15 Nov. 2023, arxiv.org/abs/2311.09631. Accessed 29 Jan. 2026.
-​
+[5] Nadimpalli, Shivam, et al. “On the Pauli Spectrum of QAC0.” *arXiv*, 16 Nov. 2023, arXiv:2311.09631.
 
-[6] Nan, Penghui, et al. "On the Computational Power of QAC0 with Barely Superlinear Ancillae." arXiv, 2024, arxiv.org/abs/2410.06499. Accessed 29 Jan. 2026.
+[6] Anshu, Anurag, et al. “On the Computational Power of QAC0 with Barely Superlinear Ancillae.” *arXiv*, 9 Oct. 2024, arXiv:2410.06499.
