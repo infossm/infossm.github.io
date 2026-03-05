@@ -28,9 +28,9 @@ Treewidth라는 개념을 가져와 새로운 버전의 Cops and Robber 게임�
 
 ### 1.2 상태의 정의
 
-게임의 한 시점의 **상태**는 쌍 $$(X, R)$$로 정의하며, 다음 조건을 만족한다.
+게임의 한 시점의 **상태**는 쌍 $(X, R)$로 정의하며, 다음 조건을 만족한다.
 
-- $X \subseteq V(G)$, $|X| \le m$: 현재 그래프 위에 존재하는 경찰들이 점유하고 있는 정점들의 집합.
+- $X \subseteq V(G), |X| \le m$: 현재 그래프 위에 존재하는 경찰들이 점유하고 있는 정점들의 집합.
 - $R \in V(G)$: 도둑이 위치한 하나의 정점.
 - 항상 $R \notin X$인 상태만 게임의 유효 상태로 취급한다.  
   즉, 어떤 시점에 $R \in X$가 되면 그 순간 경찰이 도둑을 잡은 것으로 간주하고 게임은 종료한다.
@@ -91,7 +91,7 @@ Treewidth라는 개념을 가져와 새로운 버전의 Cops and Robber 게임�
 
 이때 다음 두 공리를 만족해야 한다.
 
-- **(W1)**  $$\bigcup_{t \in V(T)} W_t = V(G)$$이고 임의의 간선 $uv \in E(G)$에 대해 $\\{u, v\\} \subseteq W_t$를 만족하는 $t \in V(G)$가 존재한다.
+- **(W1)**  $\bigcup_{t \in V(T)} W_t = V(G)$이고 임의의 간선 $uv \in E(G)$에 대해 $\\{u, v\\} \subseteq W_t$를 만족하는 $t \in V(G)$가 존재한다.
 
 - **(W2)** 임의의 정점 $v \in V(G)$에 대해 $\\{t \in V(T) : v \in W_t \\}$는 $T$의 연결된 부분그래프를 이룬다.  
 
@@ -101,7 +101,7 @@ Treewidth라는 개념을 가져와 새로운 버전의 Cops and Robber 게임�
 ### 2.2 treewidth
 
 tree decomposition $(T,W)$의 **width**는
-$$\max_{t \in V(T)} (|W_t| - 1)$$
+$\max_{t \in V(T)} (|W_t| - 1)$
 로 정의한다.
 
 그래프 $G$의 **treewidth**는 가능한 모든 tree decomposition 중 width의 최소값이다.
@@ -122,7 +122,7 @@ treewidth가 작을수록 그래프가 트리와 “가까운” 구조를 가�
    게임의 특정 시점마다 다음 조건을 유지하는 전략을 생각한다.
    - 경찰의 정점 집합 $X$는 어떤 bag $W_t$ 전체를 포함한다. treewidth가 $k$이므로 모든 bag의 크기가 $|W_t| \le k+1$이고, $k+1$명의 경찰이면 이를 전부 점유할 수 있다.
    - 도둑은 $T$에서 $t$를 제거했을 때의 어떤 한 컴포넌트에 대응하는 부분그래프 안에 갇혀 있다. 즉, $T - t$의 한 컴포넌트 $C$에 대해 도둑은
-     $$\bigcup_{u \in V(C)} W_u$$
+     $\bigcup_{u \in V(C)} W_u$
      안에 위치하며, 현재 bag $W_t$를 통과하지 않고는 다른 컴포넌트로 이동할 수 없다.
 
 3. **트리 위의 전진**
@@ -200,31 +200,28 @@ $ord(\mathcal{B}) > k$라고 가정하자. 모순을 위해 $tw(G) < k$라고 �
 앞선 절들을 종합하면, treewidth, bramble, cop number 사이에 다음 관계가 성립한다.
 
 1. **상계 (3절)**  
-   $$tw(G) = k \Rightarrow c(G) \le k+1$$
+   $tw(G) = k \Rightarrow c(G) \le k+1$
 
    즉 treewidth가 $k$이면 $k+1$명의 경찰에게 도둑을 잡는 승리 전략이 존재한다.
 
 2. **하계 및 이중성 (4절 및 Seymour–Thomas 이중성 정리)**  
    Seymour–Thomas의 min–max 이중성에 따르면,
-   $$tw(G) = k 
+   $tw(G) = k 
    \Longleftrightarrow
-   \exists \text{ bramble } \mathcal{B} \text{ with } ord(\mathcal{B}) = k+1$$
+   \exists \text{ bramble } \mathcal{B} \text{ with } ord(\mathcal{B}) = k+1$
 
    즉, treewidth가 $k$인 그래프에는 order가 $k+1$인 bramble이 존재한다.
 
    bramble의 order가 $k+1$이라는 것은, bramble의 모든 원소를 동시에 만나는 정점집합의 최소 크기가 $k+1$이라는 뜻이다. $k$명의 경찰은 어떤 시점에서도 최대 $k$개의 정점만 점유할 수 있으므로, 그 순간의 경찰 집합은 bramble의 hitting set이 될 수 없다. 항상 어떤 bramble 원소 $B \in \mathcal{B}$는 경찰이 점유하지 않은 정점들로만 이루어져 있다.
 
-   1절에서 정의한 게임에서 도둑은 경찰이 점유한 정점을 피해서 무한한 속도로 이동할 수 있으므로, 게임 내내 “경찰이 점유하지 않은 bramble 원소들” 사이를 이동하면서 경찰을 피할 수 있다. bramble 원소들이 서로 touch하므로, 도둑은 경찰이 점유한 정점을 통과하지 않고도 한 bramble 원소에서 다른 bramble 원소로 이동 가능하다. 따라서
-   $$
-   c(G) \ge k+1.
-   $$
+   1절에서 정의한 게임에서 도둑은 경찰이 점유한 정점을 피해서 무한한 속도로 이동할 수 있으므로, 게임 내내 “경찰이 점유하지 않은 bramble 원소들” 사이를 이동하면서 경찰을 피할 수 있다. bramble 원소들이 서로 touch하므로, 도둑은 경찰이 점유한 정점을 통과하지 않고도 한 bramble 원소에서 다른 bramble 원소로 이동 가능하다. 따라서 $c(G) \ge k+1$이다.
 
 4. **필요·충분성 종합**  
    treewidth $k$에 대해
-   $$c(G) \le k+1 \text{(3절의 상계)},
-   c(G) \ge k+1 \text{(4절의 하계)}$$
+   $c(G) \le k+1 \text{(3절의 상계)},
+   c(G) \ge k+1 \text{(4절의 하계)}$
    가 동시에 성립하므로
-   $$c(G) = k+1$$
+   $c(G) = k+1$
    이다.
 
 요약하면, treewidth가 $k$인 그래프에서는 정확히 $k+1$명의 경찰이 필요하며, 이 수는 충분조건이자 필요조건이다.
