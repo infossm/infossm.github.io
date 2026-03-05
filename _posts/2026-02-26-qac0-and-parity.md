@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "QAC0 와 PARITY 문제"
-date: 2025-02-26
+date: 2026-02-26
 author: red1108
 tags: [quantum, quantum-computing, quantum-complexity]
 ---
