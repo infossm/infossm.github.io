@@ -1,12 +1,12 @@
 ---
 layout: post
-title: "QAC0 와 PARITY 문제"
-date: 2025-02-26
+title: "QAC0 and PARITY"
+date: 2026-02-26
 author: red1108
 tags: [quantum, quantum-computing, quantum-complexity]
 ---
 
-### 소개
+### Introduction
 
 이 글은 [Quantum Complexity](https://infossm.github.io/blog/2025/12/28/quantum-complexity/)의 후속편입니다. 지난 글에서 QAC$^0$, QAC$^0_f$, PARITY 문제의 배경을 소하고, fourier analysis 를 소개했다면, 이번 글에서는 QAC$^0$ 회로가 PARITY를 풀수 있는지 없는지에 대한 현재까지의 연구를 소개하는게 목표입니다.
 
